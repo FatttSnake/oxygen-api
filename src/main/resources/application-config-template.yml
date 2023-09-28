@@ -1,0 +1,32 @@
+server:
+#  port: 8080 # Server port
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost # MySQL url
+    username: root # MySQL username
+    password: root # MySQL password
+
+    druid:
+#      initial-size: 20 # Initial number of connections
+#      min-idle: 20 # Minimum number of connection pools
+#      max-active: 20 # Maximum number of connection pools
+#      max-wait: 3000 # Maximum connection timeout
+#      min-evictable-idle-time-millis: 300000 # Minimum time for a connection to live in the pool
+#      max-evictable-idle-time-millis: 900000 # Maximum time for a connection to live in the pool
+#      break-after-acquire-failure: true # Terminate the retry when the server fails to reconnect for the specified number of times
+#      connection-error-retry-attempts: 5 # Number of failed reconnections
+
+  data:
+    redis:
+#      database: 0 # Redis database (default: 0)
+#      host: localhost # Redis host (default: localhost)
+#      port: 6379 # Redis port (default: 6379)
+#      password:  # Password of redis
+#      connect-timeout: 3000 # Redis connect timeout
+#      lettuce:
+#        pool:
+#          min-idle: 0
+#          max-idle: 8
+#          max-active: 8
+#          max-wait: -1ms
