@@ -12,7 +12,12 @@ import java.io.Serializable
  * @since 2023-10-04
  */
 @TableName("t_user")
-class User : Serializable {
+class User() : Serializable {
+    constructor(username: String, password: String, enable: Boolean = true) : this() {
+        this.username = username
+        this.password = password
+        this.enable = if (enable) 1 else 0
+    }
 
     @TableId("id")
     var id: Long? = null
@@ -44,13 +49,6 @@ class User : Serializable {
     var version: Int? = null
 
     override fun toString(): String {
-        return "User{" +
-                "id=" + id +
-                ", username=" + username +
-                ", password=" + password +
-                ", enable=" + enable +
-                ", deleted=" + deleted +
-                ", version=" + version +
-                "}"
+        return "User{id=$id, username=$username, password=$password, enable=$enable, deleted=$deleted, version=$version}"
     }
 }

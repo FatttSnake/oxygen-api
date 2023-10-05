@@ -16,4 +16,15 @@ class FatWebApiApplicationTests {
     fun removePrefixTest() {
         assertEquals("12312", "Bearer 12312".removePrefix(SecurityConstants.tokenPrefix))
     }
+
+    /*
+        @Test
+        fun addUser(@Autowired userService: IUserService, @Autowired passwordEncoder: PasswordEncoder) {
+            val username = "admin"
+            val rawPassword = "admin"
+            val encodedPassword = passwordEncoder.encode(rawPassword)
+            val user = User(username, encodedPassword)
+            userService.save(user)
+        }
+    */
 }

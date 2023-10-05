@@ -4,7 +4,7 @@ app:
 #    token-prefix: "Bearer " # Token prefix
 #    jwt-ttl: 2 # The life of token
 #    jwt-ttl-unit: hours # Unit of life of token
-    jwt-key: $uuid$ # Key to generate token
+    jwt-key: $uuid$ # Key to generate token (Only numbers and letters allow)
 #    jwt-issuer: FatWeb # Token issuer
 
 server:
