@@ -1,11 +1,6 @@
 app:
   version: @project.version@
   build-time: @build.timestamp@
-  security:
-    header-string: "Authorization"
-    token-prefix: "Bearer "
-    jwt-ttl: 2
-    jwt-ttl-unit: hours
 
 spring:
   profiles:
@@ -13,3 +8,11 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-delete-field: deleted
+      logic-not-delete-value: 0
+      logic-delete-value: id
+      id-type: assign_id
+  type-aliases-package: top.fatweb.api.entity

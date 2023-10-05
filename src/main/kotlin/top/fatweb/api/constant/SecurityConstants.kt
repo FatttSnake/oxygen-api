@@ -1,8 +1,7 @@
-package top.fatweb.api.constants
+package top.fatweb.api.constant
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.stereotype.Component
-import java.security.MessageDigest
 import java.util.concurrent.TimeUnit
 
 @Component
@@ -16,14 +15,7 @@ object SecurityConstants {
 
     var jwtTtlUnit = TimeUnit.HOURS
 
-    lateinit var jwtKey: String
+    var jwtKey = "FatWeb"
 
-    private fun ByteArray.hex(): String {
-        return joinToString("") { "%02X".format(it) }
-    }
-
-    private fun String.md5(): String {
-        val bytes = MessageDigest.getInstance("MD5").digest(this.toByteArray())
-        return bytes.hex()
-    }
+    var jwtIssuer = "FatWeb"
 }
