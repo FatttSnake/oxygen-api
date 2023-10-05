@@ -1,4 +1,4 @@
-package top.fatweb.api.utils
+package top.fatweb.api.util
 
 import org.springframework.data.redis.core.BoundSetOperations
 import org.springframework.data.redis.core.RedisTemplate
@@ -141,7 +141,8 @@ class RedisUtil(private val redisTemplate: RedisTemplate<String, Any>) {
      * @param key 缓存的键
      * @return 缓存的键对应的 Map 数据
      */
-    fun <T> getMap(key: String): Map<String, T>? = redisTemplate.opsForHash<String, Any>().entries(key) as? Map<String, T>
+    fun <T> getMap(key: String): Map<String, T>? =
+        redisTemplate.opsForHash<String, Any>().entries(key) as? Map<String, T>
 
     /**
      * 往 Hash 中存入数据
