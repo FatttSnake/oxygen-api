@@ -22,9 +22,7 @@ class RedisConfig {
         val objectMapper = ObjectMapper().registerModules(JavaTimeModule()).apply {
             setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY)
             activateDefaultTyping(
-                this.polymorphicTypeValidator,
-                ObjectMapper.DefaultTyping.NON_FINAL,
-                JsonTypeInfo.As.PROPERTY
+                this.polymorphicTypeValidator, ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY
             )
         }
         val anyJackson2JsonRedisSerializer = Jackson2JsonRedisSerializer(objectMapper, Any::class.java)

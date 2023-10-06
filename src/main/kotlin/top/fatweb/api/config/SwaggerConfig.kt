@@ -16,8 +16,8 @@ class SwaggerConfig {
         return OpenAPI().info(
             Info().title("FatWeb API 文档").description("FatWeb 后端 API 文档，包含各个 Controller 调用信息")
                 .contact(contact).version(
-                ServerConstants.version
-            )
+                    ServerConstants.version
+                )
         )
     }
 }
