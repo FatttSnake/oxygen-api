@@ -1,11 +1,13 @@
 package top.fatweb.api.service.permission
 
 import top.fatweb.api.entity.permission.User
+import top.fatweb.api.vo.LoginVo
+import top.fatweb.api.vo.TokenVo
 
 interface IAuthenticationService {
-    fun login(user: User): HashMap<String, String>
+    fun login(user: User): LoginVo
 
     fun logout(token: String): Boolean
 
-    fun renewToken(token: String): HashMap<String, String>
+    fun renewToken(token: String): TokenVo
 }

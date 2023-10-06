@@ -1,10 +1,10 @@
-package top.fatweb.api.entity.converter
+package top.fatweb.api.converter
 
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping
 import org.mapstruct.Mappings
-import top.fatweb.api.entity.param.LoginParam
 import top.fatweb.api.entity.permission.User
+import top.fatweb.api.param.LoginParam
 
 @Mapper(componentModel = "spring")
 interface UserConverter {

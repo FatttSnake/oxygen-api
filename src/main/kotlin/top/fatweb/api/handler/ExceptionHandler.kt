@@ -1,5 +1,7 @@
 package top.fatweb.api.handler
 
+import com.auth0.jwt.exceptions.JWTDecodeException
+import com.auth0.jwt.exceptions.SignatureVerificationException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.http.converter.HttpMessageNotReadableException
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import top.fatweb.api.entity.common.ResponseCode
 import top.fatweb.api.entity.common.ResponseResult
+import top.fatweb.api.exception.TokenHasExpiredException
 
 @RestControllerAdvice
 class ExceptionHandler {
@@ -43,6 +46,16 @@ class ExceptionHandler {
             is BadCredentialsException -> {
                 log.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.SYSTEM_LOGIN_USERNAME_PASSWORD_ERROR, e.localizedMessage, null)
+            }
+
+            is SignatureVerificationException, is JWTDecodeException -> {
+                log.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.SYSTEM_TOKEN_ILLEGAL, "Token illegal", null)
+            }
+
+            is TokenHasExpiredException -> {
+                log.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.SYSTEM_TOKEN_HAS_EXPIRED, e.localizedMessage, null)
             }
 
             else -> {

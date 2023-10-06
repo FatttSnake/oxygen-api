@@ -13,7 +13,7 @@ import top.fatweb.api.entity.permission.LoginUser
 import top.fatweb.api.exception.TokenHasExpiredException
 import top.fatweb.api.util.JwtUtil
 import top.fatweb.api.util.RedisUtil
-import java.util.concurrent.TimeUnit
+import top.fatweb.api.util.WebUtil
 
 @Component
 class JwtAuthenticationTokenFilter(private val redisUtil: RedisUtil) : OncePerRequestFilter() {
@@ -29,14 +29,14 @@ class JwtAuthenticationTokenFilter(private val redisUtil: RedisUtil) : OncePerRe
             return
         }
 
-        val token = tokenWithPrefix.removePrefix(SecurityConstants.tokenPrefix)
+        val token = WebUtil.getToken(tokenWithPrefix)
         JwtUtil.parseJwt(token)
 
-        val redisKey = "${SecurityConstants.jwtIssuer}_login:" + token.substring(0, 32)
+        val redisKey = "${SecurityConstants.jwtIssuer}_login:" + token
         val loginUser = redisUtil.getObject<LoginUser>(redisKey)
         loginUser ?: let { throw TokenHasExpiredException() }
 
-        redisUtil.setExpire(redisKey, 20, TimeUnit.MINUTES)
+        redisUtil.setExpire(redisKey, SecurityConstants.redisTtl, SecurityConstants.redisTtlUnit)
 
         val authenticationToken = UsernamePasswordAuthenticationToken(loginUser, null, loginUser.authorities)
         SecurityContextHolder.getContext().authentication = authenticationToken

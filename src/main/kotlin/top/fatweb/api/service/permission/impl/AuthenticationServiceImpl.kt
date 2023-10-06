@@ -10,14 +10,15 @@ import top.fatweb.api.service.permission.IAuthenticationService
 import top.fatweb.api.util.JwtUtil
 import top.fatweb.api.util.RedisUtil
 import top.fatweb.api.util.WebUtil
-import java.util.concurrent.TimeUnit
+import top.fatweb.api.vo.LoginVo
+import top.fatweb.api.vo.TokenVo
 
 @Service
 class AuthenticationServiceImpl(
     private val authenticationManager: AuthenticationManager,
     private val redisUtil: RedisUtil
 ) : IAuthenticationService {
-    override fun login(user: User): HashMap<String, String> {
+    override fun login(user: User): LoginVo {
         val usernamePasswordAuthenticationToken = UsernamePasswordAuthenticationToken(user.username, user.password)
         val authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken)
         authentication ?: let {
@@ -33,18 +34,17 @@ class AuthenticationServiceImpl(
             throw RuntimeException("Login failed")
         }
 
-        val hashMap = hashMapOf("token" to jwt)
-        val redisKey = "${SecurityConstants.jwtIssuer}_login:" + jwt.substring(0, 32)
-        redisUtil.setObject(redisKey, loginUser, 20, TimeUnit.MINUTES)
+        val redisKey = "${SecurityConstants.jwtIssuer}_login:" + jwt
+        redisUtil.setObject(redisKey, loginUser, SecurityConstants.redisTtl, SecurityConstants.redisTtlUnit)
 
-        return hashMap
+        return LoginVo(jwt)
     }
 
     override fun logout(token: String): Boolean =
-        redisUtil.delObject("${SecurityConstants.jwtIssuer}_login:" + token.substring(0, 32))
+        redisUtil.delObject("${SecurityConstants.jwtIssuer}_login:" + token)
 
-    override fun renewToken(token: String): HashMap<String, String> {
-        val oldRedisKey = "${SecurityConstants.jwtIssuer}_login:" + token.substring(0, 32)
+    override fun renewToken(token: String): TokenVo {
+        val oldRedisKey = "${SecurityConstants.jwtIssuer}_login:" + token
         redisUtil.delObject(oldRedisKey)
         val jwt = JwtUtil.createJwt(WebUtil.getLoginUserId().toString())
 
@@ -52,10 +52,14 @@ class AuthenticationServiceImpl(
             throw RuntimeException("Login failed")
         }
 
-        val hashMap = hashMapOf("token" to jwt)
-        val redisKey = "${SecurityConstants.jwtIssuer}_login:" + jwt.substring(0, 32)
-        redisUtil.setObject(redisKey, WebUtil.getLoginUser(), 20, TimeUnit.MINUTES)
+        val redisKey = "${SecurityConstants.jwtIssuer}_login:" + jwt
+        redisUtil.setObject(
+            redisKey,
+            WebUtil.getLoginUser(),
+            SecurityConstants.redisTtl,
+            SecurityConstants.redisTtlUnit
+        )
 
-        return hashMap
+        return TokenVo(jwt)
     }
 }

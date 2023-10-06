@@ -18,4 +18,8 @@ object SecurityConstants {
     var jwtKey = "FatWeb"
 
     var jwtIssuer = "FatWeb"
+
+    var redisTtl = 20L
+
+    var redisTtlUnit = TimeUnit.MINUTES
 }
