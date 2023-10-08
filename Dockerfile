@@ -3,7 +3,7 @@ LABEL authors="FatttSnake"
 
 VOLUME /data
 
-ARG DEPENDENCY=target/extracted
+ARG EXTRACTED=target/extracted
 COPY ${EXTRACTED}/dependencies/ /
 COPY ${EXTRACTED}/spring-boot-loader/ /
 COPY ${EXTRACTED}/snapshot-dependencies/ /
