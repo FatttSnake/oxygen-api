@@ -31,5 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Custom ###
 /application-config.yml
-/application-config.example.yml
+data
