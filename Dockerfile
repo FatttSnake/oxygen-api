@@ -10,4 +10,4 @@ COPY ${EXTRACTED}/snapshot-dependencies/ /
 RUN true
 COPY ${EXTRACTED}/application/ /
 
-ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher", "--spring.config.additional-location=file:data/", "${JAVA_OPTS}"]
+ENTRYPOINT ["java", "org.springframework.boot.loader.JarLauncher", "--spring.config.additional-location=file:data/"]
