@@ -40,7 +40,7 @@ class ExceptionHandler {
 
             is InternalAuthenticationServiceException -> {
                 log.debug(e.localizedMessage, e)
-                ResponseResult.fail(ResponseCode.SYSTEM_USERNAME_NOT_FOUND, e.localizedMessage, null)
+                ResponseResult.fail(ResponseCode.SYSTEM_USERNAME_NOT_FOUND, "Username not found", null)
             }
 
             is BadCredentialsException -> {

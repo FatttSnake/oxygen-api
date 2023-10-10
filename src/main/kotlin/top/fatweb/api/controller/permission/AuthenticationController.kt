@@ -14,8 +14,6 @@ import top.fatweb.api.service.permission.IAuthenticationService
 import top.fatweb.api.util.WebUtil
 
 @Tag(name = "身份认证", description = "身份认证相关接口")
-@Suppress("MVCPathVariableInspection")
-@RequestMapping("/api/{apiVersion}")
 @ApiVersion(2)
 @RestController
 class AuthenticationController(val authenticationService: IAuthenticationService, val userConverter: UserConverter) {

@@ -20,15 +20,4 @@ class FatWebApiApplicationTests {
         val jwt = JwtUtil.createJwt("User")
         assertEquals("User", jwt?.let { JwtUtil.parseJwt(it).subject })
     }
-
-    /*
-            @Test
-            fun addUser(@Autowired userService: IUserService, @Autowired passwordEncoder: PasswordEncoder) {
-                val username = "admin"
-                val rawPassword = "admin"
-                val encodedPassword = passwordEncoder.encode(rawPassword)
-                val user = User(username, encodedPassword)
-                userService.save(user)
-            }
-        */
 }

@@ -58,7 +58,7 @@ class SecurityConfig(
             authorizeHttpRequests
                 // Allow anonymous access
                 .requestMatchers(
-                    "/api/v*/login",
+                    "/login",
                     "/error/thrown",
                     "/doc.html",
                     "/swagger-ui/**",
