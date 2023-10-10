@@ -2,6 +2,7 @@ package top.fatweb.api.handler
 
 import com.auth0.jwt.exceptions.JWTDecodeException
 import com.auth0.jwt.exceptions.SignatureVerificationException
+import com.auth0.jwt.exceptions.TokenExpiredException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.http.converter.HttpMessageNotReadableException
@@ -30,6 +31,11 @@ class ExceptionHandler {
             is HttpMessageNotReadableException -> {
                 log.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.SYSTEM_REQUEST_ILLEGAL, e.localizedMessage.split(":")[0], null)
+            }
+
+            is TokenExpiredException -> {
+                log.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.SYSTEM_TOKEN_HAS_EXPIRED, e.localizedMessage, null)
             }
 
             is MethodArgumentNotValidException -> {
