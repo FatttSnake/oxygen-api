@@ -41,3 +41,13 @@ spring:
 #          max-idle: 8
 #          max-active: 8
 #          max-wait: -1ms
+
+logging:
+  level:
+    root: info # Logging level
+  file:
+    name: data/log/fat-api.log # Logging path and name
+  logback:
+    rollingpolicy:
+#      max-file-size: 10MB # Maximum log file size
+#      max-history: 7 # Maximum number of archive log files to keep

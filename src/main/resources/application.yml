@@ -8,6 +8,7 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
+
 mybatis-plus:
   global-config:
     db-config:
@@ -16,3 +17,9 @@ mybatis-plus:
       logic-delete-value: id
       id-type: assign_id
   type-aliases-package: top.fatweb.api.entity
+
+logging:
+  level:
+    root: info
+  file:
+    name: data/log/fat-api.log
