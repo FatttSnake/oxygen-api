@@ -18,54 +18,54 @@ import top.fatweb.api.exception.TokenHasExpiredException
 
 @RestControllerAdvice
 class ExceptionHandler {
-    private val log: Logger = LoggerFactory.getLogger(this::class.java)
+    private val logger: Logger = LoggerFactory.getLogger(this::class.java)
 
     @ExceptionHandler(value = [Exception::class])
     fun exceptionHandler(e: Exception): ResponseResult<*> {
         return when (e) {
             is InsufficientAuthenticationException -> {
-                log.debug(e.localizedMessage, e)
+                logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.SYSTEM_UNAUTHORIZED, e.localizedMessage, null)
             }
 
             is HttpMessageNotReadableException -> {
-                log.debug(e.localizedMessage, e)
+                logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.SYSTEM_REQUEST_ILLEGAL, e.localizedMessage.split(":")[0], null)
             }
 
             is TokenExpiredException -> {
-                log.debug(e.localizedMessage, e)
+                logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.SYSTEM_TOKEN_HAS_EXPIRED, e.localizedMessage, null)
             }
 
             is MethodArgumentNotValidException -> {
-                log.debug(e.localizedMessage, e)
+                logger.debug(e.localizedMessage, e)
                 val errorMessage = e.allErrors.map { error -> error.defaultMessage }.joinToString(". ")
                 ResponseResult.fail(ResponseCode.SYSTEM_ARGUMENT_NOT_VALID, errorMessage, null)
             }
 
             is InternalAuthenticationServiceException -> {
-                log.debug(e.localizedMessage, e)
+                logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.SYSTEM_USERNAME_NOT_FOUND, "Username not found", null)
             }
 
             is BadCredentialsException -> {
-                log.debug(e.localizedMessage, e)
+                logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.SYSTEM_LOGIN_USERNAME_PASSWORD_ERROR, e.localizedMessage, null)
             }
 
             is SignatureVerificationException, is JWTDecodeException -> {
-                log.debug(e.localizedMessage, e)
+                logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.SYSTEM_TOKEN_ILLEGAL, "Token illegal", null)
             }
 
             is TokenHasExpiredException -> {
-                log.debug(e.localizedMessage, e)
+                logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.SYSTEM_TOKEN_HAS_EXPIRED, e.localizedMessage, null)
             }
 
             else -> {
-                log.error(e.localizedMessage, e)
+                logger.error(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.SYSTEM_ERROR, data = null)
             }
         }
