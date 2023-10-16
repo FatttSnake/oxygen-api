@@ -53,7 +53,7 @@ class AuthenticationServiceImpl(
         val redisKey = "${SecurityConstants.jwtIssuer}_login:" + jwt
         redisUtil.setObject(redisKey, loginUser, SecurityConstants.redisTtl, SecurityConstants.redisTtlUnit)
 
-        return LoginVo(jwt)
+        return LoginVo(jwt, loginUser.user.lastLoginTime, loginUser.user.lastLoginIp)
     }
 
     override fun logout(token: String): Boolean =
