@@ -1,29 +1,45 @@
 package top.fatweb.api.service.permission.impl
 
+import com.baomidou.mybatisplus.extension.kotlin.KtUpdateWrapper
+import jakarta.servlet.http.HttpServletRequest
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.stereotype.Service
 import top.fatweb.api.constant.SecurityConstants
 import top.fatweb.api.entity.permission.LoginUser
 import top.fatweb.api.entity.permission.User
+import top.fatweb.api.service.IUserService
 import top.fatweb.api.service.permission.IAuthenticationService
 import top.fatweb.api.util.JwtUtil
 import top.fatweb.api.util.RedisUtil
 import top.fatweb.api.util.WebUtil
 import top.fatweb.api.vo.LoginVo
 import top.fatweb.api.vo.TokenVo
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 @Service
 class AuthenticationServiceImpl(
     private val authenticationManager: AuthenticationManager,
-    private val redisUtil: RedisUtil
+    private val redisUtil: RedisUtil,
+    private val userService: IUserService
 ) : IAuthenticationService {
-    override fun login(user: User): LoginVo {
+    private val logger: Logger = LoggerFactory.getLogger(this::class.java)
+
+    override fun login(request: HttpServletRequest, user: User): LoginVo {
         val usernamePasswordAuthenticationToken = UsernamePasswordAuthenticationToken(user.username, user.password)
         val authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken)
         authentication ?: let {
             throw RuntimeException("Login failed")
         }
+
+        logger.info("用户登录 [用户名: '{}', IP: '{}']", user.username, request.remoteAddr)
+        userService.update(User().apply {
+            lastLoginIp = request.remoteAddr
+            lastLoginTime = LocalDateTime.now(ZoneOffset.UTC)
+        }, KtUpdateWrapper(User()).eq(User::username, user.username))
 
         val loginUser = authentication.principal as LoginUser
         loginUser.user.password = ""

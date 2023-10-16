@@ -4,7 +4,10 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.validation.Valid
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RestController
 import top.fatweb.api.annotation.ApiVersion
 import top.fatweb.api.converter.UserConverter
 import top.fatweb.api.entity.common.ResponseCode
@@ -19,11 +22,11 @@ import top.fatweb.api.util.WebUtil
 class AuthenticationController(val authenticationService: IAuthenticationService, val userConverter: UserConverter) {
     @Operation(summary = "登录")
     @PostMapping("/login")
-    fun login(@Valid @RequestBody loginParam: LoginParam) =
+    fun login(request: HttpServletRequest, @Valid @RequestBody loginParam: LoginParam) =
         ResponseResult.success(
             ResponseCode.SYSTEM_LOGIN_SUCCESS,
             "Login success",
-            authenticationService.login(userConverter.loginParamToUser(loginParam))
+            authenticationService.login(request, userConverter.loginParamToUser(loginParam))
         )
 
     @Operation(summary = "登出")

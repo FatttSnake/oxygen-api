@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
 class LoginUser() : UserDetails {
@@ -25,20 +27,22 @@ class LoginUser() : UserDetails {
     }
 
     @JsonIgnore
-    override fun getPassword(): String? = user.password
+    override fun getPassword() = user.password
 
     @JsonIgnore
-    override fun getUsername(): String? = user.username
+    override fun getUsername() = user.username
 
     @JsonIgnore
-    override fun isAccountNonExpired(): Boolean = true
+    override fun isAccountNonExpired() =
+        user.expiration == null || user.expiration!!.isAfter(LocalDateTime.now(ZoneOffset.UTC))
 
     @JsonIgnore
-    override fun isAccountNonLocked(): Boolean = true
+    override fun isAccountNonLocked() = user.locking == 0
 
     @JsonIgnore
-    override fun isCredentialsNonExpired(): Boolean = true
+    override fun isCredentialsNonExpired() =
+        user.credentialsExpiration == null || user.credentialsExpiration!!.isAfter(LocalDateTime.now(ZoneOffset.UTC))
 
     @JsonIgnore
-    override fun isEnabled(): Boolean = user.enable == 1
+    override fun isEnabled() = user.enable == 1
 }

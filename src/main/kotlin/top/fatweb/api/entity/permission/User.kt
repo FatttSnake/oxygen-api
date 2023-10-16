@@ -2,10 +2,11 @@ package top.fatweb.api.entity.permission
 
 import com.baomidou.mybatisplus.annotation.*
 import java.io.Serializable
+import java.time.LocalDateTime
 
 /**
  * <p>
- * 用户
+ * 用户表
  * </p>
  *
  * @author FatttSnake
@@ -13,7 +14,8 @@ import java.io.Serializable
  */
 @TableName("t_user")
 class User() : Serializable {
-    constructor(username: String, password: String, enable: Boolean = true) : this() {
+    constructor(id: Long?, username: String, password: String, enable: Boolean = true) : this() {
+        this.id = id
         this.username = username
         this.password = password
         this.enable = if (enable) 1 else 0
@@ -35,10 +37,52 @@ class User() : Serializable {
     var password: String? = null
 
     /**
+     * 锁定
+     */
+    @TableField("locking")
+    var locking: Int? = null
+
+    /**
+     * 过期时间
+     */
+    @TableField("expiration")
+    var expiration: LocalDateTime? = null
+
+    /**
+     * 认证过期时间
+     */
+    @TableField("credentials_expiration")
+    var credentialsExpiration: LocalDateTime? = null
+
+    /**
      * 启用
      */
     @TableField("enable")
     var enable: Int? = null
+
+    /**
+     * 上次登录时间
+     */
+    @TableField("last_login_time")
+    var lastLoginTime: LocalDateTime? = null
+
+    /**
+     * 上次登录 IP
+     */
+    @TableField("last_login_ip")
+    var lastLoginIp: String? = null
+
+    /**
+     * 创建时间
+     */
+    @TableField("create_time")
+    var createTime: LocalDateTime? = null
+
+    /**
+     * 修改时间
+     */
+    @TableField("update_time")
+    var updateTime: LocalDateTime? = null
 
     @TableField("deleted")
     @TableLogic
@@ -49,6 +93,6 @@ class User() : Serializable {
     var version: Int? = null
 
     override fun toString(): String {
-        return "User{id=$id, username=$username, password=$password, enable=$enable, deleted=$deleted, version=$version}"
+        return "User(id=$id, username=$username, password=$password, locking=$locking, expiration=$expiration, credentialsExpiration=$credentialsExpiration, enable=$enable, lastLoginTime=$lastLoginTime, lastLoginIp=$lastLoginIp, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version)"
     }
 }
