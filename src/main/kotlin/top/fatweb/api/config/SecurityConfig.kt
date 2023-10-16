@@ -58,14 +58,14 @@ class SecurityConfig(
             authorizeHttpRequests
                 // Allow anonymous access
                 .requestMatchers(
-                    "/login",
                     "/error/thrown",
                     "/doc.html",
                     "/swagger-ui/**",
                     "/webjars/**",
                     "/v3/**",
                     "/swagger-ui.html",
-                    "/favicon.ico"
+                    "/favicon.ico",
+                    "/login",
                 ).anonymous()
                 // Authentication required
                 .anyRequest().authenticated()
