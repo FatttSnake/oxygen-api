@@ -7,6 +7,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.test.context.junit.jupiter.SpringExtension
 import top.fatweb.api.constant.SecurityConstants
+import top.fatweb.api.util.ByteUtil
 import top.fatweb.api.util.JwtUtil
 
 @ExtendWith(SpringExtension::class)
@@ -31,4 +32,11 @@ class FatWebApiApplicationTests {
             logger.info(passwordEncoder.encode("admin@dev"))
         }
     */
+
+    @Test
+    fun byteUtilTest() {
+        assertEquals("512B", ByteUtil.formatByteSize(512))
+        assertEquals("512KiB", ByteUtil.formatByteSize(512 * 1024))
+        assertEquals("1.5MiB", ByteUtil.formatByteSize(1 * 1024 * 1024 + 512 * 1024))
+    }
 }
