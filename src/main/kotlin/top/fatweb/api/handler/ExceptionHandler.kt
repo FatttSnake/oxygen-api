@@ -9,6 +9,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.InsufficientAuthenticationException
 import org.springframework.security.authentication.InternalAuthenticationServiceException
+import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
@@ -26,6 +27,11 @@ class ExceptionHandler {
             is InsufficientAuthenticationException -> {
                 logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.SYSTEM_UNAUTHORIZED, e.localizedMessage, null)
+            }
+
+            is HttpRequestMethodNotSupportedException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.SYSTEM_REQUEST_ILLEGAL, e.localizedMessage, null)
             }
 
             is HttpMessageNotReadableException -> {
