@@ -6,9 +6,10 @@ import top.fatweb.api.constant.SecurityConstants
 import top.fatweb.api.entity.permission.LoginUser
 
 object WebUtil {
-    fun getLoginUser() = SecurityContextHolder.getContext().authentication.principal as LoginUser
+    fun getLoginUser() = if (SecurityContextHolder.getContext().authentication.principal is String) null
+    else SecurityContextHolder.getContext().authentication.principal as LoginUser
 
-    fun getLoginUserId() = getLoginUser().user.id
+    fun getLoginUserId() = getLoginUser()?.user?.id
 
     fun getToken(tokenWithPrefix: String) = tokenWithPrefix.removePrefix(SecurityConstants.tokenPrefix)
 

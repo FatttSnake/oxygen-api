@@ -1,10 +1,10 @@
-package top.fatweb.api.entity;
+package top.fatweb.api.entity
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import java.io.Serializable;
-import java.time.LocalDateTime;
+import com.baomidou.mybatisplus.annotation.TableField
+import com.baomidou.mybatisplus.annotation.TableId
+import com.baomidou.mybatisplus.annotation.TableName
+import java.io.Serializable
+import java.time.LocalDateTime
 
 /**
  * <p>
@@ -96,7 +96,7 @@ class SysLog : Serializable {
      * 执行时间
      */
     @TableField("execute_time")
-    var executeTime: Int? = null
+    var executeTime: Long? = null
 
     /**
      * 用户代理
@@ -104,19 +104,7 @@ class SysLog : Serializable {
     @TableField("user_agent")
     var userAgent: String? = null
 
-    /**
-     * 操作系统
-     */
-    @TableField("device_name")
-    var deviceName: String? = null
-
-    /**
-     * 浏览器名称
-     */
-    @TableField("browser_name")
-    var browserName: String? = null
-
     override fun toString(): String {
-        return "SysLog(id=$id, logType=$logType, operateUserId=$operateUserId, operateTime=$operateTime, requestUri=$requestUri, requestMethod=$requestMethod, requestParams=$requestParams, requestIp=$requestIp, requestServerAddress=$requestServerAddress, isException=$isException, exceptionInfo=$exceptionInfo, startTime=$startTime, endTime=$endTime, executeTime=$executeTime, userAgent=$userAgent, deviceName=$deviceName, browserName=$browserName)"
+        return "SysLog(id=$id, logType=$logType, operateUserId=$operateUserId, operateTime=$operateTime, requestUri=$requestUri, requestMethod=$requestMethod, requestParams=$requestParams, requestIp=$requestIp, requestServerAddress=$requestServerAddress, isException=$isException, exceptionInfo=$exceptionInfo, startTime=$startTime, endTime=$endTime, executeTime=$executeTime, userAgent=$userAgent)"
     }
 }

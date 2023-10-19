@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service
 import top.fatweb.api.constant.SecurityConstants
 import top.fatweb.api.entity.permission.LoginUser
 import top.fatweb.api.entity.permission.User
+import top.fatweb.api.exception.TokenHasExpiredException
 import top.fatweb.api.service.IUserService
 import top.fatweb.api.service.permission.IAuthenticationService
 import top.fatweb.api.util.JwtUtil
@@ -56,10 +57,11 @@ class AuthenticationServiceImpl(
         return LoginVo(jwt, loginUser.user.lastLoginTime, loginUser.user.lastLoginIp)
     }
 
-    override fun logout(token: String): Boolean =
-        redisUtil.delObject("${SecurityConstants.jwtIssuer}_login:" + token)
+    override fun logout(token: String): Boolean = redisUtil.delObject("${SecurityConstants.jwtIssuer}_login:" + token)
 
     override fun renewToken(token: String): TokenVo {
+        val loginUser = WebUtil.getLoginUser() ?: let { throw TokenHasExpiredException() }
+
         val oldRedisKey = "${SecurityConstants.jwtIssuer}_login:" + token
         redisUtil.delObject(oldRedisKey)
         val jwt = JwtUtil.createJwt(WebUtil.getLoginUserId().toString())
@@ -70,10 +72,7 @@ class AuthenticationServiceImpl(
 
         val redisKey = "${SecurityConstants.jwtIssuer}_login:" + jwt
         redisUtil.setObject(
-            redisKey,
-            WebUtil.getLoginUser(),
-            SecurityConstants.redisTtl,
-            SecurityConstants.redisTtlUnit
+            redisKey, loginUser, SecurityConstants.redisTtl, SecurityConstants.redisTtlUnit
         )
 
         return TokenVo(jwt)
