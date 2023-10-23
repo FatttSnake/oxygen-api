@@ -18,7 +18,16 @@ enum class ResponseCode(val code: Int) {
     SYSTEM_REQUEST_ILLEGAL(BusinessCode.SYSTEM, 40),
     SYSTEM_ARGUMENT_NOT_VALID(BusinessCode.SYSTEM, 41),
     SYSTEM_ERROR(BusinessCode.SYSTEM, 50),
-    SYSTEM_TIMEOUT(BusinessCode.SYSTEM, 51);
+    SYSTEM_TIMEOUT(BusinessCode.SYSTEM, 51),
+
+    DATABASE_SELECT_SUCCESS(BusinessCode.DATABASE, 0),
+    DATABASE_SELECT_FAILED(BusinessCode.DATABASE, 5),
+    DATABASE_INSERT_SUCCESS(BusinessCode.DATABASE, 10),
+    DATABASE_INSERT_FAILED(BusinessCode.DATABASE, 15),
+    DATABASE_UPDATE_SUCCESS(BusinessCode.DATABASE, 20),
+    DATABASE_UPDATE_FILED(BusinessCode.DATABASE, 25),
+    DATABASE_DELETE_SUCCESS(BusinessCode.DATABASE, 30),
+    DATABASE_DELETE_FILED(BusinessCode.DATABASE, 35);
 
     constructor(businessCode: BusinessCode, code: Int) : this(businessCode.code * 100 + code)
 }

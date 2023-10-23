@@ -1,6 +1,6 @@
-package top.fatweb.api.mapper;
+package top.fatweb.api.mapper.system;
 
-import top.fatweb.api.entity.SysLog;
+import top.fatweb.api.entity.system.SysLog;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 

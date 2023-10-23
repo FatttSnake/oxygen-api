@@ -12,9 +12,9 @@ import org.springframework.http.server.ServerHttpResponse
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.servlet.HandlerInterceptor
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice
-import top.fatweb.api.entity.SysLog
+import top.fatweb.api.entity.system.SysLog
 import top.fatweb.api.entity.common.ResponseResult
-import top.fatweb.api.service.ISysLogService
+import top.fatweb.api.service.system.ISysLogService
 import top.fatweb.api.util.WebUtil
 import java.net.URI
 import java.time.LocalDateTime
@@ -25,7 +25,7 @@ import java.util.concurrent.Executor
 
 @ControllerAdvice
 class SysLogInterceptor(
-    val customThreadPoolTaskExecutor: Executor, val sysLogService: ISysLogService
+    private val customThreadPoolTaskExecutor: Executor, private val sysLogService: ISysLogService
 ) : HandlerInterceptor, ResponseBodyAdvice<Any> {
     private val logger: Logger = LoggerFactory.getLogger(this::class.java)
     private val sysLogThreadLocal = ThreadLocal<SysLog>()
@@ -45,8 +45,6 @@ class SysLogInterceptor(
 
         sysLogThreadLocal.set(sysLog)
 
-        logger.info("开始计时: {}  URI: {}  IP: {}", sysLog.startTime, sysLog.requestUri, sysLog.requestIp)
-
         return true
     }
 
@@ -61,12 +59,12 @@ class SysLogInterceptor(
             if (result.success) {
                 sysLog.apply {
                     logType = "INFO"
-                    isException = "N"
+                    isException = 0
                 }
             } else {
                 sysLog.apply {
                     logType = "ERROR"
-                    isException = "Y"
+                    isException = 1
                     exceptionInfo = result.msg
                 }
             }

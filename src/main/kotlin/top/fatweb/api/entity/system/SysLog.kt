@@ -1,4 +1,4 @@
-package top.fatweb.api.entity
+package top.fatweb.api.entity.system
 
 import com.baomidou.mybatisplus.annotation.TableField
 import com.baomidou.mybatisplus.annotation.TableId
@@ -72,7 +72,7 @@ class SysLog : Serializable {
      * 是否异常
      */
     @TableField("is_exception")
-    var isException: String? = null
+    var isException: Int? = null
 
     /**
      * 异常信息

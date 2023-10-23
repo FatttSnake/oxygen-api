@@ -10,6 +10,7 @@ class SysLogConfig(
     private val sysLogInterceptor: SysLogInterceptor
 ) : WebMvcConfigurer {
     override fun addInterceptors(registry: InterceptorRegistry) {
-        registry.addInterceptor(sysLogInterceptor).addPathPatterns("/**").excludePathPatterns("/error/thrown")
+        registry.addInterceptor(sysLogInterceptor).addPathPatterns("/**")
+            .excludePathPatterns("/error/thrown", "/webjars/**")
     }
 }
