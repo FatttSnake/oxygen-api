@@ -1,4 +1,4 @@
-package top.fatweb.api.service.system;
+package top.fatweb.api.service.system
 
 import com.baomidou.mybatisplus.core.metadata.IPage
 import com.baomidou.mybatisplus.extension.service.IService

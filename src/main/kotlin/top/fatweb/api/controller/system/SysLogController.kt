@@ -1,4 +1,4 @@
-package top.fatweb.api.controller.system;
+package top.fatweb.api.controller.system
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
