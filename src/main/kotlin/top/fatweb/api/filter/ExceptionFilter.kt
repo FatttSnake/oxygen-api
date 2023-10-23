@@ -9,9 +9,7 @@ import org.springframework.stereotype.Component
 @Component
 class ExceptionFilter : Filter {
     override fun doFilter(
-        servletRequest: ServletRequest?,
-        servletResponse: ServletResponse?,
-        filterChain: FilterChain?
+        servletRequest: ServletRequest?, servletResponse: ServletResponse?, filterChain: FilterChain?
     ) {
         try {
             filterChain!!.doFilter(servletRequest, servletResponse)

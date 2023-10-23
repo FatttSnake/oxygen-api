@@ -16,8 +16,8 @@ import top.fatweb.api.service.permission.IAuthenticationService
 import top.fatweb.api.util.JwtUtil
 import top.fatweb.api.util.RedisUtil
 import top.fatweb.api.util.WebUtil
-import top.fatweb.api.vo.LoginVo
-import top.fatweb.api.vo.TokenVo
+import top.fatweb.api.vo.authentication.LoginVo
+import top.fatweb.api.vo.authentication.TokenVo
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 

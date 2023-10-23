@@ -62,6 +62,5 @@ object JwtUtil {
      * @param jwt jwt 串
      * @return 解析内容
      */
-    fun parseJwt(jwt: String): DecodedJWT =
-        JWT.require(algorithm()).build().verify(jwt)
+    fun parseJwt(jwt: String): DecodedJWT = JWT.require(algorithm()).build().verify(jwt)
 }

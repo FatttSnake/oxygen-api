@@ -4,17 +4,13 @@ import io.swagger.v3.oas.annotations.media.Schema
 import java.io.Serializable
 
 class ResponseResult<T> private constructor(
-    @Schema(description = "响应码", defaultValue = "200")
-    val code: Int,
+    @Schema(description = "响应码", defaultValue = "200") val code: Int,
 
-    @Schema(description = "是否调用成功")
-    val success: Boolean,
+    @Schema(description = "是否调用成功") val success: Boolean,
 
-    @Schema(description = "信息")
-    val msg: String,
+    @Schema(description = "信息") val msg: String,
 
-    @Schema(description = "数据")
-    val data: T?
+    @Schema(description = "数据") val data: T?
 ) : Serializable {
     companion object {
         fun <T> build(code: ResponseCode, success: Boolean, msg: String, data: T?) =

@@ -1,10 +1,8 @@
 package top.fatweb.api.converter
 
-import org.springframework.stereotype.Component
 import top.fatweb.api.entity.permission.User
-import top.fatweb.api.param.LoginParam
+import top.fatweb.api.param.authentication.LoginParam
 
-@Component
 object UserConverter {
     fun loginParamToUser(loginParam: LoginParam): User {
         val user = User().apply {

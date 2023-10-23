@@ -27,10 +27,8 @@ class DataFormatConfig {
         val tz = timeZone
         val df: DateFormat = SimpleDateFormat(dataFormat)
         df.timeZone = tz
-        builder.failOnEmptyBeans(false)
-            .failOnUnknownProperties(false)
-            .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-            .dateFormat(df)
+        builder.failOnEmptyBeans(false).failOnUnknownProperties(false)
+            .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS).dateFormat(df)
     }
 
 

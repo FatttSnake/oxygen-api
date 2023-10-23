@@ -18,9 +18,7 @@ import top.fatweb.api.util.WebUtil
 @Component
 class JwtAuthenticationTokenFilter(private val redisUtil: RedisUtil) : OncePerRequestFilter() {
     override fun doFilterInternal(
-        request: HttpServletRequest,
-        response: HttpServletResponse,
-        filterChain: FilterChain
+        request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain
     ) {
         val tokenWithPrefix = request.getHeader(SecurityConstants.headerString)
 

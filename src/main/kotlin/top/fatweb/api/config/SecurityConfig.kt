@@ -20,9 +20,9 @@ import top.fatweb.api.handler.JwtAuthenticationEntryPointHandler
 @Configuration
 @EnableMethodSecurity
 class SecurityConfig(
-    val jwtAuthenticationTokenFilter: JwtAuthenticationTokenFilter,
-    val authenticationEntryPointHandler: JwtAuthenticationEntryPointHandler,
-    val accessDeniedHandler: JwtAccessDeniedHandler
+    private val jwtAuthenticationTokenFilter: JwtAuthenticationTokenFilter,
+    private val authenticationEntryPointHandler: JwtAuthenticationEntryPointHandler,
+    private val accessDeniedHandler: JwtAccessDeniedHandler
 ) {
     @Bean
     fun passwordEncoder() = BCryptPasswordEncoder()

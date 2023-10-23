@@ -9,9 +9,7 @@ import org.springframework.stereotype.Component
 @Component
 class JwtAuthenticationEntryPointHandler : AuthenticationEntryPoint {
     override fun commence(
-        request: HttpServletRequest?,
-        response: HttpServletResponse?,
-        authException: AuthenticationException?
+        request: HttpServletRequest?, response: HttpServletResponse?, authException: AuthenticationException?
     ) {
         request?.setAttribute("filter.error", authException)
         request?.getRequestDispatcher("/error/thrown")?.forward(request, response)
