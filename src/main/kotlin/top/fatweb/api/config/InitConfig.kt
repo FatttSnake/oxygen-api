@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 import top.fatweb.api.entity.permission.User
-import top.fatweb.api.service.IUserService
+import top.fatweb.api.service.permission.IUserService
 import kotlin.random.Random
 
 @Component

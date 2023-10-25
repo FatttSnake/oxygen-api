@@ -1,4 +1,4 @@
-package top.fatweb.api.mapper
+package top.fatweb.api.mapper.permission
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper
 import org.apache.ibatis.annotations.Mapper

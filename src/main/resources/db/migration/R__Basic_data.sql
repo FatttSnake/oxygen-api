@@ -41,9 +41,9 @@ on duplicate key update name      = values(name),
 
 insert into t_element(id, name, power_id, menu_id)
 values (1010100, '公用', id, 1010000),
-       (101010100, '基础', id, 101010000),
-       (102010100, '基础', id, 102010000),
-       (103010100, '基础', id, 103010000)
+       (101010100, '角色基础', id, 101010000),
+       (102010100, '用户组基础', id, 102010000),
+       (103010100, '用户基础', id, 103010000)
 on duplicate key update name    = values(name),
                         power_id=values(power_id),
                         menu_id = values(menu_id);

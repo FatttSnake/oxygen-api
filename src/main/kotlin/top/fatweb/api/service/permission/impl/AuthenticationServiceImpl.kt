@@ -11,8 +11,8 @@ import top.fatweb.api.constant.SecurityConstants
 import top.fatweb.api.entity.permission.LoginUser
 import top.fatweb.api.entity.permission.User
 import top.fatweb.api.exception.TokenHasExpiredException
-import top.fatweb.api.service.IUserService
 import top.fatweb.api.service.permission.IAuthenticationService
+import top.fatweb.api.service.permission.IUserService
 import top.fatweb.api.util.JwtUtil
 import top.fatweb.api.util.RedisUtil
 import top.fatweb.api.util.WebUtil

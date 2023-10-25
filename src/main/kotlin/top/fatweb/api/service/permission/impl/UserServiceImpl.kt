@@ -1,10 +1,10 @@
-package top.fatweb.api.service.impl
+package top.fatweb.api.service.permission.impl
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
 import org.springframework.stereotype.Service
 import top.fatweb.api.entity.permission.User
-import top.fatweb.api.mapper.UserMapper
-import top.fatweb.api.service.IUserService
+import top.fatweb.api.mapper.permission.UserMapper
+import top.fatweb.api.service.permission.IUserService
 
 /**
  * <p>

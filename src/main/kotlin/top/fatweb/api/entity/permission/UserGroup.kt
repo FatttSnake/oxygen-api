@@ -1,0 +1,43 @@
+package top.fatweb.api.entity.permission
+
+import com.baomidou.mybatisplus.annotation.*
+import java.io.Serializable
+
+/**
+ * <p>
+ * 中间表-用户-用户组
+ * </p>
+ *
+ * @author FatttSnake
+ * @since 2023-10-25
+ */
+@TableName("t_user_group")
+class UserGroup : Serializable {
+
+    @TableId("id")
+    var id: Long? = null
+
+    /**
+     * 用户
+     */
+    @TableField("user_id")
+    var userId: Long? = null
+
+    /**
+     * 用户组
+     */
+    @TableField("group_id")
+    var groupId: Long? = null
+
+    @TableField("deleted")
+    @TableLogic
+    var deleted: Long? = null
+
+    @TableField("version")
+    @Version
+    var version: Int? = null
+
+    override fun toString(): String {
+        return "UserGroup(id=$id, userId=$userId, groupId=$groupId, deleted=$deleted, version=$version)"
+    }
+}

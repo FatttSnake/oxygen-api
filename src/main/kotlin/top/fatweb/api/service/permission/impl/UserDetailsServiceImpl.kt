@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Service
 import top.fatweb.api.entity.permission.LoginUser
 import top.fatweb.api.entity.permission.User
-import top.fatweb.api.service.IUserService
+import top.fatweb.api.service.permission.IUserService
 
 @Service
 class UserDetailsServiceImpl(val userService: IUserService) : UserDetailsService {

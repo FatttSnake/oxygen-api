@@ -92,7 +92,22 @@ class User() : Serializable {
     @Version
     var version: Int? = null
 
+    @TableField(exist = false)
+    var roles: List<Role>? = null
+
+    @TableField(exist = false)
+    var groups: List<Group>? = null
+
+    @TableField(exist = false)
+    var menus: List<Menu>? = null
+
+    @TableField(exist = false)
+    var elements: List<Element>? = null
+
+    @TableField(exist = false)
+    var operations: List<Operation>? = null
+
     override fun toString(): String {
-        return "User(id=$id, username=$username, password=$password, locking=$locking, expiration=$expiration, credentialsExpiration=$credentialsExpiration, enable=$enable, lastLoginTime=$lastLoginTime, lastLoginIp=$lastLoginIp, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version)"
+        return "User(id=$id, username=$username, password=$password, locking=$locking, expiration=$expiration, credentialsExpiration=$credentialsExpiration, enable=$enable, lastLoginTime=$lastLoginTime, lastLoginIp=$lastLoginIp, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version, roles=$roles, groups=$groups, menus=$menus, elements=$elements, operations=$operations)"
     }
 }
