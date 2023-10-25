@@ -8,6 +8,7 @@ insert into t_power (id, type_id)
 values (1010000, 1),
        (1010100, 2),
        (1010101, 3),
+       (100010000, 1),
        (101010000, 1),
        (101010100, 2),
        (101010101, 3),
@@ -30,10 +31,11 @@ values (1010000, 1),
 on duplicate key update type_id = values(type_id);
 
 insert into t_menu (id, name, url, power_id, parent_id)
-values (1010000, '公用', '/', id, null),
-       (101010000, '角色管理（权限相关）', '/power/role', id, null),
-       (102010000, '用户组管理（权限相关）', '/power/group', id, null),
-       (103010000, '用户管理（权限相关）', '/power/user', id, null)
+values (001010000, '公用', '/', id, null),
+       (100010000, '系统管理', '/system', id, null),
+       (101010000, '角色管理（权限相关）', '/power/role', id, 100010000),
+       (102010000, '用户组管理（权限相关）', '/power/group', id, 100010000),
+       (103010000, '用户管理（权限相关）', '/power/user', id, 100010000)
 on duplicate key update name      = values(name),
                         url       = values(url),
                         power_id  = values(power_id),

@@ -11,4 +11,6 @@ import top.fatweb.api.entity.permission.User
  * @author FatttSnake
  * @since 2023-10-04
  */
-interface IUserService : IService<User>
+interface IUserService : IService<User> {
+    fun getUserWithPower(username: String): User?
+}
