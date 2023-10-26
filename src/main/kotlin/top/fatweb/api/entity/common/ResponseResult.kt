@@ -21,5 +21,13 @@ class ResponseResult<T> private constructor(
 
         fun <T> fail(code: ResponseCode = ResponseCode.SYSTEM_ERROR, msg: String = "fail", data: T? = null) =
             build(code, false, msg, data)
+
+        fun <T> databaseSuccess(
+            code: ResponseCode = ResponseCode.DATABASE_SELECT_SUCCESS, msg: String = "success", data: T? = null
+        ) = build(code, true, msg, data)
+
+        fun <T> databaseFail(
+            code: ResponseCode = ResponseCode.DATABASE_SELECT_FAILED, msg: String = "fail", data: T? = null
+        ) = build(code, false, msg, data)
     }
 }

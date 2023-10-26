@@ -13,4 +13,6 @@ import top.fatweb.api.entity.permission.User
  */
 interface IUserService : IService<User> {
     fun getUserWithPower(username: String): User?
+
+    fun getInfo(): User
 }
