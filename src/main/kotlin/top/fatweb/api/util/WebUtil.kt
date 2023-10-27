@@ -11,6 +11,8 @@ object WebUtil {
 
     fun getLoginUserId() = getLoginUser()?.user?.id
 
+    fun getLoginUsername() = getLoginUser()?.user?.username
+
     fun getToken(tokenWithPrefix: String) = tokenWithPrefix.removePrefix(SecurityConstants.tokenPrefix)
 
     fun getToken(request: HttpServletRequest) = getToken(request.getHeader(SecurityConstants.headerString))

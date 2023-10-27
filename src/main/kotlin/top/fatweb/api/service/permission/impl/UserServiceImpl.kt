@@ -8,6 +8,7 @@ import top.fatweb.api.service.permission.IElementService
 import top.fatweb.api.service.permission.IMenuService
 import top.fatweb.api.service.permission.IOperationService
 import top.fatweb.api.service.permission.IUserService
+import top.fatweb.api.util.WebUtil
 
 /**
  * <p>
@@ -35,4 +36,7 @@ class UserServiceImpl(
 
         return user
     }
+
+    override fun getInfo() = WebUtil.getLoginUsername()?.let { getUserWithPower(it) } ?: let { null }
+
 }

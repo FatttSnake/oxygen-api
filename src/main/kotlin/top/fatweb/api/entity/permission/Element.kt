@@ -32,6 +32,12 @@ class Element : Serializable {
     var powerId: Long? = null
 
     /**
+     * 父ID
+     */
+    @TableField("parent_id")
+    var parentId: Long? = null
+
+    /**
      * 菜单ID
      */
     @TableField("menu_id")

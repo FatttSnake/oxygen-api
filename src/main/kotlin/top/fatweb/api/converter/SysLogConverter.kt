@@ -6,7 +6,7 @@ import top.fatweb.api.vo.PageVo
 import top.fatweb.api.vo.system.SysLogGetVo
 
 object SysLogConverter {
-    fun sysLogPageToSysLogPageVo(syslogPage: IPage<SysLog>): PageVo<SysLogGetVo> = PageVo<SysLogGetVo>(
+    fun sysLogPageToSysLogPageVo(syslogPage: IPage<SysLog>): PageVo<SysLogGetVo> = PageVo(
         syslogPage.total,
         syslogPage.pages,
         syslogPage.size,
