@@ -6,7 +6,7 @@ spring:
   profiles:
     active: config
   datasource:
-    type: com.alibaba.druid.pool.DruidDataSource
+    type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
   jackson:
     date-format: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'

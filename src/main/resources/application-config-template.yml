@@ -17,16 +17,16 @@ spring:
     url: jdbc:mysql://localhost # MySQL url
     username: root # MySQL username
     password: root # MySQL password
+    hikari:
+#      pool-name: HikariCP # Connection pool name
+#      minimum-idle: 5 # Minimum number of connection in pool
+#      idle-timeout: 600000 # The lifetime of connection when idle
+#      maximum-pool-size: 10 # Maximum number of connection in pool
+#      auto-commit: true # Auto commit
+#      max-lifetime: 1800000 # Maximum lifetime of connection
+#      connection-timeout: 30000 # Connection timeout
+#      connection-test-query: select 1 # Test query then connect
 
-    druid:
-#      initial-size: 20 # Initial number of connections
-#      min-idle: 20 # Minimum number of connection pools
-#      max-active: 20 # Maximum number of connection pools
-#      max-wait: 3000 # Maximum connection timeout
-#      min-evictable-idle-time-millis: 300000 # Minimum time for a connection to live in the pool
-#      max-evictable-idle-time-millis: 900000 # Maximum time for a connection to live in the pool
-#      break-after-acquire-failure: true # Terminate the retry when the server fails to reconnect for the specified number of times
-#      connection-error-retry-attempts: 5 # Number of failed reconnections
 
   data:
     redis:
