@@ -22,6 +22,12 @@ data class UserInfoVo(
     @Schema(description = "是否启用", example = "true")
     val enable: Boolean?,
 
+    @Schema(description = "当前登录时间", example = "1900-01-01T00:00:00.000Z")
+    val currentLoginTime: LocalDateTime?,
+
+    @Schema(description = "当前登录 IP", example = "1.1.1.1")
+    val currentLoginIp: String?,
+
     @Schema(description = "最后登录时间", example = "1900-01-01T00:00:00.000Z")
     val lastLoginTime: LocalDateTime?,
 

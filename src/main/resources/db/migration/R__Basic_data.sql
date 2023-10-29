@@ -41,14 +41,15 @@ on duplicate key update name      = values(name),
                         power_id  = values(power_id),
                         parent_id = values(parent_id);
 
-insert into t_element(id, name, power_id, menu_id)
-values (1010100, '公用', id, 1010000),
-       (101010100, '角色基础', id, 101010000),
-       (102010100, '用户组基础', id, 102010000),
-       (103010100, '用户基础', id, 103010000)
-on duplicate key update name    = values(name),
+insert into t_element(id, name, power_id, menu_id, parent_id)
+values (1010100, '公用', id, 1010000, null),
+       (101010100, '角色基础', id, 101010000, null),
+       (102010100, '用户组基础', id, 102010000, null),
+       (103010100, '用户基础', id, 103010000, null)
+on duplicate key update name      = values(name),
                         power_id=values(power_id),
-                        menu_id = values(menu_id);
+                        menu_id   = values(menu_id),
+                        parent_id = values(parent_id);
 
 insert into t_operation(id, name, code, power_id, element_id, parent_id)
 values (1010101, '查询当前用户信息', 'common:user:self', id, 1010100, null),

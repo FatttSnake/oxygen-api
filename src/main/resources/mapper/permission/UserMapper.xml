@@ -9,6 +9,8 @@
                t_user.expiration             as user_expiration,
                t_user.credentials_expiration as user_credentials_expiration,
                t_user.enable                 as user_enable,
+               t_user.current_login_time     as user_current_login_time,
+               t_user.current_login_ip       as user_current_login_ip,
                t_user.last_login_time        as user_last_login_time,
                t_user.last_login_ip          as user_last_login_ip,
                t_user.create_time            as user_create_time,
@@ -54,6 +56,8 @@
         <result property="expiration" column="user_expiration"/>
         <result property="credentialsExpiration" column="user_credentials_expiration"/>
         <result property="enable" column="user_enable"/>
+        <result property="currentLoginTime" column="user_current_login_time"/>
+        <result property="currentLoginIp" column="user_current_login_ip"/>
         <result property="lastLoginTime" column="user_last_login_time"/>
         <result property="lastLoginIp" column="user_last_login_ip"/>
         <result property="createTime" column="user_create_time"/>

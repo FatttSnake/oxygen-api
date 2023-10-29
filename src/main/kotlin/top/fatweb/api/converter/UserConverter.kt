@@ -24,6 +24,8 @@ object UserConverter {
         expiration = user.expiration,
         credentialsExpiration = user.credentialsExpiration,
         enable = user.enable?.let { it == 1 },
+        currentLoginTime = user.currentLoginTime,
+        currentLoginIp = user.currentLoginIp,
         lastLoginTime = user.lastLoginTime,
         lastLoginIp = user.lastLoginIp,
         createTime = user.createTime,

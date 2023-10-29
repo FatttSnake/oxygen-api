@@ -9,6 +9,8 @@ create table if not exists t_user
     expiration             datetime comment '过期时间',
     credentials_expiration datetime comment '认证过期时间',
     enable                 int         not null comment '启用',
+    current_login_time     datetime comment '当前登录时间',
+    current_login_ip       varchar(128) comment '当前登录 IP',
     last_login_time        datetime comment '上次登录时间',
     last_login_ip          varchar(128) comment '上次登录 IP',
     create_time            datetime    not null default (utc_timestamp()) comment '创建时间',

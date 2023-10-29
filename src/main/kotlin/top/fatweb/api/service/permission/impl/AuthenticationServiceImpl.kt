@@ -36,14 +36,17 @@ class AuthenticationServiceImpl(
             throw RuntimeException("Login failed")
         }
 
-        logger.info("用户登录 [用户名: '{}', IP: '{}']", user.username, request.remoteAddr)
-        userService.update(User().apply {
-            lastLoginIp = request.remoteAddr
-            lastLoginTime = LocalDateTime.now(ZoneOffset.UTC)
-        }, KtUpdateWrapper(User()).eq(User::username, user.username))
-
         val loginUser = authentication.principal as LoginUser
         loginUser.user.password = ""
+
+        logger.info("用户登录 [用户名: '{}', IP: '{}']", user.username, request.remoteAddr)
+        userService.update(User().apply {
+            currentLoginIp = request.remoteAddr
+            currentLoginTime = LocalDateTime.now(ZoneOffset.UTC)
+            lastLoginIp = loginUser.user.currentLoginIp
+            lastLoginTime = loginUser.user.currentLoginTime
+        }, KtUpdateWrapper(User()).eq(User::username, user.username))
+
         val userId = loginUser.user.id.toString()
         val jwt = JwtUtil.createJwt(userId)
 
