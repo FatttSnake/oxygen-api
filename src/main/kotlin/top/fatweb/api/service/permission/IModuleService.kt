@@ -1,14 +1,14 @@
 package top.fatweb.api.service.permission
 
 import com.baomidou.mybatisplus.extension.service.IService
-import top.fatweb.api.entity.permission.Menu
+import top.fatweb.api.entity.permission.Module
 
 /**
  * <p>
- * 菜单表 服务类
+ * 模块表 服务类
  * </p>
  *
  * @author FatttSnake
  * @since 2023-10-25
  */
-interface IMenuService : IService<Menu>
+interface IModuleService : IService<Module>

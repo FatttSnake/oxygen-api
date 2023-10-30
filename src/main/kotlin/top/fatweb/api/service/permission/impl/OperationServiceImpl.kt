@@ -8,7 +8,7 @@ import top.fatweb.api.service.permission.IOperationService
 
 /**
  * <p>
- * 功能 服务实现类
+ * 功能表 服务实现类
  * </p>
  *
  * @author FatttSnake

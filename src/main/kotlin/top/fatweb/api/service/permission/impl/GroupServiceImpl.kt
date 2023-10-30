@@ -8,7 +8,7 @@ import top.fatweb.api.service.permission.IGroupService
 
 /**
  * <p>
- * 用户组 服务实现类
+ * 用户组表 服务实现类
  * </p>
  *
  * @author FatttSnake

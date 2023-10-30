@@ -8,4 +8,4 @@ create table if not exists t_role
     deleted bigint      not null default 0,
     version int         not null default 0,
     constraint t_role_unique unique (name, deleted)
-) comment '角色';
+) comment '角色表';

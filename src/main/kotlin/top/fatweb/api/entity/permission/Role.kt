@@ -5,7 +5,7 @@ import java.io.Serializable
 
 /**
  * <p>
- * 角色
+ * 角色表
  * </p>
  *
  * @author FatttSnake

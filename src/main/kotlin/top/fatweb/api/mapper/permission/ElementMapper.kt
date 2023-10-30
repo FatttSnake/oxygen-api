@@ -6,7 +6,7 @@ import top.fatweb.api.entity.permission.Element
 
 /**
  * <p>
- * 页面元素 Mapper 接口
+ * 页面元素表 Mapper 接口
  * </p>
  *
  * @author FatttSnake

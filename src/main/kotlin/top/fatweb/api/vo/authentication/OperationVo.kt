@@ -15,9 +15,6 @@ data class OperationVo(
     @Schema(description = "权限 ID")
     val powerId: Long?,
 
-    @Schema(description = "父 ID")
-    val parentId: Long?,
-
     @Schema(description = "页面元素 ID")
     val elementId: Long?
 )

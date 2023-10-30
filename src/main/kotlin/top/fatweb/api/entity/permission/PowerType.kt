@@ -7,7 +7,7 @@ import java.io.Serializable
 
 /**
  * <p>
- * 权限类型
+ * 权限类型表
  * </p>
  *
  * @author FatttSnake

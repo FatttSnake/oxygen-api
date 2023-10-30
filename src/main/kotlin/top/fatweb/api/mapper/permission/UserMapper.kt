@@ -7,7 +7,7 @@ import top.fatweb.api.entity.permission.User
 
 /**
  * <p>
- * 用户 Mapper 接口
+ * 用户表 Mapper 接口
  * </p>
  *
  * @author FatttSnake

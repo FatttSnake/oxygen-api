@@ -1,73 +1,57 @@
 insert into t_power_type (id, name)
-values (1, 'menu'),
-       (2, 'element'),
-       (3, 'operation')
+values (1, 'module'),
+       (2, 'menu'),
+       (3, 'element'),
+       (4, 'operation')
 on duplicate key update name = values(name);
 
 insert into t_power (id, type_id)
-values (1010000, 1),
-       (1010100, 2),
-       (1010101, 3),
-       (100010000, 1),
-       (101010000, 1),
-       (101010100, 2),
-       (101010101, 3),
-       (101010102, 3),
-       (101010103, 3),
-       (101010104, 3),
-       (102010000, 1),
-       (102010100, 2),
-       (102010101, 3),
-       (102010102, 3),
-       (102010103, 3),
-       (102010104, 3),
-       (103010000, 1),
-       (103010100, 2),
-       (103010101, 3),
-       (103010102, 3),
-       (103010103, 3),
-       (103010104, 3),
-       (103010105, 3)
+values (1000000, 1)
 on duplicate key update type_id = values(type_id);
 
-insert into t_menu (id, name, url, power_id, parent_id)
-values (001010000, '公用', '/', id, null),
-       (100010000, '系统管理', '/system', id, null),
-       (101010000, '角色管理（权限相关）', '/power/role', id, 100010000),
-       (102010000, '用户组管理（权限相关）', '/power/group', id, 100010000),
-       (103010000, '用户管理（权限相关）', '/power/user', id, 100010000)
-on duplicate key update name      = values(name),
-                        url       = values(url),
-                        power_id  = values(power_id),
-                        parent_id = values(parent_id);
+insert into t_module (id, name, power_id)
+values (1000000, '系统', id);
+
+insert into t_menu (id, name, url, power_id, parent_id, module_id)
+values (1010000, '用户管理', '/system/user', id, null, 1000000),
+       (1020000, '角色管理', '/system/role', id, null, 1000000),
+       (1030000, '用户组管理', '/system/group', id, null, 1000000)
+on duplicate key update name      =values(name),
+                        url       =values(url),
+                        power_id  =values(power_id),
+                        parent_id =values(parent_id);
 
 insert into t_element(id, name, power_id, menu_id, parent_id)
-values (1010100, '公用', id, 1010000, null),
-       (101010100, '角色基础', id, 101010000, null),
-       (102010100, '用户组基础', id, 102010000, null),
-       (103010100, '用户基础', id, 103010000, null)
+values (1010100, '查询', id, 1010000, null),
+       (1010200, '增加', id, 1010000, 1010100),
+       (1010300, '修改', id, 1010000, 1010100),
+       (1020100, '查询', id, 1020000, null),
+       (1020200, '增加', id, 1020000, 1020100),
+       (1020300, '修改', id, 1020000, 1020100),
+       (1020400, '删除', id, 1020000, 1020100),
+       (1030100, '查询', id, 1030000, null),
+       (1030200, '增加', id, 1030000, 1030100),
+       (1030300, '修改', id, 1030000, 1030100),
+       (1030400, '删除', id, 1030000, 1030100)
 on duplicate key update name      = values(name),
                         power_id=values(power_id),
                         menu_id   = values(menu_id),
                         parent_id = values(parent_id);
 
-insert into t_operation(id, name, code, power_id, element_id, parent_id)
-values (1010101, '查询当前用户信息', 'common:user:self', id, 1010100, null),
-       (101010101, '查询所有角色', 'system:role:get', id, 101010100, null),
-       (101010102, '添加角色', 'system:role:add', id, 101010100, null),
-       (101010103, '删除角色', 'system:role:delete', id, 101010100, null),
-       (101010104, '修改角色', 'system:role:modify', id, 101010100, null),
-       (102010101, '查询所有用户组', 'system:group:get', id, 102010100, null),
-       (102010102, '添加用户组', 'system:group:add', id, 102010100, null),
-       (102010103, '删除用户组', 'system:group:delete', id, 102010100, null),
-       (102010104, '修改用户组', 'system:group:modify', id, 102010100, null),
-       (103010101, '查看所有用户', 'system:user:get', id, 103010100, null),
-       (103010102, '查看单个用户', 'system:user:one', id, 103010100, null),
-       (103010103, '添加用户', 'system:user:add', id, 103010100, null),
-       (103010104, '删除用户', 'system:user:delete', id, 103010100, null),
-       (103010105, '修改用户', 'system:user:modify', id, 103010100, null)
+insert into t_operation(id, name, code, power_id, element_id)
+values (1010101, '全部', 'system:user:query:all', id, 1010100),
+       (1010102, '单个', 'system:user:query:one', id, 1010100),
+       (1010201, '全部', 'system:user:add:all', id, 1010200),
+       (1010301, '全部', 'system:user:modify:all', id, 1010300),
+       (1020101, '全部', 'system:role:query:all', id, 1020100),
+       (1020201, '全部', 'system:role:add:all', id, 1020200),
+       (1020301, '全部', 'system:role:modify:all', id, 1020300),
+       (1020401, '全部', 'system:role:delete:all', id, 1020400),
+       (1030101, '全部', 'system:group:query:all', id, 1030100),
+       (1030201, '全部', 'system:group:add:all', id, 1030200),
+       (1030301, '全部', 'system:group:modify:all', id, 1030300),
+       (1030401, '全部', 'system:group:delete:all', id, 1030400)
 on duplicate key update name=values(name),
                         code=values(code),
                         power_id=values(power_id),
-                        element_id=values(element_id),
-                        parent_id=values(parent_id);
+                        element_id=values(element_id);

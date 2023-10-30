@@ -8,7 +8,7 @@ import top.fatweb.api.service.permission.IRoleService
 
 /**
  * <p>
- * 角色 服务实现类
+ * 角色表 服务实现类
  * </p>
  *
  * @author FatttSnake

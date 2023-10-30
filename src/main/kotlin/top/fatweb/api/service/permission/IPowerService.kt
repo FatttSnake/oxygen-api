@@ -5,7 +5,7 @@ import top.fatweb.api.entity.permission.Power
 
 /**
  * <p>
- * 权限 服务类
+ * 权限表 服务类
  * </p>
  *
  * @author FatttSnake

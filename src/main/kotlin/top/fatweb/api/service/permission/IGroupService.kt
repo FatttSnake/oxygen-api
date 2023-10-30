@@ -5,7 +5,7 @@ import top.fatweb.api.entity.permission.Group
 
 /**
  * <p>
- * 用户组 服务类
+ * 用户组表 服务类
  * </p>
  *
  * @author FatttSnake

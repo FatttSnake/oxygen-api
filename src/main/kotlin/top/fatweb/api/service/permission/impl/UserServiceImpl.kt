@@ -12,7 +12,7 @@ import top.fatweb.api.util.WebUtil
 
 /**
  * <p>
- * 用户 服务实现类
+ * 用户表 服务实现类
  * </p>
  *
  * @author FatttSnake

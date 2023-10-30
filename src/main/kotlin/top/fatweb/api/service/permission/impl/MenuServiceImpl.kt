@@ -8,7 +8,7 @@ import top.fatweb.api.service.permission.IMenuService
 
 /**
  * <p>
- * 菜单 服务实现类
+ * 菜单表 服务实现类
  * </p>
  *
  * @author FatttSnake

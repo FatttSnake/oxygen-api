@@ -5,7 +5,7 @@ import top.fatweb.api.entity.permission.Role
 
 /**
  * <p>
- * 角色 服务类
+ * 角色表 服务类
  * </p>
  *
  * @author FatttSnake

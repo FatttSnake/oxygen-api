@@ -6,7 +6,7 @@ import top.fatweb.api.entity.permission.Menu
 
 /**
  * <p>
- * 菜单 Mapper 接口
+ * 菜单表 Mapper 接口
  * </p>
  *
  * @author FatttSnake

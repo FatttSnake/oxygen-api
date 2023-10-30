@@ -7,20 +7,20 @@ import java.io.Serializable
 
 /**
  * <p>
- * 页面元素表
+ * 模块表
  * </p>
  *
  * @author FatttSnake
  * @since 2023-10-25
  */
-@TableName("t_element")
-class Element : Serializable {
+@TableName("t_module")
+class Module : Serializable {
 
     @TableId("id")
     var id: Long? = null
 
     /**
-     * 元素名
+     * 模块名
      */
     @TableField("name")
     var name: String? = null
@@ -31,19 +31,8 @@ class Element : Serializable {
     @TableField("power_id")
     var powerId: Long? = null
 
-    /**
-     * 父ID
-     */
-    @TableField("parent_id")
-    var parentId: Long? = null
-
-    /**
-     * 菜单ID
-     */
-    @TableField("menu_id")
-    var menuId: Long? = null
-
     override fun toString(): String {
-        return "Element(id=$id, name=$name, powerId=$powerId, menuId=$menuId)"
+        return "Module(id=$id, name=$name, powerId=$powerId)"
     }
+
 }

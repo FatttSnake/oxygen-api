@@ -5,7 +5,7 @@ import top.fatweb.api.entity.permission.Element
 
 /**
  * <p>
- * 页面元素 服务类
+ * 页面元素表 服务类
  * </p>
  *
  * @author FatttSnake

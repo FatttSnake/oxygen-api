@@ -6,7 +6,7 @@ import top.fatweb.api.entity.permission.Operation
 
 /**
  * <p>
- * 功能 Mapper 接口
+ * 功能表 Mapper 接口
  * </p>
  *
  * @author FatttSnake

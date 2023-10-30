@@ -7,7 +7,7 @@ import java.io.Serializable
 
 /**
  * <p>
- * 功能
+ * 功能表
  * </p>
  *
  * @author FatttSnake
@@ -38,18 +38,12 @@ class Operation : Serializable {
     var powerId: Long? = null
 
     /**
-     * 父ID
-     */
-    @TableField("parent_id")
-    var parentId: Long? = null
-
-    /**
      * 页面元素ID
      */
     @TableField("element_id")
     var elementId: Long? = null
 
     override fun toString(): String {
-        return "Operation(id=$id, name=$name, code=$code, powerId=$powerId, parentId=$parentId, elementId=$elementId)"
+        return "Operation(id=$id, name=$name, code=$code, powerId=$powerId, elementId=$elementId)"
     }
 }

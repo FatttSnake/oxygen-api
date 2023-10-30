@@ -7,7 +7,7 @@ import java.io.Serializable
 
 /**
  * <p>
- * 权限
+ * 权限表
  * </p>
  *
  * @author FatttSnake
@@ -23,7 +23,7 @@ class Power : Serializable {
      * 权限类型
      */
     @TableField("type_id")
-    var typeId: Long? = null
+    var typeId: Int? = null
 
     override fun toString(): String {
         return "Power(id=$id, typeId=$typeId)"

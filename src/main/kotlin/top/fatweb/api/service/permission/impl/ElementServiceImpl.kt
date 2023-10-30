@@ -8,7 +8,7 @@ import top.fatweb.api.service.permission.IElementService
 
 /**
  * <p>
- * 页面元素 服务实现类
+ * 页面元素表 服务实现类
  * </p>
  *
  * @author FatttSnake

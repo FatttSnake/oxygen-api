@@ -8,4 +8,4 @@ create table if not exists t_group
     deleted bigint      not null default 0,
     version int         not null default 0,
     constraint t_group_unique unique (name, deleted)
-) comment '用户组';
+) comment '用户组表';

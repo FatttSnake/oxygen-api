@@ -7,7 +7,7 @@ import java.io.Serializable
 
 /**
  * <p>
- * 菜单
+ * 菜单表
  * </p>
  *
  * @author FatttSnake
@@ -43,7 +43,13 @@ class Menu : Serializable {
     @TableField("parent_id")
     var parentId: Long? = null
 
+    /**
+     * 模块ID
+     */
+    @TableField("module_id")
+    var moduleId: Long? = null
+
     override fun toString(): String {
-        return "Menu(id=$id, name=$name, url=$url, powerId=$powerId, parentId=$parentId)"
+        return "Menu(id=$id, name=$name, url=$url, powerId=$powerId, parentId=$parentId, moduleId=$moduleId)"
     }
 }

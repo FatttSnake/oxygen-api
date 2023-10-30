@@ -6,7 +6,7 @@ import top.fatweb.api.entity.permission.Power
 
 /**
  * <p>
- * 权限 Mapper 接口
+ * 权限表 Mapper 接口
  * </p>
  *
  * @author FatttSnake

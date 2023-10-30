@@ -54,7 +54,6 @@ object UserConverter {
                 name = it.name,
                 code = it.code,
                 powerId = it.powerId,
-                parentId = it.parentId,
                 elementId = it.elementId
             )
         }
