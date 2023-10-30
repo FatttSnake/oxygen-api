@@ -17,6 +17,14 @@
                t_user.update_time            as user_update_time,
                t_user.deleted                as user_deleted,
                t_user.version                as user_version,
+               tui.id                        as user_info_id,
+               tui.nick_name                 as user_info_nick_name,
+               tui.avatar                    as user_info_avatar,
+               tui.email                     as user_info_email,
+               tui.create_time               as user_info_create_time,
+               tui.update_time               as user_info_update_time,
+               tui.deleted                   as user_info_deleted,
+               tui.version                   as user_info_version,
                tmo.id                        as module_id,
                tmo.name                      as module_name,
                tmo.power_id                  as module_power_id,
@@ -36,6 +44,7 @@
                t.power_id                    as operation_power_id,
                t.element_id                  as operation_element_id
         from t_user
+                 left join (select * from t_user_info where deleted = 0) as tui on t_user.id = tui.user_id
                  left join (select * from t_user_group where deleted = 0) as tug on t_user.id = tug.user_id
                  left join (select * from t_group where deleted = 0 and enable = 1) as tg on tg.id = tug.group_id
                  left join (select * from t_role_group where deleted = 0) as trg on tg.id = trg.group_id
