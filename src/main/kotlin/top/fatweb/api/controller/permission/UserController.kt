@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController
 import top.fatweb.api.converter.UserConverter
 import top.fatweb.api.entity.common.ResponseResult
 import top.fatweb.api.service.permission.IUserService
-import top.fatweb.api.vo.authentication.UserInfoVo
+import top.fatweb.api.vo.authentication.UserWithInfoVo
 
 /**
  * <p>
@@ -22,7 +22,7 @@ class UserController(
     private val userService: IUserService
 ) {
     @GetMapping("info")
-    fun getInfo(): ResponseResult<UserInfoVo> {
+    fun getInfo(): ResponseResult<UserWithInfoVo> {
         userService.getInfo()?.let {
             return ResponseResult.databaseSuccess(data = UserConverter.userToUserInfoVo(it))
         } ?: let { return ResponseResult.databaseFail() }

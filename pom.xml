@@ -164,6 +164,11 @@
             <artifactId>flyway-mysql</artifactId>
             <version>${flyway.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.talanlabs</groupId>
+            <artifactId>avatar-generator</artifactId>
+            <version>1.1.0</version>
+        </dependency>
     </dependencies>
 
     <build>

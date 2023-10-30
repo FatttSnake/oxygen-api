@@ -14,7 +14,7 @@ object UserConverter {
         return user
     }
 
-    fun userToUserInfoVo(user: User) = UserInfoVo(
+    fun userToUserInfoVo(user: User) = UserWithInfoVo(
         id = user.id,
         username = user.username,
         locking = user.locking?.let { it == 1 },

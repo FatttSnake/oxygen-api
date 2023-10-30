@@ -1,10 +1,13 @@
 package top.fatweb.api.vo.authentication
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDateTime
 
 @Schema(description = "获取用户信息返回参数")
-data class UserInfoVo(
+data class UserWithInfoVo(
+    @JsonSerialize(using = ToStringSerializer::class)
     val id: Long?,
 
     @Schema(description = "用户名", example = "User")
