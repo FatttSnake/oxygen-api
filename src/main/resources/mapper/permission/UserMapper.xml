@@ -17,6 +17,9 @@
                t_user.update_time            as user_update_time,
                t_user.deleted                as user_deleted,
                t_user.version                as user_version,
+               tmo.id                        as module_id,
+               tmo.name                      as module_name,
+               tmo.power_id                  as module_power_id,
                tm.id                         as menu_id,
                tm.name                       as menu_name,
                tm.url                        as menu_url,
@@ -31,8 +34,7 @@
                t.name                        as operation_name,
                t.code                        as operation_code,
                t.power_id                    as operation_power_id,
-               t.element_id                  as operation_element_id,
-               t.parent_id                   as operation_parent_id
+               t.element_id                  as operation_element_id
         from t_user
                  left join (select * from t_user_group where deleted = 0) as tug on t_user.id = tug.user_id
                  left join (select * from t_group where deleted = 0 and enable = 1) as tg on tg.id = tug.group_id
@@ -42,6 +44,7 @@
                            on tr.id = trg.role_id or tr.id = tur.role_id
                  left join (select * from t_power_role where deleted = 0) as tpr on tr.id = tpr.role_id
                  left join t_power as tp on tp.id = tpr.power_id
+                 left join t_module as tmo on tp.id = tmo.power_id
                  left join t_menu as tm on tp.id = tm.power_id
                  left join t_element as te on tp.id = te.power_id
                  left join t_operation as t on tp.id = t.power_id
@@ -68,12 +71,18 @@
 
     <resultMap id="userWithPowerMap" type="user" extends="userBase">
         <result property="password" column="user_password"/>
+        <collection property="modules" ofType="module">
+            <id property="id" column="module_id"/>
+            <result property="name" column="module_name"/>
+            <result property="powerId" column="module_power_id"/>
+        </collection>
         <collection property="menus" ofType="menu">
             <id property="id" column="menu_id"/>
             <result property="name" column="menu_name"/>
             <result property="url" column="menu_url"/>
             <result property="powerId" column="menu_power_id"/>
             <result property="parentId" column="menu_parent_id"/>
+            <result property="moduleId" column="menu_module_id"/>
         </collection>
         <collection property="elements" ofType="element">
             <id property="id" column="element_id"/>
@@ -88,7 +97,6 @@
             <result property="code" column="operation_code"/>
             <result property="powerId" column="operation_power_id"/>
             <result property="elementId" column="operation_element_id"/>
-            <result property="parentId" column="operation_parent_id"/>
         </collection>
     </resultMap>
 </mapper>

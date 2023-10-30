@@ -40,6 +40,9 @@ data class UserInfoVo(
     @Schema(description = "修改时间", example = "1900-01-01T00:00:00.000Z")
     val updateTime: LocalDateTime?,
 
+    @Schema(description = "模块列表")
+    val modules: List<ModuleVo>?,
+
     @Schema(description = "菜单列表")
     val menus: List<MenuVo>?,
 

@@ -111,6 +111,9 @@ class User() : Serializable {
     var groups: List<Group>? = null
 
     @TableField(exist = false)
+    var modules: List<Module>? = null
+
+    @TableField(exist = false)
     var menus: List<Menu>? = null
 
     @TableField(exist = false)

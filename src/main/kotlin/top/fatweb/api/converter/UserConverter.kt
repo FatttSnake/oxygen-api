@@ -2,10 +2,7 @@ package top.fatweb.api.converter
 
 import top.fatweb.api.entity.permission.User
 import top.fatweb.api.param.authentication.LoginParam
-import top.fatweb.api.vo.authentication.ElementVo
-import top.fatweb.api.vo.authentication.MenuVo
-import top.fatweb.api.vo.authentication.OperationVo
-import top.fatweb.api.vo.authentication.UserInfoVo
+import top.fatweb.api.vo.authentication.*
 
 object UserConverter {
     fun loginParamToUser(loginParam: LoginParam): User {
@@ -30,6 +27,13 @@ object UserConverter {
         lastLoginIp = user.lastLoginIp,
         createTime = user.createTime,
         updateTime = user.updateTime,
+        modules = user.modules?.map {
+            ModuleVo(
+                id = it.id,
+                name = it.name,
+                powerId = it.powerId
+            )
+        },
         menus = user.menus?.map {
             MenuVo(
                 id = it.id,
