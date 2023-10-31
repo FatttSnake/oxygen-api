@@ -2,8 +2,8 @@ package top.fatweb.api.util
 
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.security.core.context.SecurityContextHolder
-import top.fatweb.api.constant.SecurityConstants
 import top.fatweb.api.entity.permission.LoginUser
+import top.fatweb.api.properties.SecurityProperties
 
 object WebUtil {
     fun getLoginUser() = if (SecurityContextHolder.getContext().authentication.principal is String) null
@@ -13,7 +13,7 @@ object WebUtil {
 
     fun getLoginUsername() = getLoginUser()?.user?.username
 
-    fun getToken(tokenWithPrefix: String) = tokenWithPrefix.removePrefix(SecurityConstants.tokenPrefix)
+    fun getToken(tokenWithPrefix: String) = tokenWithPrefix.removePrefix(SecurityProperties.tokenPrefix)
 
-    fun getToken(request: HttpServletRequest) = getToken(request.getHeader(SecurityConstants.headerString))
+    fun getToken(request: HttpServletRequest) = getToken(request.getHeader(SecurityProperties.headerString))
 }

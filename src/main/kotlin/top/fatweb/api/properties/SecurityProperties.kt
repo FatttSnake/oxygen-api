@@ -1,4 +1,4 @@
-package top.fatweb.api.constant
+package top.fatweb.api.properties
 
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.stereotype.Component
@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit
 
 @Component
 @ConfigurationProperties("app.security")
-object SecurityConstants {
+object SecurityProperties {
     var headerString = "Authorization"
 
     var tokenPrefix = "Bearer "

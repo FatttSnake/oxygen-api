@@ -1,8 +1,8 @@
-package top.fatweb.api.converter
+package top.fatweb.api.converter.permission
 
 import top.fatweb.api.entity.permission.User
 import top.fatweb.api.param.authentication.LoginParam
-import top.fatweb.api.vo.authentication.*
+import top.fatweb.api.vo.permission.*
 
 object UserConverter {
     fun loginParamToUser(loginParam: LoginParam): User {
@@ -27,6 +27,15 @@ object UserConverter {
         lastLoginIp = user.lastLoginIp,
         createTime = user.createTime,
         updateTime = user.updateTime,
+        userInfo = user.userInfo?.let { UserInfoVo(
+            id = it.id,
+            userId = it.userId,
+            nickName = it.nickName,
+            avatar = it.avatar,
+            email = it.email,
+            createTime = it.createTime,
+            updateTime = it.updateTime
+        ) },
         modules = user.modules?.map {
             ModuleVo(
                 id = it.id,

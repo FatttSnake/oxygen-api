@@ -4,31 +4,50 @@ import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper
 import jakarta.annotation.PostConstruct
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.context.annotation.DependsOn
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 import top.fatweb.api.entity.permission.User
+import top.fatweb.api.entity.permission.UserInfo
+import top.fatweb.api.properties.AdminProperties
+import top.fatweb.api.service.permission.IUserInfoService
 import top.fatweb.api.service.permission.IUserService
 import kotlin.random.Random
 
+@DependsOn("adminProperties")
 @Component
 class InitConfig(
-    private val userService: IUserService, private val passwordEncoder: PasswordEncoder
+    private val userService: IUserService,
+    private val userInfoService: IUserInfoService,
+    private val passwordEncoder: PasswordEncoder
 ) {
     private val logger: Logger = LoggerFactory.getLogger(this::class.java)
 
     @PostConstruct
     fun init() {
         if (!userService.exists(KtQueryWrapper(User()).eq(User::id, 0))) {
-            val rawPassword = getRandPassword(10)
+            userInfoService.remove(KtQueryWrapper(UserInfo()).eq(UserInfo::userId, 0))
+
+            val rawPassword = AdminProperties.password ?: let {
+                logger.warn("No default administrator password is set, a randomly generated password will be used")
+                getRandPassword(10)
+            }
             val encodedPassword = passwordEncoder.encode(rawPassword)
+
             val user = User().apply {
                 id = 0
-                username = "admin"
+                username = AdminProperties.username
                 password = encodedPassword
                 locking = 0
                 enable = 1
             }
-            if (userService.save(user)) {
+            val userInfo = UserInfo().apply {
+                userId = 0
+                nickName = AdminProperties.nickName
+                email = AdminProperties.email
+            }
+
+            if (userService.save(user) && userInfoService.save(userInfo)) {
                 logger.warn("First startup, create administrator - username: admin, password: $rawPassword")
                 logger.warn("This information will only be shown once. Please change your password promptly after logging in.")
             }

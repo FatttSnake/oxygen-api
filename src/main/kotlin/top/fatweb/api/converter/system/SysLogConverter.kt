@@ -1,4 +1,4 @@
-package top.fatweb.api.converter
+package top.fatweb.api.converter.system
 
 import com.baomidou.mybatisplus.core.metadata.IPage
 import top.fatweb.api.entity.system.SysLog

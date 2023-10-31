@@ -6,7 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.test.context.junit.jupiter.SpringExtension
-import top.fatweb.api.constant.SecurityConstants
+import top.fatweb.api.properties.SecurityProperties
 import top.fatweb.api.util.ByteUtil
 import top.fatweb.api.util.JwtUtil
 
@@ -16,7 +16,7 @@ class FatWebApiApplicationTests {
 
     @Test
     fun removePrefixTest() {
-        assertEquals("12312", "Bearer 12312".removePrefix(SecurityConstants.tokenPrefix))
+        assertEquals("12312", "Bearer 12312".removePrefix(SecurityProperties.tokenPrefix))
     }
 
     @Test

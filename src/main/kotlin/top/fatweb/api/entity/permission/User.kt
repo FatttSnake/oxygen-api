@@ -105,6 +105,9 @@ class User() : Serializable {
     var version: Int? = null
 
     @TableField(exist = false)
+    var userInfo: UserInfo? = null
+
+    @TableField(exist = false)
     var roles: List<Role>? = null
 
     @TableField(exist = false)
@@ -123,6 +126,6 @@ class User() : Serializable {
     var operations: List<Operation>? = null
 
     override fun toString(): String {
-        return "User(id=$id, username=$username, password=$password, locking=$locking, expiration=$expiration, credentialsExpiration=$credentialsExpiration, enable=$enable, currentLoginTime=$currentLoginTime, currentLoginIp=$currentLoginIp, lastLoginTime=$lastLoginTime, lastLoginIp=$lastLoginIp, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version, roles=$roles, groups=$groups, menus=$menus, elements=$elements, operations=$operations)"
+        return "User(id=$id, username=$username, password=$password, locking=$locking, expiration=$expiration, credentialsExpiration=$credentialsExpiration, enable=$enable, currentLoginTime=$currentLoginTime, currentLoginIp=$currentLoginIp, lastLoginTime=$lastLoginTime, lastLoginIp=$lastLoginIp, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version, userInfo=$userInfo, roles=$roles, groups=$groups, modules=$modules, menus=$menus, elements=$elements, operations=$operations)"
     }
 }

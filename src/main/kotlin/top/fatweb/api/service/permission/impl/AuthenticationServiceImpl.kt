@@ -7,17 +7,17 @@ import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.stereotype.Service
-import top.fatweb.api.constant.SecurityConstants
 import top.fatweb.api.entity.permission.LoginUser
 import top.fatweb.api.entity.permission.User
 import top.fatweb.api.exception.TokenHasExpiredException
+import top.fatweb.api.properties.SecurityProperties
 import top.fatweb.api.service.permission.IAuthenticationService
 import top.fatweb.api.service.permission.IUserService
 import top.fatweb.api.util.JwtUtil
 import top.fatweb.api.util.RedisUtil
 import top.fatweb.api.util.WebUtil
-import top.fatweb.api.vo.authentication.LoginVo
-import top.fatweb.api.vo.authentication.TokenVo
+import top.fatweb.api.vo.permission.LoginVo
+import top.fatweb.api.vo.permission.TokenVo
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 
@@ -54,18 +54,18 @@ class AuthenticationServiceImpl(
             throw RuntimeException("Login failed")
         }
 
-        val redisKey = "${SecurityConstants.jwtIssuer}_login:" + jwt
-        redisUtil.setObject(redisKey, loginUser, SecurityConstants.redisTtl, SecurityConstants.redisTtlUnit)
+        val redisKey = "${SecurityProperties.jwtIssuer}_login:" + jwt
+        redisUtil.setObject(redisKey, loginUser, SecurityProperties.redisTtl, SecurityProperties.redisTtlUnit)
 
         return LoginVo(jwt, loginUser.user.currentLoginTime, loginUser.user.currentLoginIp)
     }
 
-    override fun logout(token: String): Boolean = redisUtil.delObject("${SecurityConstants.jwtIssuer}_login:" + token)
+    override fun logout(token: String): Boolean = redisUtil.delObject("${SecurityProperties.jwtIssuer}_login:" + token)
 
     override fun renewToken(token: String): TokenVo {
         val loginUser = WebUtil.getLoginUser() ?: let { throw TokenHasExpiredException() }
 
-        val oldRedisKey = "${SecurityConstants.jwtIssuer}_login:" + token
+        val oldRedisKey = "${SecurityProperties.jwtIssuer}_login:" + token
         redisUtil.delObject(oldRedisKey)
         val jwt = JwtUtil.createJwt(WebUtil.getLoginUserId().toString())
 
@@ -73,9 +73,9 @@ class AuthenticationServiceImpl(
             throw RuntimeException("Login failed")
         }
 
-        val redisKey = "${SecurityConstants.jwtIssuer}_login:" + jwt
+        val redisKey = "${SecurityProperties.jwtIssuer}_login:" + jwt
         redisUtil.setObject(
-            redisKey, loginUser, SecurityConstants.redisTtl, SecurityConstants.redisTtlUnit
+            redisKey, loginUser, SecurityProperties.redisTtl, SecurityProperties.redisTtlUnit
         )
 
         return TokenVo(jwt)

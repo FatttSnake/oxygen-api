@@ -8,7 +8,7 @@ import top.fatweb.api.service.permission.IUserInfoService
 
 /**
  * <p>
- * 用户信息表 服务实现类
+ * 用户资料表 服务实现类
  * </p>
  *
  * @author FatttSnake

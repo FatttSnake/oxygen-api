@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 
 /**
  * <p>
- * 用户信息表
+ * 用户资料表
  * </p>
  *
  * @author FatttSnake

@@ -18,6 +18,7 @@
                t_user.deleted                as user_deleted,
                t_user.version                as user_version,
                tui.id                        as user_info_id,
+               tui.user_id                   as user_info_user_id,
                tui.nick_name                 as user_info_nick_name,
                tui.avatar                    as user_info_avatar,
                tui.email                     as user_info_email,
@@ -61,7 +62,7 @@
           and t_user.username = #{username};
     </select>
 
-    <resultMap id="userBase" type="user">
+    <resultMap id="userBaseMap" type="user">
         <id property="id" column="user_id"/>
         <result property="username" column="user_username"/>
         <result property="locking" column="user_locking"/>
@@ -78,8 +79,21 @@
         <result property="version" column="user_version"/>
     </resultMap>
 
-    <resultMap id="userWithPowerMap" type="user" extends="userBase">
+    <resultMap id="userInfoMap" type="userInfo">
+        <id property="id" column="user_info_id"/>
+        <result property="userId" column="user_info_user_id"/>
+        <result property="nickName" column="user_info_nick_name"/>
+        <result property="avatar" column="user_info_avatar"/>
+        <result property="email" column="user_info_email"/>
+        <result property="createTime" column="user_info_create_time"/>
+        <result property="updateTime" column="user_info_update_time"/>
+        <result property="deleted" column="user_info_deleted"/>
+        <result property="version" column="user_info_version"/>
+    </resultMap>
+
+    <resultMap id="userWithPowerMap" type="user" extends="userBaseMap">
         <result property="password" column="user_password"/>
+        <association property="userInfo" resultMap="userInfoMap"/>
         <collection property="modules" ofType="module">
             <id property="id" column="module_id"/>
             <result property="name" column="module_name"/>

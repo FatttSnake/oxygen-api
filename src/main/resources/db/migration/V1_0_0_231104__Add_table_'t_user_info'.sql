@@ -10,5 +10,6 @@ create table if not exists t_user_info
     create_time datetime     not null default (utc_timestamp()) comment '创建时间',
     update_time datetime     not null default (utc_timestamp()) comment '修改时间',
     deleted     bigint       not null default 0,
-    version     int          not null default 0
-) comment '用户信息表';
+    version     int          not null default 0,
+    constraint t_user_info_unique unique (user_id, deleted)
+) comment '用户资料表';

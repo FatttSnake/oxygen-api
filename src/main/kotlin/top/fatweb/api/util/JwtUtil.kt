@@ -3,7 +3,7 @@ package top.fatweb.api.util
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.interfaces.DecodedJWT
-import top.fatweb.api.constant.SecurityConstants
+import top.fatweb.api.properties.SecurityProperties
 import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.crypto.spec.SecretKeySpec
@@ -17,7 +17,7 @@ object JwtUtil {
      * @return 密钥
      */
     private fun generalKey(): SecretKeySpec {
-        val encodeKey = Base64.getDecoder().decode(SecurityConstants.jwtKey)
+        val encodeKey = Base64.getDecoder().decode(SecurityProperties.jwtKey)
         return SecretKeySpec(encodeKey, 0, encodeKey.size, "AES")
     }
 
@@ -34,8 +34,8 @@ object JwtUtil {
      */
     fun createJwt(
         subject: String,
-        ttl: Long = SecurityConstants.jwtTtl,
-        timeUnit: TimeUnit = SecurityConstants.jwtTtlUnit,
+        ttl: Long = SecurityProperties.jwtTtl,
+        timeUnit: TimeUnit = SecurityProperties.jwtTtlUnit,
         uuid: String = getUUID()
     ): String? {
         val nowMillis = System.currentTimeMillis()
@@ -52,7 +52,7 @@ object JwtUtil {
         val expMillis = nowMillis + unitTtl
         val expDate = Date(expMillis)
 
-        return JWT.create().withJWTId(uuid).withSubject(subject).withIssuer(SecurityConstants.jwtIssuer)
+        return JWT.create().withJWTId(uuid).withSubject(subject).withIssuer(SecurityProperties.jwtIssuer)
             .withIssuedAt(nowDate).withExpiresAt(expDate).sign(algorithm())
     }
 

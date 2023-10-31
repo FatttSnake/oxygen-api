@@ -1,4 +1,4 @@
-package top.fatweb.api.vo.authentication
+package top.fatweb.api.vo.permission
 
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDateTime

@@ -1,4 +1,4 @@
-package top.fatweb.api.vo.authentication
+package top.fatweb.api.vo.permission
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
@@ -42,6 +42,9 @@ data class UserWithInfoVo(
 
     @Schema(description = "修改时间", example = "1900-01-01T00:00:00.000Z")
     val updateTime: LocalDateTime?,
+
+    @Schema(description = "用户资料")
+    val userInfo: UserInfoVo?,
 
     @Schema(description = "模块列表")
     val modules: List<ModuleVo>?,
