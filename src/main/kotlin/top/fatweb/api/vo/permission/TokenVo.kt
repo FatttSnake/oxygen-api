@@ -2,7 +2,7 @@ package top.fatweb.api.vo.permission
 
 import io.swagger.v3.oas.annotations.media.Schema
 
-@Schema(description = "Token")
+@Schema(description = "Token 返回参数")
 data class TokenVo(
     @Schema(
         description = "Token",

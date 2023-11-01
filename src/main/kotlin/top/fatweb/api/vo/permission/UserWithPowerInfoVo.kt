@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDateTime
 
-@Schema(description = "获取用户信息返回参数")
-data class UserWithInfoVo(
+@Schema(description = "用户权限信息返回参数")
+data class UserWithPowerInfoVo(
     @JsonSerialize(using = ToStringSerializer::class)
     val id: Long?,
 

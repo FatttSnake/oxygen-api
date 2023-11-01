@@ -15,5 +15,7 @@ import top.fatweb.api.entity.permission.User
  */
 @Mapper
 interface UserMapper : BaseMapper<User> {
-    fun getOneWithPowerByUsername(@Param("username")username: String): User?
+    fun getOneWithPowerInfoByUsername(@Param("username")username: String): User?
+
+    fun getListWithRoleInfo(): List<User>
 }

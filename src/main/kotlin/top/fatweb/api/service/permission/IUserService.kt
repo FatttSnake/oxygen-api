@@ -15,4 +15,6 @@ interface IUserService : IService<User> {
     fun getUserWithPower(username: String): User?
 
     fun getInfo(): User?
+
+    fun getList(): List<User>
 }

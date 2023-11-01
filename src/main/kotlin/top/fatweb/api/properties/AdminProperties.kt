@@ -8,6 +8,6 @@ import org.springframework.stereotype.Component
 object AdminProperties {
     var username = "admin"
     var password: String? = null
-    var nickName = "Administrator"
+    var nickname = "Administrator"
     var email = "admin@fatweb.top"
 }

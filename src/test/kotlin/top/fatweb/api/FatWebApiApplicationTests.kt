@@ -1,5 +1,6 @@
 package top.fatweb.api
 
+import com.talanlabs.avatargenerator.GitHubAvatar
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -9,6 +10,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 import top.fatweb.api.properties.SecurityProperties
 import top.fatweb.api.util.ByteUtil
 import top.fatweb.api.util.JwtUtil
+import kotlin.io.encoding.Base64
+import kotlin.io.encoding.ExperimentalEncodingApi
+
 
 @ExtendWith(SpringExtension::class)
 class FatWebApiApplicationTests {
@@ -38,5 +42,13 @@ class FatWebApiApplicationTests {
         assertEquals("512B", ByteUtil.formatByteSize(512))
         assertEquals("512KiB", ByteUtil.formatByteSize(512 * 1024))
         assertEquals("1.5MiB", ByteUtil.formatByteSize(1 * 1024 * 1024 + 512 * 1024))
+    }
+
+    @OptIn(ExperimentalEncodingApi::class)
+    @Test
+    fun name() {
+        val avatar = GitHubAvatar.newAvatarBuilder(396, 5).build()
+        val bytes = avatar.createAsPngBytes(1232132134543L)
+        logger.info(Base64.encode(bytes))
     }
 }

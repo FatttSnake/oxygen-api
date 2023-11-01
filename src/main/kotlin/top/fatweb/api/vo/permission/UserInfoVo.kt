@@ -15,7 +15,7 @@ data class UserInfoVo(
     val userId: Long?,
 
     @Schema(description = "昵称", example = "User")
-    val nickName: String?,
+    val nickname: String?,
 
     @Schema(description = "头像")
     val avatar: String?,

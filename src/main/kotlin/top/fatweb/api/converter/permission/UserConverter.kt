@@ -14,7 +14,7 @@ object UserConverter {
         return user
     }
 
-    fun userToUserInfoVo(user: User) = UserWithInfoVo(
+    fun userToUserWithPowerInfoVo(user: User) = UserWithPowerInfoVo(
         id = user.id,
         username = user.username,
         locking = user.locking?.let { it == 1 },
@@ -30,7 +30,7 @@ object UserConverter {
         userInfo = user.userInfo?.let { UserInfoVo(
             id = it.id,
             userId = it.userId,
-            nickName = it.nickName,
+            nickname = it.nickname,
             avatar = it.avatar,
             email = it.email,
             createTime = it.createTime,
@@ -68,6 +68,44 @@ object UserConverter {
                 code = it.code,
                 powerId = it.powerId,
                 elementId = it.elementId
+            )
+        }
+    )
+
+    fun userToUserWithRoleInfoVo(user: User) = UserWithRoleInfoVo(
+        id = user.id,
+        username = user.username,
+        locking = user.locking?.let { it == 1 },
+        expiration = user.expiration,
+        credentialsExpiration = user.credentialsExpiration,
+        enable = user.enable?.let { it == 1 },
+        currentLoginTime = user.currentLoginTime,
+        currentLoginIp = user.currentLoginIp,
+        lastLoginTime = user.lastLoginTime,
+        lastLoginIp = user.lastLoginIp,
+        createTime = user.createTime,
+        updateTime = user.updateTime,
+        userInfo = user.userInfo?.let { UserInfoVo(
+            id = it.id,
+            userId = it.userId,
+            nickname = it.nickname,
+            avatar = it.avatar,
+            email = it.email,
+            createTime = it.createTime,
+            updateTime = it.updateTime
+        ) },
+        roles = user.roles?.map {
+            RoleVo(
+                id = it.id,
+                name = it.name,
+                enable = it.enable == 1
+            )
+        },
+        groups = user.groups?.map {
+            GroupVo(
+                id = it.id,
+                name = it.name,
+                enable = it.enable == 1
             )
         }
     )

@@ -43,7 +43,7 @@ class InitConfig(
             }
             val userInfo = UserInfo().apply {
                 userId = 0
-                nickName = AdminProperties.nickName
+                nickname = AdminProperties.nickname
                 email = AdminProperties.email
             }
 

@@ -23,7 +23,7 @@ class UserServiceImpl(
     private val operationService: IOperationService
 ) : ServiceImpl<UserMapper, User>(), IUserService {
     override fun getUserWithPower(username: String): User? {
-        val user = baseMapper.getOneWithPowerByUsername(username)
+        val user = baseMapper.getOneWithPowerInfoByUsername(username)
         user ?: let { return null }
 
         if (user.id == 0L) {
@@ -38,4 +38,5 @@ class UserServiceImpl(
 
     override fun getInfo() = WebUtil.getLoginUsername()?.let { getUserWithPower(it) } ?: let { null }
 
+    override fun getList() = baseMapper.getListWithRoleInfo()
 }

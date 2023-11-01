@@ -2,7 +2,7 @@ app:
   admin:
 #    username: admin # Username of administrator
 #    password: admin # Default password of administrator
-#    nick-name: Administrator # Nickname of administrator
+#    nickname: Administrator # Nickname of administrator
 #    email: admin@fatweb.top # Email of administrator
   security:
 #    header-string: "Authorization" # The key of head to get token

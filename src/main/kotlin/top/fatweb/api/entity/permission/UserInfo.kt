@@ -24,8 +24,8 @@ class UserInfo : Serializable {
     /**
      * 昵称
      */
-    @TableField("nick_name")
-    var nickName: String? = null
+    @TableField("nickname")
+    var nickname: String? = null
 
     /**
      * 头像
@@ -60,6 +60,6 @@ class UserInfo : Serializable {
     var version: Int? = null
 
     override fun toString(): String {
-        return "UserInfo(id=$id, userId=$userId, nickName=$nickName, avatar=$avatar, email=$email, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version)"
+        return "UserInfo(id=$id, userId=$userId, nickname=$nickname, avatar=$avatar, email=$email, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version)"
     }
 }
