@@ -2,8 +2,6 @@ package top.fatweb.api.interceptor
 
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import org.springframework.core.MethodParameter
 import org.springframework.http.MediaType
 import org.springframework.http.converter.HttpMessageConverter
@@ -12,8 +10,8 @@ import org.springframework.http.server.ServerHttpResponse
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.servlet.HandlerInterceptor
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice
-import top.fatweb.api.entity.system.SysLog
 import top.fatweb.api.entity.common.ResponseResult
+import top.fatweb.api.entity.system.SysLog
 import top.fatweb.api.service.system.ISysLogService
 import top.fatweb.api.util.WebUtil
 import java.net.URI
@@ -27,7 +25,6 @@ import java.util.concurrent.Executor
 class SysLogInterceptor(
     private val customThreadPoolTaskExecutor: Executor, private val sysLogService: ISysLogService
 ) : HandlerInterceptor, ResponseBodyAdvice<Any> {
-    private val logger: Logger = LoggerFactory.getLogger(this::class.java)
     private val sysLogThreadLocal = ThreadLocal<SysLog>()
     private val resultThreadLocal = ThreadLocal<Any>()
 
@@ -59,12 +56,12 @@ class SysLogInterceptor(
             if (result.success) {
                 sysLog.apply {
                     logType = "INFO"
-                    isException = 0
+                    exception = 0
                 }
             } else {
                 sysLog.apply {
                     logType = "ERROR"
-                    isException = 1
+                    exception = 1
                     exceptionInfo = result.msg
                 }
             }

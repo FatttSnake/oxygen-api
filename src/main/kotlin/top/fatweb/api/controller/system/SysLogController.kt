@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import top.fatweb.api.converter.system.SysLogConverter
@@ -31,11 +30,11 @@ class SysLogController(
 ) {
     @Operation(summary = "获取")
     @GetMapping
-    fun get(@Valid @RequestBody sysLogGetParam: SysLogGetParam): ResponseResult<PageVo<SysLogGetVo>> {
+    fun get(@Valid sysLogGetParam: SysLogGetParam): ResponseResult<PageVo<SysLogGetVo>> {
         return ResponseResult.success(
             ResponseCode.DATABASE_SELECT_SUCCESS, data = SysLogConverter.sysLogPageToSysLogPageVo(
                 sysLogService.getPage(
-                    sysLogGetParam.page, sysLogGetParam.pageSize
+                    sysLogGetParam.currentPage, sysLogGetParam.pageSize
                 )
             )
         )

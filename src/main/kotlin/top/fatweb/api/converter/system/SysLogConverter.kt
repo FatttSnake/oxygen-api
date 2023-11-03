@@ -13,21 +13,21 @@ object SysLogConverter {
         syslogPage.current,
         syslogPage.records.map {
             SysLogGetVo(
-                it.id,
-                it.logType,
-                it.operateUserId,
-                it.operateTime,
-                it.requestUri,
-                it.requestMethod,
-                it.requestParams,
-                it.requestIp,
-                it.requestServerAddress,
-                it.isException,
-                it.exceptionInfo,
-                it.startTime,
-                it.endTime,
-                it.executeTime,
-                it.userAgent
+                id = it.id,
+                logType = it.logType,
+                operateUserId = it.operateUserId,
+                operateTime = it.operateTime,
+                requestUri = it.requestUri,
+                requestMethod = it.requestMethod,
+                requestParams = it.requestParams,
+                requestIp = it.requestIp,
+                requestServerAddress = it.requestServerAddress,
+                exception = it.exception == 1,
+                exceptionInfo = it.exceptionInfo,
+                startTime = it.startTime,
+                endTime = it.endTime,
+                executeTime = it.executeTime,
+                userAgent = it.userAgent
             )
         })
 

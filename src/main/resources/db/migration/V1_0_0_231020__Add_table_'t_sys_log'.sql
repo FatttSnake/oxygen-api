@@ -10,7 +10,7 @@ create table t_sys_log
     request_params         text comment '请求参数',
     request_ip             varchar(20) not null comment '请求 IP',
     request_server_address varchar(50) not null comment '请求服务器地址',
-    is_exception           int         not null default 0 comment '是否异常',
+    exception           int         not null default 0 comment '是否异常',
     exception_info         text comment '异常信息',
     start_time             datetime(3) not null comment '开始时间',
     end_time               datetime(3) not null comment '结束时间',
@@ -19,6 +19,6 @@ create table t_sys_log
     primary key (id) using btree,
     key idx_sys_log_log_type (log_type) using btree,
     key idx_sys_log_operate_user_id (operate_user_id) using btree,
-    key idx_sys_log_is_exception (is_exception) using btree,
+    key idx_sys_log_exception (exception) using btree,
     key idx_sys_log_operate_time (operate_time) using btree
 ) comment '系统日志表';

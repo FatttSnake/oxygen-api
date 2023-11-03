@@ -71,8 +71,8 @@ class SysLog : Serializable {
     /**
      * 是否异常
      */
-    @TableField("is_exception")
-    var isException: Int? = null
+    @TableField("exception")
+    var exception: Int? = null
 
     /**
      * 异常信息
@@ -104,7 +104,10 @@ class SysLog : Serializable {
     @TableField("user_agent")
     var userAgent: String? = null
 
+    @TableField(exist = false)
+    var operateUsername: String? = null
+
     override fun toString(): String {
-        return "SysLog(id=$id, logType=$logType, operateUserId=$operateUserId, operateTime=$operateTime, requestUri=$requestUri, requestMethod=$requestMethod, requestParams=$requestParams, requestIp=$requestIp, requestServerAddress=$requestServerAddress, isException=$isException, exceptionInfo=$exceptionInfo, startTime=$startTime, endTime=$endTime, executeTime=$executeTime, userAgent=$userAgent)"
+        return "SysLog(id=$id, logType=$logType, operateUserId=$operateUserId, operateTime=$operateTime, requestUri=$requestUri, requestMethod=$requestMethod, requestParams=$requestParams, requestIp=$requestIp, requestServerAddress=$requestServerAddress, exception=$exception, exceptionInfo=$exceptionInfo, startTime=$startTime, endTime=$endTime, executeTime=$executeTime, userAgent=$userAgent, operateUsername=$operateUsername)"
     }
 }

@@ -1,16 +1,20 @@
 package top.fatweb.api.vo.system
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDateTime
 
 @Schema(description = "获取系统日志返回参数")
 class SysLogGetVo(
+    @JsonSerialize(using = ToStringSerializer::class)
     val id: Long?,
 
     @Schema(description = "日志类型")
     val logType: String?,
 
     @Schema(description = "操作用户 ID")
+    @JsonSerialize(using = ToStringSerializer::class)
     val operateUserId: Long?,
 
     @Schema(description = "操作时间")
@@ -32,7 +36,7 @@ class SysLogGetVo(
     val requestServerAddress: String?,
 
     @Schema(description = "是否异常")
-    val isException: Int?,
+    val exception: Boolean?,
 
     @Schema(description = "异常信息")
     val exceptionInfo: String?,
