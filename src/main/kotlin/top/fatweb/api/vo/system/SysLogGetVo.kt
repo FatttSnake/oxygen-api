@@ -51,5 +51,8 @@ class SysLogGetVo(
     val executeTime: Long?,
 
     @Schema(description = "用户代理")
-    val userAgent: String?
+    val userAgent: String?,
+
+    @Schema(description = "操作用户名")
+    val operateUsername: String?
 )

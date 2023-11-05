@@ -1,6 +1,7 @@
 package top.fatweb.api.service.system.impl
 
 import com.baomidou.mybatisplus.core.metadata.IPage
+import com.baomidou.mybatisplus.core.metadata.OrderItem
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
 import org.springframework.stereotype.Service
@@ -20,6 +21,7 @@ import top.fatweb.api.service.system.ISysLogService
 class SysLogServiceImpl : ServiceImpl<SysLogMapper, SysLog>(), ISysLogService {
     override fun getPage(page: Long, pageSize: Long): IPage<SysLog> {
         val sysLogPage = Page<SysLog>(page, pageSize)
+        sysLogPage.addOrder(OrderItem.desc("start_time"))
 
         return baseMapper.selectPage(sysLogPage)
     }

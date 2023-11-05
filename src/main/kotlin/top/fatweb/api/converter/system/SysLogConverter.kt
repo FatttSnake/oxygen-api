@@ -27,7 +27,8 @@ object SysLogConverter {
                 startTime = it.startTime,
                 endTime = it.endTime,
                 executeTime = it.executeTime,
-                userAgent = it.userAgent
+                userAgent = it.userAgent,
+                operateUsername = it.operateUsername
             )
         })
 
