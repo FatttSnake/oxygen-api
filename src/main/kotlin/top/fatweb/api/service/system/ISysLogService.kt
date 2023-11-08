@@ -3,6 +3,7 @@ package top.fatweb.api.service.system
 import com.baomidou.mybatisplus.core.metadata.IPage
 import com.baomidou.mybatisplus.extension.service.IService
 import top.fatweb.api.entity.system.SysLog
+import top.fatweb.api.param.system.SysLogGetParam
 
 /**
  * <p>
@@ -13,5 +14,5 @@ import top.fatweb.api.entity.system.SysLog
  * @since 2023-10-18
  */
 interface ISysLogService : IService<SysLog> {
-    fun getPage(page: Long, pageSize: Long): IPage<SysLog>
+    fun getPage(sysLogGetParam: SysLogGetParam?): IPage<SysLog>
 }

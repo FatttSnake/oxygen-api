@@ -15,5 +15,5 @@ import org.apache.ibatis.annotations.Mapper
  */
 @Mapper
 interface SysLogMapper : BaseMapper<SysLog> {
-    fun selectPage(page: IPage<SysLog>): IPage<SysLog>
+    fun selectPage(page: IPage<SysLog>, logType: List<String>?, requestMethod: List<String>?): IPage<SysLog>
 }

@@ -10,6 +10,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 import top.fatweb.api.properties.SecurityProperties
 import top.fatweb.api.util.ByteUtil
 import top.fatweb.api.util.JwtUtil
+import top.fatweb.api.util.StrUtil
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 
@@ -50,5 +51,15 @@ class FatWebApiApplicationTests {
         val avatar = GitHubAvatar.newAvatarBuilder(396, 5).build()
         val bytes = avatar.createAsPngBytes(1232132134543L)
         logger.info(Base64.encode(bytes))
+    }
+
+    @Test
+    fun upperToUnderLetterTest() {
+        assertEquals("create_time", StrUtil.upperToUnderLetter("createTime"))
+    }
+
+    @Test
+    fun underToUpperLetterTest() {
+        assertEquals("createTime", StrUtil.underToUpperLetter("create_time"))
     }
 }

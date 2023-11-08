@@ -6,6 +6,7 @@ import com.auth0.jwt.exceptions.TokenExpiredException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.http.converter.HttpMessageNotReadableException
+import org.springframework.jdbc.BadSqlGrammarException
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.authentication.InsufficientAuthenticationException
 import org.springframework.security.authentication.InternalAuthenticationServiceException
@@ -68,6 +69,11 @@ class ExceptionHandler {
             is TokenHasExpiredException -> {
                 logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.SYSTEM_TOKEN_HAS_EXPIRED, e.localizedMessage, null)
+            }
+
+            is BadSqlGrammarException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.DATABASE_EXECUTE_ERROR, "Incorrect SQL syntax", null)
             }
 
             else -> {

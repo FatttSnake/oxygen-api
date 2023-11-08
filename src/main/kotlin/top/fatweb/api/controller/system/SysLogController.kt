@@ -30,12 +30,10 @@ class SysLogController(
 ) {
     @Operation(summary = "获取")
     @GetMapping
-    fun get(@Valid sysLogGetParam: SysLogGetParam): ResponseResult<PageVo<SysLogGetVo>> {
+    fun get(@Valid sysLogGetParam: SysLogGetParam?): ResponseResult<PageVo<SysLogGetVo>> {
         return ResponseResult.success(
             ResponseCode.DATABASE_SELECT_SUCCESS, data = SysLogConverter.sysLogPageToSysLogPageVo(
-                sysLogService.getPage(
-                    sysLogGetParam.currentPage, sysLogGetParam.pageSize
-                )
+                sysLogService.getPage(sysLogGetParam)
             )
         )
     }
