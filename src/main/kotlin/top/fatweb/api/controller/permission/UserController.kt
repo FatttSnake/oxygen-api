@@ -1,5 +1,7 @@
 package top.fatweb.api.controller.permission
 
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -17,11 +19,13 @@ import top.fatweb.api.vo.permission.UserWithRoleInfoVo
  * @author FatttSnake
  * @since 2023-10-04
  */
+@Tag(name = "用户管理", description = "用户管理相关接口")
 @RestController
 @RequestMapping("/system/user")
 class UserController(
     private val userService: IUserService
 ) {
+    @Operation(summary = "获取当前用户信息")
     @GetMapping("info")
     fun getInfo(): ResponseResult<UserWithPowerInfoVo> {
         userService.getInfo()?.let {
@@ -29,6 +33,7 @@ class UserController(
         } ?: let { return ResponseResult.databaseFail() }
     }
 
+    @Operation(summary = "获取用户列表")
     @GetMapping
     fun get(): ResponseResult<List<UserWithRoleInfoVo>> {
         return ResponseResult.databaseSuccess(
