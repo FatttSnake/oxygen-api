@@ -1,6 +1,7 @@
 package top.fatweb.api.mapper.permission
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper
+import com.baomidou.mybatisplus.core.metadata.IPage
 import org.apache.ibatis.annotations.Mapper
 import top.fatweb.api.entity.permission.Role
 
@@ -13,4 +14,6 @@ import top.fatweb.api.entity.permission.Role
  * @since 2023-10-25
  */
 @Mapper
-interface RoleMapper : BaseMapper<Role>
+interface RoleMapper : BaseMapper<Role> {
+    fun selectPage(page: IPage<Role>): IPage<Role>
+}

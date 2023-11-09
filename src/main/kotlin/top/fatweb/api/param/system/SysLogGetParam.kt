@@ -2,17 +2,11 @@ package top.fatweb.api.param.system
 
 import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.format.annotation.DateTimeFormat
-import top.fatweb.api.param.PageParam
+import top.fatweb.api.param.PageSortParam
 import java.time.LocalDateTime
 
 @Schema(description = "获取系统日志请求参数")
 data class SysLogGetParam(
-    @Schema(description = "排序字段", example = "id")
-    val sortField: String? = null,
-
-    @Schema(description = "排序方式", example = "desc", allowableValues = ["desc", "asc"])
-    val sortOrder: String? = null,
-
     @Schema(description = "类型过滤(多个使用逗号分隔)", example = "INFO", allowableValues = ["INFO", "ERROR"])
     val logType: String? = null,
 
@@ -36,4 +30,4 @@ data class SysLogGetParam(
     @Schema(description = "查询结束时间")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     val searchEndTime: LocalDateTime? = null
-) : PageParam()
+) : PageSortParam()

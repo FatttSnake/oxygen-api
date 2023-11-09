@@ -6,7 +6,35 @@ insert into t_power_type (id, name)
 on duplicate key update name = new_value.name;
 
 insert into t_power (id, type_id)
-    values (1000000, 1) as new_value
+    values (1000000, 1),
+           (1990000, 2),
+           (1010000, 2),
+           (1020000, 2),
+           (1030000, 2),
+           (1010100, 3),
+           (1010200, 3),
+           (1010300, 3),
+           (1020100, 3),
+           (1020200, 3),
+           (1020300, 3),
+           (1020400, 3),
+           (1030100, 3),
+           (1030200, 3),
+           (1030300, 3),
+           (1030400, 3),
+           (1010101, 4),
+           (1010102, 4),
+           (1010201, 4),
+           (1010301, 4),
+           (1020101, 4),
+           (1020201, 4),
+           (1020301, 4),
+           (1020401, 4),
+           (1030101, 4),
+           (1030201, 4),
+           (1030301, 4),
+           (1030401, 4)
+        as new_value
 on duplicate key update type_id = new_value.type_id;
 
 insert into t_module (id, name, power_id)

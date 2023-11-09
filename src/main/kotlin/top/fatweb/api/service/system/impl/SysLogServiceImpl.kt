@@ -9,7 +9,7 @@ import top.fatweb.api.entity.system.SysLog
 import top.fatweb.api.mapper.system.SysLogMapper
 import top.fatweb.api.param.system.SysLogGetParam
 import top.fatweb.api.service.system.ISysLogService
-import top.fatweb.api.util.StrUtil
+import top.fatweb.api.util.PageUtil
 
 /**
  * <p>
@@ -24,20 +24,7 @@ class SysLogServiceImpl : ServiceImpl<SysLogMapper, SysLog>(), ISysLogService {
     override fun getPage(sysLogGetParam: SysLogGetParam?): IPage<SysLog> {
         val sysLogPage = Page<SysLog>(sysLogGetParam?.currentPage ?: 1, sysLogGetParam?.pageSize ?: 20)
 
-        if (sysLogGetParam?.sortField == null && sysLogGetParam?.sortOrder == null) {
-            sysLogPage.addOrder(OrderItem.desc("start_time"))
-        } else {
-            sysLogPage.addOrder(
-                if (sysLogGetParam.sortOrder?.startsWith(
-                        "desc", true
-                    ) == true
-                ) OrderItem.desc(StrUtil.upperToUnderLetter(sysLogGetParam.sortField)) else OrderItem.asc(
-                    StrUtil.upperToUnderLetter(
-                        sysLogGetParam.sortField
-                    )
-                )
-            )
-        }
+        PageUtil.setPageSort(sysLogGetParam, sysLogPage, OrderItem.desc("start_time"))
 
         return baseMapper.selectPage(
             sysLogPage,

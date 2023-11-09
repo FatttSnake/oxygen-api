@@ -1,5 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="top.fatweb.api.mapper.permission.RoleMapper">
+    <select id="selectPage" resultMap="roleWithPowerMap">
+        select distinct t_role.id      as role_id,
+                        t_role.name    as role_name,
+                        t_role.enable  as role_enable,
+                        t_role.deleted as role_deleted,
+                        t_role.version as role_version,
+                        tm.id          as module_id,
+                        tm.name        as module_name,
+                        tm.power_id    as module_power_id,
+                        tmn.id         as menu_id,
+                        tmn.name       as menu_name,
+                        tmn.url        as menu_url,
+                        tmn.power_id   as menu_power_id,
+                        tmn.parent_id  as menu_parent_id,
+                        tmn.module_id  as menu_module_id,
+                        te.id          as element_id,
+                        te.name        as element_name,
+                        te.power_id    as element_power_id,
+                        te.parent_id   as element_parent_id,
+                        te.menu_id     as element_menu_id,
+                        t.id           as operation_id,
+                        t.name         as operation_name,
+                        t.code         as operation_code,
+                        t.power_id     as operation_power_id,
+                        t.element_id   as operation_element_id
+        from (select * from t_role where deleted = 0) as t_role
+                 left join (select * from t_power_role where deleted = 0) as tpr on t_role.id = tpr.role_id
+                 left join t_power tp on tp.id = tpr.power_id
+                 left join t_module tm on tp.id = tm.power_id
+                 left join t_menu tmn on tp.id = tmn.power_id
+                 left join t_element te on tp.id = te.power_id
+                 left join t_operation t on tp.id = t.power_id
+    </select>
 
+    <resultMap id="roleMap" type="role">
+        <id property="id" column="role_id"/>
+        <result property="name" column="role_name"/>
+        <result property="enable" column="role_enable"/>
+        <result property="deleted" column="role_deleted"/>
+        <result property="version" column="role_version"/>
+    </resultMap>
+
+    <resultMap id="roleWithPowerMap" type="role" extends="roleMap">
+        <collection property="modules" resultMap="top.fatweb.api.mapper.permission.ModuleMapper.moduleMap"/>
+        <collection property="menus" resultMap="top.fatweb.api.mapper.permission.MenuMapper.menuMap"/>
+        <collection property="elements" resultMap="top.fatweb.api.mapper.permission.ElementMapper.elementMap"/>
+        <collection property="operations" resultMap="top.fatweb.api.mapper.permission.OperationMapper.operationMap"/>
+    </resultMap>
 </mapper>

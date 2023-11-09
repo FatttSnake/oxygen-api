@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="top.fatweb.api.mapper.permission.ElementMapper">
-
+    <resultMap id="elementMap" type="element">
+        <id property="id" column="element_id"/>
+        <result property="name" column="element_name"/>
+        <result property="powerId" column="element_power_id"/>
+        <result property="parentId" column="element_parent_id"/>
+        <result property="menuId" column="element_menu_id"/>
+    </resultMap>
 </mapper>
