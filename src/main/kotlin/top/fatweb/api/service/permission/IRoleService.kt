@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.extension.service.IService
 import top.fatweb.api.entity.permission.Role
 import top.fatweb.api.param.authentication.RoleAddParam
 import top.fatweb.api.param.authentication.RoleGetParam
-import top.fatweb.api.vo.permission.RoleVo
 
 /**
  * <p>
@@ -18,5 +17,5 @@ import top.fatweb.api.vo.permission.RoleVo
 interface IRoleService : IService<Role> {
     fun getPage(roleGetParam: RoleGetParam?): IPage<Role>
 
-    fun add(roleAddParam: RoleAddParam): RoleVo?
+    fun add(roleAddParam: RoleAddParam): Role?
 }

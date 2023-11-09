@@ -16,5 +16,8 @@ data class MenuVo(
     val powerId: Long?,
 
     @Schema(description = "父 ID")
-    val parentId: Long?
+    val parentId: Long?,
+
+    @Schema(description = "模块 ID")
+    val moduleId: Long?
 )

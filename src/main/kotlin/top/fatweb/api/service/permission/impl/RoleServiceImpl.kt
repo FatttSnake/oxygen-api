@@ -14,7 +14,6 @@ import top.fatweb.api.param.authentication.RoleGetParam
 import top.fatweb.api.service.permission.IPowerRoleService
 import top.fatweb.api.service.permission.IRoleService
 import top.fatweb.api.util.PageUtil
-import top.fatweb.api.vo.permission.RoleVo
 
 /**
  * <p>
@@ -38,11 +37,15 @@ class RoleServiceImpl(
 
 
     @Transactional
-    override fun add(roleAddParam: RoleAddParam): RoleVo? {
+    override fun add(roleAddParam: RoleAddParam): Role? {
         val role = RoleConverter.roleAddParamToRole(roleAddParam)
         if (baseMapper.insert(role) == 1) {
+            if (roleAddParam.powerIds.isNullOrEmpty()) {
+                return role
+            }
+
             if (powerRoleService.saveBatch(
-                    roleAddParam.powerIds?.map {
+                    roleAddParam.powerIds.map {
                         PowerRole().apply {
                             roleId = role.id
                             powerId = it
@@ -50,7 +53,7 @@ class RoleServiceImpl(
                     }
                 )
             ) {
-                return RoleConverter.roleToRoleVo(role)
+                return role
             }
         }
 

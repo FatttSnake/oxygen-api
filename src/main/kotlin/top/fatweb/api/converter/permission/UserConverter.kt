@@ -49,7 +49,8 @@ object UserConverter {
                 name = it.name,
                 url = it.url,
                 powerId = it.powerId,
-                parentId = it.parentId
+                parentId = it.parentId,
+                moduleId = it.moduleId
             )
         },
         elements = user.elements?.map {

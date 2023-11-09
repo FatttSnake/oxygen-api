@@ -5,6 +5,7 @@ import com.auth0.jwt.exceptions.SignatureVerificationException
 import com.auth0.jwt.exceptions.TokenExpiredException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.dao.DuplicateKeyException
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.jdbc.BadSqlGrammarException
 import org.springframework.security.authentication.BadCredentialsException
@@ -74,6 +75,11 @@ class ExceptionHandler {
             is BadSqlGrammarException -> {
                 logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.DATABASE_EXECUTE_ERROR, "Incorrect SQL syntax", null)
+            }
+
+            is DuplicateKeyException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.DATABASE_INSERT_FAILED, "Duplicate key", null)
             }
 
             else -> {

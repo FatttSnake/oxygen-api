@@ -2,10 +2,8 @@ package top.fatweb.api.controller.permission
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import jakarta.validation.Valid
+import org.springframework.web.bind.annotation.*
 import top.fatweb.api.converter.permission.RoleConverter
 import top.fatweb.api.entity.common.ResponseCode
 import top.fatweb.api.entity.common.ResponseResult
@@ -14,6 +12,7 @@ import top.fatweb.api.param.authentication.RoleGetParam
 import top.fatweb.api.service.permission.IRoleService
 import top.fatweb.api.vo.PageVo
 import top.fatweb.api.vo.permission.RoleVo
+import top.fatweb.api.vo.permission.RoleWithPowerVo
 
 /**
  * 角色表 前端控制器
@@ -29,9 +28,9 @@ class RoleController(
 ) {
     @Operation(summary = "获取角色列表")
     @GetMapping
-    fun get(roleGetParam: RoleGetParam?): ResponseResult<PageVo<RoleVo>> {
+    fun get(roleGetParam: RoleGetParam?): ResponseResult<PageVo<RoleWithPowerVo>> {
         return ResponseResult.success(
-            ResponseCode.DATABASE_SELECT_SUCCESS, data = RoleConverter.rolePageToRolePageVo(
+            ResponseCode.DATABASE_SELECT_SUCCESS, data = RoleConverter.rolePageToRoleWithPowerPageVo(
                 roleService.getPage(roleGetParam)
             )
         )
@@ -39,9 +38,9 @@ class RoleController(
 
     @Operation(summary = "添加角色")
     @PostMapping
-    fun add(roleAddParam: RoleAddParam): ResponseResult<RoleVo> {
+    fun add(@Valid @RequestBody roleAddParam: RoleAddParam): ResponseResult<RoleVo> {
         return roleService.add(roleAddParam)
-            ?.let { ResponseResult.success(ResponseCode.DATABASE_INSERT_SUCCESS, data = it) }
+            ?.let { ResponseResult.success(ResponseCode.DATABASE_INSERT_SUCCESS, data = RoleConverter.roleToRoleVo(it)) }
             ?: let { ResponseResult.fail(ResponseCode.DATABASE_INSERT_FAILED) }
     }
 }
