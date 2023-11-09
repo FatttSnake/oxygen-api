@@ -29,6 +29,22 @@
                      separator="," close=")" nullable="true">
                 #{item}
             </foreach>
+            <if test="searchRequestUrl != null">
+                <choose>
+                    <when test="searchRegex == true">
+                        and concat_ws('?', concat(t_sys_log.request_server_address, t_sys_log.request_uri),
+                        if(length(t_sys_log.request_params) != 0, t_sys_log.request_params, null)) regexp #{searchRequestUrl}
+                    </when>
+                    <otherwise>
+                        and concat_ws('?', concat(t_sys_log.request_server_address, t_sys_log.request_uri),
+                        if(length(t_sys_log.request_params) != 0, t_sys_log.request_params, null)) like concat('%',
+                        #{searchRequestUrl}, '%')
+                    </otherwise>
+                </choose>
+            </if>
+            <if test="searchStartTime != null and searchEndTime != null">
+                and t_sys_log.start_time between #{searchStartTime} and #{searchEndTime}
+            </if>
         </where>
     </select>
 

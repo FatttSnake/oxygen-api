@@ -39,6 +39,14 @@ class SysLogServiceImpl : ServiceImpl<SysLogMapper, SysLog>(), ISysLogService {
             )
         }
 
-        return baseMapper.selectPage(sysLogPage, sysLogGetParam?.logType?.split(","), sysLogGetParam?.requestMethod?.split(","))
+        return baseMapper.selectPage(
+            sysLogPage,
+            sysLogGetParam?.logType?.split(","),
+            sysLogGetParam?.requestMethod?.split(","),
+            sysLogGetParam?.searchRequestUrl,
+            sysLogGetParam?.searchRegex ?: false,
+            sysLogGetParam?.searchStartTime,
+            sysLogGetParam?.searchEndTime
+        )
     }
 }
