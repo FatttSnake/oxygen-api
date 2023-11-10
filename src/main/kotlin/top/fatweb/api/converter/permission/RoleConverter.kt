@@ -8,52 +8,29 @@ import top.fatweb.api.vo.PageVo
 import top.fatweb.api.vo.permission.*
 
 object RoleConverter {
+    fun roleToRoleVo(role: Role): RoleVo = RoleVo(
+        id = role.id,
+        name = role.name,
+        enable = role.enable == 1
+    )
+
+    fun roleToRoleWithPowerVo(role: Role) = RoleWithPowerVo(
+        id = role.id,
+        name = role.name,
+        enable = role.enable == 1,
+        modules = role.modules?.map { ModuleConverter.moduleToModuleVo(it) },
+        menus = role.menus?.map { MenuConverter.menuToMenuVo(it) },
+        elements = role.elements?.map { ElementConverter.elementToElementVo(it) },
+        operations = role.operations?.map { OperationConverter.operationToOperationVo(it) }
+    )
+
     fun rolePageToRoleWithPowerPageVo(rolePage: IPage<Role>): PageVo<RoleWithPowerVo> = PageVo(
-        rolePage.total,
-        rolePage.pages,
-        rolePage.size,
-        rolePage.current,
-        rolePage.records.map {
-            RoleWithPowerVo(
-                id = it.id,
-                name = it.name,
-                enable = it.enable == 1,
-                modules = it.modules?.map { module ->
-                    ModuleVo(
-                        id = module.id,
-                        name = module.name,
-                        powerId = module.powerId
-                    )
-                },
-                menus = it.menus?.map { menu ->
-                    MenuVo(
-                        id = menu.id,
-                        name = menu.name,
-                        url = menu.url,
-                        powerId = menu.powerId,
-                        parentId = menu.powerId,
-                        moduleId = menu.moduleId
-                    )
-                },
-                elements = it.elements?.map { element ->
-                    ElementVo(
-                        id = element.id,
-                        name = element.name,
-                        powerId = element.powerId,
-                        parentId = element.parentId,
-                        menuId = element.menuId
-                    )
-                },
-                operations = it.operations?.map { operation ->
-                    OperationVo(
-                        id = operation.id,
-                        name = operation.name,
-                        code = operation.code,
-                        powerId = operation.powerId,
-                        elementId = operation.elementId
-                    )
-                }
-            )
+        total = rolePage.total,
+        pages = rolePage.pages,
+        size = rolePage.size,
+        current = rolePage.current,
+        records = rolePage.records.map {
+            roleToRoleWithPowerVo(it)
         }
     )
 
@@ -62,10 +39,4 @@ object RoleConverter {
         enable = if (roleAddParam.enable == true) 1 else 0
         powers = roleAddParam.powerIds?.map { Power().apply { id = it } }
     }
-
-    fun roleToRoleVo(role: Role): RoleVo = RoleVo(
-        id = role.id,
-        name = role.name,
-        enable = role.enable == 1
-    )
 }

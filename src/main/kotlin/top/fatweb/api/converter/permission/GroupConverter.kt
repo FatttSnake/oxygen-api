@@ -6,17 +6,19 @@ import top.fatweb.api.vo.PageVo
 import top.fatweb.api.vo.permission.GroupVo
 
 object GroupConverter {
+    fun groupToGroupVo(group: Group) = GroupVo(
+        id = group.id,
+        name = group.name,
+        enable = group.enable == 1
+    )
+
     fun groupPageToGroupPageVo(groupPage: IPage<Group>): PageVo<GroupVo> = PageVo(
-        groupPage.total,
-        groupPage.pages,
-        groupPage.size,
-        groupPage.current,
-        groupPage.records.map {
-            GroupVo(
-                id = it.id,
-                name = it.name,
-                enable = it.enable == 1
-            )
+        total = groupPage.total,
+        pages = groupPage.pages,
+        size = groupPage.size,
+        current = groupPage.current,
+        records = groupPage.records.map {
+            groupToGroupVo(it)
         }
     )
 }

@@ -5,13 +5,9 @@ import top.fatweb.api.param.authentication.LoginParam
 import top.fatweb.api.vo.permission.*
 
 object UserConverter {
-    fun loginParamToUser(loginParam: LoginParam): User {
-        val user = User().apply {
-            username = loginParam.username
-            password = loginParam.password
-        }
-
-        return user
+    fun loginParamToUser(loginParam: LoginParam) = User().apply {
+        username = loginParam.username
+        password = loginParam.password
     }
 
     fun userToUserWithPowerInfoVo(user: User) = UserWithPowerInfoVo(
@@ -27,49 +23,20 @@ object UserConverter {
         lastLoginIp = user.lastLoginIp,
         createTime = user.createTime,
         updateTime = user.updateTime,
-        userInfo = user.userInfo?.let { UserInfoVo(
-            id = it.id,
-            userId = it.userId,
-            nickname = it.nickname,
-            avatar = it.avatar,
-            email = it.email,
-            createTime = it.createTime,
-            updateTime = it.updateTime
-        ) },
+        userInfo = user.userInfo?.let {
+            UserInfoConverter.userInfoToUserInfoVo(it)
+        },
         modules = user.modules?.map {
-            ModuleVo(
-                id = it.id,
-                name = it.name,
-                powerId = it.powerId
-            )
+            ModuleConverter.moduleToModuleVo(it)
         },
         menus = user.menus?.map {
-            MenuVo(
-                id = it.id,
-                name = it.name,
-                url = it.url,
-                powerId = it.powerId,
-                parentId = it.parentId,
-                moduleId = it.moduleId
-            )
+            MenuConverter.menuToMenuVo(it)
         },
         elements = user.elements?.map {
-            ElementVo(
-                id = it.id,
-                name = it.name,
-                powerId = it.powerId,
-                parentId = it.parentId,
-                menuId = it.menuId
-            )
+            ElementConverter.elementToElementVo(it)
         },
         operations = user.operations?.map {
-            OperationVo(
-                id = it.id,
-                name = it.name,
-                code = it.code,
-                powerId = it.powerId,
-                elementId = it.elementId
-            )
+            OperationConverter.operationToOperationVo(it)
         }
     )
 
@@ -86,28 +53,14 @@ object UserConverter {
         lastLoginIp = user.lastLoginIp,
         createTime = user.createTime,
         updateTime = user.updateTime,
-        userInfo = user.userInfo?.let { UserInfoVo(
-            id = it.id,
-            userId = it.userId,
-            nickname = it.nickname,
-            avatar = it.avatar,
-            email = it.email,
-            createTime = it.createTime,
-            updateTime = it.updateTime
-        ) },
+        userInfo = user.userInfo?.let {
+            UserInfoConverter.userInfoToUserInfoVo(it)
+        },
         roles = user.roles?.map {
-            RoleVo(
-                id = it.id,
-                name = it.name,
-                enable = it.enable == 1
-            )
+            RoleConverter.roleToRoleVo(it)
         },
         groups = user.groups?.map {
-            GroupVo(
-                id = it.id,
-                name = it.name,
-                enable = it.enable == 1
-            )
+            GroupConverter.groupToGroupVo(it)
         }
     )
 }
