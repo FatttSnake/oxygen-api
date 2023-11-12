@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import top.fatweb.api.converter.permission.PowerConverter
+import top.fatweb.api.entity.common.ResponseResult
 import top.fatweb.api.service.permission.IPowerService
 
 /**
@@ -19,5 +20,5 @@ class PowerController(
 ) {
     @Operation(summary = "获取权限列表")
     @GetMapping
-    fun get() = PowerConverter.powerSetToPowerSetVo(powerService.getAll())
+    fun get() = ResponseResult.databaseSuccess(data = PowerConverter.powerSetToPowerSetVo(powerService.getAll()))
 }

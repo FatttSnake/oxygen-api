@@ -10,6 +10,7 @@ import top.fatweb.api.entity.permission.PowerRole
 import top.fatweb.api.entity.permission.Role
 import top.fatweb.api.mapper.permission.RoleMapper
 import top.fatweb.api.param.authentication.RoleAddParam
+import top.fatweb.api.param.authentication.RoleChangeStatusParam
 import top.fatweb.api.param.authentication.RoleGetParam
 import top.fatweb.api.service.permission.IPowerRoleService
 import top.fatweb.api.service.permission.IRoleService
@@ -58,5 +59,9 @@ class RoleServiceImpl(
         }
 
         return null
+    }
+
+    override fun changeStatus(roleChangeStatusParam: RoleChangeStatusParam): Boolean {
+        return updateById(RoleConverter.roleChangeStatusParamToRole(roleChangeStatusParam))
     }
 }

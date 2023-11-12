@@ -7,6 +7,6 @@ data class GroupGetParam(
     @Schema(description = "查询用户组名称")
     val searchName: String? = null,
 
-    @Schema(description = "查询使用正则表达式")
+    @Schema(description = "查询使用正则表达式", allowableValues = ["true", "false"])
     val searchRegex: Boolean = false,
 ) : PageSortParam()

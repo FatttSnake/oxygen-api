@@ -8,7 +8,7 @@ data class RoleAddParam(
     @field:NotBlank(message = "Name can not be blank")
     val name: String?,
 
-    @Schema(description = "启用")
+    @Schema(description = "启用", allowableValues = ["true", "false"])
     val enable: Boolean? = true,
 
     @Schema(description = "权限 ID 列表")

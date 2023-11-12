@@ -8,6 +8,7 @@ import top.fatweb.api.converter.permission.RoleConverter
 import top.fatweb.api.entity.common.ResponseCode
 import top.fatweb.api.entity.common.ResponseResult
 import top.fatweb.api.param.authentication.RoleAddParam
+import top.fatweb.api.param.authentication.RoleChangeStatusParam
 import top.fatweb.api.param.authentication.RoleGetParam
 import top.fatweb.api.service.permission.IRoleService
 import top.fatweb.api.vo.PageVo
@@ -29,8 +30,8 @@ class RoleController(
     @Operation(summary = "获取角色列表")
     @GetMapping
     fun get(roleGetParam: RoleGetParam?): ResponseResult<PageVo<RoleWithPowerVo>> {
-        return ResponseResult.success(
-            ResponseCode.DATABASE_SELECT_SUCCESS, data = RoleConverter.rolePageToRoleWithPowerPageVo(
+        return ResponseResult.databaseSuccess(
+            data = RoleConverter.rolePageToRoleWithPowerPageVo(
                 roleService.getPage(roleGetParam)
             )
         )
@@ -40,7 +41,22 @@ class RoleController(
     @PostMapping
     fun add(@Valid @RequestBody roleAddParam: RoleAddParam): ResponseResult<RoleVo> {
         return roleService.add(roleAddParam)
-            ?.let { ResponseResult.success(ResponseCode.DATABASE_INSERT_SUCCESS, data = RoleConverter.roleToRoleVo(it)) }
-            ?: let { ResponseResult.fail(ResponseCode.DATABASE_INSERT_FAILED) }
+            ?.let {
+                ResponseResult.databaseSuccess(
+                    ResponseCode.DATABASE_INSERT_SUCCESS,
+                    data = RoleConverter.roleToRoleVo(it)
+                )
+            }
+            ?: let { ResponseResult.databaseFail(ResponseCode.DATABASE_INSERT_FAILED) }
+    }
+
+    @Operation(summary = "修改角色状态")
+    @PatchMapping
+    fun changStatus(@Valid @RequestBody roleChangeStatusParam: RoleChangeStatusParam): ResponseResult<Nothing> {
+        return if (roleService.changeStatus(roleChangeStatusParam)) {
+            ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
+        } else {
+            ResponseResult.databaseFail(ResponseCode.DATABASE_UPDATE_FILED)
+        }
     }
 }

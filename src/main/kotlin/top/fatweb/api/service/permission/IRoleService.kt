@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage
 import com.baomidou.mybatisplus.extension.service.IService
 import top.fatweb.api.entity.permission.Role
 import top.fatweb.api.param.authentication.RoleAddParam
+import top.fatweb.api.param.authentication.RoleChangeStatusParam
 import top.fatweb.api.param.authentication.RoleGetParam
 
 /**
@@ -18,4 +19,6 @@ interface IRoleService : IService<Role> {
     fun getPage(roleGetParam: RoleGetParam?): IPage<Role>
 
     fun add(roleAddParam: RoleAddParam): Role?
+
+    fun changeStatus(roleChangeStatusParam: RoleChangeStatusParam): Boolean
 }

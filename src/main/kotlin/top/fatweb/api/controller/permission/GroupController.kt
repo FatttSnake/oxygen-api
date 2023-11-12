@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import top.fatweb.api.converter.permission.GroupConverter
-import top.fatweb.api.entity.common.ResponseCode
 import top.fatweb.api.entity.common.ResponseResult
 import top.fatweb.api.param.authentication.GroupGetParam
 import top.fatweb.api.service.permission.IGroupService
@@ -31,8 +30,8 @@ class GroupController(
     @Operation(summary = "获取用户组列表")
     @GetMapping
     fun get(@Valid groupGetParam: GroupGetParam?): ResponseResult<PageVo<GroupVo>> {
-        return ResponseResult.success(
-            ResponseCode.DATABASE_SELECT_SUCCESS, data = GroupConverter.groupPageToGroupPageVo(
+        return ResponseResult.databaseSuccess(
+            data = GroupConverter.groupPageToGroupPageVo(
                 groupService.getPage(groupGetParam)
             )
         )
