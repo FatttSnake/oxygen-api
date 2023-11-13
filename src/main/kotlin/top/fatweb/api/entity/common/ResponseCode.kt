@@ -28,7 +28,8 @@ enum class ResponseCode(val code: Int) {
     DATABASE_UPDATE_FILED(BusinessCode.DATABASE, 25),
     DATABASE_DELETE_SUCCESS(BusinessCode.DATABASE, 30),
     DATABASE_DELETE_FILED(BusinessCode.DATABASE, 35),
-    DATABASE_EXECUTE_ERROR(BusinessCode.DATABASE, 40);
+    DATABASE_EXECUTE_ERROR(BusinessCode.DATABASE, 40),
+    DATABASE_DUPLICATE_KEY(BusinessCode.DATABASE, 45);
 
     constructor(businessCode: BusinessCode, code: Int) : this(businessCode.code * 100 + code)
 }

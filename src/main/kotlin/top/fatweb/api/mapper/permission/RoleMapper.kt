@@ -15,5 +15,11 @@ import top.fatweb.api.entity.permission.Role
  */
 @Mapper
 interface RoleMapper : BaseMapper<Role> {
-    fun selectPage(page: IPage<Role>): IPage<Role>
+    fun selectPage(page: IPage<Long>): IPage<Long>
+
+    fun getWithPowerByList(roleIds: List<Long>): List<Role>?
+
+    fun selectOne(id: Long): Role?
+
+    fun getPowerList(id: Long): List<Long?>
 }

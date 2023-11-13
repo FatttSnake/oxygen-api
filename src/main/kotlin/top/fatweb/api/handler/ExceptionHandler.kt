@@ -79,7 +79,7 @@ class ExceptionHandler {
 
             is DuplicateKeyException -> {
                 logger.debug(e.localizedMessage, e)
-                ResponseResult.fail(ResponseCode.DATABASE_INSERT_FAILED, "Duplicate key", null)
+                ResponseResult.fail(ResponseCode.DATABASE_DUPLICATE_KEY, "Duplicate key", null)
             }
 
             else -> {

@@ -5,6 +5,7 @@ import top.fatweb.api.entity.permission.Power
 import top.fatweb.api.entity.permission.Role
 import top.fatweb.api.param.authentication.RoleAddParam
 import top.fatweb.api.param.authentication.RoleChangeStatusParam
+import top.fatweb.api.param.authentication.RoleUpdateParam
 import top.fatweb.api.vo.PageVo
 import top.fatweb.api.vo.permission.RoleVo
 import top.fatweb.api.vo.permission.RoleWithPowerVo
@@ -40,6 +41,13 @@ object RoleConverter {
         name = roleAddParam.name
         enable = if (roleAddParam.enable == true) 1 else 0
         powers = roleAddParam.powerIds?.map { Power().apply { id = it } }
+    }
+
+    fun roleUpdateParamToRole(roleUpdateParam: RoleUpdateParam) = Role().apply {
+        id = roleUpdateParam.id
+        name = roleUpdateParam.name
+        enable = if (roleUpdateParam.enable == true) 1 else 0
+        powers = roleUpdateParam.powerIds?.map { Power().apply { id = it } }
     }
 
     fun roleChangeStatusParamToRole(roleChangeStatusParam: RoleChangeStatusParam) = Role().apply {
