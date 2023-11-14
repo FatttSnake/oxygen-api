@@ -9,10 +9,7 @@ import top.fatweb.api.converter.permission.RoleConverter
 import top.fatweb.api.entity.permission.PowerRole
 import top.fatweb.api.entity.permission.Role
 import top.fatweb.api.mapper.permission.RoleMapper
-import top.fatweb.api.param.authentication.RoleAddParam
-import top.fatweb.api.param.authentication.RoleChangeStatusParam
-import top.fatweb.api.param.authentication.RoleGetParam
-import top.fatweb.api.param.authentication.RoleUpdateParam
+import top.fatweb.api.param.authentication.*
 import top.fatweb.api.service.permission.IPowerRoleService
 import top.fatweb.api.service.permission.IRoleService
 import top.fatweb.api.util.PageUtil
@@ -123,5 +120,16 @@ class RoleServiceImpl(
 
     override fun changeStatus(roleChangeStatusParam: RoleChangeStatusParam): Boolean {
         return updateById(RoleConverter.roleChangeStatusParamToRole(roleChangeStatusParam))
+    }
+
+    @Transactional
+    override fun deleteOne(id: Long) {
+        this.delete(RoleDeleteParam(listOf(id)))
+    }
+
+    @Transactional
+    override fun delete(roleDeleteParam: RoleDeleteParam) {
+        baseMapper.deleteBatchIds(roleDeleteParam.ids)
+        powerRoleService.remove(KtQueryWrapper(PowerRole()).`in`(PowerRole::roleId, roleDeleteParam.ids))
     }
 }

@@ -2,6 +2,7 @@ package top.fatweb.api.entity.permission
 
 import com.baomidou.mybatisplus.annotation.*
 import java.io.Serializable
+import java.time.LocalDateTime
 
 /**
  * <p>
@@ -28,6 +29,18 @@ class Role : Serializable {
      */
     @TableField("enable")
     var enable: Int? = null
+
+    /**
+     * 创建时间
+     */
+    @TableField("create_time", fill = FieldFill.INSERT)
+    var createTime: LocalDateTime? = null
+
+    /**
+     * 修改时间
+     */
+    @TableField("update_time", fill = FieldFill.INSERT_UPDATE)
+    var updateTime: LocalDateTime? = null
 
     @TableField("deleted")
     @TableLogic

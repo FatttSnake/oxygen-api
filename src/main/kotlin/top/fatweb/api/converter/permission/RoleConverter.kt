@@ -14,13 +14,17 @@ object RoleConverter {
     fun roleToRoleVo(role: Role) = RoleVo(
         id = role.id,
         name = role.name,
-        enable = role.enable == 1
+        enable = role.enable == 1,
+        createTime = role.createTime,
+        updateTime = role.updateTime
     )
 
     fun roleToRoleWithPowerVo(role: Role) = RoleWithPowerVo(
         id = role.id,
         name = role.name,
         enable = role.enable == 1,
+        createTime = role.createTime,
+        updateTime = role.updateTime,
         modules = role.modules?.map { ModuleConverter.moduleToModuleVo(it) },
         menus = role.menus?.map { MenuConverter.menuToMenuVo(it) },
         elements = role.elements?.map { ElementConverter.elementToElementVo(it) },

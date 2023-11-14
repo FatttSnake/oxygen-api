@@ -3,6 +3,7 @@ package top.fatweb.api.vo.permission
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
 import io.swagger.v3.oas.annotations.media.Schema
+import java.time.LocalDateTime
 
 @Schema(description = "角色返回参数")
 data class RoleWithPowerVo(
@@ -14,6 +15,12 @@ data class RoleWithPowerVo(
 
     @Schema(description = "启用", example = "true")
     val enable: Boolean?,
+
+    @Schema(description = "创建时间", example = "1900-01-01T00:00:00.000Z")
+    val createTime: LocalDateTime?,
+
+    @Schema(description = "修改时间", example = "1900-01-01T00:00:00.000Z")
+    val updateTime: LocalDateTime?,
 
     @Schema(description = "模块列表")
     val modules: List<ModuleVo>?,

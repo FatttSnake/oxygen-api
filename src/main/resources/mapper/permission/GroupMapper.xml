@@ -9,6 +9,8 @@
         <id property="id" column="group_id"/>
         <result property="name" column="group_name"/>
         <result property="enable" column="group_enable"/>
+        <result property="createTime" column="group_create_time"/>
+        <result property="updateTime" column="group_update_time"/>
         <result property="deleted" column="group_deleted"/>
         <result property="version" column="group_version"/>
     </resultMap>

@@ -3,6 +3,7 @@ package top.fatweb.api.param.authentication
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotBlank
 
+@Schema(description = "角色添加请求参数")
 data class RoleAddParam(
     @Schema(description = "角色名称")
     @field:NotBlank(message = "Name can not be blank")

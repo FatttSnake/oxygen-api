@@ -6,10 +6,7 @@ import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.*
 import top.fatweb.api.entity.common.ResponseCode
 import top.fatweb.api.entity.common.ResponseResult
-import top.fatweb.api.param.authentication.RoleAddParam
-import top.fatweb.api.param.authentication.RoleChangeStatusParam
-import top.fatweb.api.param.authentication.RoleGetParam
-import top.fatweb.api.param.authentication.RoleUpdateParam
+import top.fatweb.api.param.authentication.*
 import top.fatweb.api.service.permission.IRoleService
 import top.fatweb.api.vo.PageVo
 import top.fatweb.api.vo.permission.RoleVo
@@ -71,5 +68,19 @@ class RoleController(
         } else {
             ResponseResult.databaseFail(ResponseCode.DATABASE_UPDATE_FILED)
         }
+    }
+
+    @Operation(summary = "删除角色")
+    @DeleteMapping("/{id}")
+    fun delete(@PathVariable id: Long): ResponseResult<Nothing> {
+        roleService.deleteOne(id)
+        return ResponseResult.databaseSuccess(ResponseCode.DATABASE_DELETE_SUCCESS)
+    }
+
+    @Operation(summary = "批量删除角色")
+    @DeleteMapping
+    fun deleteList(@Valid @RequestBody roleDeleteParam: RoleDeleteParam): ResponseResult<Nothing> {
+        roleService.delete(roleDeleteParam)
+        return ResponseResult.databaseSuccess(ResponseCode.DATABASE_DELETE_SUCCESS)
     }
 }

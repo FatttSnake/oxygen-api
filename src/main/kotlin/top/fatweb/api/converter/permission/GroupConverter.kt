@@ -9,7 +9,9 @@ object GroupConverter {
     fun groupToGroupVo(group: Group) = GroupVo(
         id = group.id,
         name = group.name,
-        enable = group.enable == 1
+        enable = group.enable == 1,
+        createTime = group.createTime,
+        updateTime = group.updateTime
     )
 
     fun groupPageToGroupPageVo(groupPage: IPage<Group>): PageVo<GroupVo> = PageVo(

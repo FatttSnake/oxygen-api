@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotBlank
 
+@Schema(description = "角色更新请求参数")
 data class RoleUpdateParam(
     @Schema(description = "角色 ID")
     @field:Min(0)
