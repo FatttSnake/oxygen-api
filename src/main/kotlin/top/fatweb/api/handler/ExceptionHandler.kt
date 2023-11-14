@@ -84,7 +84,7 @@ class ExceptionHandler {
 
             else -> {
                 logger.error(e.localizedMessage, e)
-                ResponseResult.fail(ResponseCode.SYSTEM_ERROR, data = null)
+                ResponseResult.fail(ResponseCode.SYSTEM_ERROR, e.localizedMessage, null)
             }
         }
     }

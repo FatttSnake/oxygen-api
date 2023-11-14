@@ -13,8 +13,11 @@ class ResponseResult<T> private constructor(
     @Schema(description = "数据") val data: T?
 ) : Serializable {
     companion object {
+        fun <T> build(code: Int, success: Boolean, msg: String, data: T?) =
+            ResponseResult(code, success, msg, data)
+
         fun <T> build(code: ResponseCode, success: Boolean, msg: String, data: T?) =
-            ResponseResult(code.code, success, msg, data)
+            build(code.code, success, msg, data)
 
         fun <T> success(code: ResponseCode = ResponseCode.SYSTEM_OK, msg: String = "success", data: T? = null) =
             build(code, true, msg, data)

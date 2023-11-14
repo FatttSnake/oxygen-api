@@ -10,6 +10,7 @@ import org.springframework.http.server.ServerHttpResponse
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.servlet.HandlerInterceptor
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice
+import top.fatweb.api.entity.common.ResponseCode
 import top.fatweb.api.entity.common.ResponseResult
 import top.fatweb.api.entity.system.SysLog
 import top.fatweb.api.service.system.ISysLogService
@@ -100,6 +101,11 @@ class SysLogInterceptor(
         response: ServerHttpResponse
     ): Any? {
         resultThreadLocal.set(body)
+
+        if (body is ResponseResult<*> && body.code == ResponseCode.SYSTEM_ERROR.code) {
+            return ResponseResult.build(body.code, body.success, "fail", body.data)
+        }
+
         return body
     }
 }
