@@ -4,7 +4,17 @@
     <select id="selectPage" resultType="long">
         select id
         from t_role
-        where deleted = 0
+        <where>
+            deleted = 0
+            <choose>
+                <when test="searchRegex == true">
+                    and t_role.name regexp #{searchName}
+                </when>
+                <otherwise>
+                    and t_role.name like concat('%' ,#{searchName}, '%')
+                </otherwise>
+            </choose>
+        </where>
     </select>
 
     <select id="getWithPowerByList" resultMap="roleWithPowerMap">

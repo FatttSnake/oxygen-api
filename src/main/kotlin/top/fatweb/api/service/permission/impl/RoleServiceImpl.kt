@@ -34,7 +34,8 @@ class RoleServiceImpl(
 
         PageUtil.setPageSort(roleGetParam, roleIdsPage)
 
-        val roleIdsIPage = baseMapper.selectPage(roleIdsPage)
+        val roleIdsIPage =
+            baseMapper.selectPage(roleIdsPage, roleGetParam?.searchName, roleGetParam?.searchRegex ?: false)
 
         val rolePage = Page<Role>(roleIdsPage.current, roleIdsIPage.size, roleIdsIPage.total)
         rolePage.setRecords(baseMapper.getWithPowerByList(roleIdsIPage.records))
