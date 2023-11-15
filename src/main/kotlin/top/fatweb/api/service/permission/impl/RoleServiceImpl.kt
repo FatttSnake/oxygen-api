@@ -38,7 +38,9 @@ class RoleServiceImpl(
             baseMapper.selectPage(roleIdsPage, roleGetParam?.searchName, roleGetParam?.searchRegex ?: false)
 
         val rolePage = Page<Role>(roleIdsPage.current, roleIdsIPage.size, roleIdsIPage.total)
-        rolePage.setRecords(baseMapper.getWithPowerByList(roleIdsIPage.records))
+        if (roleIdsIPage.total > 0) {
+            rolePage.setRecords(baseMapper.getWithPowerByList(roleIdsIPage.records))
+        }
 
 
         return RoleConverter.rolePageToRoleWithPowerPageVo(rolePage)

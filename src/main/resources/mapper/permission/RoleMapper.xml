@@ -6,14 +6,16 @@
         from t_role
         <where>
             deleted = 0
-            <choose>
-                <when test="searchRegex == true">
-                    and t_role.name regexp #{searchName}
-                </when>
-                <otherwise>
-                    and t_role.name like concat('%' ,#{searchName}, '%')
-                </otherwise>
-            </choose>
+            <if test="searchName != null">
+                <choose>
+                    <when test="searchRegex == true">
+                        and t_role.name regexp #{searchName}
+                    </when>
+                    <otherwise>
+                        and t_role.name like concat('%' ,#{searchName}, '%')
+                    </otherwise>
+                </choose>
+            </if>
         </where>
     </select>
 
