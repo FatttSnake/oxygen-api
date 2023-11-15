@@ -10,6 +10,8 @@ import top.fatweb.api.entity.permission.PowerRole
 import top.fatweb.api.entity.permission.Role
 import top.fatweb.api.mapper.permission.RoleMapper
 import top.fatweb.api.param.authentication.*
+import top.fatweb.api.service.permission.IElementService
+import top.fatweb.api.service.permission.IMenuService
 import top.fatweb.api.service.permission.IPowerRoleService
 import top.fatweb.api.service.permission.IRoleService
 import top.fatweb.api.util.PageUtil
@@ -27,7 +29,9 @@ import top.fatweb.api.vo.permission.RoleWithPowerVo
  */
 @Service
 class RoleServiceImpl(
-    private val powerRoleService: IPowerRoleService
+    private val powerRoleService: IPowerRoleService,
+    private val elementService: IElementService,
+    private val menuService: IMenuService
 ) : ServiceImpl<RoleMapper, Role>(), IRoleService {
     override fun getPage(roleGetParam: RoleGetParam?): PageVo<RoleWithPowerVo> {
         val roleIdsPage = Page<Long>(roleGetParam?.currentPage ?: 1, roleGetParam?.pageSize ?: 20)
@@ -53,16 +57,11 @@ class RoleServiceImpl(
 
     @Transactional
     override fun add(roleAddParam: RoleAddParam): RoleVo? {
-        val fullPowerIds: HashSet<Long> = hashSetOf()
-        roleAddParam.powerIds?.forEach {
-            fullPowerIds.add(it)
-            fullPowerIds.add(it / 100 * 100)
-            fullPowerIds.add(it / 10000 * 10000)
-            fullPowerIds.add(it / 1000000 * 1000000)
-        }
+        val fullPowerIds = roleAddParam.powerIds?.let { getFullPowerIds(it) }
+
         val role = RoleConverter.roleAddParamToRole(roleAddParam)
         if (baseMapper.insert(role) == 1) {
-            if (fullPowerIds.isEmpty()) {
+            if (fullPowerIds.isNullOrEmpty()) {
                 return RoleConverter.roleToRoleVo(role)
             }
 
@@ -81,18 +80,13 @@ class RoleServiceImpl(
 
     @Transactional
     override fun update(roleUpdateParam: RoleUpdateParam): RoleVo? {
-        val fullPowerIds: HashSet<Long> = hashSetOf()
-        roleUpdateParam.powerIds?.forEach {
-            fullPowerIds.add(it)
-            fullPowerIds.add(it / 100 * 100)
-            fullPowerIds.add(it / 10000 * 10000)
-            fullPowerIds.add(it / 1000000 * 1000000)
-        }
+        val fullPowerIds = roleUpdateParam.powerIds?.let { getFullPowerIds(it) }
+
         val role = RoleConverter.roleUpdateParamToRole(roleUpdateParam)
         val oldPowerList = baseMapper.getPowerList(roleUpdateParam.id)
         val addPowerIds = HashSet<Long>()
         val removePowerIds = HashSet<Long>()
-        fullPowerIds.forEach { addPowerIds.add(it) }
+        fullPowerIds?.forEach { addPowerIds.add(it) }
         oldPowerList.forEach {
             if (it != null) {
                 removePowerIds.add(it)
@@ -134,5 +128,31 @@ class RoleServiceImpl(
     override fun delete(roleDeleteParam: RoleDeleteParam) {
         baseMapper.deleteBatchIds(roleDeleteParam.ids)
         powerRoleService.remove(KtQueryWrapper(PowerRole()).`in`(PowerRole::roleId, roleDeleteParam.ids))
+    }
+
+    private fun getFullPowerIds(powerIds: List<Long>): Set<Long> {
+        val fullPowerIds: HashSet<Long> = hashSetOf()
+        powerIds.forEach {
+            fullPowerIds.add(it)
+            getElementParent(it / 100 * 100, fullPowerIds)
+            getMenuParent(it / 10000 * 10000, fullPowerIds)
+            fullPowerIds.add(it / 1000000 * 1000000)
+        }
+
+        return fullPowerIds
+    }
+
+    private fun getElementParent(id: Long, parentIds: HashSet<Long>) {
+        parentIds.add(id)
+        elementService.getById(id)?.parentId?.let {
+            getElementParent(it, parentIds)
+        }
+    }
+
+    private fun getMenuParent(id: Long, parentIds: HashSet<Long>) {
+        parentIds.add(id)
+        menuService.getById(id)?.parentId?.let {
+            getMenuParent(it, parentIds)
+        }
     }
 }
