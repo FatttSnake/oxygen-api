@@ -2,7 +2,7 @@ package top.fatweb.api.service.permission
 
 import com.baomidou.mybatisplus.extension.service.IService
 import top.fatweb.api.entity.permission.Power
-import top.fatweb.api.entity.permission.PowerSet
+import top.fatweb.api.vo.permission.PowerSetVo
 
 /**
  * <p>
@@ -13,5 +13,5 @@ import top.fatweb.api.entity.permission.PowerSet
  * @since 2023-10-25
  */
 interface IPowerService : IService<Power> {
-    fun getAll(): PowerSet
+    fun getAll(): PowerSetVo
 }
