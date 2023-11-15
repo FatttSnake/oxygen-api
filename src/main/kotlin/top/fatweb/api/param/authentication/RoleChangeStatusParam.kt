@@ -1,7 +1,5 @@
 package top.fatweb.api.param.authentication
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotNull
