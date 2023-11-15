@@ -1,8 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="top.fatweb.api.mapper.permission.GroupMapper">
-    <select id="selectPage">
+    <select id="selectPage" resultType="long">
+        select id
+        from t_group
+        <where>
+            deleted = 0
+            <if test="searchName != null">
+                <choose>
+                    <when test="searchRegex == true">
+                        and t_group.name regexp #{searchName}
+                    </when>
+                    <otherwise>
+                        and t_group.name like concat('%' ,#{searchName}, '%')
+                    </otherwise>
+                </choose>
+            </if>
+        </where>
+    </select>
 
+    <select id="getWithRoleByList" resultMap="groupWithRoleMap">
+        select t_group.id as group_id,
+        t_group.name as group_name,
+        t_group.enable as group_enable,
+        t_group.create_time as group_create_time,
+        t_group.update_time as group_update_time,
+        t_group.deleted as group_deleted,
+        t_group.version as group_version,
+        tr.id as role_id,
+        tr.name as role_name,
+        tr.enable as role_enable,
+        tr.create_time as role_create_time,
+        tr.update_time as role_update_time,
+        tr.deleted as role_deleted,
+        tr.version as role_version
+        from (select * from t_group where deleted = 0) as t_group
+        left join (select * from t_role_group where deleted = 0) as trg on t_group.id = trg.group_id
+        left join (select * from t_role where deleted = 0) as tr on tr.id = trg.role_id
+        <where>
+            <foreach collection="groupIds" item="item" index="index" open="and t_group.id in (" separator="," close=")"
+                     nullable="true">
+                #{item}
+            </foreach>
+        </where>
+    </select>
+
+    <select id="selectOne" resultMap="groupWithRoleMap">
+        select t_group.id          as group_id,
+               t_group.name        as group_name,
+               t_group.enable      as group_enable,
+               t_group.create_time as group_create_time,
+               t_group.update_time as group_update_time,
+               t_group.deleted     as group_deleted,
+               t_group.version     as group_version,
+               tr.id               as role_id,
+               tr.name             as role_name,
+               tr.enable           as role_enable,
+               tr.create_time      as role_create_time,
+               tr.update_time      as role_update_time,
+               tr.deleted          as role_deleted,
+               tr.version          as role_version
+        from (select * from t_group where deleted = 0) as t_group
+                 left join (select * from t_role_group where deleted = 0) as trg on t_group.id = trg.group_id
+                 left join (select * from t_role where deleted = 0) as tr on tr.id = trg.role_id
+        where t_group.id = #{id}
     </select>
 
     <resultMap id="groupMap" type="group">
@@ -13,5 +74,9 @@
         <result property="updateTime" column="group_update_time"/>
         <result property="deleted" column="group_deleted"/>
         <result property="version" column="group_version"/>
+    </resultMap>
+
+    <resultMap id="groupWithRoleMap" type="group" extends="groupMap">
+        <collection property="roles" resultMap="top.fatweb.api.mapper.permission.RoleMapper.roleMap"/>
     </resultMap>
 </mapper>

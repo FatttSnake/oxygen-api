@@ -15,5 +15,9 @@ import top.fatweb.api.entity.permission.Group
  */
 @Mapper
 interface GroupMapper : BaseMapper<Group> {
-    fun selectPage(page: IPage<Group>): IPage<Group>
+    fun selectPage(page: IPage<Long>, searchName: String?, searchRegex: Boolean): IPage<Long>
+
+    fun getWithRoleByList(groupIds: List<Long>): List<Group>?
+
+    fun selectOne(id: Long): Group?
 }
