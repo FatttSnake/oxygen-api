@@ -23,7 +23,7 @@ class PowerServiceImpl(
     private val elementService: IElementService,
     private val operationService: IOperationService
 ) : ServiceImpl<PowerMapper, Power>(), IPowerService {
-    override fun getAll() = PowerConverter.powerSetToPowerSetVo(PowerSet().apply {
+    override fun getList() = PowerConverter.powerSetToPowerSetVo(PowerSet().apply {
         moduleList = moduleService.list()
         menuList = menuService.list()
         elementList = elementService.list()

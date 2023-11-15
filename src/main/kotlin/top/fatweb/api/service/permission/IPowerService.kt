@@ -13,5 +13,5 @@ import top.fatweb.api.vo.permission.PowerSetVo
  * @since 2023-10-25
  */
 interface IPowerService : IService<Power> {
-    fun getAll(): PowerSetVo
+    fun getList(): PowerSetVo
 }

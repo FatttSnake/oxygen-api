@@ -18,6 +18,6 @@ class PowerController(
     private val powerService: IPowerService
 ) {
     @Operation(summary = "获取权限列表")
-    @GetMapping
-    fun get() = ResponseResult.databaseSuccess(data = powerService.getAll())
+    @GetMapping("/list")
+    fun getList() = ResponseResult.databaseSuccess(data = powerService.getList())
 }
