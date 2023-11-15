@@ -54,6 +54,12 @@ class RoleServiceImpl(
         return baseMapper.selectOne(id)?.let { RoleConverter.roleToRoleWithPowerVo(it) } ?: let { null }
     }
 
+    override fun listAll(): List<RoleVo> {
+        val roles = this.list()
+
+        return roles.map { RoleConverter.roleToRoleVo(it) }
+    }
+
 
     @Transactional
     override fun add(roleAddParam: RoleAddParam): RoleVo? {
@@ -83,7 +89,9 @@ class RoleServiceImpl(
         val fullPowerIds = roleUpdateParam.powerIds?.let { getFullPowerIds(it) }
 
         val role = RoleConverter.roleUpdateParamToRole(roleUpdateParam)
-        val oldPowerList = baseMapper.getPowerList(roleUpdateParam.id)
+        val oldPowerList = powerRoleService.list(
+            KtQueryWrapper(PowerRole()).select(PowerRole::powerId).eq(PowerRole::roleId, roleUpdateParam.id)
+        ).map { it.powerId }
         val addPowerIds = HashSet<Long>()
         val removePowerIds = HashSet<Long>()
         fullPowerIds?.forEach { addPowerIds.add(it) }

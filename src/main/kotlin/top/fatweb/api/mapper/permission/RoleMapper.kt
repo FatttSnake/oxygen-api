@@ -20,6 +20,4 @@ interface RoleMapper : BaseMapper<Role> {
     fun getWithPowerByList(roleIds: List<Long>): List<Role>?
 
     fun selectOne(id: Long): Role?
-
-    fun getPowerList(id: Long): List<Long?>
 }

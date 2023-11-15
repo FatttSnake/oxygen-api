@@ -20,6 +20,8 @@ interface IRoleService : IService<Role> {
 
     fun getOne(id: Long): RoleWithPowerVo?
 
+    fun listAll(): List<RoleVo>
+
     fun add(roleAddParam: RoleAddParam): RoleVo?
 
     fun update(roleUpdateParam: RoleUpdateParam): RoleVo?

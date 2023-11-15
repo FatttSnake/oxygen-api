@@ -10,7 +10,6 @@ import jakarta.validation.constraints.NotNull
 data class RoleChangeStatusParam(
     @Schema(description = "角色 ID")
     @field:Min(0)
-    @JsonSerialize(using = ToStringSerializer::class)
     val id: Long,
 
     @Schema(description = "启用", allowableValues = ["true", "false"])

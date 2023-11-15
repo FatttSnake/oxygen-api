@@ -24,7 +24,7 @@ import top.fatweb.api.vo.permission.RoleWithPowerVo
 class RoleController(
     private val roleService: IRoleService
 ) {
-    @Operation(summary = "获取角色列表")
+    @Operation(summary = "获取角色")
     @GetMapping
     fun get(roleGetParam: RoleGetParam?): ResponseResult<PageVo<RoleWithPowerVo>> {
         return ResponseResult.databaseSuccess(
@@ -37,6 +37,14 @@ class RoleController(
     fun getOne(@PathVariable id: Long): ResponseResult<RoleWithPowerVo> {
         return ResponseResult.databaseSuccess(
             data = roleService.getOne(id)
+        )
+    }
+
+    @Operation(summary = "获取角色列表")
+    @GetMapping("/list")
+    fun list(): ResponseResult<List<RoleVo>> {
+        return ResponseResult.databaseSuccess(
+            data = roleService.listAll()
         )
     }
 

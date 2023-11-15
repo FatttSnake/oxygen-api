@@ -90,13 +90,6 @@
         where t_role.id = #{id}
     </select>
 
-    <select id="getPowerList" resultType="long">
-        select tpr.power_id
-        from t_role
-                 left join (select * from t_power_role where deleted = 0) as tpr on t_role.id = tpr.role_id
-        where t_role.id = #{id}
-    </select>
-
     <resultMap id="roleMap" type="role">
         <id property="id" column="role_id"/>
         <result property="name" column="role_name"/>
