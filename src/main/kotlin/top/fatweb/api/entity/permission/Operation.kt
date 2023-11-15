@@ -32,18 +32,12 @@ class Operation : Serializable {
     var code: String? = null
 
     /**
-     * 权限ID
-     */
-    @TableField("power_id")
-    var powerId: Long? = null
-
-    /**
      * 页面元素ID
      */
     @TableField("element_id")
     var elementId: Long? = null
 
     override fun toString(): String {
-        return "Operation(id=$id, name=$name, code=$code, powerId=$powerId, elementId=$elementId)"
+        return "Operation(id=$id, name=$name, code=$code, elementId=$elementId)"
     }
 }

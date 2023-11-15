@@ -29,30 +29,26 @@
         t_role.version as role_version,
         tm.id as module_id,
         tm.name as module_name,
-        tm.power_id as module_power_id,
         tmn.id as menu_id,
         tmn.name as menu_name,
         tmn.url as menu_url,
-        tmn.power_id as menu_power_id,
         tmn.parent_id as menu_parent_id,
         tmn.module_id as menu_module_id,
         te.id as element_id,
         te.name as element_name,
-        te.power_id as element_power_id,
         te.parent_id as element_parent_id,
         te.menu_id as element_menu_id,
         t.id as operation_id,
         t.name as operation_name,
         t.code as operation_code,
-        t.power_id as operation_power_id,
         t.element_id as operation_element_id
         from (select * from t_role where deleted = 0) as t_role
         left join (select * from t_power_role where deleted = 0) as tpr on t_role.id = tpr.role_id
         left join t_power tp on tp.id = tpr.power_id
-        left join t_module tm on tp.id = tm.power_id
-        left join t_menu tmn on tp.id = tmn.power_id
-        left join t_element te on tp.id = te.power_id
-        left join t_operation t on tp.id = t.power_id
+        left join t_module tm on tp.id = tm.id
+        left join t_menu tmn on tp.id = tmn.id
+        left join t_element te on tp.id = te.id
+        left join t_operation t on tp.id = t.id
         <where>
             <foreach collection="roleIds" item="item" index="index" open="and t_role.id in (" separator="," close=")"
                      nullable="true">
@@ -71,30 +67,26 @@
                         t_role.version as role_version,
                         tm.id          as module_id,
                         tm.name        as module_name,
-                        tm.power_id    as module_power_id,
                         tmn.id         as menu_id,
                         tmn.name       as menu_name,
                         tmn.url        as menu_url,
-                        tmn.power_id   as menu_power_id,
                         tmn.parent_id  as menu_parent_id,
                         tmn.module_id  as menu_module_id,
                         te.id          as element_id,
                         te.name        as element_name,
-                        te.power_id    as element_power_id,
                         te.parent_id   as element_parent_id,
                         te.menu_id     as element_menu_id,
                         t.id           as operation_id,
                         t.name         as operation_name,
                         t.code         as operation_code,
-                        t.power_id     as operation_power_id,
                         t.element_id   as operation_element_id
         from (select * from t_role where deleted = 0) as t_role
                  left join (select * from t_power_role where deleted = 0) as tpr on t_role.id = tpr.role_id
                  left join t_power tp on tp.id = tpr.power_id
-                 left join t_module tm on tp.id = tm.power_id
-                 left join t_menu tmn on tp.id = tmn.power_id
-                 left join t_element te on tp.id = te.power_id
-                 left join t_operation t on tp.id = t.power_id
+                 left join t_module tm on tp.id = tm.id
+                 left join t_menu tmn on tp.id = tmn.id
+                 left join t_element te on tp.id = te.id
+                 left join t_operation t on tp.id = t.id
         where t_role.id = #{id}
     </select>
 

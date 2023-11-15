@@ -8,7 +8,6 @@ object MenuConverter {
         id = menu.id,
         name = menu.name,
         url = menu.url,
-        powerId = menu.powerId,
         parentId = menu.parentId,
         moduleId = menu.moduleId
     )

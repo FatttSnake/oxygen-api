@@ -6,7 +6,6 @@ import top.fatweb.api.vo.permission.ModuleVo
 object ModuleConverter {
     fun moduleToModuleVo(module: Module) = ModuleVo(
         id = module.id,
-        name = module.name,
-        powerId = module.powerId
+        name = module.name
     )
 }

@@ -28,21 +28,17 @@
                tui.version                   as user_info_version,
                tmo.id                        as module_id,
                tmo.name                      as module_name,
-               tmo.power_id                  as module_power_id,
                tm.id                         as menu_id,
                tm.name                       as menu_name,
                tm.url                        as menu_url,
-               tm.power_id                   as menu_power_id,
                tm.parent_id                  as menu_parent_id,
                te.id                         as element_id,
                te.name                       as element_name,
-               te.power_id                   as element_power_id,
                te.parent_id                  as element_parent_id,
                te.menu_id                    as element_menu_id,
                t.id                          as operation_id,
                t.name                        as operation_name,
                t.code                        as operation_code,
-               t.power_id                    as operation_power_id,
                t.element_id                  as operation_element_id
         from t_user
                  left join (select * from t_user_info where deleted = 0) as tui on t_user.id = tui.user_id
@@ -54,10 +50,10 @@
                            on tr.id = trg.role_id or tr.id = tur.role_id
                  left join (select * from t_power_role where deleted = 0) as tpr on tr.id = tpr.role_id
                  left join t_power as tp on tp.id = tpr.power_id
-                 left join t_module as tmo on tp.id = tmo.power_id
-                 left join t_menu as tm on tp.id = tm.power_id
-                 left join t_element as te on tp.id = te.power_id
-                 left join t_operation as t on tp.id = t.power_id
+                 left join t_module as tmo on tp.id = tmo.id
+                 left join t_menu as tm on tp.id = tm.id
+                 left join t_element as te on tp.id = te.id
+                 left join t_operation as t on tp.id = t.id
         where t_user.deleted = 0
           and t_user.username = #{username};
     </select>

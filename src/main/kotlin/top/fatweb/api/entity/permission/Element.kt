@@ -26,12 +26,6 @@ class Element : Serializable {
     var name: String? = null
 
     /**
-     * 权限ID
-     */
-    @TableField("power_id")
-    var powerId: Long? = null
-
-    /**
      * 父ID
      */
     @TableField("parent_id")
@@ -44,6 +38,6 @@ class Element : Serializable {
     var menuId: Long? = null
 
     override fun toString(): String {
-        return "Element(id=$id, name=$name, powerId=$powerId, menuId=$menuId)"
+        return "Element(id=$id, name=$name, parentId=$parentId, menuId=$menuId)"
     }
 }

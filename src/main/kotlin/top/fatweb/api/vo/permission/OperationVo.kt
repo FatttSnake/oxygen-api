@@ -12,9 +12,6 @@ data class OperationVo(
     @Schema(description = "功能编码", example = "system:user:add")
     val code: String?,
 
-    @Schema(description = "权限 ID")
-    val powerId: Long?,
-
     @Schema(description = "页面元素 ID")
     val elementId: Long?
 )

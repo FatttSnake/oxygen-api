@@ -7,8 +7,5 @@ data class ModuleVo(
     val id: Long?,
 
     @Schema(description = "模块名", example = "系统")
-    val name: String?,
-
-    @Schema(description = "权限 ID")
-    val powerId: Long?
+    val name: String?
 )

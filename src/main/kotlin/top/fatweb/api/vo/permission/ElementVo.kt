@@ -9,9 +9,6 @@ data class ElementVo(
     @Schema(description = "元素名", example = "AddButton")
     val name: String?,
 
-    @Schema(description = "权限 ID")
-    val powerId: Long?,
-
     @Schema(description = "父 ID")
     val parentId: Long?,
 

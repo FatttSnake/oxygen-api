@@ -8,7 +8,6 @@ object OperationConverter {
         id = operation.id,
         name = operation.name,
         code = operation.code,
-        powerId = operation.powerId,
         elementId = operation.elementId
     )
 }

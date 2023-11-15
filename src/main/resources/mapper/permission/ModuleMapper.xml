@@ -4,6 +4,5 @@
     <resultMap id="moduleMap" type="module">
         <id property="id" column="module_id"/>
         <result property="name" column="module_name"/>
-        <result property="powerId" column="module_power_id"/>
     </resultMap>
 </mapper>

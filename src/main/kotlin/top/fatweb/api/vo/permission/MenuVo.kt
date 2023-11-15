@@ -12,9 +12,6 @@ data class MenuVo(
     @Schema(description = "URL", example = "/system")
     val url: String?,
 
-    @Schema(description = "权限 ID")
-    val powerId: Long?,
-
     @Schema(description = "父 ID")
     val parentId: Long?,
 

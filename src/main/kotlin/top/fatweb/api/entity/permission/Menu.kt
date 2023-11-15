@@ -32,12 +32,6 @@ class Menu : Serializable {
     var url: String? = null
 
     /**
-     * 权限ID
-     */
-    @TableField("power_id")
-    var powerId: Long? = null
-
-    /**
      * 父ID
      */
     @TableField("parent_id")
@@ -50,6 +44,6 @@ class Menu : Serializable {
     var moduleId: Long? = null
 
     override fun toString(): String {
-        return "Menu(id=$id, name=$name, url=$url, powerId=$powerId, parentId=$parentId, moduleId=$moduleId)"
+        return "Menu(id=$id, name=$name, url=$url, parentId=$parentId, moduleId=$moduleId)"
     }
 }

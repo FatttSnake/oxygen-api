@@ -25,14 +25,7 @@ class Module : Serializable {
     @TableField("name")
     var name: String? = null
 
-    /**
-     * 权限ID
-     */
-    @TableField("power_id")
-    var powerId: Long? = null
-
     override fun toString(): String {
-        return "Module(id=$id, name=$name, powerId=$powerId)"
+        return "Module(id=$id, name=$name)"
     }
-
 }

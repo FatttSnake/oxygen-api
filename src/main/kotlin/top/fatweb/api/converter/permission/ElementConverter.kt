@@ -7,7 +7,6 @@ object ElementConverter {
     fun elementToElementVo(element: Element) = ElementVo(
         id = element.id,
         name = element.name,
-        powerId = element.powerId,
         parentId = element.parentId,
         menuId = element.menuId
     )
