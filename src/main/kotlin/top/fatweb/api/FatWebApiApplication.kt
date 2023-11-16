@@ -7,6 +7,12 @@ import org.springframework.transaction.annotation.EnableTransactionManagement
 import java.io.File
 import java.util.*
 
+/**
+ * Application main class
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 @SpringBootApplication
 @EnableTransactionManagement
 class FatWebApiApplication

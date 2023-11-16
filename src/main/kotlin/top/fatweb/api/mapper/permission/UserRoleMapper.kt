@@ -5,12 +5,10 @@ import org.apache.ibatis.annotations.Mapper
 import top.fatweb.api.entity.permission.UserRole
 
 /**
- * <p>
- * 中间表-用户-角色 Mapper 接口
- * </p>
+ * User role intermediate mapper
  *
  * @author FatttSnake
- * @since 2023-10-25
+ * @since 1.0.0
  */
 @Mapper
 interface UserRoleMapper : BaseMapper<UserRole>

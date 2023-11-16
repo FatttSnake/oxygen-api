@@ -6,6 +6,12 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
 
+/**
+ * Application properties
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 @Component
 @ConfigurationProperties("app")
 object ServerProperties {

@@ -1,5 +1,11 @@
 package top.fatweb.api.entity.common
 
+/**
+ * Response code entity
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 enum class ResponseCode(val code: Int) {
     SYSTEM_OK(BusinessCode.SYSTEM, 0),
     SYSTEM_LOGIN_SUCCESS(BusinessCode.SYSTEM, 20),

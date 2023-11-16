@@ -5,12 +5,10 @@ import top.fatweb.api.entity.permission.Power
 import top.fatweb.api.vo.permission.PowerSetVo
 
 /**
- * <p>
- * 权限表 服务类
- * </p>
+ * Power service interface
  *
  * @author FatttSnake
- * @since 2023-10-25
+ * @since 1.0.0
  */
 interface IPowerService : IService<Power> {
     fun getList(): PowerSetVo

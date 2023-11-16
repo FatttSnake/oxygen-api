@@ -3,7 +3,10 @@ package top.fatweb.api.entity.permission
 import java.io.Serializable
 
 /**
- * 权限集合
+ * Set of power entity
+ *
+ * @author FatttSnake
+ * @since 1.0.0
  */
 class PowerSet : Serializable {
     var moduleList: List<Module>? = null

@@ -5,6 +5,12 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import top.fatweb.api.filter.ExceptionFilter
 
+/**
+ * Filter config
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 @Configuration
 class FilterConfig {
     @Bean

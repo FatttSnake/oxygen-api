@@ -3,6 +3,12 @@ package top.fatweb.api.properties
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.stereotype.Component
 
+/**
+ * Admin properties
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 @Component
 @ConfigurationProperties("app.admin")
 object AdminProperties {

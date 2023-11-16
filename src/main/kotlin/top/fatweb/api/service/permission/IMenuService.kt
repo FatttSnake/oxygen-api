@@ -4,11 +4,9 @@ import com.baomidou.mybatisplus.extension.service.IService
 import top.fatweb.api.entity.permission.Menu
 
 /**
- * <p>
- * 菜单表 服务类
- * </p>
+ * Menu service interface
  *
  * @author FatttSnake
- * @since 2023-10-25
+ * @since 1.0.0
  */
 interface IMenuService : IService<Menu>

@@ -10,6 +10,12 @@ import top.fatweb.api.vo.PageVo
 import top.fatweb.api.vo.permission.RoleVo
 import top.fatweb.api.vo.permission.RoleWithPowerVo
 
+/**
+ * Role converter
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 object RoleConverter {
     fun roleToRoleVo(role: Role) = RoleVo(
         id = role.id,

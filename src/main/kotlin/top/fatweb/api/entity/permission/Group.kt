@@ -5,12 +5,10 @@ import java.io.Serializable
 import java.time.LocalDateTime
 
 /**
- * <p>
- * 用户组表
- * </p>
+ * Group entity
  *
  * @author FatttSnake
- * @since 2023-10-25
+ * @since 1.0.0
  */
 @TableName("t_group")
 class Group : Serializable {

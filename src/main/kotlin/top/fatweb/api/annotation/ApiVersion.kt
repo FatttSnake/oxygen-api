@@ -2,6 +2,12 @@ package top.fatweb.api.annotation
 
 import org.springframework.core.annotation.AliasFor
 
+/**
+ * Api controller version annotation
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.RUNTIME)
 annotation class ApiVersion(

@@ -4,6 +4,12 @@ import jakarta.servlet.http.HttpServletRequest
 import org.springframework.web.servlet.mvc.condition.RequestCondition
 import java.util.regex.Pattern
 
+/**
+ * Api version condition
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 class ApiVersionCondition(private val apiVersion: Int) : RequestCondition<ApiVersionCondition> {
     private val versionPrefixPattern: Pattern = Pattern.compile(".*v(\\d+).*")
 

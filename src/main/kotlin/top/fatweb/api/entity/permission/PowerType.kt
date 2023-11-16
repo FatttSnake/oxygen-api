@@ -6,12 +6,10 @@ import com.baomidou.mybatisplus.annotation.TableName
 import java.io.Serializable
 
 /**
- * <p>
- * 权限类型表
- * </p>
+ * Power type entity
  *
  * @author FatttSnake
- * @since 2023-10-25
+ * @since 1.0.0
  */
 @TableName("t_power_type")
 class PowerType : Serializable {

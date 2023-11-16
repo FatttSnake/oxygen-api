@@ -3,6 +3,12 @@ package top.fatweb.api.param
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.Min
 
+/**
+ * Page sort param
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 open class PageSortParam {
     @Schema(description = "分页页码", example = "1", defaultValue = "1")
     @field:Min(1, message = "Pagination page number must be a positive integer")

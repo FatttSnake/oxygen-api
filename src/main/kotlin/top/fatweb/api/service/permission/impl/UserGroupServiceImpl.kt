@@ -7,12 +7,10 @@ import top.fatweb.api.mapper.permission.UserGroupMapper
 import top.fatweb.api.service.permission.IUserGroupService
 
 /**
- * <p>
- * 中间表-用户-用户组 服务实现类
- * </p>
+ * User group intermediate service implement
  *
  * @author FatttSnake
- * @since 2023-10-25
+ * @since 1.0.0
  */
 @Service
 class UserGroupServiceImpl : ServiceImpl<UserGroupMapper, UserGroup>(), IUserGroupService

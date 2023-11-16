@@ -7,12 +7,10 @@ import top.fatweb.api.mapper.permission.MenuMapper
 import top.fatweb.api.service.permission.IMenuService
 
 /**
- * <p>
- * 菜单表 服务实现类
- * </p>
+ * Menu service implement
  *
  * @author FatttSnake
- * @since 2023-10-25
+ * @since 1.0.0
  */
 @Service
 class MenuServiceImpl : ServiceImpl<MenuMapper, Menu>(), IMenuService

@@ -12,15 +12,13 @@ import top.fatweb.api.entity.common.ResponseResult
 import top.fatweb.api.param.system.SysLogGetParam
 import top.fatweb.api.service.system.ISysLogService
 import top.fatweb.api.vo.PageVo
-import top.fatweb.api.vo.system.SysLogGetVo
+import top.fatweb.api.vo.system.SysLogVo
 
 /**
- * <p>
- * 系统日志表 前端控制器
- * </p>
+ * System log controller
  *
  * @author FatttSnake
- * @since 2023-10-18
+ * @since 1.0.0
  */
 @RestController
 @RequestMapping("/system/log")
@@ -30,7 +28,7 @@ class SysLogController(
 ) {
     @Operation(summary = "获取")
     @GetMapping
-    fun get(@Valid sysLogGetParam: SysLogGetParam?): ResponseResult<PageVo<SysLogGetVo>> {
+    fun get(@Valid sysLogGetParam: SysLogGetParam?): ResponseResult<PageVo<SysLogVo>> {
         return ResponseResult.success(
             ResponseCode.DATABASE_SELECT_SUCCESS, data = SysLogConverter.sysLogPageToSysLogPageVo(
                 sysLogService.getPage(sysLogGetParam)

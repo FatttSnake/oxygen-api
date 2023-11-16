@@ -5,6 +5,12 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import top.fatweb.api.interceptor.SysLogInterceptor
 
+/**
+ * System log config
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 @Configuration
 class SysLogConfig(
     private val sysLogInterceptor: SysLogInterceptor

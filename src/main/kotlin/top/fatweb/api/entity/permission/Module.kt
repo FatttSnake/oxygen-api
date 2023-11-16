@@ -6,12 +6,10 @@ import com.baomidou.mybatisplus.annotation.TableName
 import java.io.Serializable
 
 /**
- * <p>
- * 模块表
- * </p>
+ * Module Entity
  *
  * @author FatttSnake
- * @since 2023-10-25
+ * @since 1.0.0
  */
 @TableName("t_module")
 class Module : Serializable {

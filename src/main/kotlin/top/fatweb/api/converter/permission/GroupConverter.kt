@@ -10,6 +10,12 @@ import top.fatweb.api.vo.PageVo
 import top.fatweb.api.vo.permission.GroupVo
 import top.fatweb.api.vo.permission.GroupWithRoleVo
 
+/**
+ * Group converter
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 object GroupConverter {
     fun groupToGroupVo(group: Group) = GroupVo(
         id = group.id,

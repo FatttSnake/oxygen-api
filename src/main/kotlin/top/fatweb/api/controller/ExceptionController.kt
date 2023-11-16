@@ -5,6 +5,12 @@ import jakarta.servlet.http.HttpServletRequest
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
+/**
+ * Exception controller
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 @Hidden
 @RestController
 @RequestMapping("/error")

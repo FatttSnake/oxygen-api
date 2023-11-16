@@ -2,6 +2,12 @@ package top.fatweb.api.util
 
 import kotlin.math.floor
 
+/**
+ * Byte util
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 object ByteUtil {
     private const val BASE = 1024
 

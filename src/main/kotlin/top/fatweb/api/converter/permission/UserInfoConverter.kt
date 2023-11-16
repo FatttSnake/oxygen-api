@@ -3,6 +3,12 @@ package top.fatweb.api.converter.permission
 import top.fatweb.api.entity.permission.UserInfo
 import top.fatweb.api.vo.permission.UserInfoVo
 
+/**
+ * User information converter
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 object UserInfoConverter {
     fun userInfoToUserInfoVo(userInfo: UserInfo) = UserInfoVo(
         id = userInfo.id,

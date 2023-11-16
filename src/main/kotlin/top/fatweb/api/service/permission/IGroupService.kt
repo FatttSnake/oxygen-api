@@ -8,12 +8,10 @@ import top.fatweb.api.vo.permission.GroupVo
 import top.fatweb.api.vo.permission.GroupWithRoleVo
 
 /**
- * <p>
- * 用户组表 服务类
- * </p>
+ * Group service interface
  *
  * @author FatttSnake
- * @since 2023-10-25
+ * @since 1.0.0
  */
 interface IGroupService : IService<Group> {
     fun getPage(groupGetParam: GroupGetParam?): PageVo<GroupWithRoleVo>

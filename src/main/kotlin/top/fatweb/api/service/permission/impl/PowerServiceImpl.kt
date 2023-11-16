@@ -9,12 +9,10 @@ import top.fatweb.api.mapper.permission.PowerMapper
 import top.fatweb.api.service.permission.*
 
 /**
- * <p>
- * 权限表 服务实现类
- * </p>
+ * Power service implement
  *
  * @author FatttSnake
- * @since 2023-10-25
+ * @since 1.0.0
  */
 @Service
 class PowerServiceImpl(

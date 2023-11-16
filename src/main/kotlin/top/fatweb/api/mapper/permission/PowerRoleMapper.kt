@@ -5,12 +5,10 @@ import org.apache.ibatis.annotations.Mapper
 import top.fatweb.api.entity.permission.PowerRole
 
 /**
- * <p>
- * 中间表-权限-角色 Mapper 接口
- * </p>
+ * Power role intermediate mapper
  *
  * @author FatttSnake
- * @since 2023-10-25
+ * @since 1.0.0
  */
 @Mapper
 interface PowerRoleMapper : BaseMapper<PowerRole>

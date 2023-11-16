@@ -14,6 +14,12 @@ import top.fatweb.api.service.permission.IUserInfoService
 import top.fatweb.api.service.permission.IUserService
 import kotlin.random.Random
 
+/**
+ * Application initialization config
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 @DependsOn("adminProperties")
 @Component
 class InitConfig(

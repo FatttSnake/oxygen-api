@@ -4,6 +4,12 @@ import com.baomidou.mybatisplus.core.metadata.OrderItem
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import top.fatweb.api.param.PageSortParam
 
+/**
+ * Page util
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 object PageUtil {
     fun <T: Page<*>> setPageSort(pageSortParam: PageSortParam?, page: T, defaultOrder: OrderItem? = null) {
         if (pageSortParam?.sortField != null || pageSortParam?.sortOrder != null) {

@@ -9,7 +9,10 @@ import top.fatweb.api.entity.common.ResponseResult
 import top.fatweb.api.service.permission.IPowerService
 
 /**
- * 权限 前端控制器
+ * Power controller
+ *
+ * @author FatttSnake
+ * @since 1.0.0
  */
 @Tag(name = "权限管理", description = "权限管理相关接口")
 @RestController

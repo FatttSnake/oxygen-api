@@ -2,6 +2,12 @@ package top.fatweb.api.vo.permission
 
 import io.swagger.v3.oas.annotations.media.Schema
 
+/**
+ * Element value object
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 @Schema(description = "页面元素返回参数")
 data class ElementVo(
     val id: Long?,

@@ -22,6 +22,12 @@ import java.time.temporal.ChronoUnit
 import java.util.*
 import java.util.concurrent.Executor
 
+/**
+ * System log interceptor
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 @ControllerAdvice
 class SysLogInterceptor(
     private val customThreadPoolTaskExecutor: Executor, private val sysLogService: ISysLogService

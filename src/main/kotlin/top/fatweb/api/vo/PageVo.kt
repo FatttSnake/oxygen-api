@@ -2,6 +2,12 @@ package top.fatweb.api.vo
 
 import io.swagger.v3.oas.annotations.media.Schema
 
+/**
+ * Page value object
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 @Schema(description = "分页返回参数")
 data class PageVo<T>(
     @Schema(description = "总数量", example = "100")

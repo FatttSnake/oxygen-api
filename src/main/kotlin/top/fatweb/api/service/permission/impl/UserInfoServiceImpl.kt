@@ -7,12 +7,10 @@ import top.fatweb.api.mapper.permission.UserInfoMapper
 import top.fatweb.api.service.permission.IUserInfoService
 
 /**
- * <p>
- * 用户资料表 服务实现类
- * </p>
+ * User information service implement
  *
  * @author FatttSnake
- * @since 2023-10-30
+ * @since 1.0.0
  */
 @Service
 class UserInfoServiceImpl : ServiceImpl<UserInfoMapper, UserInfo>(), IUserInfoService

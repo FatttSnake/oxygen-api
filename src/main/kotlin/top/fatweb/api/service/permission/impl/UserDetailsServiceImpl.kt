@@ -6,6 +6,12 @@ import org.springframework.stereotype.Service
 import top.fatweb.api.entity.permission.LoginUser
 import top.fatweb.api.service.permission.IUserService
 
+/**
+ * User details service implement
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 @Service
 class UserDetailsServiceImpl(val userService: IUserService) : UserDetailsService {
     override fun loadUserByUsername(username: String): UserDetails {

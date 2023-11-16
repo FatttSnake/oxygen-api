@@ -13,12 +13,10 @@ import top.fatweb.api.vo.permission.GroupVo
 import top.fatweb.api.vo.permission.GroupWithRoleVo
 
 /**
- * <p>
- * 用户组表 前端控制器
- * </p>
+ * Group controller
  *
  * @author FatttSnake
- * @since 2023-11-09
+ * @since 1.0.0
  */
 @Tag(name = "用户组管理", description = "用户组管理相关接口")
 @RestController

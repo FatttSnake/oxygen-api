@@ -4,11 +4,9 @@ import com.baomidou.mybatisplus.extension.service.IService
 import top.fatweb.api.entity.permission.UserInfo
 
 /**
- * <p>
- * 用户资料表 服务类
- * </p>
+ * User information service interface
  *
  * @author FatttSnake
- * @since 2023-10-30
+ * @since 1.0.0
  */
 interface IUserInfoService : IService<UserInfo>

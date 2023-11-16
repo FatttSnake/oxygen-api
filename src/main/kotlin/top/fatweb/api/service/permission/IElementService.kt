@@ -4,11 +4,9 @@ import com.baomidou.mybatisplus.extension.service.IService
 import top.fatweb.api.entity.permission.Element
 
 /**
- * <p>
- * 页面元素表 服务类
- * </p>
+ * Element service interface
  *
  * @author FatttSnake
- * @since 2023-10-25
+ * @since 1.0.0
  */
 interface IElementService : IService<Element>

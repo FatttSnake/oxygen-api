@@ -6,12 +6,10 @@ import org.apache.ibatis.annotations.Param
 import top.fatweb.api.entity.permission.User
 
 /**
- * <p>
- * 用户表 Mapper 接口
- * </p>
+ * User mapper
  *
  * @author FatttSnake
- * @since 2023-10-04
+ * @since 1.0.0
  */
 @Mapper
 interface UserMapper : BaseMapper<User> {

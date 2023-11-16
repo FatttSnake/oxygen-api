@@ -19,6 +19,12 @@ import top.fatweb.api.entity.common.ResponseCode
 import top.fatweb.api.entity.common.ResponseResult
 import top.fatweb.api.exception.TokenHasExpiredException
 
+/**
+ * Exception handler
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 @RestControllerAdvice
 class ExceptionHandler {
     private val logger: Logger = LoggerFactory.getLogger(this::class.java)

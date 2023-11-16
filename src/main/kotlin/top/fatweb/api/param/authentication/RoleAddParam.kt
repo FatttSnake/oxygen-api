@@ -3,6 +3,12 @@ package top.fatweb.api.param.authentication
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotBlank
 
+/**
+ * Role add param
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 @Schema(description = "角色添加请求参数")
 data class RoleAddParam(
     @Schema(description = "角色名称")

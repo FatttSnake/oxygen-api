@@ -6,6 +6,12 @@ import org.springframework.security.core.AuthenticationException
 import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.stereotype.Component
 
+/**
+ * Jwt authentication entry point handler
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 @Component
 class JwtAuthenticationEntryPointHandler : AuthenticationEntryPoint {
     override fun commence(

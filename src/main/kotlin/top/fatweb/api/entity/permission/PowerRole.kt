@@ -4,12 +4,10 @@ import com.baomidou.mybatisplus.annotation.*
 import java.io.Serializable
 
 /**
- * <p>
- * 中间表-权限-角色
- * </p>
+ * Power role intermediate entity
  *
  * @author FatttSnake
- * @since 2023-10-25
+ * @since 1.0.0
  */
 @TableName("t_power_role")
 class PowerRole : Serializable {

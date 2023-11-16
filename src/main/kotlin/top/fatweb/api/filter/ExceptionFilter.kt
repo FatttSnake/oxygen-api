@@ -6,6 +6,12 @@ import jakarta.servlet.ServletRequest
 import jakarta.servlet.ServletResponse
 import org.springframework.stereotype.Component
 
+/**
+ * Exception filter
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 @Component
 class ExceptionFilter : Filter {
     override fun doFilter(

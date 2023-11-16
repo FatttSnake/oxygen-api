@@ -4,12 +4,10 @@ import com.baomidou.mybatisplus.annotation.*
 import java.io.Serializable
 
 /**
- * <p>
- * 中间表-角色-用户组
- * </p>
+ * Role group intermediate entity
  *
  * @author FatttSnake
- * @since 2023-10-25
+ * @since 1.0.0
  */
 @TableName("t_role_group")
 class RoleGroup : Serializable {

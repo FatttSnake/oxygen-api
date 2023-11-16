@@ -5,8 +5,14 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDateTime
 
+/**
+ * System log value object
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 @Schema(description = "获取系统日志返回参数")
-class SysLogGetVo(
+class SysLogVo(
     @JsonSerialize(using = ToStringSerializer::class)
     val id: Long?,
 

@@ -6,12 +6,10 @@ import com.baomidou.mybatisplus.annotation.TableName
 import java.io.Serializable
 
 /**
- * <p>
- * 菜单表
- * </p>
+ * Menu entity
  *
  * @author FatttSnake
- * @since 2023-10-25
+ * @since 1.0.0
  */
 @TableName("t_menu")
 class Menu : Serializable {

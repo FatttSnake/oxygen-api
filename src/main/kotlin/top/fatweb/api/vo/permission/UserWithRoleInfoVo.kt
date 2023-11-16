@@ -5,6 +5,12 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDateTime
 
+/**
+ * User with role information value object
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 @Schema(description = "用户角色信息返回参数")
 data class UserWithRoleInfoVo(
     @JsonSerialize(using = ToStringSerializer::class)

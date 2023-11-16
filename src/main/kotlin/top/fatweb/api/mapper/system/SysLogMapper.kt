@@ -7,12 +7,10 @@ import top.fatweb.api.entity.system.SysLog
 import java.time.LocalDateTime
 
 /**
- * <p>
- * 系统日志表 Mapper 接口
- * </p>
+ * System log mapper
  *
  * @author FatttSnake
- * @since 2023-10-18
+ * @since 1.0.0
  */
 @Mapper
 interface SysLogMapper : BaseMapper<SysLog> {

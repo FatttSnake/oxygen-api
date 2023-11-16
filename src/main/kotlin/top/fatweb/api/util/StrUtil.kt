@@ -2,6 +2,12 @@ package top.fatweb.api.util
 
 import java.util.regex.Pattern
 
+/**
+ * String util
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 object StrUtil {
     fun upperToUnderLetter(str: String?): String {
         str ?: let { return "" }

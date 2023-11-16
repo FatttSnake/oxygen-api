@@ -7,12 +7,10 @@ import top.fatweb.api.mapper.permission.UserRoleMapper
 import top.fatweb.api.service.permission.IUserRoleService
 
 /**
- * <p>
- * 中间表-用户-角色 服务实现类
- * </p>
+ * User role intermediate service implement
  *
  * @author FatttSnake
- * @since 2023-10-25
+ * @since 1.0.0
  */
 @Service
 class UserRoleServiceImpl : ServiceImpl<UserRoleMapper, UserRole>(), IUserRoleService

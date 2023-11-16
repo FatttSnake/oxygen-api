@@ -15,6 +15,12 @@ import top.fatweb.api.util.JwtUtil
 import top.fatweb.api.util.RedisUtil
 import top.fatweb.api.util.WebUtil
 
+/**
+ * Jwt authentication token filter
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 @Component
 class JwtAuthenticationTokenFilter(private val redisUtil: RedisUtil) : OncePerRequestFilter() {
     override fun doFilterInternal(

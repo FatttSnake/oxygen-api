@@ -21,6 +21,12 @@ import top.fatweb.api.vo.permission.TokenVo
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 
+/**
+ * Authentication service implement
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 @Service
 class AuthenticationServiceImpl(
     private val authenticationManager: AuthenticationManager,

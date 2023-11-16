@@ -6,12 +6,10 @@ import com.baomidou.mybatisplus.annotation.TableName
 import java.io.Serializable
 
 /**
- * <p>
- * 功能表
- * </p>
+ * Operation entity
  *
  * @author FatttSnake
- * @since 2023-10-25
+ * @since 1.0.0
  */
 @TableName("t_operation")
 class Operation : Serializable {

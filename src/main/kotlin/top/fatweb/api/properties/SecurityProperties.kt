@@ -4,6 +4,12 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.stereotype.Component
 import java.util.concurrent.TimeUnit
 
+/**
+ * Security properties
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 @Component
 @ConfigurationProperties("app.security")
 object SecurityProperties {

@@ -7,12 +7,10 @@ import top.fatweb.api.mapper.permission.RoleGroupMapper
 import top.fatweb.api.service.permission.IRoleGroupService
 
 /**
- * <p>
- * 中间表-角色-用户组 服务实现类
- * </p>
+ * Role group intermediate service implement
  *
  * @author FatttSnake
- * @since 2023-10-25
+ * @since 1.0.0
  */
 @Service
 class RoleGroupServiceImpl : ServiceImpl<RoleGroupMapper, RoleGroup>(), IRoleGroupService

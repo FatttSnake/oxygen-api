@@ -4,12 +4,10 @@ import com.baomidou.mybatisplus.annotation.*
 import java.io.Serializable
 
 /**
- * <p>
- * 中间表-用户-角色
- * </p>
+ * User role intermediate entity
  *
  * @author FatttSnake
- * @since 2023-10-25
+ * @since 1.0.0
  */
 @TableName("t_user_role")
 class UserRole : Serializable {

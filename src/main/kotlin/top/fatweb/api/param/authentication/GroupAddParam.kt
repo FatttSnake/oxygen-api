@@ -3,6 +3,12 @@ package top.fatweb.api.param.authentication
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotBlank
 
+/**
+ * Group add param
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 @Schema(description = "用户组添加请求参数")
 data class GroupAddParam(
     @Schema(description = "用户组名称")

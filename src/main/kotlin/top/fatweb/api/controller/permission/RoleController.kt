@@ -13,10 +13,10 @@ import top.fatweb.api.vo.permission.RoleVo
 import top.fatweb.api.vo.permission.RoleWithPowerVo
 
 /**
- * 角色表 前端控制器
+ * Role controller
  *
  * @author FatttSnake
- * @since 2023-11-09
+ * @since 1.0.0
  */
 @Tag(name = "角色管理", description = "角色管理相关接口")
 @RestController

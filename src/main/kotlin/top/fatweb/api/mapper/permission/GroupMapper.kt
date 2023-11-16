@@ -6,12 +6,10 @@ import org.apache.ibatis.annotations.Mapper
 import top.fatweb.api.entity.permission.Group
 
 /**
- * <p>
- * 用户组表 Mapper 接口
- * </p>
+ * Group mapper
  *
  * @author FatttSnake
- * @since 2023-10-25
+ * @since 1.0.0
  */
 @Mapper
 interface GroupMapper : BaseMapper<Group> {

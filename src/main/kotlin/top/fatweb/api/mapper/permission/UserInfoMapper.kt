@@ -5,12 +5,10 @@ import org.apache.ibatis.annotations.Mapper
 import top.fatweb.api.entity.permission.UserInfo
 
 /**
- * <p>
- * 用户资料表 Mapper 接口
- * </p>
+ * User information mapper
  *
  * @author FatttSnake
- * @since 2023-10-30
+ * @since 1.0.0
  */
 @Mapper
 interface UserInfoMapper : BaseMapper<UserInfo>

@@ -5,12 +5,10 @@ import org.apache.ibatis.annotations.Mapper
 import top.fatweb.api.entity.permission.Module
 
 /**
- * <p>
- * 模块表 Mapper 接口
- * </p>
+ * Module mapper
  *
  * @author FatttSnake
- * @since 2023-10-25
+ * @since 1.0.0
  */
 @Mapper
 interface ModuleMapper : BaseMapper<Module>

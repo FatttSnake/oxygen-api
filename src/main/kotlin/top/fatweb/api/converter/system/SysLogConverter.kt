@@ -3,16 +3,22 @@ package top.fatweb.api.converter.system
 import com.baomidou.mybatisplus.core.metadata.IPage
 import top.fatweb.api.entity.system.SysLog
 import top.fatweb.api.vo.PageVo
-import top.fatweb.api.vo.system.SysLogGetVo
+import top.fatweb.api.vo.system.SysLogVo
 
+/**
+ * System log converter
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 object SysLogConverter {
-    fun sysLogPageToSysLogPageVo(syslogPage: IPage<SysLog>): PageVo<SysLogGetVo> = PageVo(
+    fun sysLogPageToSysLogPageVo(syslogPage: IPage<SysLog>): PageVo<SysLogVo> = PageVo(
         syslogPage.total,
         syslogPage.pages,
         syslogPage.size,
         syslogPage.current,
         syslogPage.records.map {
-            SysLogGetVo(
+            SysLogVo(
                 id = it.id,
                 logType = it.logType,
                 operateUserId = it.operateUserId,

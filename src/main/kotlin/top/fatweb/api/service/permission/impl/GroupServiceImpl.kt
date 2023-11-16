@@ -18,12 +18,10 @@ import top.fatweb.api.vo.permission.GroupVo
 import top.fatweb.api.vo.permission.GroupWithRoleVo
 
 /**
- * <p>
- * 用户组表 服务实现类
- * </p>
+ * Group service implement
  *
  * @author FatttSnake
- * @since 2023-10-25
+ * @since 1.0.0
  */
 @Service
 class GroupServiceImpl(

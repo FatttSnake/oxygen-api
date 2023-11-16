@@ -7,12 +7,10 @@ import java.io.Serializable
 import java.time.LocalDateTime
 
 /**
- * <p>
- * 系统日志表
- * </p>
+ * System log entity
  *
  * @author FatttSnake
- * @since 2023-10-18
+ * @since 1.0.0
  */
 @TableName("t_sys_log")
 class SysLog : Serializable {

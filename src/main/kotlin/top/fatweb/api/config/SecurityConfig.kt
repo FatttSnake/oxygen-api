@@ -17,6 +17,12 @@ import top.fatweb.api.filter.JwtAuthenticationTokenFilter
 import top.fatweb.api.handler.JwtAccessDeniedHandler
 import top.fatweb.api.handler.JwtAuthenticationEntryPointHandler
 
+/**
+ * Spring Security config
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 @Configuration
 @EnableMethodSecurity
 class SecurityConfig(

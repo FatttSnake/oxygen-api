@@ -3,6 +3,12 @@ package top.fatweb.api.param.authentication
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotBlank
 
+/**
+ * Login param
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 @Schema(description = "登录请求参数")
 data class LoginParam(
     @Schema(description = "用户名", example = "test", required = true)

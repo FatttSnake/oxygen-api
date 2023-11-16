@@ -6,6 +6,12 @@ import org.springframework.stereotype.Component
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 
+/**
+ * Date meta object handler
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 @Component
 class DataMetaObjectHandler : MetaObjectHandler {
     override fun insertFill(metaObject: MetaObject?) {

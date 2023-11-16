@@ -8,6 +8,12 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.crypto.spec.SecretKeySpec
 
+/**
+ * Jwt util
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 object JwtUtil {
     private fun getUUID() = UUID.randomUUID().toString().replace("-", "")
 

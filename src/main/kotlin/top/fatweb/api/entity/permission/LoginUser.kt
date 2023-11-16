@@ -7,6 +7,12 @@ import org.springframework.security.core.userdetails.UserDetails
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 
+/**
+ * Login user entity
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
 class LoginUser() : UserDetails {
     lateinit var user: User

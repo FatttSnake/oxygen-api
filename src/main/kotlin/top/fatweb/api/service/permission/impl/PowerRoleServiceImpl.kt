@@ -7,12 +7,10 @@ import top.fatweb.api.mapper.permission.PowerRoleMapper
 import top.fatweb.api.service.permission.IPowerRoleService
 
 /**
- * <p>
- * 中间表-权限-角色 服务实现类
- * </p>
+ * Power role intermediate service implement
  *
  * @author FatttSnake
- * @since 2023-10-25
+ * @since 1.0.0
  */
 @Service
 class PowerRoleServiceImpl : ServiceImpl<PowerRoleMapper, PowerRole>(), IPowerRoleService

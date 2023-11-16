@@ -5,6 +5,12 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDateTime
 
+/**
+ * Group with role value object
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 data class GroupWithRoleVo(
     @JsonSerialize(using = ToStringSerializer::class)
     val id: Long?,

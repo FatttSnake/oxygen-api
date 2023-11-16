@@ -7,12 +7,10 @@ import top.fatweb.api.mapper.permission.ElementMapper
 import top.fatweb.api.service.permission.IElementService
 
 /**
- * <p>
- * 页面元素表 服务实现类
- * </p>
+ * Element service implement
  *
  * @author FatttSnake
- * @since 2023-10-25
+ * @since 1.0.0
  */
 @Service
 class ElementServiceImpl : ServiceImpl<ElementMapper, Element>(), IElementService

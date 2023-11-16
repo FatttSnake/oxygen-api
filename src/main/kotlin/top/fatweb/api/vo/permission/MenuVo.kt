@@ -2,6 +2,12 @@ package top.fatweb.api.vo.permission
 
 import io.swagger.v3.oas.annotations.media.Schema
 
+/**
+ * Menu value object
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 @Schema(description = "菜单返回参数")
 data class MenuVo(
     val id: Long?,

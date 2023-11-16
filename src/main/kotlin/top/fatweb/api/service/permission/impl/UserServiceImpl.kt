@@ -8,12 +8,10 @@ import top.fatweb.api.service.permission.*
 import top.fatweb.api.util.WebUtil
 
 /**
- * <p>
- * 用户表 服务实现类
- * </p>
+ * User service implement
  *
  * @author FatttSnake
- * @since 2023-10-04
+ * @since 1.0.0
  */
 @Service
 class UserServiceImpl(

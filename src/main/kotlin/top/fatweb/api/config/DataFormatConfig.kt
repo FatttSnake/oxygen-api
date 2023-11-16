@@ -13,7 +13,12 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-
+/**
+ * Data format config
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 @JsonComponent
 class DataFormatConfig {
     @set:Value("\${spring.jackson.date-format}")

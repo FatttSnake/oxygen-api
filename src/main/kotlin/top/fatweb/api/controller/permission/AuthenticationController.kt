@@ -15,6 +15,12 @@ import top.fatweb.api.param.authentication.LoginParam
 import top.fatweb.api.service.permission.IAuthenticationService
 import top.fatweb.api.util.WebUtil
 
+/**
+ * Authentication controller
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 @Tag(name = "身份认证", description = "身份认证相关接口")
 @RestController
 class AuthenticationController(

@@ -12,12 +12,10 @@ import top.fatweb.api.vo.permission.UserWithPowerInfoVo
 import top.fatweb.api.vo.permission.UserWithRoleInfoVo
 
 /**
- * <p>
- * 用户表 前端控制器
- * </p>
+ * User controller
  *
  * @author FatttSnake
- * @since 2023-10-04
+ * @since 1.0.0
  */
 @Tag(name = "用户管理", description = "用户管理相关接口")
 @RestController

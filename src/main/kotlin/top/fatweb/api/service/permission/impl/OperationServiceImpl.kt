@@ -7,12 +7,10 @@ import top.fatweb.api.mapper.permission.OperationMapper
 import top.fatweb.api.service.permission.IOperationService
 
 /**
- * <p>
- * 功能表 服务实现类
- * </p>
+ * Operation service implement
  *
  * @author FatttSnake
- * @since 2023-10-25
+ * @since 1.0.0
  */
 @Service
 class OperationServiceImpl : ServiceImpl<OperationMapper, Operation>(), IOperationService

@@ -5,6 +5,12 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDateTime
 
+/**
+ * Group value object
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 @Schema(description = "用户组返回参数")
 data class GroupVo(
     @JsonSerialize(using = ToStringSerializer::class)

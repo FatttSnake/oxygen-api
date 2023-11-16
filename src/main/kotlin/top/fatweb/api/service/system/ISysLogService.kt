@@ -6,12 +6,10 @@ import top.fatweb.api.entity.system.SysLog
 import top.fatweb.api.param.system.SysLogGetParam
 
 /**
- * <p>
- * 系统日志表 服务类
- * </p>
+ * System log service interface
  *
  * @author FatttSnake
- * @since 2023-10-18
+ * @since 1.0.0
  */
 interface ISysLogService : IService<SysLog> {
     fun getPage(sysLogGetParam: SysLogGetParam?): IPage<SysLog>

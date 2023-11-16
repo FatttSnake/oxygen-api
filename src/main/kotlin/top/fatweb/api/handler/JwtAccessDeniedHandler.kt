@@ -6,6 +6,12 @@ import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.web.access.AccessDeniedHandler
 import org.springframework.stereotype.Component
 
+/**
+ * Jwt access denied handler
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 @Component
 class JwtAccessDeniedHandler : AccessDeniedHandler {
     override fun handle(

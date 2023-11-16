@@ -2,6 +2,12 @@ package top.fatweb.api.vo.permission
 
 import io.swagger.v3.oas.annotations.media.Schema
 
+/**
+ * Operation value object
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 @Schema(description = "功能返回参数")
 data class OperationVo(
     val id: Long?,

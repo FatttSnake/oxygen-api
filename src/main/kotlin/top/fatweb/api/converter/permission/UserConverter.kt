@@ -4,6 +4,12 @@ import top.fatweb.api.entity.permission.User
 import top.fatweb.api.param.authentication.LoginParam
 import top.fatweb.api.vo.permission.*
 
+/**
+ * User converter
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 object UserConverter {
     fun loginParamToUser(loginParam: LoginParam) = User().apply {
         username = loginParam.username

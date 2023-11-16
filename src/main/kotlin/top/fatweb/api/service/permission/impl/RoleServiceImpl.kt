@@ -20,12 +20,10 @@ import top.fatweb.api.vo.permission.RoleVo
 import top.fatweb.api.vo.permission.RoleWithPowerVo
 
 /**
- * <p>
- * 角色表 服务实现类
- * </p>
+ * Role service implement
  *
  * @author FatttSnake
- * @since 2023-10-25
+ * @since 1.0.0
  */
 @Service
 class RoleServiceImpl(

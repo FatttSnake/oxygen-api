@@ -3,6 +3,12 @@ package top.fatweb.api.entity.common
 import io.swagger.v3.oas.annotations.media.Schema
 import java.io.Serializable
 
+/**
+ * Response result entity
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 class ResponseResult<T> private constructor(
     @Schema(description = "响应码", defaultValue = "200") val code: Int,
 

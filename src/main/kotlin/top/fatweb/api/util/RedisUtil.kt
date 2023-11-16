@@ -5,6 +5,12 @@ import org.springframework.data.redis.core.RedisTemplate
 import org.springframework.stereotype.Component
 import java.util.concurrent.TimeUnit
 
+/**
+ * Redis util
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 @Suppress("UNCHECKED_CAST")
 @Component
 class RedisUtil(private val redisTemplate: RedisTemplate<String, Any>) {

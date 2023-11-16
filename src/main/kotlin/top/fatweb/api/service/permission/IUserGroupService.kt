@@ -4,11 +4,9 @@ import com.baomidou.mybatisplus.extension.service.IService
 import top.fatweb.api.entity.permission.UserGroup
 
 /**
- * <p>
- * 中间表-用户-用户组 服务类
- * </p>
+ * User group intermediate service interface
  *
  * @author FatttSnake
- * @since 2023-10-25
+ * @since 1.0.0
  */
 interface IUserGroupService : IService<UserGroup>

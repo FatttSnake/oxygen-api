@@ -6,6 +6,12 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 import top.fatweb.api.annotation.ApiVersion
 import java.lang.reflect.Method
 
+/**
+ * Api response mapping handler mapping
+ *
+ * @author FatttSnake
+ * @since 1.0.0
+ */
 class ApiResponseMappingHandlerMapping : RequestMappingHandlerMapping() {
     private val versionFlag = "{apiVersion}"
 

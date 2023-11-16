@@ -12,12 +12,10 @@ import top.fatweb.api.service.system.ISysLogService
 import top.fatweb.api.util.PageUtil
 
 /**
- * <p>
- * 系统日志表 服务实现类
- * </p>
+ * System log service implement
  *
  * @author FatttSnake
- * @since 2023-10-18
+ * @since 1.0.0
  */
 @Service
 class SysLogServiceImpl : ServiceImpl<SysLogMapper, SysLog>(), ISysLogService {
