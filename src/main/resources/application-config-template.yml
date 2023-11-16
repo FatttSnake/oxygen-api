@@ -56,3 +56,6 @@ logging:
     rollingpolicy:
 #      max-file-size: 10MB # Maximum log file size
 #      max-history: 7 # Maximum number of archive log files to keep
+
+knife4j:
+  production: true # Production environment mode will block doc

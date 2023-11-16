@@ -30,3 +30,6 @@ logging:
     root: info
   file:
     name: data/log/fat-api.log
+
+knife4j:
+  enable: true
