@@ -3,6 +3,7 @@ package top.fatweb.api.handler
 import com.auth0.jwt.exceptions.JWTDecodeException
 import com.auth0.jwt.exceptions.SignatureVerificationException
 import com.auth0.jwt.exceptions.TokenExpiredException
+import com.talanlabs.avatargenerator.AvatarException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.dao.DuplicateKeyException
@@ -86,6 +87,11 @@ class ExceptionHandler {
             is DuplicateKeyException -> {
                 logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.DATABASE_DUPLICATE_KEY, "Duplicate key", null)
+            }
+
+            is AvatarException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.API_AVATAR_ERROR, e.localizedMessage, null)
             }
 
             else -> {

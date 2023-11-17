@@ -19,8 +19,8 @@ open class PageSortParam {
     var pageSize: Long = 20
 
     @Schema(description = "排序字段", example = "id")
-    val sortField: String? = null
+    var sortField: String? = null
 
     @Schema(description = "排序方式", example = "desc", allowableValues = ["desc", "asc"])
-    val sortOrder: String? = null
+    var sortOrder: String? = null
 }
