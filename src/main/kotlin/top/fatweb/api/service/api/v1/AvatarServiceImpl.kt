@@ -1,17 +1,15 @@
 package top.fatweb.api.service.api.v1
 
-import com.talanlabs.avatargenerator.GitHubAvatar
-import com.talanlabs.avatargenerator.IdenticonAvatar
-import com.talanlabs.avatargenerator.SquareAvatar
-import com.talanlabs.avatargenerator.TriangleAvatar
-import com.talanlabs.avatargenerator.eightbit.EightBitAvatar
-import com.talanlabs.avatargenerator.layers.backgrounds.ColorPaintBackgroundLayer
 import org.springframework.stereotype.Service
 import top.fatweb.api.param.api.v1.avatar.AvatarBaseParam
-import top.fatweb.api.param.api.v1.avatar.AvatarEightBitParam
 import top.fatweb.api.param.api.v1.avatar.AvatarGitHubParam
 import top.fatweb.api.util.NumberUtil
 import top.fatweb.api.vo.api.v1.avatar.DefaultBase64Vo
+import top.fatweb.avatargenerator.GitHubAvatar
+import top.fatweb.avatargenerator.IdenticonAvatar
+import top.fatweb.avatargenerator.SquareAvatar
+import top.fatweb.avatargenerator.TriangleAvatar
+import top.fatweb.avatargenerator.layer.background.ColorPaintBackgroundLayer
 import java.awt.Color
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
@@ -30,7 +28,8 @@ class AvatarServiceImpl : IAvatarService {
             if (avatarBaseParam == null || avatarBaseParam.colors.isNullOrEmpty())
                 TriangleAvatar.newAvatarBuilder()
             else TriangleAvatar.newAvatarBuilder(
-                *avatarBaseParam.colors!!.map { decodeColor(it) }.toTypedArray())
+                *avatarBaseParam.colors!!.map { decodeColor(it) }.toTypedArray()
+            )
             ).apply {
                 avatarBaseParam?.size?.let { size(it, it) }
                 avatarBaseParam?.margin?.let { margin(it) }
@@ -46,7 +45,8 @@ class AvatarServiceImpl : IAvatarService {
             if (avatarBaseParam == null || avatarBaseParam.colors.isNullOrEmpty())
                 SquareAvatar.newAvatarBuilder()
             else SquareAvatar.newAvatarBuilder(
-                *avatarBaseParam.colors!!.map { decodeColor(it) }.toTypedArray())
+                *avatarBaseParam.colors!!.map { decodeColor(it) }.toTypedArray()
+            )
             ).apply {
                 avatarBaseParam?.size?.let { size(it, it) }
                 avatarBaseParam?.margin?.let { margin(it) }
@@ -86,31 +86,33 @@ class AvatarServiceImpl : IAvatarService {
         return avatar.createAsPngBytes(avatarGitHubParam?.seed ?: NumberUtil.getRandomLong())
     }
 
-    override fun eightBit(avatarEightBitParam: AvatarEightBitParam?): ByteArray {
-        val avatar = if (avatarEightBitParam?.gender?.equals("female") ?: false) {
-            EightBitAvatar.newFemaleAvatarBuilder().apply {
-                avatarEightBitParam?.size?.let { size(it, it) }
-                avatarEightBitParam?.margin?.let { margin(it) }
-                avatarEightBitParam?.padding?.let { padding(it) }
-                if (avatarEightBitParam != null && !avatarEightBitParam.colors.isNullOrEmpty()) {
-                    color(decodeColor(avatarEightBitParam.colors!!.random()))
-                }
-                avatarEightBitParam?.background?.let { layers(ColorPaintBackgroundLayer(decodeColor(it))) }
-            }.build()
-        } else {
-            EightBitAvatar.newMaleAvatarBuilder().apply {
-                avatarEightBitParam?.size?.let { size(it, it) }
-                avatarEightBitParam?.margin?.let { margin(it) }
-                avatarEightBitParam?.padding?.let { padding(it) }
-                if (avatarEightBitParam != null && !avatarEightBitParam.colors.isNullOrEmpty()) {
-                    color(decodeColor(avatarEightBitParam.colors!!.random()))
-                }
-                avatarEightBitParam?.background?.let { layers(ColorPaintBackgroundLayer(decodeColor(it))) }
-            }.build()
-        }
+    /*
+        override fun eightBit(avatarEightBitParam: AvatarEightBitParam?): ByteArray {
+            val avatar = if (avatarEightBitParam?.gender?.equals("female") ?: false) {
+                EightBitAvatar.newFemaleAvatarBuilder().apply {
+                    avatarEightBitParam?.size?.let { size(it, it) }
+                    avatarEightBitParam?.margin?.let { margin(it) }
+                    avatarEightBitParam?.padding?.let { padding(it) }
+                    if (avatarEightBitParam != null && !avatarEightBitParam.colors.isNullOrEmpty()) {
+                        color(decodeColor(avatarEightBitParam.colors!!.random()))
+                    }
+                    avatarEightBitParam?.background?.let { layers(ColorPaintBackgroundLayer(decodeColor(it))) }
+                }.build()
+            } else {
+                EightBitAvatar.newMaleAvatarBuilder().apply {
+                    avatarEightBitParam?.size?.let { size(it, it) }
+                    avatarEightBitParam?.margin?.let { margin(it) }
+                    avatarEightBitParam?.padding?.let { padding(it) }
+                    if (avatarEightBitParam != null && !avatarEightBitParam.colors.isNullOrEmpty()) {
+                        color(decodeColor(avatarEightBitParam.colors!!.random()))
+                    }
+                    avatarEightBitParam?.background?.let { layers(ColorPaintBackgroundLayer(decodeColor(it))) }
+                }.build()
+            }
 
-        return avatar.createAsPngBytes(avatarEightBitParam?.seed ?: NumberUtil.getRandomLong())
-    }
+            return avatar.createAsPngBytes(avatarEightBitParam?.seed ?: NumberUtil.getRandomLong())
+        }
+    */
 
     fun decodeColor(nm: String): Color {
         return if (Regex("^#[0-9a-fA-F]{6}$").matches(nm)) {

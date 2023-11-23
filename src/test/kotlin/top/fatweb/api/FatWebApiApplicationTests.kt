@@ -1,6 +1,5 @@
 package top.fatweb.api
 
-import com.talanlabs.avatargenerator.GitHubAvatar
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -11,6 +10,7 @@ import top.fatweb.api.properties.SecurityProperties
 import top.fatweb.api.util.ByteUtil
 import top.fatweb.api.util.JwtUtil
 import top.fatweb.api.util.StrUtil
+import top.fatweb.avatargenerator.GitHubAvatar
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 

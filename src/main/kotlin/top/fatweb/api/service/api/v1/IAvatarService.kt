@@ -16,6 +16,6 @@ interface IAvatarService {
 
     fun github(avatarGitHubParam: AvatarGitHubParam?): ByteArray
 
-    fun eightBit(avatarEightBitParam: AvatarEightBitParam?): ByteArray
+//    fun eightBit(avatarEightBitParam: AvatarEightBitParam?): ByteArray
 
 }

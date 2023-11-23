@@ -3,7 +3,6 @@ package top.fatweb.api.handler
 import com.auth0.jwt.exceptions.JWTDecodeException
 import com.auth0.jwt.exceptions.SignatureVerificationException
 import com.auth0.jwt.exceptions.TokenExpiredException
-import com.talanlabs.avatargenerator.AvatarException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.dao.DuplicateKeyException
@@ -19,6 +18,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 import top.fatweb.api.entity.common.ResponseCode
 import top.fatweb.api.entity.common.ResponseResult
 import top.fatweb.api.exception.TokenHasExpiredException
+import top.fatweb.avatargenerator.AvatarException
 
 /**
  * Exception handler

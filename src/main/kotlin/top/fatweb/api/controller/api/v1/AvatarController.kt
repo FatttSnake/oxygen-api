@@ -57,9 +57,11 @@ class AvatarController(
         return avatarService.github(avatarGitHubParam)
     }
 
+/*
     @Operation(summary = "8 Bit 头像")
     @GetMapping("/8bit", produces = [MediaType.IMAGE_PNG_VALUE])
     fun eightBit(@PathVariable apiVersion: String, @Valid avatarEightBitParam: AvatarEightBitParam): ByteArray {
         return avatarService.eightBit(avatarEightBitParam)
     }
+*/
 }
