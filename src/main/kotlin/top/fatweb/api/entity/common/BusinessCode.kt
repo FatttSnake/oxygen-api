@@ -3,7 +3,7 @@ package top.fatweb.api.entity.common
 /**
  * Business code entity
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 enum class BusinessCode(val code: Int) {

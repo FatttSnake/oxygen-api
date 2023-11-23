@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotBlank
 /**
  * Role add param
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Schema(description = "角色添加请求参数")

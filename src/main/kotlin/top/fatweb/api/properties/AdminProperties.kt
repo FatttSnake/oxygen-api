@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component
 /**
  * Admin properties
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Component

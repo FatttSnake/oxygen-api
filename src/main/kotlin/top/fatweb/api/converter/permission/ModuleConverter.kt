@@ -6,7 +6,7 @@ import top.fatweb.api.vo.permission.ModuleVo
 /**
  * Module converter
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 object ModuleConverter {

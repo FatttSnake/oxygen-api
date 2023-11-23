@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit
 /**
  * Security properties
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Component

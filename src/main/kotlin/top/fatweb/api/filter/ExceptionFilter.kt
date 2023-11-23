@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
 /**
  * Exception filter
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Component

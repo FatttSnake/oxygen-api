@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotBlank
 /**
  * Group add param
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Schema(description = "用户组添加请求参数")

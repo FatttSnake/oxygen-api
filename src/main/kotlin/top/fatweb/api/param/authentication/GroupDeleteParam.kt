@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 /**
  * Group delete param
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Schema(description = "用户组删除请求参数")

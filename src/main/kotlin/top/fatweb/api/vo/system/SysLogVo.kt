@@ -8,7 +8,7 @@ import java.time.LocalDateTime
 /**
  * System log value object
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Schema(description = "获取系统日志返回参数")

@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit
 /**
  * Redis util
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Suppress("UNCHECKED_CAST")

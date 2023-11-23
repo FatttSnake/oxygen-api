@@ -8,7 +8,7 @@ import java.time.LocalDateTime
 /**
  * Role with power value object
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Schema(description = "角色返回参数")

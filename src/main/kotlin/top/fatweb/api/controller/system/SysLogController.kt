@@ -17,7 +17,7 @@ import top.fatweb.api.vo.system.SysLogVo
 /**
  * System log controller
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @RestController

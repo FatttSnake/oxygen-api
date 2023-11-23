@@ -3,7 +3,7 @@ package top.fatweb.api.entity.common
 /**
  * Response code entity
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 enum class ResponseCode(val code: Int) {

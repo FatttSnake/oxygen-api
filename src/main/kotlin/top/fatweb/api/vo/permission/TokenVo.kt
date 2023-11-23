@@ -5,7 +5,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 /**
  * Token value object
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Schema(description = "Token 返回参数")

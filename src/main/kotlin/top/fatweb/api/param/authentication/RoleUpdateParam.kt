@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotBlank
 /**
  * Role update param
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Schema(description = "角色更新请求参数")

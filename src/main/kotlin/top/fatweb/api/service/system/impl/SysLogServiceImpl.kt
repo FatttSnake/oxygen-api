@@ -14,7 +14,7 @@ import top.fatweb.api.util.PageUtil
 /**
  * System log service implement
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Service

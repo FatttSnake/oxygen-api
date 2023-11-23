@@ -20,7 +20,7 @@ import top.fatweb.api.vo.permission.GroupWithRoleVo
 /**
  * Group service implement
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Service

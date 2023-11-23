@@ -6,7 +6,7 @@ import java.io.Serializable
 /**
  * User role intermediate entity
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @TableName("t_user_role")

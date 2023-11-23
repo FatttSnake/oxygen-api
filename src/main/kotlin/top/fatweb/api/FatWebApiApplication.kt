@@ -10,7 +10,7 @@ import java.util.*
 /**
  * Application main class
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @SpringBootApplication

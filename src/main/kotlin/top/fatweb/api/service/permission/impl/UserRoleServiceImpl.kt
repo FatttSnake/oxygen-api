@@ -9,7 +9,7 @@ import top.fatweb.api.service.permission.IUserRoleService
 /**
  * User role intermediate service implement
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Service

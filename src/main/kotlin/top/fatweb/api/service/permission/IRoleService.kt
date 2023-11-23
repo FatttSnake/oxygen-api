@@ -10,7 +10,7 @@ import top.fatweb.api.vo.permission.RoleWithPowerVo
 /**
  * Role service interface
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 interface IRoleService : IService<Role> {

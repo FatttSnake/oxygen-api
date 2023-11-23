@@ -7,7 +7,7 @@ import top.fatweb.api.entity.permission.Element
 /**
  * Element mapper
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Mapper

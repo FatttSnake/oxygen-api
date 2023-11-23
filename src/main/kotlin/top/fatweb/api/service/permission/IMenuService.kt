@@ -6,7 +6,7 @@ import top.fatweb.api.entity.permission.Menu
 /**
  * Menu service interface
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 interface IMenuService : IService<Menu>

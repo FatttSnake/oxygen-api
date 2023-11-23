@@ -6,9 +6,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import top.fatweb.api.interceptor.SysLogInterceptor
 
 /**
- * System log config
+ * System log configuration
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Configuration

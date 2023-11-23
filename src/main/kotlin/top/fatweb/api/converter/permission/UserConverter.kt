@@ -7,7 +7,7 @@ import top.fatweb.api.vo.permission.*
 /**
  * User converter
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 object UserConverter {

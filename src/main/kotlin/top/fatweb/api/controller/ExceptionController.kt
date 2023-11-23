@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController
 /**
  * Exception controller
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Hidden

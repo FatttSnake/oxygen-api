@@ -10,7 +10,7 @@ import java.time.ZoneOffset
 /**
  * Login user entity
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)

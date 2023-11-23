@@ -6,7 +6,7 @@ import java.io.Serializable
 /**
  * User group intermediate entity
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @TableName("t_user_group")

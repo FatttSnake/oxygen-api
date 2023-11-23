@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotBlank
 /**
  * Login param
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Schema(description = "登录请求参数")

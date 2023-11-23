@@ -10,7 +10,7 @@ import top.fatweb.api.vo.permission.GroupWithRoleVo
 /**
  * Group service interface
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 interface IGroupService : IService<Group> {

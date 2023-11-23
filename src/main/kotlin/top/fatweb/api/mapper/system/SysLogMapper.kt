@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 /**
  * System log mapper
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Mapper

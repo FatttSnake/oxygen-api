@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Min
 /**
  * Page sort param
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 open class PageSortParam {

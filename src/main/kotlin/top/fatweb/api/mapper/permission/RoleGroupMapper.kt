@@ -7,7 +7,7 @@ import top.fatweb.api.entity.permission.RoleGroup
 /**
  * Role group intermediate mapper
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Mapper

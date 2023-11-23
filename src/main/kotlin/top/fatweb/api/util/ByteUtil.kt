@@ -5,7 +5,7 @@ import kotlin.math.floor
 /**
  * Byte util
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 object ByteUtil {

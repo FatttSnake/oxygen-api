@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull
 /**
  * Role change status param
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Schema(description = "角色更改状态请求参数")

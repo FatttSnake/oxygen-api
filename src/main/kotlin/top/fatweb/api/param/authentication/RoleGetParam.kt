@@ -6,7 +6,7 @@ import top.fatweb.api.param.PageSortParam
 /**
  * Role get param
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Schema(description = "角色查询请求参数")

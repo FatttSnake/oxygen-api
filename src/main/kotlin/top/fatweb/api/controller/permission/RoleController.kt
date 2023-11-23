@@ -15,7 +15,7 @@ import top.fatweb.api.vo.permission.RoleWithPowerVo
 /**
  * Role controller
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Tag(name = "角色管理", description = "角色管理相关接口")

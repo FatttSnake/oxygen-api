@@ -9,7 +9,7 @@ import java.lang.reflect.Method
 /**
  * Api response mapping handler mapping
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 class ApiResponseMappingHandlerMapping : RequestMappingHandlerMapping() {

@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull
 /**
  * Group change status param
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Schema(description = "用户组更改状态请求参数")

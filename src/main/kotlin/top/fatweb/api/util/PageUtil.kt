@@ -7,7 +7,7 @@ import top.fatweb.api.param.PageSortParam
 /**
  * Page util
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 object PageUtil {

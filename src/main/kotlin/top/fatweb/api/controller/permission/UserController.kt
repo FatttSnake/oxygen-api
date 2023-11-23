@@ -14,7 +14,7 @@ import top.fatweb.api.vo.permission.UserWithRoleInfoVo
 /**
  * User controller
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Tag(name = "用户管理", description = "用户管理相关接口")

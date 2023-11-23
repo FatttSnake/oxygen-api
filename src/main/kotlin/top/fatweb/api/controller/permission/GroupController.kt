@@ -15,7 +15,7 @@ import top.fatweb.api.vo.permission.GroupWithRoleVo
 /**
  * Group controller
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Tag(name = "用户组管理", description = "用户组管理相关接口")

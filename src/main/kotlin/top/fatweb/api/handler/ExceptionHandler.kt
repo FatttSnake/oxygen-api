@@ -23,7 +23,7 @@ import top.fatweb.api.exception.TokenHasExpiredException
 /**
  * Exception handler
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @RestControllerAdvice

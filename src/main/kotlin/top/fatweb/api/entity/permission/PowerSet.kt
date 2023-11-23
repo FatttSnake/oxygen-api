@@ -5,7 +5,7 @@ import java.io.Serializable
 /**
  * Set of power entity
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 class PowerSet : Serializable {

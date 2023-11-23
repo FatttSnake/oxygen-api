@@ -25,7 +25,7 @@ import java.util.concurrent.Executor
 /**
  * System log interceptor
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @ControllerAdvice

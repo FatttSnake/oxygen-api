@@ -8,7 +8,7 @@ import java.io.Serializable
 /**
  * Module Entity
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @TableName("t_module")

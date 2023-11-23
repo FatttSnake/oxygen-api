@@ -18,7 +18,7 @@ import top.fatweb.api.util.WebUtil
 /**
  * Jwt authentication token filter
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Component

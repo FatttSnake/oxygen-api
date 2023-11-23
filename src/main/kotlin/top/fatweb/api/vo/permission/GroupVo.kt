@@ -8,7 +8,7 @@ import java.time.LocalDateTime
 /**
  * Group value object
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Schema(description = "用户组返回参数")

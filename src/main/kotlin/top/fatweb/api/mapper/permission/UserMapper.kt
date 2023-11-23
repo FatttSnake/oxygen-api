@@ -8,7 +8,7 @@ import top.fatweb.api.entity.permission.User
 /**
  * User mapper
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Mapper

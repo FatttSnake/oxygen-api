@@ -14,16 +14,28 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 /**
- * Data format config
+ * Data format configuration
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @JsonComponent
 class DataFormatConfig {
+    /**
+     * The format of the time in response when request APIs
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     @set:Value("\${spring.jackson.date-format}")
     lateinit var dataFormat: String
 
+    /**
+     * The timezone of the time in response when request APIs
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     @set:Value("\${spring.jackson.time-zone}}")
     lateinit var timeZone: TimeZone
 
@@ -35,7 +47,6 @@ class DataFormatConfig {
         builder.failOnEmptyBeans(false).failOnUnknownProperties(false)
             .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS).dateFormat(df)
     }
-
 
     @Bean
     fun jackson2ObjectMapperBuilderCustomizer() =

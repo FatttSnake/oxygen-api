@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 /**
  * Role entity
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @TableName("t_role")

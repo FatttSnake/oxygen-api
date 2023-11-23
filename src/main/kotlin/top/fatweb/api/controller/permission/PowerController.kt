@@ -11,7 +11,7 @@ import top.fatweb.api.service.permission.IPowerService
 /**
  * Power controller
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Tag(name = "权限管理", description = "权限管理相关接口")

@@ -18,7 +18,7 @@ import top.fatweb.api.vo.api.v1.avatar.DefaultBase64Vo
 /**
  * Avatar controller
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Tag(name = "随机头像", description = "随机头像相关接口")

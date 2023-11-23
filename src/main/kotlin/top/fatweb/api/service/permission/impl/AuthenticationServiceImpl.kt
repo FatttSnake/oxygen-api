@@ -24,7 +24,7 @@ import java.time.ZoneOffset
 /**
  * Authentication service implement
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Service

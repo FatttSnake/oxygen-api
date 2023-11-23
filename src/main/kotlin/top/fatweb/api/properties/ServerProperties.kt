@@ -9,7 +9,7 @@ import java.time.ZonedDateTime
 /**
  * Application properties
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Component

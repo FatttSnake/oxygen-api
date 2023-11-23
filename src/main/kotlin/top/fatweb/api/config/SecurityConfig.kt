@@ -18,9 +18,9 @@ import top.fatweb.api.handler.JwtAccessDeniedHandler
 import top.fatweb.api.handler.JwtAuthenticationEntryPointHandler
 
 /**
- * Spring Security config
+ * Spring Security configuration
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Configuration

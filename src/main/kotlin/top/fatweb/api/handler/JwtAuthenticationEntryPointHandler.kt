@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
 /**
  * Jwt authentication entry point handler
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Component

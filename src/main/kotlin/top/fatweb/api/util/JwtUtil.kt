@@ -11,7 +11,7 @@ import javax.crypto.spec.SecretKeySpec
 /**
  * Jwt util
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 object JwtUtil {

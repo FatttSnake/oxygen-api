@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 /**
  * Login value object
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Schema(description = "登录返回参数")

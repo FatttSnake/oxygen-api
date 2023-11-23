@@ -8,7 +8,7 @@ import top.fatweb.api.param.system.SysLogGetParam
 /**
  * System log service interface
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 interface ISysLogService : IService<SysLog> {

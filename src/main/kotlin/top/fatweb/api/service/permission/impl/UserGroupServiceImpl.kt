@@ -9,7 +9,7 @@ import top.fatweb.api.service.permission.IUserGroupService
 /**
  * User group intermediate service implement
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Service

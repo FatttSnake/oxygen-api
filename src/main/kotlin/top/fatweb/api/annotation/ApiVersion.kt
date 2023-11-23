@@ -5,7 +5,7 @@ import org.springframework.core.annotation.AliasFor
 /**
  * Api controller version annotation
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Target(AnnotationTarget.CLASS)

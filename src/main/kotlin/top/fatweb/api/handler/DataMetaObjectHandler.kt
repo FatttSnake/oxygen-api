@@ -9,7 +9,7 @@ import java.time.ZoneOffset
 /**
  * Date meta object handler
  *
- * @author FatttSnake
+ * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Component
