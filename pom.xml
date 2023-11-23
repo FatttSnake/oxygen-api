@@ -14,6 +14,16 @@
     <name>fatweb-api</name>
     <description>fatweb-api</description>
 
+    <repositories>
+        <repository>
+            <id>sonatype-oss-snapshots</id>
+            <name>sonatype-oss-snapshots</name>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+            <releases><enabled>false</enabled></releases>
+            <snapshots><enabled>true</enabled></snapshots>
+        </repository>
+    </repositories>
+
     <profiles>
         <profile>
             <id>dev</id>
@@ -165,14 +175,9 @@
             <version>${flyway.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.talanlabs</groupId>
+            <groupId>top.fatweb</groupId>
             <artifactId>avatar-generator</artifactId>
-            <version>1.1.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.talanlabs</groupId>
-            <artifactId>avatar-generator-8bit</artifactId>
-            <version>1.1.0</version>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 
