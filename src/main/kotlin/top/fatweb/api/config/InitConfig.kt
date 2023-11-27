@@ -12,7 +12,6 @@ import top.fatweb.api.entity.permission.UserInfo
 import top.fatweb.api.properties.AdminProperties
 import top.fatweb.api.service.permission.IUserInfoService
 import top.fatweb.api.service.permission.IUserService
-import kotlin.random.Random
 
 /**
  * Application initialization configuration
@@ -36,7 +35,7 @@ class InitConfig(
 
             val rawPassword = AdminProperties.password ?: let {
                 logger.warn("No default administrator password is set, a randomly generated password will be used")
-                getRandPassword(10)
+                getRandomPassword(10)
             }
             val encodedPassword = passwordEncoder.encode(rawPassword)
 
@@ -61,15 +60,12 @@ class InitConfig(
 
     }
 
-    private fun getRandPassword(length: Int): String {
+    private fun getRandomPassword(length: Int): String {
         val characterSet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-
-        val random = Random(System.nanoTime())
         val password = StringBuilder()
 
         for (i in 0 until length) {
-            val rIndex = random.nextInt(characterSet.length)
-            password.append(characterSet[rIndex])
+            password.append(characterSet.random())
         }
 
         return password.toString()
