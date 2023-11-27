@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service
 import top.fatweb.api.param.api.v1.avatar.AvatarBaseParam
 import top.fatweb.api.param.api.v1.avatar.AvatarGitHubParam
 import top.fatweb.api.util.NumberUtil
-import top.fatweb.api.vo.api.v1.avatar.DefaultBase64Vo
+import top.fatweb.api.vo.api.v1.avatar.AvatarBase64Vo
 import top.fatweb.avatargenerator.GitHubAvatar
 import top.fatweb.avatargenerator.IdenticonAvatar
 import top.fatweb.avatargenerator.SquareAvatar
@@ -14,14 +14,9 @@ import java.awt.Color
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 
+@OptIn(ExperimentalEncodingApi::class)
 @Service
 class AvatarServiceImpl : IAvatarService {
-    @OptIn(ExperimentalEncodingApi::class)
-    override fun getDefault(): DefaultBase64Vo {
-        val avatar = GitHubAvatar.newAvatarBuilder(396, 5).build()
-        val bytes = avatar.createAsPngBytes(1232132134543L)
-        return DefaultBase64Vo(Base64.encode(bytes))
-    }
 
     override fun triangle(avatarBaseParam: AvatarBaseParam?): ByteArray {
         val avatar = (
@@ -40,6 +35,9 @@ class AvatarServiceImpl : IAvatarService {
         return avatar.createAsPngBytes(avatarBaseParam?.seed ?: NumberUtil.getRandomLong())
     }
 
+    override fun triangleBase64(avatarBaseParam: AvatarBaseParam?) =
+        AvatarBase64Vo(Base64.encode(triangle(avatarBaseParam)))
+
     override fun square(avatarBaseParam: AvatarBaseParam?): ByteArray {
         val avatar = (
             if (avatarBaseParam == null || avatarBaseParam.colors.isNullOrEmpty())
@@ -57,6 +55,9 @@ class AvatarServiceImpl : IAvatarService {
         return avatar.createAsPngBytes(avatarBaseParam?.seed ?: NumberUtil.getRandomLong())
     }
 
+    override fun squareBase64(avatarBaseParam: AvatarBaseParam?) =
+        AvatarBase64Vo(Base64.encode(square(avatarBaseParam)))
+
     override fun identicon(avatarBaseParam: AvatarBaseParam?): ByteArray {
         val avatar = IdenticonAvatar.newAvatarBuilder().apply {
             avatarBaseParam?.size?.let { size(it, it) }
@@ -71,9 +72,12 @@ class AvatarServiceImpl : IAvatarService {
         return avatar.createAsPngBytes(avatarBaseParam?.seed ?: NumberUtil.getRandomLong())
     }
 
+    override fun identiconBase64(avatarBaseParam: AvatarBaseParam?) =
+        AvatarBase64Vo(Base64.encode(identicon(avatarBaseParam)))
+
     override fun github(avatarGitHubParam: AvatarGitHubParam?): ByteArray {
         val avatar = (avatarGitHubParam?.let { GitHubAvatar.newAvatarBuilder(it.elementSize, it.precision) }
-            ?: let { GitHubAvatar.newAvatarBuilder() }).apply {
+            ?: let { GitHubAvatar.newAvatarBuilder(400, 5) }).apply {
             avatarGitHubParam?.size?.let { size(it, it) }
             avatarGitHubParam?.margin?.let { margin(it) }
             avatarGitHubParam?.padding?.let { padding(it) }
@@ -86,33 +90,8 @@ class AvatarServiceImpl : IAvatarService {
         return avatar.createAsPngBytes(avatarGitHubParam?.seed ?: NumberUtil.getRandomLong())
     }
 
-    /*
-        override fun eightBit(avatarEightBitParam: AvatarEightBitParam?): ByteArray {
-            val avatar = if (avatarEightBitParam?.gender?.equals("female") ?: false) {
-                EightBitAvatar.newFemaleAvatarBuilder().apply {
-                    avatarEightBitParam?.size?.let { size(it, it) }
-                    avatarEightBitParam?.margin?.let { margin(it) }
-                    avatarEightBitParam?.padding?.let { padding(it) }
-                    if (avatarEightBitParam != null && !avatarEightBitParam.colors.isNullOrEmpty()) {
-                        color(decodeColor(avatarEightBitParam.colors!!.random()))
-                    }
-                    avatarEightBitParam?.background?.let { layers(ColorPaintBackgroundLayer(decodeColor(it))) }
-                }.build()
-            } else {
-                EightBitAvatar.newMaleAvatarBuilder().apply {
-                    avatarEightBitParam?.size?.let { size(it, it) }
-                    avatarEightBitParam?.margin?.let { margin(it) }
-                    avatarEightBitParam?.padding?.let { padding(it) }
-                    if (avatarEightBitParam != null && !avatarEightBitParam.colors.isNullOrEmpty()) {
-                        color(decodeColor(avatarEightBitParam.colors!!.random()))
-                    }
-                    avatarEightBitParam?.background?.let { layers(ColorPaintBackgroundLayer(decodeColor(it))) }
-                }.build()
-            }
-
-            return avatar.createAsPngBytes(avatarEightBitParam?.seed ?: NumberUtil.getRandomLong())
-        }
-    */
+    override fun githubBase64(avatarGitHubParam: AvatarGitHubParam?) =
+        AvatarBase64Vo(Base64.encode(github(avatarGitHubParam)))
 
     fun decodeColor(nm: String): Color {
         return if (Regex("^#[0-9a-fA-F]{6}$").matches(nm)) {

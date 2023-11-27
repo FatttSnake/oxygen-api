@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component
 import top.fatweb.api.entity.permission.User
 import top.fatweb.api.entity.permission.UserInfo
 import top.fatweb.api.properties.AdminProperties
+import top.fatweb.api.service.api.v1.IAvatarService
 import top.fatweb.api.service.permission.IUserInfoService
 import top.fatweb.api.service.permission.IUserService
 
@@ -24,7 +25,8 @@ import top.fatweb.api.service.permission.IUserService
 class InitConfig(
     private val userService: IUserService,
     private val userInfoService: IUserInfoService,
-    private val passwordEncoder: PasswordEncoder
+    private val passwordEncoder: PasswordEncoder,
+    private val avatarService: IAvatarService
 ) {
     private val logger: Logger = LoggerFactory.getLogger(this::class.java)
 
@@ -49,6 +51,7 @@ class InitConfig(
             val userInfo = UserInfo().apply {
                 userId = 0
                 nickname = AdminProperties.nickname
+                avatar = avatarService.githubBase64(null).base64
                 email = AdminProperties.email
             }
 
