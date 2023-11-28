@@ -8,9 +8,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.jdbc.BadSqlGrammarException
-import org.springframework.security.authentication.BadCredentialsException
-import org.springframework.security.authentication.InsufficientAuthenticationException
-import org.springframework.security.authentication.InternalAuthenticationServiceException
+import org.springframework.security.authentication.*
 import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -33,11 +31,6 @@ class ExceptionHandler {
     @ExceptionHandler(value = [Exception::class])
     fun exceptionHandler(e: Exception): ResponseResult<*> {
         return when (e) {
-            is InsufficientAuthenticationException -> {
-                logger.debug(e.localizedMessage, e)
-                ResponseResult.fail(ResponseCode.SYSTEM_UNAUTHORIZED, e.localizedMessage, null)
-            }
-
             is HttpRequestMethodNotSupportedException -> {
                 logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.SYSTEM_REQUEST_ILLEGAL, e.localizedMessage, null)
@@ -48,35 +41,60 @@ class ExceptionHandler {
                 ResponseResult.fail(ResponseCode.SYSTEM_REQUEST_ILLEGAL, e.localizedMessage.split(":")[0], null)
             }
 
-            is TokenExpiredException -> {
-                logger.debug(e.localizedMessage, e)
-                ResponseResult.fail(ResponseCode.SYSTEM_TOKEN_HAS_EXPIRED, e.localizedMessage, null)
-            }
-
             is MethodArgumentNotValidException -> {
                 logger.debug(e.localizedMessage, e)
                 val errorMessage = e.allErrors.map { error -> error.defaultMessage }.joinToString(". ")
                 ResponseResult.fail(ResponseCode.SYSTEM_ARGUMENT_NOT_VALID, errorMessage, null)
             }
 
+            is InsufficientAuthenticationException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.PERMISSION_UNAUTHORIZED, e.localizedMessage, null)
+            }
+
+            is LockedException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.PERMISSION_USER_LOCKED, "User account has been locked", null)
+            }
+
+            is AccountExpiredException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.PERMISSION_USER_EXPIRED, "User account has expired", null)
+            }
+
+            is CredentialsExpiredException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.PERMISSION_USER_CREDENTIALS_EXPIRED, "User credentials have expired", null)
+            }
+
+            is DisabledException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.PERMISSION_USER_CREDENTIALS_EXPIRED, "User has been disabled", null)
+            }
+
+            is TokenExpiredException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.PERMISSION_TOKEN_HAS_EXPIRED, e.localizedMessage, null)
+            }
+
             is InternalAuthenticationServiceException -> {
                 logger.debug(e.localizedMessage, e)
-                ResponseResult.fail(ResponseCode.SYSTEM_USERNAME_NOT_FOUND, "Username not found", null)
+                ResponseResult.fail(ResponseCode.PERMISSION_USERNAME_NOT_FOUND, "Username not found", null)
             }
 
             is BadCredentialsException -> {
                 logger.debug(e.localizedMessage, e)
-                ResponseResult.fail(ResponseCode.SYSTEM_LOGIN_USERNAME_PASSWORD_ERROR, e.localizedMessage, null)
+                ResponseResult.fail(ResponseCode.PERMISSION_LOGIN_USERNAME_PASSWORD_ERROR, "Wrong user name or password", null)
             }
 
             is SignatureVerificationException, is JWTDecodeException -> {
                 logger.debug(e.localizedMessage, e)
-                ResponseResult.fail(ResponseCode.SYSTEM_TOKEN_ILLEGAL, "Token illegal", null)
+                ResponseResult.fail(ResponseCode.PERMISSION_TOKEN_ILLEGAL, "Token illegal", null)
             }
 
             is TokenHasExpiredException -> {
                 logger.debug(e.localizedMessage, e)
-                ResponseResult.fail(ResponseCode.SYSTEM_TOKEN_HAS_EXPIRED, e.localizedMessage, null)
+                ResponseResult.fail(ResponseCode.PERMISSION_TOKEN_HAS_EXPIRED, e.localizedMessage, null)
             }
 
             is BadSqlGrammarException -> {

@@ -29,7 +29,7 @@ class AuthenticationController(
     @Operation(summary = "登录")
     @PostMapping("/login")
     fun login(request: HttpServletRequest, @Valid @RequestBody loginParam: LoginParam) = ResponseResult.success(
-        ResponseCode.SYSTEM_LOGIN_SUCCESS,
+        ResponseCode.PERMISSION_LOGIN_SUCCESS,
         "Login success",
         authenticationService.login(request, UserConverter.loginParamToUser(loginParam))
     )
@@ -37,14 +37,14 @@ class AuthenticationController(
     @Operation(summary = "登出")
     @PostMapping("/logout")
     fun logout(request: HttpServletRequest) = when (authenticationService.logout(WebUtil.getToken(request))) {
-        true -> ResponseResult.success(ResponseCode.SYSTEM_LOGOUT_SUCCESS, "Logout success", null)
-        false -> ResponseResult.fail(ResponseCode.SYSTEM_LOGOUT_FAILED, "Logout failed", null)
+        true -> ResponseResult.success(ResponseCode.PERMISSION_LOGOUT_SUCCESS, "Logout success", null)
+        false -> ResponseResult.fail(ResponseCode.PERMISSION_LOGOUT_FAILED, "Logout failed", null)
     }
 
     @Operation(summary = "更新 Token")
     @GetMapping("/token")
     fun renewToken(request: HttpServletRequest) = ResponseResult.success(
-        ResponseCode.SYSTEM_TOKEN_RENEW_SUCCESS,
+        ResponseCode.PERMISSION_TOKEN_RENEW_SUCCESS,
         "Token renew success",
         authenticationService.renewToken(WebUtil.getToken(request))
     )
