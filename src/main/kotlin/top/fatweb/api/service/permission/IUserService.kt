@@ -2,6 +2,14 @@ package top.fatweb.api.service.permission
 
 import com.baomidou.mybatisplus.extension.service.IService
 import top.fatweb.api.entity.permission.User
+import top.fatweb.api.param.authentication.UserAddParam
+import top.fatweb.api.param.authentication.UserDeleteParam
+import top.fatweb.api.param.authentication.UserGetParam
+import top.fatweb.api.param.authentication.UserUpdateParam
+import top.fatweb.api.vo.PageVo
+import top.fatweb.api.vo.permission.UserWithPasswordRoleInfoVo
+import top.fatweb.api.vo.permission.UserWithPowerInfoVo
+import top.fatweb.api.vo.permission.UserWithRoleInfoVo
 
 /**
  * User service interface
@@ -12,7 +20,19 @@ import top.fatweb.api.entity.permission.User
 interface IUserService : IService<User> {
     fun getUserWithPower(username: String): User?
 
-    fun getInfo(): User?
+    fun getInfo(): UserWithPowerInfoVo?
 
-    fun getList(): List<User>
+    fun getPage(userGetParam: UserGetParam?): PageVo<UserWithRoleInfoVo>
+
+    fun getOne(id: Long): UserWithRoleInfoVo?
+
+    fun getList(): List<UserWithRoleInfoVo>
+
+    fun add(userAddParam: UserAddParam): UserWithPasswordRoleInfoVo?
+
+    fun update(userUpdateParam: UserUpdateParam): UserWithRoleInfoVo?
+
+    fun deleteOne(id: Long)
+
+    fun delete(userDeleteParam: UserDeleteParam)
 }

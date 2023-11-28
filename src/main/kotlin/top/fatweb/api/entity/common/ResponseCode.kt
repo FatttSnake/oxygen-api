@@ -42,6 +42,7 @@ enum class ResponseCode(val code: Int) {
     DATABASE_DELETE_FILED(BusinessCode.DATABASE, 35),
     DATABASE_EXECUTE_ERROR(BusinessCode.DATABASE, 50),
     DATABASE_DUPLICATE_KEY(BusinessCode.DATABASE, 51),
+    DATABASE_NO_RECORD_FOUND(BusinessCode.DATABASE, 52),
 
     API_AVATAR_SUCCESS(BusinessCode.API_AVATAR, 0),
     API_AVATAR_ERROR(BusinessCode.API_AVATAR, 50);
