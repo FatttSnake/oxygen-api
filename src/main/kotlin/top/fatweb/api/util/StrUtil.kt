@@ -38,4 +38,15 @@ object StrUtil {
 
         return stringBuilder.toString()
     }
+
+     fun getRandomPassword(length: Int): String {
+        val characterSet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        val password = StringBuilder()
+
+        for (i in 0 until length) {
+            password.append(characterSet.random())
+        }
+
+        return password.toString()
+    }
 }

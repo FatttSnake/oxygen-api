@@ -10,9 +10,10 @@ import org.springframework.stereotype.Component
 import top.fatweb.api.entity.permission.User
 import top.fatweb.api.entity.permission.UserInfo
 import top.fatweb.api.properties.AdminProperties
-import top.fatweb.api.service.api.v1.IAvatarService
 import top.fatweb.api.service.permission.IUserInfoService
 import top.fatweb.api.service.permission.IUserService
+import top.fatweb.api.util.StrUtil
+import top.fatweb.avatargenerator.GitHubAvatar
 
 /**
  * Application initialization configuration
@@ -26,7 +27,6 @@ class InitConfig(
     private val userService: IUserService,
     private val userInfoService: IUserInfoService,
     private val passwordEncoder: PasswordEncoder,
-    private val avatarService: IAvatarService
 ) {
     private val logger: Logger = LoggerFactory.getLogger(this::class.java)
 
@@ -37,7 +37,7 @@ class InitConfig(
 
             val rawPassword = AdminProperties.password ?: let {
                 logger.warn("No default administrator password is set, a randomly generated password will be used")
-                getRandomPassword(10)
+                StrUtil.getRandomPassword(10)
             }
             val encodedPassword = passwordEncoder.encode(rawPassword)
 
@@ -51,7 +51,8 @@ class InitConfig(
             val userInfo = UserInfo().apply {
                 userId = 0
                 nickname = AdminProperties.nickname
-                avatar = avatarService.githubBase64(null).base64
+                avatar =
+                    GitHubAvatar.newAvatarBuilder().build().createAsBase64((Long.MIN_VALUE..Long.MAX_VALUE).random())
                 email = AdminProperties.email
             }
 
@@ -61,16 +62,5 @@ class InitConfig(
             }
         }
 
-    }
-
-    private fun getRandomPassword(length: Int): String {
-        val characterSet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        val password = StringBuilder()
-
-        for (i in 0 until length) {
-            password.append(characterSet.random())
-        }
-
-        return password.toString()
     }
 }
