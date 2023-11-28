@@ -69,9 +69,9 @@ class UserController(
     fun update(@Valid @RequestBody userUpdateParam: UserUpdateParam): ResponseResult<UserWithRoleInfoVo> {
         return userService.update(userUpdateParam)?.let {
             ResponseResult.databaseSuccess(
-                ResponseCode.DATABASE_INSERT_SUCCESS, data = it
+                ResponseCode.DATABASE_UPDATE_SUCCESS, data = it
             )
-        } ?: let { ResponseResult.databaseFail(ResponseCode.DATABASE_INSERT_FAILED) }
+        } ?: let { ResponseResult.databaseFail(ResponseCode.DATABASE_UPDATE_FILED) }
     }
 
     @Operation(summary = "删除用户")
