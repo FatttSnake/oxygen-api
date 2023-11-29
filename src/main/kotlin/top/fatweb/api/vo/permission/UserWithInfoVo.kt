@@ -6,21 +6,18 @@ import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDateTime
 
 /**
- * User with password role information value object
+ * User with information value object
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-@Schema(description = "用户密码角色信息返回参数")
-data class UserWithPasswordRoleInfoVo(
+@Schema(description = "用户信息返回参数")
+data class UserWithInfoVo(
     @JsonSerialize(using = ToStringSerializer::class)
     val id: Long?,
 
     @Schema(description = "用户名", example = "User")
     val username: String?,
-
-    @Schema(description = "密码")
-    val password: String?,
 
     @Schema(description = "是否锁定", example = "false")
     val locking: Boolean?,
@@ -53,11 +50,5 @@ data class UserWithPasswordRoleInfoVo(
     val updateTime: LocalDateTime?,
 
     @Schema(description = "用户资料")
-    val userInfo: UserInfoVo?,
-
-    @Schema(description = "角色列表")
-    val roles: List<RoleVo>?,
-
-    @Schema(description = "用户组列表")
-    val groups: List<GroupVo>?
+    val userInfo: UserInfoVo?
 )

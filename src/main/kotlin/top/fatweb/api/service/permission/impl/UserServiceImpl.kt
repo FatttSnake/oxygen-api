@@ -41,8 +41,8 @@ class UserServiceImpl(
     private val userRoleService: IUserRoleService,
     private val userGroupService: IUserGroupService
 ) : ServiceImpl<UserMapper, User>(), IUserService {
-    override fun getUserWithPower(username: String): User? {
-        val user = baseMapper.getOneWithPowerInfoByUsername(username)
+    override fun getUserWithPowerByUsername(username: String): User? {
+        val user = baseMapper.selectOneWithPowerInfoByUsername(username)
         user ?: let { return null }
 
         if (user.id == 0L) {
@@ -56,7 +56,7 @@ class UserServiceImpl(
     }
 
     override fun getInfo() = WebUtil.getLoginUsername()
-        ?.let { username -> getUserWithPower(username)?.let { UserConverter.userToUserWithPowerInfoVo(it) } }
+        ?.let { username -> getUserWithPowerByUsername(username)?.let { UserConverter.userToUserWithPowerInfoVo(it) } }
 
     override fun getPage(userGetParam: UserGetParam?): PageVo<UserWithRoleInfoVo> {
         val userIdsPage = Page<Long>(userGetParam?.currentPage ?: 1, userGetParam?.pageSize ?: 20)
@@ -67,16 +67,16 @@ class UserServiceImpl(
             baseMapper.selectPage(userIdsPage, userGetParam?.searchValue, userGetParam?.searchRegex ?: false)
         val userPage = Page<User>(userIdsIPage.current, userIdsIPage.size, userIdsIPage.total)
         if (userIdsIPage.total > 0) {
-            userPage.setRecords(baseMapper.getWithRoleInfoByList(userIdsIPage.records))
+            userPage.setRecords(baseMapper.selectListWithRoleInfoByIds(userIdsIPage.records))
         }
 
         return UserConverter.userPageToUserWithRoleInfoPageVo(userPage)
     }
 
     override fun getOne(id: Long) =
-        baseMapper.getOneWithRoleInfo(id)?.let { UserConverter.userToUserWithRoleInfoVo(it) }
+        baseMapper.selectOneWithRoleInfoById(id)?.let { UserConverter.userToUserWithRoleInfoVo(it) }
 
-    override fun getList() = baseMapper.getListWithRoleInfo().map { UserConverter.userToUserWithRoleInfoVo(it) }
+    override fun getList() = baseMapper.selectListWithInfo().map { UserConverter.userToUserWithInfoVo(it) }
 
     @Transactional
     override fun add(userAddParam: UserAddParam): UserWithPasswordRoleInfoVo? {

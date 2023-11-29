@@ -14,13 +14,13 @@ import top.fatweb.api.entity.permission.User
  */
 @Mapper
 interface UserMapper : BaseMapper<User> {
-    fun getOneWithPowerInfoByUsername(@Param("username")username: String): User?
+    fun selectOneWithPowerInfoByUsername(@Param("username")username: String): User?
 
     fun selectPage(page: IPage<Long>, searchValue: String?, searchRegex: Boolean): IPage<Long>
 
-    fun getWithRoleInfoByList(userIds: List<Long>): List<User>?
+    fun selectListWithRoleInfoByIds(userIds: List<Long>): List<User>?
 
-    fun getOneWithRoleInfo(id: Long): User?
+    fun selectOneWithRoleInfoById(id: Long): User?
 
-    fun getListWithRoleInfo(): List<User>
+    fun selectListWithInfo(): List<User>
 }

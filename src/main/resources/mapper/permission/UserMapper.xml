@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="top.fatweb.api.mapper.permission.UserMapper">
-    <select id="getOneWithPowerInfoByUsername" resultMap="userWithPowerInfoMap">
+    <select id="selectOneWithPowerInfoByUsername" resultMap="userWithPowerInfoMap">
         select t_user.id                     as user_id,
                t_user.username               as user_username,
                t_user.password               as user_password,
@@ -69,7 +69,7 @@
         </where>
     </select>
 
-    <select id="getWithRoleInfoByList" resultMap="userWithRoleInfoMap">
+    <select id="selectListWithRoleInfoByIds" resultMap="userWithRoleInfoMap">
         select t_user.id                     as user_id,
                t_user.username               as user_username,
                t_user.password               as user_password,
@@ -107,10 +107,10 @@
         from t_user
                  left join (select * from t_user_info where deleted = 0) as tui on t_user.id = tui.user_id
                  left join (select * from t_user_group where deleted = 0) as tug on t_user.id = tug.user_id
-                 left join (select * from t_group where deleted = 0 and enable = 1) as tg on tg.id = tug.group_id
+                 left join (select * from t_group where deleted = 0) as tg on tg.id = tug.group_id
                  left join (select * from t_role_group where deleted = 0) as trg on tg.id = trg.group_id
                  left join (select * from t_user_role where deleted = 0) as tur on t_user.id = tur.user_id
-                 left join (select * from t_role where deleted = 0 and enable = 1) as tr
+                 left join (select * from t_role where deleted = 0) as tr
                            on tr.id = trg.role_id or tr.id = tur.role_id
         <where>
             <foreach collection="userIds" item="item" index="index" open="and t_user.id in (" separator="," close=")"
@@ -120,7 +120,7 @@
         </where>
     </select>
 
-    <select id="getOneWithRoleInfo" resultMap="userWithRoleInfoMap">
+    <select id="selectOneWithRoleInfoById" resultMap="userWithRoleInfoMap">
         select t_user.id                     as user_id,
                t_user.username               as user_username,
                t_user.password               as user_password,
@@ -158,16 +158,16 @@
         from t_user
                  left join (select * from t_user_info where deleted = 0) as tui on t_user.id = tui.user_id
                  left join (select * from t_user_group where deleted = 0) as tug on t_user.id = tug.user_id
-                 left join (select * from t_group where deleted = 0 and enable = 1) as tg on tg.id = tug.group_id
+                 left join (select * from t_group where deleted = 0) as tg on tg.id = tug.group_id
                  left join (select * from t_role_group where deleted = 0) as trg on tg.id = trg.group_id
                  left join (select * from t_user_role where deleted = 0) as tur on t_user.id = tur.user_id
-                 left join (select * from t_role where deleted = 0 and enable = 1) as tr
+                 left join (select * from t_role where deleted = 0) as tr
                            on tr.id = trg.role_id or tr.id = tur.role_id
         where t_user.deleted = 0
           and t_user.id = #{id}
     </select>
 
-    <select id="getListWithRoleInfo" resultMap="userWithRoleInfoMap">
+    <select id="selectListWithInfo" resultMap="userWithInfoMap">
         select t_user.id                     as user_id,
                t_user.username               as user_username,
                t_user.password               as user_password,
@@ -191,25 +191,9 @@
                tui.create_time               as user_info_create_time,
                tui.update_time               as user_info_update_time,
                tui.deleted                   as user_info_deleted,
-               tui.version                   as user_info_version,
-               tr.id                         as role_id,
-               tr.name                       as role_name,
-               tr.enable                     as role_enable,
-               tr.deleted                    as role_deleted,
-               tr.version                    as role_version,
-               tg.id                         as group_id,
-               tg.name                       as group_name,
-               tg.enable                     as group_enable,
-               tg.deleted                    as group_deleted,
-               tg.version                    as group_version
+               tui.version                   as user_info_version
         from t_user
                  left join (select * from t_user_info where deleted = 0) as tui on t_user.id = tui.user_id
-                 left join (select * from t_user_group where deleted = 0) as tug on t_user.id = tug.user_id
-                 left join (select * from t_group where deleted = 0 and enable = 1) as tg on tg.id = tug.group_id
-                 left join (select * from t_role_group where deleted = 0) as trg on tg.id = trg.group_id
-                 left join (select * from t_user_role where deleted = 0) as tur on t_user.id = tur.user_id
-                 left join (select * from t_role where deleted = 0 and enable = 1) as tr
-                           on tr.id = trg.role_id or tr.id = tur.role_id
         where t_user.deleted = 0
     </select>
 
@@ -230,17 +214,19 @@
         <result property="version" column="user_version"/>
     </resultMap>
 
-    <resultMap id="userWithPowerInfoMap" type="user" extends="userBaseMap">
-        <result property="password" column="user_password"/>
+    <resultMap id="userWithInfoMap" type="user" extends="userBaseMap">
         <association property="userInfo" resultMap="top.fatweb.api.mapper.permission.UserInfoMapper.userInfoMap"/>
+    </resultMap>
+
+    <resultMap id="userWithPowerInfoMap" type="user" extends="userWithInfoMap">
+        <result property="password" column="user_password"/>
         <collection property="modules" resultMap="top.fatweb.api.mapper.permission.ModuleMapper.moduleMap"/>
         <collection property="menus" resultMap="top.fatweb.api.mapper.permission.MenuMapper.menuMap"/>
         <collection property="elements" resultMap="top.fatweb.api.mapper.permission.ElementMapper.elementMap"/>
         <collection property="operations" resultMap="top.fatweb.api.mapper.permission.OperationMapper.operationMap"/>
     </resultMap>
 
-    <resultMap id="userWithRoleInfoMap" type="user" extends="userBaseMap">
-        <association property="userInfo" resultMap="top.fatweb.api.mapper.permission.UserInfoMapper.userInfoMap"/>
+    <resultMap id="userWithRoleInfoMap" type="user" extends="userWithInfoMap">
         <collection property="roles" resultMap="top.fatweb.api.mapper.permission.RoleMapper.roleMap"/>
         <collection property="groups" resultMap="top.fatweb.api.mapper.permission.GroupMapper.groupMap"/>
     </resultMap>

@@ -9,6 +9,7 @@ import top.fatweb.api.param.authentication.LoginParam
 import top.fatweb.api.param.authentication.UserAddParam
 import top.fatweb.api.param.authentication.UserUpdateParam
 import top.fatweb.api.vo.PageVo
+import top.fatweb.api.vo.permission.UserWithInfoVo
 import top.fatweb.api.vo.permission.UserWithPasswordRoleInfoVo
 import top.fatweb.api.vo.permission.UserWithPowerInfoVo
 import top.fatweb.api.vo.permission.UserWithRoleInfoVo
@@ -78,6 +79,24 @@ object UserConverter {
         },
         groups = user.groups?.map {
             GroupConverter.groupToGroupVo(it)
+        }
+    )
+
+    fun userToUserWithInfoVo(user: User) = UserWithInfoVo(
+        id = user.id,
+        username = user.username,
+        locking = user.locking?.let { it == 1 },
+        expiration = user.expiration,
+        credentialsExpiration = user.credentialsExpiration,
+        enable = user.enable?.let { it == 1 },
+        currentLoginTime = user.currentLoginTime,
+        currentLoginIp = user.currentLoginIp,
+        lastLoginTime = user.lastLoginTime,
+        lastLoginIp = user.lastLoginIp,
+        createTime = user.createTime,
+        updateTime = user.updateTime,
+        userInfo = user.userInfo?.let {
+            UserInfoConverter.userInfoToUserInfoVo(it)
         }
     )
 

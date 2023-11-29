@@ -15,7 +15,7 @@ import top.fatweb.api.service.permission.IUserService
 @Service
 class UserDetailsServiceImpl(val userService: IUserService) : UserDetailsService {
     override fun loadUserByUsername(username: String): UserDetails {
-        val user = userService.getUserWithPower(username)
+        val user = userService.getUserWithPowerByUsername(username)
         user ?: let { throw Exception("Username not found") }
 
         return LoginUser(user)
