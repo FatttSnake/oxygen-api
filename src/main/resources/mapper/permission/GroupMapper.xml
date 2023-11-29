@@ -19,7 +19,7 @@
         </where>
     </select>
 
-    <select id="getWithRoleByList" resultMap="groupWithRoleMap">
+    <select id="selectListWithRoleByIds" resultMap="groupWithRoleMap">
         select t_group.id as group_id,
         t_group.name as group_name,
         t_group.enable as group_enable,
@@ -45,7 +45,7 @@
         </where>
     </select>
 
-    <select id="selectOne" resultMap="groupWithRoleMap">
+    <select id="selectOneById" resultMap="groupWithRoleMap">
         select t_group.id          as group_id,
                t_group.name        as group_name,
                t_group.enable      as group_enable,

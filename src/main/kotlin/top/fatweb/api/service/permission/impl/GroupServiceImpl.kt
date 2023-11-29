@@ -36,14 +36,14 @@ class GroupServiceImpl(
             baseMapper.selectPage(groupIdsPage, groupGetParam?.searchName, groupGetParam?.searchRegex ?: false)
         val groupPage = Page<Group>(groupIdsPage.current, groupIdsIPage.size, groupIdsIPage.total)
         if (groupIdsIPage.total > 0) {
-            groupPage.setRecords(baseMapper.getWithRoleByList(groupIdsIPage.records))
+            groupPage.setRecords(baseMapper.selectListWithRoleByIds(groupIdsIPage.records))
         }
 
         return GroupConverter.groupPageToGroupWithRolePageVo(groupPage)
     }
 
     override fun getOne(id: Long): GroupWithRoleVo? {
-        return baseMapper.selectOne(id)?.let { GroupConverter.groupToGroupWithRoleVo(it) } ?: let { null }
+        return baseMapper.selectOneById(id)?.let { GroupConverter.groupToGroupWithRoleVo(it) } ?: let { null }
     }
 
     override fun listAll(): List<GroupVo> {

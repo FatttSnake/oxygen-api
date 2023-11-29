@@ -41,7 +41,7 @@ class RoleServiceImpl(
 
         val rolePage = Page<Role>(roleIdsPage.current, roleIdsIPage.size, roleIdsIPage.total)
         if (roleIdsIPage.total > 0) {
-            rolePage.setRecords(baseMapper.getWithPowerByList(roleIdsIPage.records))
+            rolePage.setRecords(baseMapper.selectListWithPowerByIds(roleIdsIPage.records))
         }
 
 
@@ -49,7 +49,7 @@ class RoleServiceImpl(
     }
 
     override fun getOne(id: Long): RoleWithPowerVo? {
-        return baseMapper.selectOne(id)?.let { RoleConverter.roleToRoleWithPowerVo(it) } ?: let { null }
+        return baseMapper.selectOneById(id)?.let { RoleConverter.roleToRoleWithPowerVo(it) } ?: let { null }
     }
 
     override fun listAll(): List<RoleVo> {

@@ -19,7 +19,7 @@
         </where>
     </select>
 
-    <select id="getWithPowerByList" resultMap="roleWithPowerMap">
+    <select id="selectListWithPowerByIds" resultMap="roleWithPowerMap">
         select distinct t_role.id as role_id,
         t_role.name as role_name,
         t_role.enable as role_enable,
@@ -57,7 +57,7 @@
         </where>
     </select>
 
-    <select id="selectOne" resultMap="roleWithPowerMap">
+    <select id="selectOneById" resultMap="roleWithPowerMap">
         select distinct t_role.id      as role_id,
                         t_role.name    as role_name,
                         t_role.enable  as role_enable,
