@@ -46,7 +46,7 @@ object GroupConverter {
 
     fun groupAddParamToGroup(groupAddParam: GroupAddParam) = Group().apply {
         name = groupAddParam.name
-        enable = if (groupAddParam.enable == true) 1 else 0
+        enable = if (groupAddParam.enable) 1 else 0
         roles = groupAddParam.roleIds?.map { Role().apply { id = it } }
     }
 

@@ -26,7 +26,7 @@ data class SysLogGetParam(
     @Schema(description = "查询请求 Url")
     val searchRequestUrl: String? = null,
 
-    @Schema(description = "查询使用正则表达式")
+    @Schema(description = "查询使用正则表达式", allowableValues = ["true", "false"], defaultValue = "false")
     val searchRegex: Boolean = false,
 
     @Schema(description = "查询开始时间")

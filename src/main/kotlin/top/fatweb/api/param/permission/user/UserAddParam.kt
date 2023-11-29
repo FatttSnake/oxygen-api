@@ -13,7 +13,7 @@ data class UserAddParam(
     @Schema(description = "密码(为空自动生成随机密码)")
     val password: String?,
 
-    @Schema(description = "锁定")
+    @Schema(description = "锁定", allowableValues = ["true", "false"], defaultValue = "false")
     val locking: Boolean = false,
 
     @Schema(description = "过期时间")
@@ -22,7 +22,7 @@ data class UserAddParam(
     @Schema(description = "认证过期时间")
     val credentialsExpiration: LocalDateTime?,
 
-    @Schema(description = "启用")
+    @Schema(description = "启用", allowableValues = ["true", "false"], defaultValue = "true")
     val enable: Boolean = true,
 
     @Schema(description = "昵称")

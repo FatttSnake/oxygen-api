@@ -1,7 +1,6 @@
 package top.fatweb.api.param.permission.role
 
 import io.swagger.v3.oas.annotations.media.Schema
-import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotNull
 
 /**
@@ -13,10 +12,9 @@ import jakarta.validation.constraints.NotNull
 @Schema(description = "角色更改状态请求参数")
 data class RoleChangeStatusParam(
     @Schema(description = "角色 ID")
-    @field:Min(0)
+    @field:NotNull(message = "Role id can not be null")
     val id: Long,
 
-    @Schema(description = "启用", allowableValues = ["true", "false"])
-    @field:NotNull
-    val enable: Boolean
+    @Schema(description = "启用", allowableValues = ["true", "false"], defaultValue = "true")
+    val enable: Boolean = true
 )
