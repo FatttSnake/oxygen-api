@@ -1,5 +1,6 @@
 package top.fatweb.api.service.permission.impl
 
+import com.baomidou.mybatisplus.core.metadata.OrderItem
 import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper
 import com.baomidou.mybatisplus.extension.kotlin.KtUpdateWrapper
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page
@@ -62,7 +63,7 @@ class UserServiceImpl(
     override fun getPage(userGetParam: UserGetParam?): PageVo<UserWithRoleInfoVo> {
         val userIdsPage = Page<Long>(userGetParam?.currentPage ?: 1, userGetParam?.pageSize ?: 20)
 
-        PageUtil.setPageSort(userGetParam, userIdsPage)
+        PageUtil.setPageSort(userGetParam, userIdsPage, OrderItem.asc("id"))
 
         val userIdsIPage =
             baseMapper.selectPage(userIdsPage, userGetParam?.searchValue, userGetParam?.searchRegex ?: false)
@@ -201,7 +202,10 @@ class UserServiceImpl(
             val wrapper = KtUpdateWrapper(User())
             wrapper.eq(User::id, user.id)
                 .set(User::password, passwordEncoder.encode(userChangePasswordParam.password))
-                .set(User::credentialsExpiration, userChangePasswordParam.credentialsExpiration)
+                .set(
+                    User::credentialsExpiration,
+                    if (user.id != 0L) userChangePasswordParam.credentialsExpiration else null
+                )
                 .set(User::updateTime, LocalDateTime.now(ZoneOffset.UTC))
 
             this.update(wrapper)
