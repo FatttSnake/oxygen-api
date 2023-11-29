@@ -6,10 +6,10 @@ import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.*
 import top.fatweb.api.entity.common.ResponseCode
 import top.fatweb.api.entity.common.ResponseResult
-import top.fatweb.api.param.authentication.UserAddParam
-import top.fatweb.api.param.authentication.UserDeleteParam
-import top.fatweb.api.param.authentication.UserGetParam
-import top.fatweb.api.param.authentication.UserUpdateParam
+import top.fatweb.api.param.permission.user.UserAddParam
+import top.fatweb.api.param.permission.user.UserDeleteParam
+import top.fatweb.api.param.permission.user.UserGetParam
+import top.fatweb.api.param.permission.user.UserUpdateParam
 import top.fatweb.api.service.permission.IUserService
 import top.fatweb.api.vo.PageVo
 import top.fatweb.api.vo.permission.UserWithPasswordRoleInfoVo

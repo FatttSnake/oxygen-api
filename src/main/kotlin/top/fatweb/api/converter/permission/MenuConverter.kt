@@ -1,7 +1,7 @@
 package top.fatweb.api.converter.permission
 
 import top.fatweb.api.entity.permission.Menu
-import top.fatweb.api.vo.permission.MenuVo
+import top.fatweb.api.vo.permission.base.MenuVo
 
 /**
  * Menu converter

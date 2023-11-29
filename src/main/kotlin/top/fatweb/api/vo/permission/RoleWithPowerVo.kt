@@ -3,6 +3,10 @@ package top.fatweb.api.vo.permission
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
 import io.swagger.v3.oas.annotations.media.Schema
+import top.fatweb.api.vo.permission.base.ElementVo
+import top.fatweb.api.vo.permission.base.MenuVo
+import top.fatweb.api.vo.permission.base.ModuleVo
+import top.fatweb.api.vo.permission.base.OperationVo
 import java.time.LocalDateTime
 
 /**

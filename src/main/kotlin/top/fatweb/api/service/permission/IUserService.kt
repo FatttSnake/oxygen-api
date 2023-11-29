@@ -2,10 +2,10 @@ package top.fatweb.api.service.permission
 
 import com.baomidou.mybatisplus.extension.service.IService
 import top.fatweb.api.entity.permission.User
-import top.fatweb.api.param.authentication.UserAddParam
-import top.fatweb.api.param.authentication.UserDeleteParam
-import top.fatweb.api.param.authentication.UserGetParam
-import top.fatweb.api.param.authentication.UserUpdateParam
+import top.fatweb.api.param.permission.user.UserAddParam
+import top.fatweb.api.param.permission.user.UserDeleteParam
+import top.fatweb.api.param.permission.user.UserGetParam
+import top.fatweb.api.param.permission.user.UserUpdateParam
 import top.fatweb.api.vo.PageVo
 import top.fatweb.api.vo.permission.UserWithInfoVo
 import top.fatweb.api.vo.permission.UserWithPasswordRoleInfoVo

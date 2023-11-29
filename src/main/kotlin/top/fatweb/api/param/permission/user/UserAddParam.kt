@@ -1,17 +1,17 @@
-package top.fatweb.api.param.authentication
+package top.fatweb.api.param.permission.user
 
 import io.swagger.v3.oas.annotations.media.Schema
-import jakarta.validation.constraints.NotNull
+import jakarta.validation.constraints.NotBlank
 import java.time.LocalDateTime
 
-@Schema(description = "用户更新请求参数")
-data class UserUpdateParam(
-    @Schema(description = "用户 ID")
-    @field:NotNull(message = "ID can not be null")
-    val id: Long?,
-
+@Schema(description = "用户添加请求参数")
+data class UserAddParam(
     @Schema(description = "用户名")
+    @field:NotBlank(message = "Username can not be blank")
     val username: String?,
+
+    @Schema(description = "密码(为空自动生成随机密码)")
+    val password: String?,
 
     @Schema(description = "锁定")
     val locking: Boolean = false,

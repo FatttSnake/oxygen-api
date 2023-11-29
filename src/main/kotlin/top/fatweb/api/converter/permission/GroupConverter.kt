@@ -3,11 +3,11 @@ package top.fatweb.api.converter.permission
 import com.baomidou.mybatisplus.core.metadata.IPage
 import top.fatweb.api.entity.permission.Group
 import top.fatweb.api.entity.permission.Role
-import top.fatweb.api.param.authentication.GroupAddParam
-import top.fatweb.api.param.authentication.GroupChangeStatusParam
-import top.fatweb.api.param.authentication.GroupUpdateParam
+import top.fatweb.api.param.permission.group.GroupAddParam
+import top.fatweb.api.param.permission.group.GroupChangeStatusParam
+import top.fatweb.api.param.permission.group.GroupUpdateParam
 import top.fatweb.api.vo.PageVo
-import top.fatweb.api.vo.permission.GroupVo
+import top.fatweb.api.vo.permission.base.GroupVo
 import top.fatweb.api.vo.permission.GroupWithRoleVo
 
 /**

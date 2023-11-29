@@ -12,10 +12,10 @@ import top.fatweb.api.entity.permission.UserGroup
 import top.fatweb.api.entity.permission.UserInfo
 import top.fatweb.api.entity.permission.UserRole
 import top.fatweb.api.mapper.permission.UserMapper
-import top.fatweb.api.param.authentication.UserAddParam
-import top.fatweb.api.param.authentication.UserDeleteParam
-import top.fatweb.api.param.authentication.UserGetParam
-import top.fatweb.api.param.authentication.UserUpdateParam
+import top.fatweb.api.param.permission.user.UserAddParam
+import top.fatweb.api.param.permission.user.UserDeleteParam
+import top.fatweb.api.param.permission.user.UserGetParam
+import top.fatweb.api.param.permission.user.UserUpdateParam
 import top.fatweb.api.service.permission.*
 import top.fatweb.api.util.PageUtil
 import top.fatweb.api.util.StrUtil

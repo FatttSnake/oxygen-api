@@ -2,9 +2,9 @@ package top.fatweb.api.service.permission
 
 import com.baomidou.mybatisplus.extension.service.IService
 import top.fatweb.api.entity.permission.Group
-import top.fatweb.api.param.authentication.*
+import top.fatweb.api.param.permission.group.*
 import top.fatweb.api.vo.PageVo
-import top.fatweb.api.vo.permission.GroupVo
+import top.fatweb.api.vo.permission.base.GroupVo
 import top.fatweb.api.vo.permission.GroupWithRoleVo
 
 /**

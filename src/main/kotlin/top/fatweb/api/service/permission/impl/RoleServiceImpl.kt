@@ -9,14 +9,14 @@ import top.fatweb.api.converter.permission.RoleConverter
 import top.fatweb.api.entity.permission.PowerRole
 import top.fatweb.api.entity.permission.Role
 import top.fatweb.api.mapper.permission.RoleMapper
-import top.fatweb.api.param.authentication.*
+import top.fatweb.api.param.permission.role.*
 import top.fatweb.api.service.permission.IElementService
 import top.fatweb.api.service.permission.IMenuService
 import top.fatweb.api.service.permission.IPowerRoleService
 import top.fatweb.api.service.permission.IRoleService
 import top.fatweb.api.util.PageUtil
 import top.fatweb.api.vo.PageVo
-import top.fatweb.api.vo.permission.RoleVo
+import top.fatweb.api.vo.permission.base.RoleVo
 import top.fatweb.api.vo.permission.RoleWithPowerVo
 
 /**

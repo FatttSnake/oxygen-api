@@ -6,10 +6,10 @@ import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.*
 import top.fatweb.api.entity.common.ResponseCode
 import top.fatweb.api.entity.common.ResponseResult
-import top.fatweb.api.param.authentication.*
+import top.fatweb.api.param.permission.group.*
 import top.fatweb.api.service.permission.IGroupService
 import top.fatweb.api.vo.PageVo
-import top.fatweb.api.vo.permission.GroupVo
+import top.fatweb.api.vo.permission.base.GroupVo
 import top.fatweb.api.vo.permission.GroupWithRoleVo
 
 /**

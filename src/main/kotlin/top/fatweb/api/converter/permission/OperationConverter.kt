@@ -1,7 +1,7 @@
 package top.fatweb.api.converter.permission
 
 import top.fatweb.api.entity.permission.Operation
-import top.fatweb.api.vo.permission.OperationVo
+import top.fatweb.api.vo.permission.base.OperationVo
 
 /**
  * Operation converter

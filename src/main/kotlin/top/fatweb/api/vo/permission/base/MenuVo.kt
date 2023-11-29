@@ -1,4 +1,4 @@
-package top.fatweb.api.vo.permission
+package top.fatweb.api.vo.permission.base
 
 import io.swagger.v3.oas.annotations.media.Schema
 

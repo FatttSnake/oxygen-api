@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController
 import top.fatweb.api.converter.permission.UserConverter
 import top.fatweb.api.entity.common.ResponseCode
 import top.fatweb.api.entity.common.ResponseResult
-import top.fatweb.api.param.authentication.LoginParam
+import top.fatweb.api.param.permission.LoginParam
 import top.fatweb.api.service.permission.IAuthenticationService
 import top.fatweb.api.util.WebUtil
 

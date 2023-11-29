@@ -1,6 +1,10 @@
 package top.fatweb.api.vo.permission
 
 import io.swagger.v3.oas.annotations.media.Schema
+import top.fatweb.api.vo.permission.base.ElementVo
+import top.fatweb.api.vo.permission.base.MenuVo
+import top.fatweb.api.vo.permission.base.ModuleVo
+import top.fatweb.api.vo.permission.base.OperationVo
 
 /**
  * Set of power value object

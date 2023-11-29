@@ -9,12 +9,12 @@ import top.fatweb.api.converter.permission.GroupConverter
 import top.fatweb.api.entity.permission.Group
 import top.fatweb.api.entity.permission.RoleGroup
 import top.fatweb.api.mapper.permission.GroupMapper
-import top.fatweb.api.param.authentication.*
+import top.fatweb.api.param.permission.group.*
 import top.fatweb.api.service.permission.IGroupService
 import top.fatweb.api.service.permission.IRoleGroupService
 import top.fatweb.api.util.PageUtil
 import top.fatweb.api.vo.PageVo
-import top.fatweb.api.vo.permission.GroupVo
+import top.fatweb.api.vo.permission.base.GroupVo
 import top.fatweb.api.vo.permission.GroupWithRoleVo
 
 /**

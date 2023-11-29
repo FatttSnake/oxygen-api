@@ -1,4 +1,4 @@
-package top.fatweb.api.param.authentication
+package top.fatweb.api.param.permission.role
 
 import io.swagger.v3.oas.annotations.media.Schema
 

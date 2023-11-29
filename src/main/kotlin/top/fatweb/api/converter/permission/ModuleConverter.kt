@@ -1,7 +1,7 @@
 package top.fatweb.api.converter.permission
 
 import top.fatweb.api.entity.permission.Module
-import top.fatweb.api.vo.permission.ModuleVo
+import top.fatweb.api.vo.permission.base.ModuleVo
 
 /**
  * Module converter

@@ -5,9 +5,9 @@ import top.fatweb.api.entity.permission.Group
 import top.fatweb.api.entity.permission.Role
 import top.fatweb.api.entity.permission.User
 import top.fatweb.api.entity.permission.UserInfo
-import top.fatweb.api.param.authentication.LoginParam
-import top.fatweb.api.param.authentication.UserAddParam
-import top.fatweb.api.param.authentication.UserUpdateParam
+import top.fatweb.api.param.permission.LoginParam
+import top.fatweb.api.param.permission.user.UserAddParam
+import top.fatweb.api.param.permission.user.UserUpdateParam
 import top.fatweb.api.vo.PageVo
 import top.fatweb.api.vo.permission.UserWithInfoVo
 import top.fatweb.api.vo.permission.UserWithPasswordRoleInfoVo

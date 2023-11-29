@@ -1,7 +1,7 @@
 package top.fatweb.api.converter.permission
 
 import top.fatweb.api.entity.permission.UserInfo
-import top.fatweb.api.vo.permission.UserInfoVo
+import top.fatweb.api.vo.permission.base.UserInfoVo
 
 /**
  * User information converter

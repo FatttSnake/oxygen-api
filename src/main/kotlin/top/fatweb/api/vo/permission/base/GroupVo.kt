@@ -1,4 +1,4 @@
-package top.fatweb.api.vo.permission
+package top.fatweb.api.vo.permission.base
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
