@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import top.fatweb.api.entity.common.ResponseCode
 import top.fatweb.api.entity.common.ResponseResult
+import top.fatweb.api.exception.NoRecordFoundException
 import top.fatweb.api.exception.TokenHasExpiredException
 import top.fatweb.avatargenerator.AvatarException
 
@@ -64,7 +65,11 @@ class ExceptionHandler {
 
             is CredentialsExpiredException -> {
                 logger.debug(e.localizedMessage, e)
-                ResponseResult.fail(ResponseCode.PERMISSION_USER_CREDENTIALS_EXPIRED, "User credentials have expired", null)
+                ResponseResult.fail(
+                    ResponseCode.PERMISSION_USER_CREDENTIALS_EXPIRED,
+                    "User credentials have expired",
+                    null
+                )
             }
 
             is DisabledException -> {
@@ -84,7 +89,11 @@ class ExceptionHandler {
 
             is BadCredentialsException -> {
                 logger.debug(e.localizedMessage, e)
-                ResponseResult.fail(ResponseCode.PERMISSION_LOGIN_USERNAME_PASSWORD_ERROR, "Wrong user name or password", null)
+                ResponseResult.fail(
+                    ResponseCode.PERMISSION_LOGIN_USERNAME_PASSWORD_ERROR,
+                    "Wrong user name or password",
+                    null
+                )
             }
 
             is SignatureVerificationException, is JWTDecodeException -> {
@@ -105,6 +114,11 @@ class ExceptionHandler {
             is DuplicateKeyException -> {
                 logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.DATABASE_DUPLICATE_KEY, "Duplicate key", null)
+            }
+
+            is NoRecordFoundException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.DATABASE_NO_RECORD_FOUND, e.localizedMessage, null)
             }
 
             is AvatarException -> {

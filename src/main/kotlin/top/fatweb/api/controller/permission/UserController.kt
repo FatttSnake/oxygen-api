@@ -6,10 +6,8 @@ import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.*
 import top.fatweb.api.entity.common.ResponseCode
 import top.fatweb.api.entity.common.ResponseResult
-import top.fatweb.api.param.permission.user.UserAddParam
-import top.fatweb.api.param.permission.user.UserDeleteParam
-import top.fatweb.api.param.permission.user.UserGetParam
-import top.fatweb.api.param.permission.user.UserUpdateParam
+import top.fatweb.api.exception.NoRecordFoundException
+import top.fatweb.api.param.permission.user.*
 import top.fatweb.api.service.permission.IUserService
 import top.fatweb.api.vo.PageVo
 import top.fatweb.api.vo.permission.UserWithPasswordRoleInfoVo
@@ -50,7 +48,7 @@ class UserController(
         return userService.getOne(id)?.let {
             ResponseResult.databaseSuccess(data = it)
         } ?: let {
-            ResponseResult.databaseFail(ResponseCode.DATABASE_NO_RECORD_FOUND)
+            throw NoRecordFoundException()
         }
     }
 
@@ -72,6 +70,13 @@ class UserController(
                 ResponseCode.DATABASE_UPDATE_SUCCESS, data = it
             )
         } ?: let { ResponseResult.databaseFail(ResponseCode.DATABASE_UPDATE_FILED) }
+    }
+
+    @Operation(summary = "修改密码")
+    @PatchMapping
+    fun changePassword(@Valid @RequestBody userChangePasswordParam: UserChangePasswordParam): ResponseResult<Nothing> {
+        userService.changePassword(userChangePasswordParam)
+        return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
     }
 
     @Operation(summary = "删除用户")

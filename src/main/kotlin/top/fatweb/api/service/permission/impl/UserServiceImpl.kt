@@ -1,6 +1,7 @@
 package top.fatweb.api.service.permission.impl
 
 import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper
+import com.baomidou.mybatisplus.extension.kotlin.KtUpdateWrapper
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -11,11 +12,9 @@ import top.fatweb.api.entity.permission.User
 import top.fatweb.api.entity.permission.UserGroup
 import top.fatweb.api.entity.permission.UserInfo
 import top.fatweb.api.entity.permission.UserRole
+import top.fatweb.api.exception.NoRecordFoundException
 import top.fatweb.api.mapper.permission.UserMapper
-import top.fatweb.api.param.permission.user.UserAddParam
-import top.fatweb.api.param.permission.user.UserDeleteParam
-import top.fatweb.api.param.permission.user.UserGetParam
-import top.fatweb.api.param.permission.user.UserUpdateParam
+import top.fatweb.api.param.permission.user.*
 import top.fatweb.api.service.permission.*
 import top.fatweb.api.util.PageUtil
 import top.fatweb.api.util.StrUtil
@@ -23,6 +22,8 @@ import top.fatweb.api.util.WebUtil
 import top.fatweb.api.vo.PageVo
 import top.fatweb.api.vo.permission.UserWithPasswordRoleInfoVo
 import top.fatweb.api.vo.permission.UserWithRoleInfoVo
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 /**
  * User service implement
@@ -120,6 +121,7 @@ class UserServiceImpl(
     @Transactional
     override fun update(userUpdateParam: UserUpdateParam): UserWithRoleInfoVo? {
         val user = UserConverter.userUpdateParamToUser(userUpdateParam)
+        user.updateTime = LocalDateTime.now(ZoneOffset.UTC)
 
         val oldRoleList = userRoleService.list(
             KtQueryWrapper(UserRole()).select(UserRole::roleId).eq(UserRole::userId, userUpdateParam.id)
@@ -193,14 +195,38 @@ class UserServiceImpl(
         return UserConverter.userToUserWithRoleInfoVo(user)
     }
 
+    override fun changePassword(userChangePasswordParam: UserChangePasswordParam) {
+        val user = baseMapper.selectById(userChangePasswordParam.id)
+        user?.let {
+            val wrapper = KtUpdateWrapper(User())
+            wrapper.eq(User::id, user.id)
+                .set(User::password, passwordEncoder.encode(userChangePasswordParam.password))
+                .set(User::credentialsExpiration, userChangePasswordParam.credentialsExpiration)
+                .set(User::updateTime, LocalDateTime.now(ZoneOffset.UTC))
+
+            this.update(wrapper)
+        } ?: let {
+            throw NoRecordFoundException()
+        }
+    }
+
     override fun deleteOne(id: Long) {
+        if (id == 0L) {
+            return
+        }
+
         this.delete(UserDeleteParam(listOf(id)))
     }
 
     override fun delete(userDeleteParam: UserDeleteParam) {
-        baseMapper.deleteBatchIds(userDeleteParam.ids)
-        userInfoService.remove(KtQueryWrapper(UserInfo()).`in`(UserInfo::userId, userDeleteParam.ids))
-        userRoleService.remove(KtQueryWrapper(UserRole()).`in`(UserRole::userId, userDeleteParam.ids))
-        userGroupService.remove(KtQueryWrapper(UserGroup()).`in`(UserGroup::userId, userDeleteParam.ids))
+        val ids = userDeleteParam.ids.filter { it != 0L }
+        if (ids.isEmpty()) {
+            return
+        }
+
+        baseMapper.deleteBatchIds(ids)
+        userInfoService.remove(KtQueryWrapper(UserInfo()).`in`(UserInfo::userId, ids))
+        userRoleService.remove(KtQueryWrapper(UserRole()).`in`(UserRole::userId, ids))
+        userGroupService.remove(KtQueryWrapper(UserGroup()).`in`(UserGroup::userId, ids))
     }
 }
