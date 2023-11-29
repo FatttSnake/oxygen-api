@@ -154,8 +154,8 @@ object UserConverter {
             avatar = userUpdateParam.avatar
             email = userUpdateParam.email
         }
-        roles = userUpdateParam.roleIds?.map { Role().apply { id = it } }
-        groups = userUpdateParam.groupIds?.map { Group().apply { id = it } }
+        roles = if (userUpdateParam.id != 0L) userUpdateParam.roleIds?.map { Role().apply { id = it } } else null
+        groups = if (userUpdateParam.id != 0L) userUpdateParam.groupIds?.map { Group().apply { id = it } } else null
     }
 
     fun userPageToUserWithRoleInfoPageVo(userPage: IPage<User>) = PageVo(
