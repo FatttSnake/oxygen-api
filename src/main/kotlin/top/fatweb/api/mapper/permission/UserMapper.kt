@@ -16,7 +16,7 @@ import top.fatweb.api.entity.permission.User
 interface UserMapper : BaseMapper<User> {
     fun selectOneWithPowerInfoByUsername(@Param("username")username: String): User?
 
-    fun selectPage(page: IPage<Long>, searchValue: String?, searchRegex: Boolean): IPage<Long>
+    fun selectPage(page: IPage<Long>, searchType: String, searchValue: String?, searchRegex: Boolean): IPage<Long>
 
     fun selectListWithRoleInfoByIds(userIds: List<Long>): List<User>?
 

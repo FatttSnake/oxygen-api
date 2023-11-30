@@ -66,7 +66,7 @@ class UserServiceImpl(
         PageUtil.setPageSort(userGetParam, userIdsPage, OrderItem.asc("id"))
 
         val userIdsIPage =
-            baseMapper.selectPage(userIdsPage, userGetParam?.searchValue, userGetParam?.searchRegex ?: false)
+            baseMapper.selectPage(userIdsPage,userGetParam?.searchType ?: "ALL", userGetParam?.searchValue, userGetParam?.searchRegex ?: false)
         val userPage = Page<User>(userIdsIPage.current, userIdsIPage.size, userIdsIPage.total)
         if (userIdsIPage.total > 0) {
             userPage.setRecords(baseMapper.selectListWithRoleInfoByIds(userIdsIPage.records))

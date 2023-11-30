@@ -11,6 +11,9 @@ import top.fatweb.api.param.PageSortParam
  */
 @Schema(description = "用户查询请求参数")
 data class UserGetParam(
+    @Schema(description = "搜索类型", allowableValues = ["ALL", "ID", "USERNAME", "NICKNAME", "EMAIL"], defaultValue = "ALL")
+    val searchType: String = "ALL",
+
     @Schema(description = "查询内容")
     val searchValue: String? = null,
 

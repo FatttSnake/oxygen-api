@@ -59,13 +59,67 @@
     </select>
 
     <select id="selectPage" resultType="long">
-        select id
+        select t_user.id
         from t_user
+        left join (select * from t_user_info where deleted = 0) as tui on t_user.id = tui.user_id
         <where>
-            deleted = 0
-        <if test="searchValue != null">
-
-        </if>
+            t_user.deleted = 0
+            <if test="searchValue != null">
+                <choose>
+                    <when test="searchType == 'ID'">
+                        <choose>
+                            <when test="searchRegex == true">
+                                and t_user.id regexp #{searchValue}
+                            </when>
+                            <otherwise>
+                                and t_user.id like concat('%' ,#{searchValue}, '%')
+                            </otherwise>
+                        </choose>
+                    </when>
+                    <when test="searchType == 'USERNAME'">
+                        <choose>
+                            <when test="searchRegex == true">
+                                and t_user.username regexp #{searchValue}
+                            </when>
+                            <otherwise>
+                                and t_user.username like concat('%' ,#{searchValue}, '%')
+                            </otherwise>
+                        </choose>
+                    </when>
+                    <when test="searchType == 'NICKNAME'">
+                        <choose>
+                            <when test="searchRegex == true">
+                                and tui.nickname regexp #{searchValue}
+                            </when>
+                            <otherwise>
+                                and tui.nickname like concat('%' ,#{searchValue}, '%')
+                            </otherwise>
+                        </choose>
+                    </when>
+                    <when test="searchType == 'EMAIL'">
+                        <choose>
+                            <when test="searchRegex == true">
+                                and tui.email regexp #{searchValue}
+                            </when>
+                            <otherwise>
+                                and tui.email like concat('%' ,#{searchValue}, '%')
+                            </otherwise>
+                        </choose>
+                    </when>
+                    <otherwise>
+                        <choose>
+                            <when test="searchRegex == true">
+                                and ( t_user.username regexp #{searchValue} or tui.nickname regexp #{searchValue} or
+                                tui.email regexp #{searchValue})
+                            </when>
+                            <otherwise>
+                                and (t_user.username like concat('%' ,#{searchValue}, '%') or tui.nickname like
+                                concat('%' ,#{searchValue}, '%') or tui.email like concat('%' ,#{searchValue}, '%'))
+                            </otherwise>
+                        </choose>
+                    </otherwise>
+                </choose>
+            </if>
         </where>
     </select>
 
