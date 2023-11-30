@@ -2,6 +2,7 @@ package top.fatweb.api.controller.permission
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -22,5 +23,6 @@ class PowerController(
 ) {
     @Operation(summary = "获取权限列表")
     @GetMapping("/list")
+    @PreAuthorize("hasAnyAuthority('system:power:query:list', 'system:role:add:one', 'system:role:modify:one')")
     fun getList() = ResponseResult.databaseSuccess(data = powerService.getList())
 }

@@ -3,6 +3,7 @@ package top.fatweb.api.entity.permission
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import java.time.LocalDateTime
 import java.time.ZoneOffset
@@ -27,7 +28,7 @@ class LoginUser() : UserDetails {
     @JsonIgnore
     override fun getAuthorities(): List<GrantedAuthority> {
         authorities?.let { return it }
-        authorities = emptyList()
+        authorities = user.operations?.map { SimpleGrantedAuthority(it.code) } ?: emptyList()
 
         return authorities as List<GrantedAuthority>
     }

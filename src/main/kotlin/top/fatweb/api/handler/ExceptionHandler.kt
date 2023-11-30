@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.jdbc.BadSqlGrammarException
+import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.authentication.*
 import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.MethodArgumentNotValidException
@@ -104,6 +105,11 @@ class ExceptionHandler {
             is TokenHasExpiredException -> {
                 logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.PERMISSION_TOKEN_HAS_EXPIRED, e.localizedMessage, null)
+            }
+
+            is AccessDeniedException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.PERMISSION_ACCESS_DENIED, "Access Denied", null)
             }
 
             is BadSqlGrammarException -> {
