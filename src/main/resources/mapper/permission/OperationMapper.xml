@@ -5,6 +5,6 @@
         <id property="id" column="operation_id"/>
         <result property="name" column="operation_name"/>
         <result property="code" column="operation_code"/>
-        <result property="elementId" column="operation_element_id"/>
+        <result property="funcId" column="operation_func_id"/>
     </resultMap>
 </mapper>

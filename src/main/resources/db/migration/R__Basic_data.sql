@@ -1,7 +1,7 @@
 insert into t_power_type (id, name)
     values (1, 'module'),
            (2, 'menu'),
-           (3, 'element'),
+           (3, 'func'),
            (4, 'operation') as new_value
 on duplicate key update name = new_value.name;
 
@@ -68,7 +68,7 @@ on duplicate key update name      =new_value.name,
                         url       =new_value.url,
                         parent_id =new_value.parent_id;
 
-insert into t_element(id, name, menu_id, parent_id)
+insert into t_func(id, name, menu_id, parent_id)
     values (1010100, '查询', 1010000, null),
            (1010200, '增加', 1010000, null),
            (1010300, '修改', 1010000, null),
@@ -87,7 +87,7 @@ on duplicate key update name      = new_value.name,
                         menu_id   = new_value.menu_id,
                         parent_id = new_value.parent_id;
 
-insert into t_operation(id, name, code, element_id)
+insert into t_operation(id, name, code, func_id)
     values (1010101, '单个', 'system:user:query:one', 1010100),
            (1010102, '全部', 'system:user:query:all', 1010100),
            (1010103, '列表', 'system:user:query:list', 1010100),
@@ -116,4 +116,4 @@ insert into t_operation(id, name, code, element_id)
            (1510101, '列表', 'system:log:query:all', 1510100) as new_value
 on duplicate key update name=new_value.name,
                         code=new_value.code,
-                        element_id=new_value.element_id;
+                        func_id=new_value.func_id;

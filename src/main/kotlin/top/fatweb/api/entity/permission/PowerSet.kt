@@ -13,7 +13,7 @@ class PowerSet : Serializable {
 
     var menuList: List<Menu>? = null
 
-    var elementList: List<Element>? = null
+    var funcList: List<Func>? = null
 
     var operationList: List<Operation>? = null
 }

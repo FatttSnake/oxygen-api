@@ -1,9 +1,9 @@
-drop table if exists t_element;
+drop table if exists t_func;
 
-create table if not exists t_element
+create table if not exists t_func
 (
     id        bigint       not null primary key,
-    name      varchar(100) not null comment '元素名',
+    name      varchar(100) not null comment '功能名',
     parent_id bigint       null comment '父ID',
     menu_id   bigint       not null comment '菜单ID'
-) comment '页面元素表';
+) comment '功能表';

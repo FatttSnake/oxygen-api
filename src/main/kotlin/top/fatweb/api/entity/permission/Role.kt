@@ -55,7 +55,7 @@ class Role : Serializable {
     var menus: List<Menu>? = null
 
     @TableField(exist = false)
-    var elements: List<Element>? = null
+    var funcs: List<Func>? = null
 
     @TableField(exist = false)
     var operations: List<Operation>? = null
@@ -64,6 +64,6 @@ class Role : Serializable {
     var powers: List<Power>? = null
 
     override fun toString(): String {
-        return "Role(id=$id, name=$name, enable=$enable, deleted=$deleted, version=$version, modules=$modules, menus=$menus, elements=$elements, operations=$operations, powers=$powers)"
+        return "Role(id=$id, name=$name, enable=$enable, deleted=$deleted, version=$version, modules=$modules, menus=$menus, funcs=$funcs, operations=$operations, powers=$powers)"
     }
 }

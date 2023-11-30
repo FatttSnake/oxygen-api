@@ -14,6 +14,6 @@ object OperationConverter {
         id = operation.id,
         name = operation.name,
         code = operation.code,
-        elementId = operation.elementId
+        funcId = operation.funcId
     )
 }

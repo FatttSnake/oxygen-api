@@ -38,7 +38,7 @@ class UserServiceImpl(
     private val userInfoService: IUserInfoService,
     private val moduleService: IModuleService,
     private val menuService: IMenuService,
-    private val elementService: IElementService,
+    private val funcService: IFuncService,
     private val operationService: IOperationService,
     private val userRoleService: IUserRoleService,
     private val userGroupService: IUserGroupService
@@ -50,7 +50,7 @@ class UserServiceImpl(
         if (user.id == 0L) {
             user.modules = moduleService.list()
             user.menus = menuService.list()
-            user.elements = elementService.list()
+            user.funcs = funcService.list()
             user.operations = operationService.list()
         }
 

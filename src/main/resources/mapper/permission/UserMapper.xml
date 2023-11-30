@@ -32,14 +32,14 @@
                tm.name                       as menu_name,
                tm.url                        as menu_url,
                tm.parent_id                  as menu_parent_id,
-               te.id                         as element_id,
-               te.name                       as element_name,
-               te.parent_id                  as element_parent_id,
-               te.menu_id                    as element_menu_id,
+               tf.id                         as func_id,
+               tf.name                       as func_name,
+               tf.parent_id                  as func_parent_id,
+               tf.menu_id                    as func_menu_id,
                t.id                          as operation_id,
                t.name                        as operation_name,
                t.code                        as operation_code,
-               t.element_id                  as operation_element_id
+               t.func_id                  as operation_func_id
         from t_user
                  left join (select * from t_user_info where deleted = 0) as tui on t_user.id = tui.user_id
                  left join (select * from t_user_group where deleted = 0) as tug on t_user.id = tug.user_id
@@ -52,7 +52,7 @@
                  left join t_power as tp on tp.id = tpr.power_id
                  left join t_module as tmo on tp.id = tmo.id
                  left join t_menu as tm on tp.id = tm.id
-                 left join t_element as te on tp.id = te.id
+                 left join t_func as tf on tp.id = tf.id
                  left join t_operation as t on tp.id = t.id
         where t_user.deleted = 0
           and t_user.username = #{username};
@@ -276,7 +276,7 @@
         <result property="password" column="user_password"/>
         <collection property="modules" resultMap="top.fatweb.api.mapper.permission.ModuleMapper.moduleMap"/>
         <collection property="menus" resultMap="top.fatweb.api.mapper.permission.MenuMapper.menuMap"/>
-        <collection property="elements" resultMap="top.fatweb.api.mapper.permission.ElementMapper.elementMap"/>
+        <collection property="funcs" resultMap="top.fatweb.api.mapper.permission.FuncMapper.funcMap"/>
         <collection property="operations" resultMap="top.fatweb.api.mapper.permission.OperationMapper.operationMap"/>
     </resultMap>
 

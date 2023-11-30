@@ -6,19 +6,19 @@ import com.baomidou.mybatisplus.annotation.TableName
 import java.io.Serializable
 
 /**
- * Element entity
+ * Function entity
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-@TableName("t_element")
-class Element : Serializable {
+@TableName("t_func")
+class Func : Serializable {
 
     @TableId("id")
     var id: Long? = null
 
     /**
-     * 元素名
+     * 功能名
      */
     @TableField("name")
     var name: String? = null
@@ -36,6 +36,6 @@ class Element : Serializable {
     var menuId: Long? = null
 
     override fun toString(): String {
-        return "Element(id=$id, name=$name, parentId=$parentId, menuId=$menuId)"
+        return "Func(id=$id, name=$name, parentId=$parentId, menuId=$menuId)"
     }
 }

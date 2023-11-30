@@ -3,16 +3,16 @@ package top.fatweb.api.vo.permission.base
 import io.swagger.v3.oas.annotations.media.Schema
 
 /**
- * Element value object
+ * Function value object
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-@Schema(description = "页面元素返回参数")
-data class ElementVo(
+@Schema(description = "功能返回参数")
+data class FuncVo(
     val id: Long?,
 
-    @Schema(description = "元素名", example = "AddButton")
+    @Schema(description = "功能名", example = "AddButton")
     val name: String?,
 
     @Schema(description = "父 ID")

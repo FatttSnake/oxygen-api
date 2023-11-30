@@ -33,7 +33,7 @@ object RoleConverter {
         updateTime = role.updateTime,
         modules = role.modules?.map { ModuleConverter.moduleToModuleVo(it) },
         menus = role.menus?.map { MenuConverter.menuToMenuVo(it) },
-        elements = role.elements?.map { ElementConverter.elementToElementVo(it) },
+        funcs = role.funcs?.map { FuncConverter.funcToFuncVo(it) },
         operations = role.operations?.map { OperationConverter.operationToOperationVo(it) }
     )
 

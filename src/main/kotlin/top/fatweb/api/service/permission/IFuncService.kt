@@ -1,12 +1,12 @@
 package top.fatweb.api.service.permission
 
 import com.baomidou.mybatisplus.extension.service.IService
-import top.fatweb.api.entity.permission.Element
+import top.fatweb.api.entity.permission.Func
 
 /**
- * Element service interface
+ * Function service interface
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-interface IElementService : IService<Element>
+interface IFuncService : IService<Func>

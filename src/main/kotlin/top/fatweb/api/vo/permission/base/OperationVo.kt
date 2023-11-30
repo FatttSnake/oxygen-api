@@ -8,16 +8,16 @@ import io.swagger.v3.oas.annotations.media.Schema
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-@Schema(description = "功能返回参数")
+@Schema(description = "操作返回参数")
 data class OperationVo(
     val id: Long?,
 
-    @Schema(description = "功能名", example = "Add User")
+    @Schema(description = "操作名", example = "Add User")
     val name: String?,
 
-    @Schema(description = "功能编码", example = "system:user:add")
+    @Schema(description = "操作编码", example = "system:user:add")
     val code: String?,
 
-    @Schema(description = "页面元素 ID")
-    val elementId: Long?
+    @Schema(description = "功能 ID")
+    val funcId: Long?
 )

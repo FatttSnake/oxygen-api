@@ -50,8 +50,8 @@ object UserConverter {
         menus = user.menus?.map {
             MenuConverter.menuToMenuVo(it)
         },
-        elements = user.elements?.map {
-            ElementConverter.elementToElementVo(it)
+        funcs = user.funcs?.map {
+            FuncConverter.funcToFuncVo(it)
         },
         operations = user.operations?.map {
             OperationConverter.operationToOperationVo(it)

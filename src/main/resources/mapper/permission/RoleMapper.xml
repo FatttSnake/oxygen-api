@@ -34,20 +34,20 @@
         tmn.url as menu_url,
         tmn.parent_id as menu_parent_id,
         tmn.module_id as menu_module_id,
-        te.id as element_id,
-        te.name as element_name,
-        te.parent_id as element_parent_id,
-        te.menu_id as element_menu_id,
+        tf.id as func_id,
+        tf.name as func_name,
+        tf.parent_id as func_parent_id,
+        tf.menu_id as func_menu_id,
         t.id as operation_id,
         t.name as operation_name,
         t.code as operation_code,
-        t.element_id as operation_element_id
+        t.func_id as operation_func_id
         from (select * from t_role where deleted = 0) as t_role
         left join (select * from t_power_role where deleted = 0) as tpr on t_role.id = tpr.role_id
         left join t_power tp on tp.id = tpr.power_id
         left join t_module tm on tp.id = tm.id
         left join t_menu tmn on tp.id = tmn.id
-        left join t_element te on tp.id = te.id
+        left join t_func tf on tp.id = tf.id
         left join t_operation t on tp.id = t.id
         <where>
             <foreach collection="roleIds" item="item" index="index" open="and t_role.id in (" separator="," close=")"
@@ -72,20 +72,20 @@
                         tmn.url        as menu_url,
                         tmn.parent_id  as menu_parent_id,
                         tmn.module_id  as menu_module_id,
-                        te.id          as element_id,
-                        te.name        as element_name,
-                        te.parent_id   as element_parent_id,
-                        te.menu_id     as element_menu_id,
+                        tf.id          as func_id,
+                        tf.name        as func_name,
+                        tf.parent_id   as func_parent_id,
+                        tf.menu_id     as func_menu_id,
                         t.id           as operation_id,
                         t.name         as operation_name,
                         t.code         as operation_code,
-                        t.element_id   as operation_element_id
+                        t.func_id   as operation_func_id
         from (select * from t_role where deleted = 0) as t_role
                  left join (select * from t_power_role where deleted = 0) as tpr on t_role.id = tpr.role_id
                  left join t_power tp on tp.id = tpr.power_id
                  left join t_module tm on tp.id = tm.id
                  left join t_menu tmn on tp.id = tmn.id
-                 left join t_element te on tp.id = te.id
+                 left join t_func tf on tp.id = tf.id
                  left join t_operation t on tp.id = t.id
         where t_role.id = #{id}
     </select>
@@ -103,7 +103,7 @@
     <resultMap id="roleWithPowerMap" type="role" extends="roleMap">
         <collection property="modules" resultMap="top.fatweb.api.mapper.permission.ModuleMapper.moduleMap"/>
         <collection property="menus" resultMap="top.fatweb.api.mapper.permission.MenuMapper.menuMap"/>
-        <collection property="elements" resultMap="top.fatweb.api.mapper.permission.ElementMapper.elementMap"/>
+        <collection property="funcs" resultMap="top.fatweb.api.mapper.permission.FuncMapper.funcMap"/>
         <collection property="operations" resultMap="top.fatweb.api.mapper.permission.OperationMapper.operationMap"/>
     </resultMap>
 </mapper>

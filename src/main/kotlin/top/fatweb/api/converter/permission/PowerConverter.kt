@@ -13,7 +13,7 @@ object PowerConverter {
     fun powerSetToPowerSetVo(powerSet: PowerSet) = PowerSetVo(
         moduleList = powerSet.moduleList?.map { ModuleConverter.moduleToModuleVo(it) },
         menuList = powerSet.menuList?.map { MenuConverter.menuToMenuVo(it) },
-        elementList = powerSet.elementList?.map { ElementConverter.elementToElementVo(it) },
+        funcList = powerSet.funcList?.map { FuncConverter.funcToFuncVo(it) },
         operationList = powerSet.operationList?.map { OperationConverter.operationToOperationVo(it) }
     )
 }

@@ -59,9 +59,9 @@ data class UserWithPowerInfoVo(
     @Schema(description = "菜单列表")
     val menus: List<MenuVo>?,
 
-    @Schema(description = "页面元素列表")
-    val elements: List<ElementVo>?,
-
     @Schema(description = "功能列表")
+    val funcs: List<FuncVo>?,
+
+    @Schema(description = "操作列表")
     val operations: List<OperationVo>?
 )

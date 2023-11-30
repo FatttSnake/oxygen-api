@@ -10,7 +10,7 @@ import top.fatweb.api.entity.permission.PowerRole
 import top.fatweb.api.entity.permission.Role
 import top.fatweb.api.mapper.permission.RoleMapper
 import top.fatweb.api.param.permission.role.*
-import top.fatweb.api.service.permission.IElementService
+import top.fatweb.api.service.permission.IFuncService
 import top.fatweb.api.service.permission.IMenuService
 import top.fatweb.api.service.permission.IPowerRoleService
 import top.fatweb.api.service.permission.IRoleService
@@ -28,7 +28,7 @@ import top.fatweb.api.vo.permission.RoleWithPowerVo
 @Service
 class RoleServiceImpl(
     private val powerRoleService: IPowerRoleService,
-    private val elementService: IElementService,
+    private val funcService: IFuncService,
     private val menuService: IMenuService
 ) : ServiceImpl<RoleMapper, Role>(), IRoleService {
     override fun getPage(roleGetParam: RoleGetParam?): PageVo<RoleWithPowerVo> {
@@ -150,7 +150,7 @@ class RoleServiceImpl(
 
     private fun getElementParent(id: Long, parentIds: HashSet<Long>) {
         parentIds.add(id)
-        elementService.getById(id)?.parentId?.let {
+        funcService.getById(id)?.parentId?.let {
             getElementParent(it, parentIds)
         }
     }

@@ -18,24 +18,24 @@ class Operation : Serializable {
     var id: Long? = null
 
     /**
-     * 功能名
+     * 操作名
      */
     @TableField("name")
     var name: String? = null
 
     /**
-     * 功能编码
+     * 操作编码
      */
     @TableField("code")
     var code: String? = null
 
     /**
-     * 页面元素ID
+     * 功能ID
      */
-    @TableField("element_id")
-    var elementId: Long? = null
+    @TableField("func_id")
+    var funcId: Long? = null
 
     override fun toString(): String {
-        return "Operation(id=$id, name=$name, code=$code, elementId=$elementId)"
+        return "Operation(id=$id, name=$name, code=$code, funcId=$funcId)"
     }
 }

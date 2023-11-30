@@ -18,13 +18,13 @@ import top.fatweb.api.service.permission.*
 class PowerServiceImpl(
     private val moduleService: IModuleService,
     private val menuService: IMenuService,
-    private val elementService: IElementService,
+    private val funcService: IFuncService,
     private val operationService: IOperationService
 ) : ServiceImpl<PowerMapper, Power>(), IPowerService {
     override fun getList() = PowerConverter.powerSetToPowerSetVo(PowerSet().apply {
         moduleList = moduleService.list()
         menuList = menuService.list()
-        elementList = elementService.list()
+        funcList = funcService.list()
         operationList = operationService.list()
     })
 }

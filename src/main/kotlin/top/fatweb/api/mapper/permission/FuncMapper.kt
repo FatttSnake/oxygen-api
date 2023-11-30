@@ -2,13 +2,13 @@ package top.fatweb.api.mapper.permission
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper
 import org.apache.ibatis.annotations.Mapper
-import top.fatweb.api.entity.permission.Element
+import top.fatweb.api.entity.permission.Func
 
 /**
- * Element mapper
+ * Function mapper
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Mapper
-interface ElementMapper : BaseMapper<Element>
+interface FuncMapper : BaseMapper<Func>
