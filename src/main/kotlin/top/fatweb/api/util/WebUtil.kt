@@ -22,4 +22,13 @@ object WebUtil {
     fun getToken(tokenWithPrefix: String) = tokenWithPrefix.removePrefix(SecurityProperties.tokenPrefix)
 
     fun getToken(request: HttpServletRequest) = getToken(request.getHeader(SecurityProperties.headerString))
+
+    fun offlineUser(redisUtil: RedisUtil, vararg userIds: Long) {
+        val keys = HashSet<String>()
+        userIds.forEach {
+            keys.addAll(redisUtil.keys("${SecurityProperties.jwtIssuer}_login_${it}:*"))
+        }
+
+        redisUtil.delObject(keys)
+    }
 }

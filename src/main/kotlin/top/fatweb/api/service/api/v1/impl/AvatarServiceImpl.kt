@@ -1,8 +1,9 @@
-package top.fatweb.api.service.api.v1
+package top.fatweb.api.service.api.v1.impl
 
 import org.springframework.stereotype.Service
 import top.fatweb.api.param.api.v1.avatar.AvatarBaseParam
 import top.fatweb.api.param.api.v1.avatar.AvatarGitHubParam
+import top.fatweb.api.service.api.v1.IAvatarService
 import top.fatweb.api.util.NumberUtil
 import top.fatweb.api.vo.api.v1.avatar.AvatarBase64Vo
 import top.fatweb.avatargenerator.GitHubAvatar

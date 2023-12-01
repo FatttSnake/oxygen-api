@@ -18,6 +18,7 @@ import top.fatweb.api.mapper.permission.UserMapper
 import top.fatweb.api.param.permission.user.*
 import top.fatweb.api.service.permission.*
 import top.fatweb.api.util.PageUtil
+import top.fatweb.api.util.RedisUtil
 import top.fatweb.api.util.StrUtil
 import top.fatweb.api.util.WebUtil
 import top.fatweb.api.vo.PageVo
@@ -35,6 +36,7 @@ import java.time.ZoneOffset
 @Service
 class UserServiceImpl(
     private val passwordEncoder: PasswordEncoder,
+    private val redisUtil: RedisUtil,
     private val userInfoService: IUserInfoService,
     private val moduleService: IModuleService,
     private val menuService: IMenuService,
@@ -193,6 +195,8 @@ class UserServiceImpl(
             })
         }
 
+        userUpdateParam.id?.let { WebUtil.offlineUser(redisUtil, it) }
+
         return UserConverter.userToUserWithRoleInfoVo(user)
     }
 
@@ -209,11 +213,14 @@ class UserServiceImpl(
                 .set(User::updateTime, LocalDateTime.now(ZoneOffset.UTC))
 
             this.update(wrapper)
+
+            userChangePasswordParam.id?.let { WebUtil.offlineUser(redisUtil, it) }
         } ?: let {
             throw NoRecordFoundException()
         }
     }
 
+    @Transactional
     override fun deleteOne(id: Long) {
         if (id == 0L) {
             return
@@ -222,6 +229,7 @@ class UserServiceImpl(
         this.delete(UserDeleteParam(listOf(id)))
     }
 
+    @Transactional
     override fun delete(userDeleteParam: UserDeleteParam) {
         val ids = userDeleteParam.ids.filter { it != 0L }
         if (ids.isEmpty()) {
@@ -232,5 +240,7 @@ class UserServiceImpl(
         userInfoService.remove(KtQueryWrapper(UserInfo()).`in`(UserInfo::userId, ids))
         userRoleService.remove(KtQueryWrapper(UserRole()).`in`(UserRole::userId, ids))
         userGroupService.remove(KtQueryWrapper(UserGroup()).`in`(UserGroup::userId, ids))
+
+        WebUtil.offlineUser(redisUtil, *ids.toLongArray())
     }
 }
