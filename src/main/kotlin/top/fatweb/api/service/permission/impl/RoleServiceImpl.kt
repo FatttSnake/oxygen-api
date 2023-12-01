@@ -10,11 +10,10 @@ import top.fatweb.api.entity.permission.PowerRole
 import top.fatweb.api.entity.permission.Role
 import top.fatweb.api.mapper.permission.RoleMapper
 import top.fatweb.api.param.permission.role.*
-import top.fatweb.api.service.permission.IFuncService
-import top.fatweb.api.service.permission.IMenuService
-import top.fatweb.api.service.permission.IPowerRoleService
-import top.fatweb.api.service.permission.IRoleService
+import top.fatweb.api.service.permission.*
 import top.fatweb.api.util.PageUtil
+import top.fatweb.api.util.RedisUtil
+import top.fatweb.api.util.WebUtil
 import top.fatweb.api.vo.PageVo
 import top.fatweb.api.vo.permission.base.RoleVo
 import top.fatweb.api.vo.permission.RoleWithPowerVo
@@ -27,9 +26,11 @@ import top.fatweb.api.vo.permission.RoleWithPowerVo
  */
 @Service
 class RoleServiceImpl(
+    private val redisUtil: RedisUtil,
     private val powerRoleService: IPowerRoleService,
     private val funcService: IFuncService,
-    private val menuService: IMenuService
+    private val menuService: IMenuService,
+    private val userService: IUserService
 ) : ServiceImpl<RoleMapper, Role>(), IRoleService {
     override fun getPage(roleGetParam: RoleGetParam?): PageVo<RoleWithPowerVo> {
         val roleIdsPage = Page<Long>(roleGetParam?.currentPage ?: 1, roleGetParam?.pageSize ?: 20)
@@ -118,11 +119,19 @@ class RoleServiceImpl(
             })
         }
 
+        roleUpdateParam.id?.let { offlineUser(it) }
+
         return RoleConverter.roleToRoleVo(role)
     }
 
     override fun changeStatus(roleChangeStatusParam: RoleChangeStatusParam): Boolean {
-        return updateById(RoleConverter.roleChangeStatusParamToRole(roleChangeStatusParam))
+        updateById(RoleConverter.roleChangeStatusParamToRole(roleChangeStatusParam)).let {
+            if (it && !roleChangeStatusParam.enable) {
+                roleChangeStatusParam.id?.let { id -> offlineUser(id) }
+            }
+
+            return it
+        }
     }
 
     @Transactional
@@ -134,6 +143,7 @@ class RoleServiceImpl(
     override fun delete(roleDeleteParam: RoleDeleteParam) {
         baseMapper.deleteBatchIds(roleDeleteParam.ids)
         powerRoleService.remove(KtQueryWrapper(PowerRole()).`in`(PowerRole::roleId, roleDeleteParam.ids))
+        offlineUser(*roleDeleteParam.ids.toLongArray())
     }
 
     private fun getFullPowerIds(powerIds: List<Long>): Set<Long> {
@@ -160,5 +170,10 @@ class RoleServiceImpl(
         menuService.getById(id)?.parentId?.let {
             getMenuParent(it, parentIds)
         }
+    }
+
+    private fun offlineUser(vararg roleIds: Long) {
+        val userIds = userService.selectIdsWithRoleIds(roleIds.toList())
+        WebUtil.offlineUser(redisUtil, *userIds.toLongArray())
     }
 }

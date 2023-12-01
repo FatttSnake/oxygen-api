@@ -14,7 +14,7 @@ import jakarta.validation.constraints.NotNull
 data class RoleUpdateParam(
     @Schema(description = "角色 ID")
     @field:NotNull(message = "Role id can not be null")
-    val id: Long,
+    val id: Long?,
 
     @Schema(description = "角色名称")
     @field:NotBlank(message = "Name can not be blank")

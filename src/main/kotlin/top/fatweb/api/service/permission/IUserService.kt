@@ -35,4 +35,8 @@ interface IUserService : IService<User> {
     fun deleteOne(id: Long)
 
     fun delete(userDeleteParam: UserDeleteParam)
+
+    fun selectIdsWithRoleIds(roleIds: List<Long>): List<Long>
+
+    fun selectIdsWithGroupIds(groupIds: List<Long>): List<Long>
 }

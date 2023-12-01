@@ -12,7 +12,10 @@ import top.fatweb.api.mapper.permission.GroupMapper
 import top.fatweb.api.param.permission.group.*
 import top.fatweb.api.service.permission.IGroupService
 import top.fatweb.api.service.permission.IRoleGroupService
+import top.fatweb.api.service.permission.IUserService
 import top.fatweb.api.util.PageUtil
+import top.fatweb.api.util.RedisUtil
+import top.fatweb.api.util.WebUtil
 import top.fatweb.api.vo.PageVo
 import top.fatweb.api.vo.permission.base.GroupVo
 import top.fatweb.api.vo.permission.GroupWithRoleVo
@@ -25,7 +28,9 @@ import top.fatweb.api.vo.permission.GroupWithRoleVo
  */
 @Service
 class GroupServiceImpl(
-    private val roleGroupService: IRoleGroupService
+    private val redisUtil: RedisUtil,
+    private val roleGroupService: IRoleGroupService,
+    private val userService: IUserService
 ) : ServiceImpl<GroupMapper, Group>(), IGroupService {
     override fun getPage(groupGetParam: GroupGetParam?): PageVo<GroupWithRoleVo> {
         val groupIdsPage = Page<Long>(groupGetParam?.currentPage ?: 1, groupGetParam?.pageSize ?: 20)
@@ -107,11 +112,19 @@ class GroupServiceImpl(
             })
         }
 
+        groupUpdateParam.id?.let { offlineUser(it) }
+
         return GroupConverter.groupToGroupVo(group)
     }
 
     override fun changeStatus(groupChangeStatusParam: GroupChangeStatusParam): Boolean {
-        return updateById(GroupConverter.groupChangeStatusParamToGroup(groupChangeStatusParam))
+        updateById(GroupConverter.groupChangeStatusParamToGroup(groupChangeStatusParam)).let {
+            if (it && !groupChangeStatusParam.enable) {
+                groupChangeStatusParam.id?.let { id -> offlineUser(id) }
+            }
+
+            return it
+        }
     }
 
     @Transactional
@@ -123,5 +136,11 @@ class GroupServiceImpl(
     override fun delete(groupDeleteParam: GroupDeleteParam) {
         baseMapper.deleteBatchIds(groupDeleteParam.ids)
         roleGroupService.remove(KtQueryWrapper(RoleGroup()).`in`(RoleGroup::groupId, groupDeleteParam.ids))
+        offlineUser(*groupDeleteParam.ids.toLongArray())
+    }
+
+    private fun offlineUser(vararg groupIds: Long) {
+        val userIds = userService.selectIdsWithGroupIds(groupIds.toList())
+        WebUtil.offlineUser(redisUtil, *userIds.toLongArray())
     }
 }

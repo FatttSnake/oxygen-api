@@ -39,7 +39,7 @@
                t.id                          as operation_id,
                t.name                        as operation_name,
                t.code                        as operation_code,
-               t.func_id                  as operation_func_id
+               t.func_id                     as operation_func_id
         from t_user
                  left join (select * from t_user_info where deleted = 0) as tui on t_user.id = tui.user_id
                  left join (select * from t_user_group where deleted = 0) as tug on t_user.id = tug.user_id
@@ -124,48 +124,48 @@
     </select>
 
     <select id="selectListWithRoleInfoByIds" resultMap="userWithRoleInfoMap">
-        select t_user.id                     as user_id,
-               t_user.username               as user_username,
-               t_user.password               as user_password,
-               t_user.locking                as user_locking,
-               t_user.expiration             as user_expiration,
-               t_user.credentials_expiration as user_credentials_expiration,
-               t_user.enable                 as user_enable,
-               t_user.current_login_time     as user_current_login_time,
-               t_user.current_login_ip       as user_current_login_ip,
-               t_user.last_login_time        as user_last_login_time,
-               t_user.last_login_ip          as user_last_login_ip,
-               t_user.create_time            as user_create_time,
-               t_user.update_time            as user_update_time,
-               t_user.deleted                as user_deleted,
-               t_user.version                as user_version,
-               tui.id                        as user_info_id,
-               tui.user_id                   as user_info_user_id,
-               tui.nickname                  as user_info_nickname,
-               tui.avatar                    as user_info_avatar,
-               tui.email                     as user_info_email,
-               tui.create_time               as user_info_create_time,
-               tui.update_time               as user_info_update_time,
-               tui.deleted                   as user_info_deleted,
-               tui.version                   as user_info_version,
-               tr.id                         as role_id,
-               tr.name                       as role_name,
-               tr.enable                     as role_enable,
-               tr.deleted                    as role_deleted,
-               tr.version                    as role_version,
-               tg.id                         as group_id,
-               tg.name                       as group_name,
-               tg.enable                     as group_enable,
-               tg.deleted                    as group_deleted,
-               tg.version                    as group_version
+        select t_user.id as user_id,
+        t_user.username as user_username,
+        t_user.password as user_password,
+        t_user.locking as user_locking,
+        t_user.expiration as user_expiration,
+        t_user.credentials_expiration as user_credentials_expiration,
+        t_user.enable as user_enable,
+        t_user.current_login_time as user_current_login_time,
+        t_user.current_login_ip as user_current_login_ip,
+        t_user.last_login_time as user_last_login_time,
+        t_user.last_login_ip as user_last_login_ip,
+        t_user.create_time as user_create_time,
+        t_user.update_time as user_update_time,
+        t_user.deleted as user_deleted,
+        t_user.version as user_version,
+        tui.id as user_info_id,
+        tui.user_id as user_info_user_id,
+        tui.nickname as user_info_nickname,
+        tui.avatar as user_info_avatar,
+        tui.email as user_info_email,
+        tui.create_time as user_info_create_time,
+        tui.update_time as user_info_update_time,
+        tui.deleted as user_info_deleted,
+        tui.version as user_info_version,
+        tr.id as role_id,
+        tr.name as role_name,
+        tr.enable as role_enable,
+        tr.deleted as role_deleted,
+        tr.version as role_version,
+        tg.id as group_id,
+        tg.name as group_name,
+        tg.enable as group_enable,
+        tg.deleted as group_deleted,
+        tg.version as group_version
         from t_user
-                 left join (select * from t_user_info where deleted = 0) as tui on t_user.id = tui.user_id
-                 left join (select * from t_user_group where deleted = 0) as tug on t_user.id = tug.user_id
-                 left join (select * from t_group where deleted = 0) as tg on tg.id = tug.group_id
-                 left join (select * from t_role_group where deleted = 0) as trg on tg.id = trg.group_id
-                 left join (select * from t_user_role where deleted = 0) as tur on t_user.id = tur.user_id
-                 left join (select * from t_role where deleted = 0) as tr
-                           on tr.id = trg.role_id or tr.id = tur.role_id
+        left join (select * from t_user_info where deleted = 0) as tui on t_user.id = tui.user_id
+        left join (select * from t_user_group where deleted = 0) as tug on t_user.id = tug.user_id
+        left join (select * from t_group where deleted = 0) as tg on tg.id = tug.group_id
+        left join (select * from t_role_group where deleted = 0) as trg on tg.id = trg.group_id
+        left join (select * from t_user_role where deleted = 0) as tur on t_user.id = tur.user_id
+        left join (select * from t_role where deleted = 0) as tr
+        on tr.id = trg.role_id or tr.id = tur.role_id
         <where>
             <foreach collection="userIds" item="item" index="index" open="and t_user.id in (" separator="," close=")"
                      nullable="true">
@@ -249,6 +249,34 @@
         from t_user
                  left join (select * from t_user_info where deleted = 0) as tui on t_user.id = tui.user_id
         where t_user.deleted = 0
+    </select>
+
+    <select id="selectIdsWithRoleIds" resultType="long">
+        select t_user.id
+        from t_user
+        left join (select * from t_user_role where deleted = 0) as tur on t_user.id = tur.user_id
+        left join (select * from t_role where deleted = 0) as tr on tr.id = tur.role_id
+        <where>
+            t_user.deleted = 0
+            <foreach collection="roleIds" item="item" index="index" open="and tr.id in (" separator="," close=")"
+                     nullable="true">
+                #{item}
+            </foreach>
+        </where>
+    </select>
+
+    <select id="selectIdsWithGroupIds" resultType="long">
+        select t_user.id
+        from t_user
+        left join (select * from t_user_group where deleted = 0) as tug on t_user.id = tug.user_id
+        left join (select * from t_group where deleted = 0) as tg on tg.id = tug.group_id
+        <where>
+            t_user.deleted = 0
+            <foreach collection="groupIds" item="item" index="index" open="and tg.id in (" separator="," close=")"
+                     nullable="true">
+                #{item}
+            </foreach>
+        </where>
     </select>
 
     <resultMap id="userBaseMap" type="user">

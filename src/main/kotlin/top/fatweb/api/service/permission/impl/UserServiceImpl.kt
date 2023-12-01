@@ -248,4 +248,8 @@ class UserServiceImpl(
 
         WebUtil.offlineUser(redisUtil, *ids.toLongArray())
     }
+
+    override fun selectIdsWithRoleIds(roleIds: List<Long>) = baseMapper.selectIdsWithRoleIds(roleIds)
+
+    override fun selectIdsWithGroupIds(groupIds: List<Long>) = baseMapper.selectIdsWithGroupIds(groupIds)
 }

@@ -18,9 +18,13 @@ interface UserMapper : BaseMapper<User> {
 
     fun selectPage(page: IPage<Long>, searchType: String, searchValue: String?, searchRegex: Boolean): IPage<Long>
 
-    fun selectListWithRoleInfoByIds(userIds: List<Long>): List<User>?
+    fun selectListWithRoleInfoByIds(userIds: List<Long>): List<User>
 
     fun selectOneWithRoleInfoById(id: Long): User?
 
     fun selectListWithInfo(): List<User>
+
+    fun selectIdsWithRoleIds(roleIds: List<Long>): List<Long>
+
+    fun selectIdsWithGroupIds(groupIds: List<Long>): List<Long>
 }

@@ -13,7 +13,7 @@ import jakarta.validation.constraints.NotNull
 data class RoleChangeStatusParam(
     @Schema(description = "角色 ID")
     @field:NotNull(message = "Role id can not be null")
-    val id: Long,
+    val id: Long?,
 
     @Schema(description = "启用", allowableValues = ["true", "false"], defaultValue = "true")
     val enable: Boolean = true

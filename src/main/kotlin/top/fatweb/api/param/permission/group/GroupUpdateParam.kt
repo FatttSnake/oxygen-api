@@ -14,7 +14,7 @@ import jakarta.validation.constraints.NotNull
 data class GroupUpdateParam(
     @Schema(description = "用户组 ID")
     @field:NotNull(message = "ID can not be null")
-    val id: Long,
+    val id: Long?,
 
     @Schema(description = "用户组名称")
     @field:NotBlank(message = "Name can not be blank")
