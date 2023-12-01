@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper
 import com.baomidou.mybatisplus.extension.kotlin.KtUpdateWrapper
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
+import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -201,6 +202,10 @@ class UserServiceImpl(
     }
 
     override fun changePassword(userChangePasswordParam: UserChangePasswordParam) {
+        if (WebUtil.getLoginUserId() != 0L && userChangePasswordParam.id == 0L) {
+            throw AccessDeniedException("Access denied")
+        }
+
         val user = baseMapper.selectById(userChangePasswordParam.id)
         user?.let {
             val wrapper = KtUpdateWrapper(User())
