@@ -20,8 +20,8 @@ import top.fatweb.api.vo.permission.base.GroupVo
  * @since 1.0.0
  */
 @Tag(name = "用户组管理", description = "用户组管理相关接口")
-@RestController
 @RequestMapping("/system/group")
+@RestController
 class GroupController(
     val groupService: IGroupService
 ) {

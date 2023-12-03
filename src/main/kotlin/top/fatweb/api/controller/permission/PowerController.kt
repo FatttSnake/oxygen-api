@@ -17,8 +17,8 @@ import top.fatweb.api.vo.permission.PowerSetVo
  * @since 1.0.0
  */
 @Tag(name = "权限管理", description = "权限管理相关接口")
-@RestController
 @RequestMapping("/system/power")
+@RestController
 class PowerController(
     private val powerService: IPowerService
 ) {

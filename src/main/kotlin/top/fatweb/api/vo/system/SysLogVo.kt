@@ -12,7 +12,7 @@ import java.time.LocalDateTime
  * @since 1.0.0
  */
 @Schema(description = "获取系统日志返回参数")
-class SysLogVo(
+data class SysLogVo(
     @JsonSerialize(using = ToStringSerializer::class)
     val id: Long?,
 

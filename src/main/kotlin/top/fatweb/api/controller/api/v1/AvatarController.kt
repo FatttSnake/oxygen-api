@@ -22,8 +22,8 @@ import top.fatweb.api.vo.api.v1.avatar.AvatarBase64Vo
  * @since 1.0.0
  */
 @Tag(name = "随机头像", description = "随机头像相关接口")
-@RestController
 @RequestMapping("/api/{apiVersion}/avatar")
+@RestController
 class AvatarController(
     private val avatarService: IAvatarService
 ) {

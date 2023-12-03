@@ -20,8 +20,8 @@ import top.fatweb.api.vo.permission.base.RoleVo
  * @since 1.0.0
  */
 @Tag(name = "角色管理", description = "角色管理相关接口")
-@RestController
 @RequestMapping("/system/role")
+@RestController
 class RoleController(
     private val roleService: IRoleService
 ) {
