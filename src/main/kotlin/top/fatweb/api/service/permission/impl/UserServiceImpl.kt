@@ -201,25 +201,25 @@ class UserServiceImpl(
         return UserConverter.userToUserWithRoleInfoVo(user)
     }
 
-    override fun changePassword(userChangePasswordParam: UserChangePasswordParam) {
-        if (WebUtil.getLoginUserId() != 0L && userChangePasswordParam.id == 0L) {
+    override fun password(userUpdatePasswordParam: UserUpdatePasswordParam) {
+        if (WebUtil.getLoginUserId() != 0L && userUpdatePasswordParam.id == 0L) {
             throw AccessDeniedException("Access denied")
         }
 
-        val user = baseMapper.selectById(userChangePasswordParam.id)
+        val user = baseMapper.selectById(userUpdatePasswordParam.id)
         user?.let {
             val wrapper = KtUpdateWrapper(User())
             wrapper.eq(User::id, user.id)
-                .set(User::password, passwordEncoder.encode(userChangePasswordParam.password))
+                .set(User::password, passwordEncoder.encode(userUpdatePasswordParam.password))
                 .set(
                     User::credentialsExpiration,
-                    if (user.id != 0L) userChangePasswordParam.credentialsExpiration else null
+                    if (user.id != 0L) userUpdatePasswordParam.credentialsExpiration else null
                 )
                 .set(User::updateTime, LocalDateTime.now(ZoneOffset.UTC))
 
             this.update(wrapper)
 
-            userChangePasswordParam.id?.let { WebUtil.offlineUser(redisUtil, it) }
+            userUpdatePasswordParam.id?.let { WebUtil.offlineUser(redisUtil, it) }
         } ?: let {
             throw NoRecordFoundException()
         }

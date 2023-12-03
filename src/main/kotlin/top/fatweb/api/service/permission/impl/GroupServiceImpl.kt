@@ -117,10 +117,10 @@ class GroupServiceImpl(
         return GroupConverter.groupToGroupVo(group)
     }
 
-    override fun changeStatus(groupChangeStatusParam: GroupChangeStatusParam): Boolean {
-        updateById(GroupConverter.groupChangeStatusParamToGroup(groupChangeStatusParam)).let {
-            if (it && !groupChangeStatusParam.enable) {
-                groupChangeStatusParam.id?.let { id -> offlineUser(id) }
+    override fun status(groupUpdateStatusParam: GroupUpdateStatusParam): Boolean {
+        updateById(GroupConverter.groupUpdateStatusParamToGroup(groupUpdateStatusParam)).let {
+            if (it && !groupUpdateStatusParam.enable) {
+                groupUpdateStatusParam.id?.let { id -> offlineUser(id) }
             }
 
             return it

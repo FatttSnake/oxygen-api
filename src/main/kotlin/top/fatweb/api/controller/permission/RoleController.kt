@@ -25,6 +25,16 @@ import top.fatweb.api.vo.permission.base.RoleVo
 class RoleController(
     private val roleService: IRoleService
 ) {
+    /**
+     * Get role by ID
+     *
+     * @param id Role ID
+     * @return Response object includes role information
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see ResponseResult
+     * @see RoleWithPowerVo
+     */
     @Operation(summary = "获取单个角色")
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('system:role:query:one')")
@@ -34,6 +44,17 @@ class RoleController(
         )
     }
 
+    /**
+     * Get role paging information
+     *
+     * @param roleGetParam Get role parameters
+     * @return Response object includes role paging information
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see RoleGetParam
+     * @see ResponseResult
+     * @see RoleWithPowerVo
+     */
     @Operation(summary = "获取角色")
     @GetMapping
     @PreAuthorize("hasAnyAuthority('system:role:query:all')")
@@ -43,6 +64,15 @@ class RoleController(
         )
     }
 
+    /**
+     * Get role list
+     *
+     * @return Response object includes role list
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see ResponseResult
+     * @see RoleVo
+     */
     @Operation(summary = "获取角色列表")
     @GetMapping("/list")
     @PreAuthorize("hasAnyAuthority('system:role:query:list', 'system:group:add:one', 'system:group:modify:one', 'system:user:add:one', 'system:user:modify:one')")
@@ -52,6 +82,17 @@ class RoleController(
         )
     }
 
+    /**
+     * Add role
+     *
+     * @param roleAddParam Add role parameters
+     * @return Response object includes role information
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see RoleAddParam
+     * @see ResponseResult
+     * @see RoleVo
+     */
     @Operation(summary = "添加角色")
     @PostMapping
     @PreAuthorize("hasAnyAuthority('system:role:add:one')")
@@ -63,6 +104,17 @@ class RoleController(
         } ?: let { ResponseResult.databaseFail(ResponseCode.DATABASE_INSERT_FAILED) }
     }
 
+    /**
+     * Update role
+     *
+     * @param roleUpdateParam Update role parameters
+     * @return Response object includes role information
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see RoleUpdateParam
+     * @see ResponseResult
+     * @see RoleVo
+     */
     @Operation(summary = "修改角色")
     @PutMapping
     @PreAuthorize("hasAnyAuthority('system:role:modify:one')")
@@ -74,17 +126,36 @@ class RoleController(
         } ?: let { ResponseResult.databaseFail(ResponseCode.DATABASE_UPDATE_FILED) }
     }
 
+    /**
+     * Update status of role
+     *
+     * @param roleUpdateStatusParam Update status of role parameters
+     * @return Response object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see RoleUpdateStatusParam
+     * @see ResponseResult
+     */
     @Operation(summary = "修改角色状态")
     @PatchMapping
     @PreAuthorize("hasAnyAuthority('system:role:modify:status')")
-    fun changStatus(@Valid @RequestBody roleChangeStatusParam: RoleChangeStatusParam): ResponseResult<Nothing> {
-        return if (roleService.changeStatus(roleChangeStatusParam)) {
+    fun status(@Valid @RequestBody roleUpdateStatusParam: RoleUpdateStatusParam): ResponseResult<Nothing> {
+        return if (roleService.status(roleUpdateStatusParam)) {
             ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
         } else {
             ResponseResult.databaseFail(ResponseCode.DATABASE_UPDATE_FILED)
         }
     }
 
+    /**
+     * Delete role by ID
+     *
+     * @param id
+     * @return Response object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see ResponseResult
+     */
     @Operation(summary = "删除角色")
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('system:role:delete:one')")
@@ -93,6 +164,16 @@ class RoleController(
         return ResponseResult.databaseSuccess(ResponseCode.DATABASE_DELETE_SUCCESS)
     }
 
+    /**
+     * Delete role by list
+     *
+     * @param roleDeleteParam Delete role parameters
+     * @return Response object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see RoleDeleteParam
+     * @see ResponseResult
+     */
     @Operation(summary = "批量删除角色")
     @DeleteMapping
     @PreAuthorize("hasAnyAuthority('system:role:delete:multiple')")

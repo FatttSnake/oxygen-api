@@ -10,6 +10,16 @@ import top.fatweb.api.vo.permission.base.FuncVo
  * @since 1.0.0
  */
 object FuncConverter {
+    /**
+     * Convert Func object into FuncVo object
+     *
+     * @param func Func object
+     * @return FuncVo object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see Func
+     * @see FuncVo
+     */
     fun funcToFuncVo(func: Func) = FuncVo(
         id = func.id,
         name = func.name,

@@ -35,6 +35,7 @@ class DataFormatConfig {
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see TimeZone
      */
     @set:Value("\${spring.jackson.time-zone}}")
     lateinit var timeZone: TimeZone

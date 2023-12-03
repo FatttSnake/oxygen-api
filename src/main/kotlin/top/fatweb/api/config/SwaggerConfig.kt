@@ -15,7 +15,6 @@ import top.fatweb.api.properties.ServerProperties
  */
 @Configuration
 class SwaggerConfig {
-
     @Bean
     fun customOpenAPI(): OpenAPI? {
         val contact = Contact().name("FatttSnake").url("https://fatweb.top").email("fatttsnake@fatweb.top")

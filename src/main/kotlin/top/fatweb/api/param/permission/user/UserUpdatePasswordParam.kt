@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull
 import java.time.LocalDateTime
 
 @Schema(description = "用户更改密码请求参数")
-data class UserChangePasswordParam(
+data class UserUpdatePasswordParam(
     @Schema(description = "用户 ID")
     @field:NotNull(message = "ID can not be null")
     val id: Long?,

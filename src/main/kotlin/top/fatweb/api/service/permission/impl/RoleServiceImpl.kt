@@ -124,10 +124,10 @@ class RoleServiceImpl(
         return RoleConverter.roleToRoleVo(role)
     }
 
-    override fun changeStatus(roleChangeStatusParam: RoleChangeStatusParam): Boolean {
-        updateById(RoleConverter.roleChangeStatusParamToRole(roleChangeStatusParam)).let {
-            if (it && !roleChangeStatusParam.enable) {
-                roleChangeStatusParam.id?.let { id -> offlineUser(id) }
+    override fun status(roleUpdateStatusParam: RoleUpdateStatusParam): Boolean {
+        updateById(RoleConverter.roleUpdateStatusParamToRole(roleUpdateStatusParam)).let {
+            if (it && !roleUpdateStatusParam.enable) {
+                roleUpdateStatusParam.id?.let { id -> offlineUser(id) }
             }
 
             return it

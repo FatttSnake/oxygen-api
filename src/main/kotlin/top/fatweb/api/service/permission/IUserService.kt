@@ -30,7 +30,7 @@ interface IUserService : IService<User> {
 
     fun update(userUpdateParam: UserUpdateParam): UserWithRoleInfoVo?
 
-    fun changePassword(userChangePasswordParam: UserChangePasswordParam)
+    fun password(userUpdatePasswordParam: UserUpdatePasswordParam)
 
     fun deleteOne(id: Long)
 

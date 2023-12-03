@@ -24,7 +24,7 @@ interface IRoleService : IService<Role> {
 
     fun update(roleUpdateParam: RoleUpdateParam): RoleVo?
 
-    fun changeStatus(roleChangeStatusParam: RoleChangeStatusParam): Boolean
+    fun status(roleUpdateStatusParam: RoleUpdateStatusParam): Boolean
 
     fun deleteOne(id: Long)
 

@@ -10,6 +10,16 @@ import top.fatweb.api.vo.permission.base.UserInfoVo
  * @since 1.0.0
  */
 object UserInfoConverter {
+    /**
+     * Convert UserInfo object into UserInfoVo object
+     *
+     * @param userInfo UserInfo object
+     * @return UserInfoVo object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see UserInfo
+     * @see UserInfoVo
+     */
     fun userInfoToUserInfoVo(userInfo: UserInfo) = UserInfoVo(
         id = userInfo.id,
         userId = userInfo.userId,

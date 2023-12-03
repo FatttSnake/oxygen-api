@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import top.fatweb.api.entity.common.ResponseResult
 import top.fatweb.api.service.permission.IPowerService
+import top.fatweb.api.vo.permission.PowerSetVo
 
 /**
  * Power controller
@@ -21,8 +22,16 @@ import top.fatweb.api.service.permission.IPowerService
 class PowerController(
     private val powerService: IPowerService
 ) {
+    /**
+     * Get power list
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see ResponseResult
+     * @see PowerSetVo
+     */
     @Operation(summary = "获取权限列表")
     @GetMapping("/list")
     @PreAuthorize("hasAnyAuthority('system:power:query:list', 'system:role:add:one', 'system:role:modify:one')")
-    fun getList() = ResponseResult.databaseSuccess(data = powerService.getList())
+    fun getList(): ResponseResult<PowerSetVo> = ResponseResult.databaseSuccess(data = powerService.getList())
 }

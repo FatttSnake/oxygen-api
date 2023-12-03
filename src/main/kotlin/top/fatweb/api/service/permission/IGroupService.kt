@@ -24,7 +24,7 @@ interface IGroupService : IService<Group> {
 
     fun update(groupUpdateParam: GroupUpdateParam): GroupVo?
 
-    fun changeStatus(groupChangeStatusParam: GroupChangeStatusParam): Boolean
+    fun status(groupUpdateStatusParam: GroupUpdateStatusParam): Boolean
 
     fun deleteOne(id: Long)
 

@@ -12,7 +12,19 @@ import top.fatweb.api.vo.system.SysLogVo
  * @since 1.0.0
  */
 object SysLogConverter {
-    fun sysLogPageToSysLogPageVo(syslogPage: IPage<SysLog>): PageVo<SysLogVo> = PageVo(
+    /**
+     * Convert IPage<SysLog> object into PageVo<SysLogVo> object
+     *
+     * @param syslogPage IPage<Syslog> object
+     * @return PageVo<SysLogVo> object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see IPage
+     * @see SysLog
+     * @see PageVo
+     * @see SysLogVo
+     */
+    fun sysLogPageToSysLogPageVo(syslogPage: IPage<SysLog>) = PageVo(
         syslogPage.total,
         syslogPage.pages,
         syslogPage.size,

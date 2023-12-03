@@ -22,12 +22,31 @@ import top.fatweb.avatargenerator.GitHubAvatar
  * @since 1.0.0
  */
 object UserConverter {
-
+    /**
+     * Convert LoginParam object into User object
+     *
+     * @param loginParam LoginParam object
+     * @return User object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see LoginParam
+     * @see User
+     */
     fun loginParamToUser(loginParam: LoginParam) = User().apply {
         username = loginParam.username
         password = loginParam.password
     }
 
+    /**
+     * Convert User object into UserWithPowerInfoVo object
+     *
+     * @param user User object
+     * @return UserWithPowerInfoVo object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see User
+     * @see UserWithPowerInfoVo
+     */
     fun userToUserWithPowerInfoVo(user: User) = UserWithPowerInfoVo(
         id = user.id,
         username = user.username,
@@ -58,6 +77,16 @@ object UserConverter {
         }
     )
 
+    /**
+     * Convert User object into UserWithRoleInfoVo object
+     *
+     * @param user User object
+     * @return UserWithRoleInfoVo object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see User
+     * @see UserWithRoleInfoVo
+     */
     fun userToUserWithRoleInfoVo(user: User) = UserWithRoleInfoVo(
         id = user.id,
         username = user.username,
@@ -82,6 +111,16 @@ object UserConverter {
         }
     )
 
+    /**
+     * Convert User object into UserWithInfoVo object
+     *
+     * @param user User object
+     * @return UserWithInfoVo object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see User
+     * @see UserWithInfoVo
+     */
     fun userToUserWithInfoVo(user: User) = UserWithInfoVo(
         id = user.id,
         username = user.username,
@@ -100,6 +139,16 @@ object UserConverter {
         }
     )
 
+    /**
+     * Convert User object into UserWithPasswordRoleInfoVo object
+     *
+     * @param user User object
+     * @return UserWithPasswordRoleInfoVo object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see User
+     * @see UserWithPasswordRoleInfoVo
+     */
     fun userToUserWithPasswordRoleInfoVo(user: User) = UserWithPasswordRoleInfoVo(
         id = user.id,
         username = user.username,
@@ -125,6 +174,16 @@ object UserConverter {
         }
     )
 
+    /**
+     * Convert UserAddParam object into User object
+     *
+     * @param userAddParam UserAddParam object
+     * @return User object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see UserAddParam
+     * @see User
+     */
     fun userAddParamToUser(userAddParam: UserAddParam) = User().apply {
         username = userAddParam.username
         password = userAddParam.password
@@ -142,6 +201,16 @@ object UserConverter {
         groups = userAddParam.groupIds?.map { Group().apply { id = it } }
     }
 
+    /**
+     * Convert UserUpdateParam object into User object
+     *
+     * @param userUpdateParam UserUpdateParam object
+     * @return User object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see UserUpdateParam
+     * @see User
+     */
     fun userUpdateParamToUser(userUpdateParam: UserUpdateParam) = User().apply {
         id = userUpdateParam.id
         username = userUpdateParam.username
@@ -158,6 +227,18 @@ object UserConverter {
         groups = if (userUpdateParam.id != 0L) userUpdateParam.groupIds?.map { Group().apply { id = it } } else null
     }
 
+    /**
+     * Convert IPage<User> object into PageVo<UserWithRoleInfoVo> object
+     *
+     * @param userPage IPage<User> object
+     * @return PageVo<UserWithRoleInfoVo> object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see IPage
+     * @see User
+     * @see PageVo
+     * @see UserWithRoleInfoVo
+     */
     fun userPageToUserWithRoleInfoPageVo(userPage: IPage<User>) = PageVo(
         total = userPage.total,
         pages = userPage.pages,

@@ -10,6 +10,7 @@ import top.fatweb.api.util.ApiResponseMappingHandlerMapping
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see WebMvcRegistrations
  */
 @Configuration
 class WebMvcRegistrationsConfig : WebMvcRegistrations {

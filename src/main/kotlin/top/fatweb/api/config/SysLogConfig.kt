@@ -10,6 +10,7 @@ import top.fatweb.api.interceptor.SysLogInterceptor
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see WebMvcConfigurer
  */
 @Configuration
 class SysLogConfig(

@@ -27,6 +27,17 @@ import top.fatweb.api.vo.system.SysLogVo
 class SysLogController(
     private val sysLogService: ISysLogService
 ) {
+    /**
+     * Get system log
+     *
+     * @param sysLogGetParam Get system log parameters
+     * @return Response object includes system log
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see SysLogGetParam
+     * @see ResponseResult
+     * @see SysLogVo
+     */
     @Operation(summary = "获取")
     @GetMapping
     @PreAuthorize("hasAnyAuthority('system:log:query:all')")

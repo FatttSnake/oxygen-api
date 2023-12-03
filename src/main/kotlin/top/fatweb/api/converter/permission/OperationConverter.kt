@@ -10,6 +10,16 @@ import top.fatweb.api.vo.permission.base.OperationVo
  * @since 1.0.0
  */
 object OperationConverter {
+    /**
+     * Convert Operation object into OperationVo object
+     *
+     * @param operation Operation object
+     * @return OperationVo object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see Operation
+     * @see OperationVo
+     */
     fun operationToOperationVo(operation: Operation) = OperationVo(
         id = operation.id,
         name = operation.name,
