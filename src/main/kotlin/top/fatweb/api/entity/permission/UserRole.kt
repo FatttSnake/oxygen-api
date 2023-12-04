@@ -11,26 +11,49 @@ import java.io.Serializable
  */
 @TableName("t_user_role")
 class UserRole : Serializable {
-
+    /**
+     * ID
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     @TableId("id")
     var id: Long? = null
 
     /**
-     * 用户
+     * User ID
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     @TableField("user_id")
     var userId: Long? = null
 
     /**
-     * 角色
+     * Role ID
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     @TableField("role_id")
     var roleId: Long? = null
 
+    /**
+     * Deleted
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     @TableField("deleted")
     @TableLogic
     var deleted: Long? = null
 
+    /**
+     * Version
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     @TableField("version")
     @Version
     var version: Int? = null

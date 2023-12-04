@@ -26,6 +26,10 @@ import java.time.ZoneOffset
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see AuthenticationManager
+ * @see RedisUtil
+ * @see IUserService
+ * @see IAuthenticationService
  */
 @Service
 class AuthenticationServiceImpl(

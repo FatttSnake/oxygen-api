@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see Filter
  */
 @Component
 class ExceptionFilter : Filter {

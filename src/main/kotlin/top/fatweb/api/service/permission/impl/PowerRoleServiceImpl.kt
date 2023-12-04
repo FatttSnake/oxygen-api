@@ -11,6 +11,10 @@ import top.fatweb.api.service.permission.IPowerRoleService
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see ServiceImpl
+ * @see PowerRoleMapper
+ * @see PowerRole
+ * @see IPowerRoleService
  */
 @Service
 class PowerRoleServiceImpl : ServiceImpl<PowerRoleMapper, PowerRole>(), IPowerRoleService

@@ -11,6 +11,10 @@ import top.fatweb.api.service.permission.IFuncService
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see ServiceImpl
+ * @see FuncMapper
+ * @see Func
+ * @see IFuncService
  */
 @Service
 class FuncServiceImpl : ServiceImpl<FuncMapper, Func>(), IFuncService

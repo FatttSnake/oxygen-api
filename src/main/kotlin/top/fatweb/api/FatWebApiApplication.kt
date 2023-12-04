@@ -17,6 +17,13 @@ import java.util.*
 @EnableTransactionManagement
 class FatWebApiApplication
 
+/**
+ * Main function
+ *
+ * @param args
+ * @author FatttSnake, fatttsnake@gmail.com
+ * @since 1.0.0
+ */
 fun main(args: Array<String>) {
     val logger = LoggerFactory.getLogger("main")
 

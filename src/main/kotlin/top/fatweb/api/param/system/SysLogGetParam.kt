@@ -6,16 +6,29 @@ import top.fatweb.api.param.PageSortParam
 import java.time.LocalDateTime
 
 /**
- * System log get param
+ * Get system log parameters
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see PageSortParam
  */
 @Schema(description = "获取系统日志请求参数")
 data class SysLogGetParam(
+    /**
+     * Log type
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     @Schema(description = "类型过滤(多个使用逗号分隔)", example = "INFO", allowableValues = ["INFO", "ERROR"])
     val logType: String? = null,
 
+    /**
+     * Request method to filter
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     @Schema(
         description = "请求方式过滤(多个使用逗号分隔)",
         example = "GET,POST",
@@ -23,16 +36,42 @@ data class SysLogGetParam(
     )
     val requestMethod: String? = null,
 
+    /**
+     * Request URL to search for
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     @Schema(description = "查询请求 Url")
     val searchRequestUrl: String? = null,
 
+    /**
+     * Use regex
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     @Schema(description = "查询使用正则表达式", allowableValues = ["true", "false"], defaultValue = "false")
     val searchRegex: Boolean = false,
 
+    /**
+     * Start time to search for
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see LocalDateTime
+     */
     @Schema(description = "查询开始时间")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     val searchStartTime: LocalDateTime? = null,
 
+    /**
+     * End time to search for
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see LocalDateTime
+     */
     @Schema(description = "查询结束时间")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     val searchEndTime: LocalDateTime? = null

@@ -11,6 +11,18 @@ import top.fatweb.api.param.PageSortParam
  * @since 1.0.0
  */
 object PageUtil {
+    /**
+     * Set sort parameters into page object
+     *
+     * @param pageSortParam Sort parameters
+     * @param page Page object
+     * @param defaultOrder Default order by
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see Page
+     * @see PageSortParam
+     * @see OrderItem
+     */
     fun <T: Page<*>> setPageSort(pageSortParam: PageSortParam?, page: T, defaultOrder: OrderItem? = null) {
         if (pageSortParam?.sortField != null || pageSortParam?.sortOrder != null) {
             page.addOrder(

@@ -15,8 +15,20 @@ import java.time.ZonedDateTime
 @Component
 @ConfigurationProperties("app")
 object ServerProperties {
+    /**
+     * Version
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     lateinit var version: String
 
+    /**
+     * Build time
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     lateinit var buildTime: String
 
     fun buildZoneDateTime(zoneId: ZoneId = ZoneId.systemDefault()): ZonedDateTime =

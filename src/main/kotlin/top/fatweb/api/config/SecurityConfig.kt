@@ -22,6 +22,9 @@ import top.fatweb.api.handler.JwtAuthenticationEntryPointHandler
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see JwtAuthenticationTokenFilter
+ * @see JwtAuthenticationEntryPointHandler
+ * @see JwtAccessDeniedHandler
  */
 @Configuration
 @EnableMethodSecurity

@@ -13,6 +13,7 @@ import top.fatweb.api.vo.system.SettingsVo
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see ISettingsService
  */
 @Tag(name = "系统设置", description = "系统设置相关接口")
 @RequestMapping("/system/settings")
@@ -20,10 +21,29 @@ import top.fatweb.api.vo.system.SettingsVo
 class SettingsController(
     private val settingsService: ISettingsService
 ) {
+    /**
+     * Get all settings
+     *
+     * @return Response object includes all settings
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see ResponseResult
+     * @see SettingsVo
+     */
     @Operation(summary = "获取全部设置")
     @GetMapping
     fun get(): ResponseResult<SettingsVo> = ResponseResult.success(data = settingsService.get())
 
+    /**
+     * Update mail settings
+     *
+     * @param mailSettingsParam Mail settings parameters
+     * @return Response object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see MailSettingsParam
+     * @see ResponseResult
+     */
     @Operation(summary = "更新邮件设置")
     @PutMapping("/mail")
     fun updateMail(@RequestBody mailSettingsParam: MailSettingsParam): ResponseResult<Nothing> {

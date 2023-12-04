@@ -8,5 +8,7 @@ import top.fatweb.api.entity.permission.Func
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see IService
+ * @see Func
  */
 interface IFuncService : IService<Func>

@@ -11,6 +11,10 @@ import top.fatweb.api.service.permission.IUserGroupService
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see ServiceImpl
+ * @see UserGroupMapper
+ * @see UserGroup
+ * @see IUserGroupService
  */
 @Service
 class UserGroupServiceImpl : ServiceImpl<UserGroupMapper, UserGroup>(), IUserGroupService

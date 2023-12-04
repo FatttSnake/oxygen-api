@@ -15,6 +15,13 @@ import java.awt.Color
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 
+/**
+ * Avatar service implement
+ *
+ * @author FatttSnake, fatttsnake@gmail.com
+ * @since 1.0.0
+ * @see IAvatarService
+ */
 @OptIn(ExperimentalEncodingApi::class)
 @Service
 class AvatarServiceImpl : IAvatarService {

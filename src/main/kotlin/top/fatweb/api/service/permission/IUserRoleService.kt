@@ -8,5 +8,7 @@ import top.fatweb.api.entity.permission.UserRole
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see IService
+ * @see UserRole
  */
 interface IUserRoleService : IService<UserRole>

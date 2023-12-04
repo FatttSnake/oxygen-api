@@ -20,6 +20,7 @@ import top.fatweb.api.vo.permission.UserWithRoleInfoVo
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see IUserService
  */
 @Tag(name = "用户管理", description = "用户管理相关接口")
 @RequestMapping("/system/user")

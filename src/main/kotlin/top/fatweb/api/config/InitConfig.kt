@@ -20,6 +20,9 @@ import top.fatweb.avatargenerator.GitHubAvatar
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see IUserService
+ * @see IUserInfoService
+ * @see PasswordEncoder
  */
 @DependsOn("adminProperties")
 @Component

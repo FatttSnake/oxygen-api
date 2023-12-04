@@ -20,6 +20,7 @@ import top.fatweb.api.vo.system.SysLogVo
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see ISysLogService
  */
 @Tag(name = "系统日志", description = "系统日志相关接口")
 @RequestMapping("/system/log")

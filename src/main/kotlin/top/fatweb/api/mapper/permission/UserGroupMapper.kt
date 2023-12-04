@@ -9,6 +9,8 @@ import top.fatweb.api.entity.permission.UserGroup
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see BaseMapper
+ * @see UserGroup
  */
 @Mapper
 interface UserGroupMapper : BaseMapper<UserGroup>

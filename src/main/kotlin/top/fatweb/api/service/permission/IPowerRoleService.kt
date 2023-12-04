@@ -8,5 +8,7 @@ import top.fatweb.api.entity.permission.PowerRole
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see IService
+ * @see PowerRole
  */
 interface IPowerRoleService : IService<PowerRole>

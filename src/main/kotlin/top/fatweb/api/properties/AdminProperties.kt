@@ -12,8 +12,35 @@ import org.springframework.stereotype.Component
 @Component
 @ConfigurationProperties("app.admin")
 object AdminProperties {
+    /**
+     * Username
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     var username = "admin"
+
+    /**
+     * Password
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     var password: String? = null
+
+    /**
+     * Nickname
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     var nickname = "Administrator"
+
+    /**
+     * Email
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     var email = "admin@fatweb.top"
 }

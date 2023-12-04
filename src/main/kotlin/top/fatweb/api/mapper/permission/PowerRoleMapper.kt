@@ -9,6 +9,8 @@ import top.fatweb.api.entity.permission.PowerRole
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see BaseMapper
+ * @see PowerRole
  */
 @Mapper
 interface PowerRoleMapper : BaseMapper<PowerRole>

@@ -13,12 +13,20 @@ import java.io.Serializable
  */
 @TableName("t_module")
 class Module : Serializable {
-
+    /**
+     * ID
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     @TableId("id")
     var id: Long? = null
 
     /**
-     * 模块名
+     * Name
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     @TableField("name")
     var name: String? = null

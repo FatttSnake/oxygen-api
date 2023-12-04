@@ -16,6 +16,10 @@ import top.fatweb.api.util.PageUtil
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see ServiceImpl
+ * @see SysLogMapper
+ * @see SysLog
+ * @see ISysLogService
  */
 @Service
 class SysLogServiceImpl : ServiceImpl<SysLogMapper, SysLog>(), ISysLogService {

@@ -11,6 +11,8 @@ import top.fatweb.api.service.permission.IUserService
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see IUserService
+ * @see UserDetailsService
  */
 @Service
 class UserDetailsServiceImpl(val userService: IUserService) : UserDetailsService {

@@ -12,42 +12,80 @@ import java.time.LocalDateTime
  */
 @TableName("t_group")
 class Group : Serializable {
-
+    /**
+     * ID
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     @TableId("id")
     var id: Long? = null
 
     /**
-     * 用户组名
+     * Name
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     @TableField("name")
     var name: String? = null
 
     /**
-     * 启用
+     * Enable
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     @TableField("enable")
     var enable: Int? = null
 
     /**
-     * 创建时间
+     * Create time
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see LocalDateTime
      */
     @TableField("create_time", fill = FieldFill.INSERT)
     var createTime: LocalDateTime? = null
 
     /**
-     * 修改时间
+     * Update time
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see LocalDateTime
      */
     @TableField("update_time", fill = FieldFill.INSERT_UPDATE)
     var updateTime: LocalDateTime? = null
 
+    /**
+     * Deleted
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     @TableField("deleted")
     @TableLogic
     var deleted: Long? = null
 
+    /**
+     * Version
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     @TableField("version")
     @Version
     var version: Int? = null
 
+    /**
+     * Role list
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see Role
+     */
     @TableField(exist = false)
     var roles: List<Role>? = null
 

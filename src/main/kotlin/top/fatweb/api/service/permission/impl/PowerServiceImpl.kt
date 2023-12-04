@@ -13,6 +13,14 @@ import top.fatweb.api.service.permission.*
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see IModuleService
+ * @see IMenuService
+ * @see IFuncService
+ * @see IOperationService
+ * @see ServiceImpl
+ * @see PowerMapper
+ * @see Power
+ * @see IPowerService
  */
 @Service
 class PowerServiceImpl(

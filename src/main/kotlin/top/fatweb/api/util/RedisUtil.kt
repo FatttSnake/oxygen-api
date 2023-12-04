@@ -15,107 +15,133 @@ import java.util.concurrent.TimeUnit
 @Component
 class RedisUtil(private val redisTemplate: RedisTemplate<String, Any>) {
     /**
-     * 设置有效时间
+     * Set valid time
      *
-     * @param key     缓存的键
-     * @param timeout 超时时间
-     * @param timeUnit    时间颗粒度
-     * @return true=设置成功；false=设置失败
+     * @param key Cache key
+     * @param timeout Timeout
+     * @param timeUnit Unit of timeout
+     * @return true=Success；false=Fail
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see TimeUnit
      */
-    fun setExpire(key: String, timeout: Long, timeUnit: TimeUnit = TimeUnit.SECONDS) =
+    fun setExpire(key: String, timeout: Long, timeUnit: TimeUnit = TimeUnit.SECONDS): Boolean =
         redisTemplate.expire(key, timeout, timeUnit)
 
     /**
-     * 获取有效时间
+     * Get valid time
      *
-     * @param key   缓存的键
-     * @return 有效时间
+     * @param key Cache key
+     * @param timeUnit Unit of time
+     * @return Valid time
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
-    fun getExpire(key: String, timeUnit: TimeUnit = TimeUnit.SECONDS) = redisTemplate.getExpire(key, timeUnit)
+    fun getExpire(key: String, timeUnit: TimeUnit = TimeUnit.SECONDS): Long = redisTemplate.getExpire(key, timeUnit)
 
     /**
-     * 判断 key 是否存在
+     * Determine whether key exists
      *
-     * @param key   缓存的键
-     * @return true=存在; false=不存在
+     * @param key Cache key
+     * @return true=exist; false=not exist
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
-    fun hasKey(key: String) = redisTemplate.hasKey(key)
+    fun hasKey(key: String): Boolean = redisTemplate.hasKey(key)
 
     /**
-     * 获得缓存的基本对象列表
+     * Get list of cached key
      *
-     * @param pattern 字符串前缀
-     * @return 对象列表
+     * @param pattern Pattern of key
+     * @return List of key
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     fun keys(pattern: String): Set<String> = redisTemplate.keys(pattern)
 
     /**
-     * 缓存基本的对象，Integer、String、实体类等
+     * Cache basic object
      *
-     * @param key   缓存的键
-     * @param value 缓存的值
+     * @param key   Cache key
+     * @param value Cache object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     fun setObject(key: String, value: Any) = redisTemplate.opsForValue().set(key, value)
 
     /**
-     * 缓存基本的对象，Integer、String、实体类等
+     * Cache basic object
      *
-     * @param key      缓存的键
-     * @param value    缓存的值
-     * @param timeout  超时时间
-     * @param timeUnit 时间颗粒度
+     * @param key   Cache key
+     * @param value Cache object
+     * @param timeout Timeout
+     * @param timeUnit Unit of timeout
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     fun setObject(key: String, value: Any, timeout: Long, timeUnit: TimeUnit = TimeUnit.SECONDS) =
         redisTemplate.opsForValue().set(key, value, timeout, timeUnit)
 
 
     /**
-     * 获得缓存的基本对象
+     * Get cached basic object
      *
-     * @param key 缓存的键
-     * @return 缓存的值
+     * @param key cache key
+     * @return Cached object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
-    fun <T> getObject(key: String) = redisTemplate.opsForValue().get(key) as? T
+    fun <T> getObject(key: String): T? = redisTemplate.opsForValue().get(key) as? T
 
     /**
-     * 删除单个对象
+     * Delete cached object
      *
-     * @param key 缓存的键
-     * @return true=删除成功；false=删除失败
+     * @param key Cache key
+     * @return true=success; false=fail
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
-    fun delObject(key: String) = redisTemplate.delete(key)
+    fun delObject(key: String): Boolean = redisTemplate.delete(key)
 
     /**
-     * 删除对象集合
+     * Delete list of cached objects
      *
-     * @param collection 键集合
-     * @return 删除个数
+     * @param collection List of cache key
+     * @return Number of deleted objects
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
-    fun delObject(collection: Collection<String>) = redisTemplate.delete(collection)
+    fun delObject(collection: Collection<String>): Long = redisTemplate.delete(collection)
 
     /**
-     * 缓存 List 数据
+     * Cache list of objects
      *
-     * @param key      缓存的键
-     * @param dataList 缓存的 List 数据
-     * @return 缓存的个数
+     * @param key Cache key
+     * @param dataList List of objects
+     * @return Number of cached objects
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
-    fun setList(key: String, dataList: List<Any>) = redisTemplate.opsForList().rightPushAll(key, dataList)
+    fun setList(key: String, dataList: List<Any>): Long? = redisTemplate.opsForList().rightPushAll(key, dataList)
 
     /**
-     * 获得缓存的 List 数据
+     * Get cached list of objects
      *
-     * @param key 缓存的键
-     * @return 缓存的键对应的 List 数据
+     * @param key Cache key
+     * @return List of cached objects
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     fun <T> getList(key: String): List<T>? = redisTemplate.opsForList().range(key, 0, -1) as? List<T>
 
     /**
-     * 缓存 Set 数据
+     * Cache set of objects
      *
-     * @param key     缓存的键
-     * @param dataSet 缓存的 Set 数据
-     * @return 缓存数据的对象
+     * @param key Cache key
+     * @param dataSet Set of objects
+     * @return Bound set operations
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     fun setSet(key: String, dataSet: Set<Any>): BoundSetOperations<String, Any> {
         val boundSetOps: BoundSetOperations<String, Any> = redisTemplate.boundSetOps(key)
@@ -126,63 +152,78 @@ class RedisUtil(private val redisTemplate: RedisTemplate<String, Any>) {
     }
 
     /**
-     * 获得缓存的 Set 数据
+     * Get set of cached objects
      *
-     * @param key 缓存的键
-     * @return 缓存的键对应的 Set 数据
+     * @param key Cache key
+     * @return Set of cached object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     fun <T> getSet(key: String): Set<T>? = redisTemplate.opsForSet().members(key) as? Set<T>
 
     /**
-     * 缓存 Map 数据
+     * Cache map of objects
      *
-     * @param key     缓存的键
-     * @param dataMap 缓存的 Map 数据
+     * @param key Cache key
+     * @param dataMap Map of objects
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     fun setMap(key: String, dataMap: Map<String, Any>) = redisTemplate.opsForHash<String, Any>().putAll(key, dataMap)
 
     /**
-     * 获得缓存的 Map 数据
+     * Get cached map of objects
      *
-     * @param key 缓存的键
-     * @return 缓存的键对应的 Map 数据
+     * @param key Cache key
+     * @return Map of cached objects
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     fun <T> getMap(key: String): Map<String, T>? =
         redisTemplate.opsForHash<String, Any>().entries(key) as? Map<String, T>
 
     /**
-     * 往 Hash 中存入数据
+     * Set value into cached map
      *
-     * @param key   Redis 键
-     * @param hKey  Hash 键
-     * @param value 值
+     * @param key Cache key
+     * @param hKey Map key
+     * @param value Value in map
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     fun setMapValue(key: String, hKey: String, value: Any) =
         redisTemplate.opsForHash<String, Any>().put(key, hKey, value)
 
     /**
-     * 获取 Hash 中的数据
+     * Get value in cached map
      *
-     * @param key  Redis 键
-     * @param hKey Hash 键
-     * @return Hash 中的对象
+     * @param key Cache key
+     * @param hKey Map key
+     * @return Value in map
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     fun <T> getMapValue(key: String, hKey: String) = redisTemplate.opsForHash<String, T>().get(key, hKey)
 
     /**
-     * 删除 Hash 中的数据
+     * Delete value in cached map
      *
-     * @param key  Redis 键
-     * @param hKey Hash 键
+     * @param key Cache key
+     * @param hKey Map key
+     * @return Number of deleted value
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
-    fun delMapValue(key: String, hKey: String) = redisTemplate.opsForHash<String, Any>().delete(key, hKey)
+    fun delMapValue(key: String, hKey: String): Long = redisTemplate.opsForHash<String, Any>().delete(key, hKey)
 
     /**
-     * 获取多个 Hash 中的数据
+     * Get multiple value in cached map
      *
-     * @param key   Redis 键
-     * @param hKeys Hash 键集合
-     * @return Hash 对象集合
+     * @param key Cache key
+     * @param hKeys List of map key
+     * @return HashMap object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     fun <T> getMultiMapValue(key: String, hKeys: Collection<String>): List<T> =
         redisTemplate.opsForHash<String, T>().multiGet(key, hKeys)

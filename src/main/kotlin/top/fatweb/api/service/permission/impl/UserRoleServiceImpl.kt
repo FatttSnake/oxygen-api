@@ -11,6 +11,9 @@ import top.fatweb.api.service.permission.IUserRoleService
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see ServiceImpl
+ * @see UserRoleMapper
+ * @see IUserRoleService
  */
 @Service
 class UserRoleServiceImpl : ServiceImpl<UserRoleMapper, UserRole>(), IUserRoleService

@@ -11,26 +11,49 @@ import java.io.Serializable
  */
 @TableName("t_power_role")
 class PowerRole : Serializable {
-
+    /**
+     * ID
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     @TableId("id")
     var id: Long? = null
 
     /**
-     * 权限
+     * Power ID
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     @TableField("power_id")
     var powerId: Long? = null
 
     /**
-     * 角色
+     * Role ID
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     @TableField("role_id")
     var roleId: Long? = null
 
+    /**
+     * Deleted
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     @TableField("deleted")
     @TableLogic
     var deleted: Long? = null
 
+    /**
+     * Version
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     @TableField("version")
     @Version
     var version: Int? = null

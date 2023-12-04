@@ -8,5 +8,7 @@ import top.fatweb.api.entity.permission.UserGroup
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see IService
+ * @see UserGroup
  */
 interface IUserGroupService : IService<UserGroup>

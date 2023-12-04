@@ -11,10 +11,94 @@ import kotlin.math.floor
 object ByteUtil {
     private const val BASE = 1024
 
+    /**
+     * Byte unit
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     enum class ByteUnit {
-        B, KiB, MiB, GiB, TiB, PiB, EiB, ZiB, YiB
+        /**
+         * Byte
+         *
+         * @author FatttSnake, fatttsnake@gmail.com
+         * @since 1.0.0
+         */
+        B,
+
+        /**
+         * Kibibyte
+         *
+         * @author FatttSnake, fatttsnake@gmail.com
+         * @since 1.0.0
+         */
+        KiB,
+
+        /**
+         * Mebibyte
+         *
+         * @author FatttSnake, fatttsnake@gmail.com
+         * @since 1.0.0
+         */
+        MiB,
+
+        /**
+         * Gibibyte
+         *
+         * @author FatttSnake, fatttsnake@gmail.com
+         * @since 1.0.0
+         */
+        GiB,
+
+        /**
+         * Tebibyte
+         *
+         * @author FatttSnake, fatttsnake@gmail.com
+         * @since 1.0.0
+         */
+        TiB,
+
+        /**
+         * Pebibyte
+         *
+         * @author FatttSnake, fatttsnake@gmail.com
+         * @since 1.0.0
+         */
+        PiB,
+
+        /**
+         * Exbibyte
+         *
+         * @author FatttSnake, fatttsnake@gmail.com
+         * @since 1.0.0
+         */
+        EiB,
+
+        /**
+         * Zebibyte
+         *
+         * @author FatttSnake, fatttsnake@gmail.com
+         * @since 1.0.0
+         */
+        ZiB,
+
+        /**
+         * Yobibyte
+         *
+         * @author FatttSnake, fatttsnake@gmail.com
+         * @since 1.0.0
+         */
+        YiB
     }
 
+    /**
+     * Format byte size
+     *
+     * @param byteSize ByteSize
+     * @return Result
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     fun formatByteSize(byteSize: Long): String {
         if (byteSize <= -1) {
             return byteSize.toString()
@@ -64,7 +148,7 @@ object ByteUtil {
         return format(size, ByteUnit.YiB)
     }
 
-    fun format(size: Double, unit: ByteUnit): String {
+    private fun format(size: Double, unit: ByteUnit): String {
         val precision = if (size * 1000 % 10 > 0) {
             3
         } else if (size * 100 % 10 > 0) {

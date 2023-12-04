@@ -13,30 +13,47 @@ import java.io.Serializable
  */
 @TableName("t_menu")
 class Menu : Serializable {
-
+    /**
+     * ID
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     @TableId("id")
     var id: Long? = null
 
     /**
-     *  菜单名
+     * Name
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     @TableField("name")
     var name: String? = null
 
     /**
      * URL
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     @TableField("url")
     var url: String? = null
 
     /**
-     * 父ID
+     * Parent ID
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     @TableField("parent_id")
     var parentId: Long? = null
 
     /**
-     * 模块ID
+     * Module ID
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     @TableField("module_id")
     var moduleId: Long? = null

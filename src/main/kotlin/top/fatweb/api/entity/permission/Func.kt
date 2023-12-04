@@ -13,24 +13,38 @@ import java.io.Serializable
  */
 @TableName("t_func")
 class Func : Serializable {
-
+    /**
+     * ID
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     @TableId("id")
     var id: Long? = null
 
     /**
-     * 功能名
+     * Name
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     @TableField("name")
     var name: String? = null
 
     /**
-     * 父ID
+     * Parent ID
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     @TableField("parent_id")
     var parentId: Long? = null
 
     /**
-     * 菜单ID
+     * Menu ID
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     @TableField("menu_id")
     var menuId: Long? = null

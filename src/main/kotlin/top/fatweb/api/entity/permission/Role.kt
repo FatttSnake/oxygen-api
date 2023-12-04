@@ -12,54 +12,120 @@ import java.time.LocalDateTime
  */
 @TableName("t_role")
 class Role : Serializable {
-
+    /**
+     * ID
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     @TableId("id")
     var id: Long? = null
 
     /**
-     * 角色名
+     * Name
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     @TableField("name")
     var name: String? = null
 
     /**
-     * 启用
+     * Enable
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     @TableField("enable")
     var enable: Int? = null
 
     /**
-     * 创建时间
+     * Create time
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see LocalDateTime
      */
     @TableField("create_time", fill = FieldFill.INSERT)
     var createTime: LocalDateTime? = null
 
     /**
-     * 修改时间
+     * Update time
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see LocalDateTime
      */
     @TableField("update_time", fill = FieldFill.INSERT_UPDATE)
     var updateTime: LocalDateTime? = null
 
+    /**
+     * Deleted
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     @TableField("deleted")
     @TableLogic
     var deleted: Long? = null
 
+    /**
+     * Version
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     @TableField("version")
     @Version
     var version: Int? = null
 
+    /**
+     * Module list
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see Module
+     */
     @TableField(exist = false)
     var modules: List<Module>? = null
 
+    /**
+     * Menu list
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see Menu
+     */
     @TableField(exist = false)
     var menus: List<Menu>? = null
 
+    /**
+     * Function list
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see Func
+     */
     @TableField(exist = false)
     var funcs: List<Func>? = null
 
+    /**
+     * Operation list
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see Operation
+     */
     @TableField(exist = false)
     var operations: List<Operation>? = null
 
+    /**
+     * Power list
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see Power
+     */
     @TableField(exist = false)
     var powers: List<Power>? = null
 

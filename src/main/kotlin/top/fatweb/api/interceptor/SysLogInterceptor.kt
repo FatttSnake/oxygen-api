@@ -27,6 +27,8 @@ import java.util.concurrent.Executor
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see Executor
+ * @see ISysLogService
  */
 @ControllerAdvice
 class SysLogInterceptor(

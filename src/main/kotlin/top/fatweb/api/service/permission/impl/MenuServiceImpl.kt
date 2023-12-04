@@ -11,6 +11,10 @@ import top.fatweb.api.service.permission.IMenuService
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see ServiceImpl
+ * @see MenuMapper
+ * @see Menu
+ * @see IMenuService
  */
 @Service
 class MenuServiceImpl : ServiceImpl<MenuMapper, Menu>(), IMenuService

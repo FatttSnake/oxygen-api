@@ -30,6 +30,16 @@ import top.fatweb.avatargenerator.AvatarException
 class ExceptionHandler {
     private val logger: Logger = LoggerFactory.getLogger(this::class.java)
 
+    /**
+     * Handle all exception
+     *
+     * @param e Exception
+     * @return Response object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see Exception
+     * @see ResponseResult
+     */
     @ExceptionHandler(value = [Exception::class])
     fun exceptionHandler(e: Exception): ResponseResult<*> {
         return when (e) {

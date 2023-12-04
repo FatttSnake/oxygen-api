@@ -8,5 +8,7 @@ import top.fatweb.api.entity.permission.UserInfo
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see IService
+ * @see UserInfo
  */
 interface IUserInfoService : IService<UserInfo>

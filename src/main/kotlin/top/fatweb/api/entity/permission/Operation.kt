@@ -13,24 +13,38 @@ import java.io.Serializable
  */
 @TableName("t_operation")
 class Operation : Serializable {
-
+    /**
+     * ID
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     @TableId("id")
     var id: Long? = null
 
     /**
-     * 操作名
+     * Name
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     @TableField("name")
     var name: String? = null
 
     /**
-     * 操作编码
+     * Code
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     @TableField("code")
     var code: String? = null
 
     /**
-     * 功能ID
+     * Function ID
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     @TableField("func_id")
     var funcId: Long? = null

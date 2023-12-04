@@ -5,5 +5,6 @@ package top.fatweb.api.exception
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see RuntimeException
  */
 class TokenHasExpiredException : RuntimeException("Token has expired")

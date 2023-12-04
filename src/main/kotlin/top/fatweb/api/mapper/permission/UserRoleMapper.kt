@@ -9,6 +9,8 @@ import top.fatweb.api.entity.permission.UserRole
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see BaseMapper
+ * @see UserRole
  */
 @Mapper
 interface UserRoleMapper : BaseMapper<UserRole>

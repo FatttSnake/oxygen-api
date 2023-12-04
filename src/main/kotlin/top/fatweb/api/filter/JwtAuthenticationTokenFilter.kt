@@ -20,13 +20,15 @@ import top.fatweb.api.util.WebUtil
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see RedisUtil
+ * @see OncePerRequestFilter
  */
 @Component
 class JwtAuthenticationTokenFilter(private val redisUtil: RedisUtil) : OncePerRequestFilter() {
     override fun doFilterInternal(
         request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain
     ) {
-        val tokenWithPrefix = request.getHeader(SecurityProperties.headerString)
+        val tokenWithPrefix = request.getHeader(SecurityProperties.headerKey)
 
         if (!StringUtils.hasText(tokenWithPrefix) || "/error/thrown" == request.servletPath) {
             filterChain.doFilter(request, response)

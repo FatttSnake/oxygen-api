@@ -20,6 +20,7 @@ import top.fatweb.api.vo.api.v1.avatar.AvatarBase64Vo
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see IAvatarService
  */
 @Tag(name = "随机头像", description = "随机头像相关接口")
 @RequestMapping("/api/{apiVersion}/avatar")

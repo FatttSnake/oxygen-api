@@ -11,6 +11,10 @@ import top.fatweb.api.service.permission.IModuleService
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see ServiceImpl
+ * @see ModuleMapper
+ * @see Module
+ * @see IModuleService
  */
 @Service
 class ModuleServiceImpl : ServiceImpl<ModuleMapper, Module>(), IModuleService

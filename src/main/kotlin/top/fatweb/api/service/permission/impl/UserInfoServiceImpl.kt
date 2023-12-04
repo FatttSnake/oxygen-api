@@ -11,6 +11,9 @@ import top.fatweb.api.service.permission.IUserInfoService
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see ServiceImpl
+ * @see UserInfoMapper
+ * @see IUserInfoService
  */
 @Service
 class UserInfoServiceImpl : ServiceImpl<UserInfoMapper, UserInfo>(), IUserInfoService

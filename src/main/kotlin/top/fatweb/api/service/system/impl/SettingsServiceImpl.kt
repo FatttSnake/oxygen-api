@@ -8,6 +8,13 @@ import top.fatweb.api.settings.MailSettings
 import top.fatweb.api.settings.SettingsOperator
 import top.fatweb.api.vo.system.SettingsVo
 
+/**
+ * Settings service implement
+ *
+ * @author FatttSnake, fatttsnake@gmail.com
+ * @since 1.0.0
+ * @see ISettingsService
+ */
 @Service
 class SettingsServiceImpl : ISettingsService {
     override fun get(): SettingsVo  = SettingsConverter.systemSettingsToSettingsVo(SettingsOperator.settings())

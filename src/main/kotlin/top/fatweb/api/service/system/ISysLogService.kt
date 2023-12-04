@@ -10,7 +10,20 @@ import top.fatweb.api.param.system.SysLogGetParam
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see IService
+ * @see SysLog
  */
 interface ISysLogService : IService<SysLog> {
+    /**
+     * Get system log in page
+     *
+     * @param sysLogGetParam Get system log parameters
+     * @return IPage<SysLog> object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see SysLogGetParam
+     * @see IPage
+     * @see SysLog
+     */
     fun getPage(sysLogGetParam: SysLogGetParam?): IPage<SysLog>
 }

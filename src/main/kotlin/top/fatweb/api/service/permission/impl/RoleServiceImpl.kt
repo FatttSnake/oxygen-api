@@ -23,6 +23,15 @@ import top.fatweb.api.vo.permission.RoleWithPowerVo
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see RedisUtil
+ * @see IPowerRoleService
+ * @see IFuncService
+ * @see IMenuService
+ * @see IUserService
+ * @see ServiceImpl
+ * @see RoleMapper
+ * @see Role
+ * @see IRoleService
  */
 @Service
 class RoleServiceImpl(
@@ -173,7 +182,7 @@ class RoleServiceImpl(
     }
 
     private fun offlineUser(vararg roleIds: Long) {
-        val userIds = userService.selectIdsWithRoleIds(roleIds.toList())
+        val userIds = userService.getIdsWithRoleIds(roleIds.toList())
         WebUtil.offlineUser(redisUtil, *userIds.toLongArray())
     }
 }

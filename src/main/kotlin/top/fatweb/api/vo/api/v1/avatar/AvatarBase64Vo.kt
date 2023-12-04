@@ -10,6 +10,12 @@ import io.swagger.v3.oas.annotations.media.Schema
  */
 @Schema(description = "头像 Base64 返回参数")
 data class AvatarBase64Vo(
+    /**
+     * Base64
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     @Schema(description = "base64")
     val base64: String?
 )

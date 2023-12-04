@@ -11,6 +11,10 @@ import top.fatweb.api.service.permission.IRoleGroupService
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see ServiceImpl
+ * @see RoleGroupMapper
+ * @see RoleGroup
+ * @see IRoleGroupService
  */
 @Service
 class RoleGroupServiceImpl : ServiceImpl<RoleGroupMapper, RoleGroup>(), IRoleGroupService

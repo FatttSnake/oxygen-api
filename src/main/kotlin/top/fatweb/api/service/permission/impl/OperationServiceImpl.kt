@@ -11,6 +11,10 @@ import top.fatweb.api.service.permission.IOperationService
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see ServiceImpl
+ * @see OperationMapper
+ * @see Operation
+ * @see IOperationService
  */
 @Service
 class OperationServiceImpl : ServiceImpl<OperationMapper, Operation>(), IOperationService

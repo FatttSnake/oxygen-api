@@ -22,6 +22,7 @@ import top.fatweb.api.vo.permission.TokenVo
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see IAuthenticationService
  */
 @Tag(name = "身份认证", description = "身份认证相关接口")
 @RestController

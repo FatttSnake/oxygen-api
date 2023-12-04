@@ -33,6 +33,19 @@ import java.time.ZoneOffset
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see PasswordEncoder
+ * @see RedisUtil
+ * @see IUserInfoService
+ * @see IModuleService
+ * @see IMenuService
+ * @see IFuncService
+ * @see IOperationService
+ * @see IUserRoleService
+ * @see IUserGroupService
+ * @see ServiceImpl
+ * @see UserMapper
+ * @see User
+ * @see IUserService
  */
 @Service
 class UserServiceImpl(
@@ -81,7 +94,7 @@ class UserServiceImpl(
     override fun getOne(id: Long) =
         baseMapper.selectOneWithRoleInfoById(id)?.let { UserConverter.userToUserWithRoleInfoVo(it) }
 
-    override fun getList() = baseMapper.selectListWithInfo().map { UserConverter.userToUserWithInfoVo(it) }
+    override fun listAll() = baseMapper.selectListWithInfo().map { UserConverter.userToUserWithInfoVo(it) }
 
     @Transactional
     override fun add(userAddParam: UserAddParam): UserWithPasswordRoleInfoVo? {
@@ -249,7 +262,7 @@ class UserServiceImpl(
         WebUtil.offlineUser(redisUtil, *ids.toLongArray())
     }
 
-    override fun selectIdsWithRoleIds(roleIds: List<Long>) = baseMapper.selectIdsWithRoleIds(roleIds)
+    override fun getIdsWithRoleIds(roleIds: List<Long>) = baseMapper.selectIdsWithRoleIds(roleIds)
 
-    override fun selectIdsWithGroupIds(groupIds: List<Long>) = baseMapper.selectIdsWithGroupIds(groupIds)
+    override fun getIdsWithGroupIds(groupIds: List<Long>) = baseMapper.selectIdsWithGroupIds(groupIds)
 }

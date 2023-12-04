@@ -18,9 +18,11 @@ object JwtUtil {
     private fun getUUID() = UUID.randomUUID().toString().replace("-", "")
 
     /**
-     * 生成加密后的秘钥 secretKey
+     * Generate encrypted secret key
      *
-     * @return 密钥
+     * @return Secret key
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     private fun generalKey(): SecretKeySpec {
         val encodeKey = Base64.getDecoder().decode(SecurityProperties.jwtKey)
@@ -30,13 +32,16 @@ object JwtUtil {
     private fun algorithm(): Algorithm = Algorithm.HMAC256(generalKey().toString())
 
     /**
-     * 创建 token
+     * Create token
      *
-     * @param subject token 中存放的数据（json格式)
-     * @param ttl token 生存时间
-     * @param timeUnit ttl 时间单位
-     * @param uuid 唯一 ID
-     * @return jwt 串
+     * @param subject Data stored in token (json format)
+     * @param ttl TTL of token
+     * @param timeUnit TTL unit of token
+     * @param uuid UUID
+     * @return JWT token
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see TimeUnit
      */
     fun createJwt(
         subject: String,
@@ -63,10 +68,13 @@ object JwtUtil {
     }
 
     /**
-     * 解析 jwt
+     * Parse JWT token
      *
-     * @param jwt jwt 串
-     * @return 解析内容
+     * @param jwt JWT token
+     * @return Parsed content
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see DecodedJWT
      */
     fun parseJwt(jwt: String): DecodedJWT = JWT.require(algorithm()).build().verify(jwt)
 }

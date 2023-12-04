@@ -14,94 +14,150 @@ import java.time.LocalDateTime
  */
 @TableName("t_sys_log")
 class SysLog : Serializable {
-
+    /**
+     * ID
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     @TableId("id")
     var id: Long? = null
 
     /**
-     * 日志类型
+     * Log type
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     @TableField("log_type")
     var logType: String? = null
 
     /**
-     * 操作用户
+     * Operate user ID
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     @TableField("operate_user_id")
     var operateUserId: Long? = null
 
     /**
-     * 操作时间
+     * Operate time
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see LocalDateTime
      */
     @TableField("operate_time")
     var operateTime: LocalDateTime? = null
 
     /**
-     * 请求 URI
+     * Request URI
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     @TableField("request_uri")
     var requestUri: String? = null
 
     /**
-     * 请求方式
+     * Request method
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     @TableField("request_method")
     var requestMethod: String? = null
 
     /**
-     * 请求参数
+     * Request parameters
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     @TableField("request_params")
     var requestParams: String? = null
 
     /**
-     * 请求 IP
+     * Request IP
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     @TableField("request_ip")
     var requestIp: String? = null
 
     /**
-     * 请求服务器地址
+     * Request server address
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     @TableField("request_server_address")
     var requestServerAddress: String? = null
 
     /**
-     * 是否异常
+     * Is exception
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     @TableField("exception")
     var exception: Int? = null
 
     /**
-     * 异常信息
+     * Exception information
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     @TableField("exception_info")
     var exceptionInfo: String? = null
 
     /**
-     * 开始时间
+     * Start time
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see LocalDateTime
      */
     @TableField("start_time")
     var startTime: LocalDateTime? = null
 
     /**
-     * 结束时间
+     * End time
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see LocalDateTime
      */
     @TableField("end_time")
     var endTime: LocalDateTime? = null
 
     /**
-     * 执行时间
+     * Execute time
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     @TableField("execute_time")
     var executeTime: Long? = null
 
     /**
-     * 用户代理
+     * User agent
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     @TableField("user_agent")
     var userAgent: String? = null
 
+    /**
+     * Operate username
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     @TableField(exist = false)
     var operateUsername: String? = null
 

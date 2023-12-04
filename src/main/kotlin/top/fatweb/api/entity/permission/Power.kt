@@ -13,12 +13,20 @@ import java.io.Serializable
  */
 @TableName("t_power")
 class Power : Serializable {
-
+    /**
+     * ID
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     @TableId("id")
     var id: Long? = null
 
     /**
-     * 权限类型
+     * Type ID
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     @TableField("type_id")
     var typeId: Int? = null

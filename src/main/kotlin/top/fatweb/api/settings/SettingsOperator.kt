@@ -8,6 +8,12 @@ import java.io.File
 import java.io.IOException
 import kotlin.reflect.KMutableProperty1
 
+/**
+ * Settings operator
+ *
+ * @author FatttSnake, fatttsnake@gmail.com
+ * @since 1.0.0
+ */
 object SettingsOperator {
     private const val SETTINGS_FILE_NAME = "data/config/settings.yaml"
 
@@ -19,6 +25,14 @@ object SettingsOperator {
         getFromSettingsFile()
     }
 
+    /**
+     * Get settings from settings file
+     *
+     * @throws IOException
+     * @throws MismatchedInputException
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     @Throws(IOException::class, MismatchedInputException::class)
     private fun getFromSettingsFile() {
         if (settingFile.isDirectory) {
@@ -47,10 +61,26 @@ object SettingsOperator {
         systemSettings = yamlMapper.readValue(settingFile)
     }
 
+    /**
+     * Save settings to settings file
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     private fun saveSettingsToFile() {
         yamlMapper.writeValue(settingFile, systemSettings)
     }
 
+    /**
+     * Set mail settings value
+     *
+     * @param field Field to set value. e.g. MailSettings::host
+     * @param value Value to set
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see KMutableProperty1
+     * @see MailSettings
+     */
     fun <V> setMailValue(field: KMutableProperty1<MailSettings, V?>, value: V?) {
         systemSettings.mail?.let {
             if (field == MailSettings::password) {
@@ -71,9 +101,27 @@ object SettingsOperator {
         saveSettingsToFile()
     }
 
+    /**
+     * Get value from mail settings
+     *
+     * @param field Field to get value from. e.g. MailSettings::host
+     * @return Value
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see KMutableProperty1
+     * @see MailSettings
+     */
     fun <V> getMailValue(field: KMutableProperty1<MailSettings, V?>): V? = systemSettings.mail?.let(field)
 
-    fun settings() = systemSettings.copy(
+    /**
+     * Get system settings object
+     *
+     * @return System settings object (Copy)
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see SystemSettings
+     */
+    fun settings(): SystemSettings = systemSettings.copy(
         mail = systemSettings.mail?.copy()
     ).apply {
         mail?.apply {
@@ -83,6 +131,14 @@ object SettingsOperator {
         }
     }
 
+    /**
+     * Overwrite all settings
+     *
+     * @param systemSettings SystemSettings object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see SystemSettings
+     */
     fun overwrite(systemSettings: SystemSettings) {
         this.systemSettings = systemSettings
         saveSettingsToFile()

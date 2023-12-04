@@ -19,107 +19,216 @@ class User() : Serializable {
         this.enable = if (enable) 1 else 0
     }
 
+    /**
+     * ID
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     @TableId("id")
     var id: Long? = null
 
     /**
-     * 用户名
+     * Username
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     @TableField("username")
     var username: String? = null
 
     /**
-     * 密码
+     * Password
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     @TableField("password")
     var password: String? = null
 
     /**
-     * 锁定
+     * Locking
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     @TableField("locking")
     var locking: Int? = null
 
     /**
-     * 过期时间
+     * Expiration time
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see LocalDateTime
      */
     @TableField("expiration")
     var expiration: LocalDateTime? = null
 
     /**
-     * 认证过期时间
+     * Credentials expiration time
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see LocalDateTime
      */
     @TableField("credentials_expiration")
     var credentialsExpiration: LocalDateTime? = null
 
     /**
-     * 启用
+     * Enable
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     @TableField("enable")
     var enable: Int? = null
 
     /**
-     * 当前登录时间
+     * Current login time
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see LocalDateTime
      */
     @TableField("current_login_time")
     var currentLoginTime: LocalDateTime? = null
 
     /**
-     * 当前登录 IP
+     * Current login IP
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     @TableField("current_login_ip")
     var currentLoginIp: String? = null
 
     /**
-     * 上次登录时间
+     * Last login time
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see LocalDateTime
      */
     @TableField("last_login_time")
     var lastLoginTime: LocalDateTime? = null
 
     /**
-     * 上次登录 IP
+     * Last login IP
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
      */
     @TableField("last_login_ip")
     var lastLoginIp: String? = null
 
     /**
-     * 创建时间
+     * Create time
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see LocalDateTime
      */
     @TableField("create_time")
     var createTime: LocalDateTime? = null
 
     /**
-     * 修改时间
+     * Update time
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see LocalDateTime
      */
     @TableField("update_time")
     var updateTime: LocalDateTime? = null
 
+    /**
+     * Deleted
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     @TableField("deleted")
     @TableLogic
     var deleted: Long? = null
 
+    /**
+     * Version
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     @TableField("version")
     @Version
     var version: Int? = null
 
+    /**
+     * User info
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see UserInfo
+     */
     @TableField(exist = false)
     var userInfo: UserInfo? = null
 
+    /**
+     * Role list
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see Role
+     */
     @TableField(exist = false)
     var roles: List<Role>? = null
 
+    /**
+     * Group list
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see Group
+     */
     @TableField(exist = false)
     var groups: List<Group>? = null
 
+    /**
+     * Module list
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see Module
+     */
     @TableField(exist = false)
     var modules: List<Module>? = null
 
+    /**
+     * Menu list
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see Menu
+     */
     @TableField(exist = false)
     var menus: List<Menu>? = null
 
+    /**
+     * Function list
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see Func
+     */
     @TableField(exist = false)
     var funcs: List<Func>? = null
 
+    /**
+     * Operation list
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see Operation
+     */
     @TableField(exist = false)
     var operations: List<Operation>? = null
 

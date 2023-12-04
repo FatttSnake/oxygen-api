@@ -9,6 +9,8 @@ import top.fatweb.api.entity.permission.Menu
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see BaseMapper
+ * @see Menu
  */
 @Mapper
 interface MenuMapper : BaseMapper<Menu>

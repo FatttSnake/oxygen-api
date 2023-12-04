@@ -18,6 +18,7 @@ import top.fatweb.api.vo.permission.base.GroupVo
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see IGroupService
  */
 @Tag(name = "用户组管理", description = "用户组管理相关接口")
 @RequestMapping("/system/group")

@@ -9,6 +9,8 @@ import top.fatweb.api.entity.permission.Func
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see BaseMapper
+ * @see Func
  */
 @Mapper
 interface FuncMapper : BaseMapper<Func>

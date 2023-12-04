@@ -25,6 +25,13 @@ import top.fatweb.api.vo.permission.GroupWithRoleVo
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see RedisUtil
+ * @see IRoleGroupService
+ * @see IUserService
+ * @see ServiceImpl
+ * @see GroupMapper
+ * @see Group
+ * @see IGroupService
  */
 @Service
 class GroupServiceImpl(
@@ -140,7 +147,7 @@ class GroupServiceImpl(
     }
 
     private fun offlineUser(vararg groupIds: Long) {
-        val userIds = userService.selectIdsWithGroupIds(groupIds.toList())
+        val userIds = userService.getIdsWithGroupIds(groupIds.toList())
         WebUtil.offlineUser(redisUtil, *userIds.toLongArray())
     }
 }

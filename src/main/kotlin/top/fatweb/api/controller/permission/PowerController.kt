@@ -15,6 +15,7 @@ import top.fatweb.api.vo.permission.PowerSetVo
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see IPowerService
  */
 @Tag(name = "权限管理", description = "权限管理相关接口")
 @RequestMapping("/system/power")
