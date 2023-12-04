@@ -1,9 +1,9 @@
 package top.fatweb.api.vo.system
 
-data class SettingVo(
-    val mail: MailSettingVo?
+data class SettingsVo(
+    val mail: MailSettingsVo?
 ) {
-    data class MailSettingVo(
+    data class MailSettingsVo(
         val host: String?,
         val port: Int?,
         val username: String?,

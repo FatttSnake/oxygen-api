@@ -1,6 +1,9 @@
-package top.fatweb.api.setting
+package top.fatweb.api.settings
 
-data class MailSetting(
+import com.fasterxml.jackson.annotation.JsonInclude
+
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+data class MailSettings(
     var host: String? = null,
     var port: Int? = null,
     var username: String? = null,
