@@ -54,7 +54,9 @@ insert into t_power (id, type_id)
            (1030402, 4),
            (1040103, 4),
            (1050101, 4),
-           (1050301, 4)
+           (1050102, 4),
+           (1050301, 4),
+           (1050302, 4)
         as new_value
 on duplicate key update type_id = new_value.type_id;
 
@@ -122,8 +124,10 @@ insert into t_operation(id, name, code, func_id)
            (1030402, '多个', 'system:group:delete:multiple', 1030400),
            (1040103, '列表', 'system:power:query:list', 1040100),
            (1510101, '列表', 'system:log:query:all', 1510100),
-           (1520101, '全部', 'system:settings:query:all', 1520100),
-           (1520301, '全部', 'system:settings:modify:all', 1520300) as new_value
+           (1520101, '基础', 'system:settings:query:base', 1520100),
+           (1520102, '邮件', 'system:settings:query:mail', 1520100),
+           (1520301, '基础', 'system:settings:modify:base', 1520300),
+           (1520302, '邮件', 'system:settings:modify:mail', 1520300) as new_value
 on duplicate key update name=new_value.name,
                         code=new_value.code,
                         func_id=new_value.func_id;

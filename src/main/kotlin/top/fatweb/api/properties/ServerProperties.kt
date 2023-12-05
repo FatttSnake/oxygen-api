@@ -16,6 +16,14 @@ import java.time.ZonedDateTime
 @ConfigurationProperties("app")
 object ServerProperties {
     /**
+     * App name
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    lateinit var appName: String
+
+    /**
      * Version
      *
      * @author FatttSnake, fatttsnake@gmail.com

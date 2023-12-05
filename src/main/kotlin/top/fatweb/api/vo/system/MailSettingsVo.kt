@@ -1,23 +1,20 @@
-package top.fatweb.api.param.system
+package top.fatweb.api.vo.system
 
-import io.swagger.v3.oas.annotations.media.Schema
 import top.fatweb.api.settings.MailSecurityType
 
 /**
- * Mail settings parameters
+ * Mail settings value object
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-@Schema(description = "邮件设置请求参数")
-data class MailSettingsParam(
+data class MailSettingsVo(
     /**
      * Host
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "SMTP 服务器")
     val host: String?,
 
     /**
@@ -26,7 +23,6 @@ data class MailSettingsParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "端口号")
     val port: Int?,
 
     /**
@@ -35,8 +31,7 @@ data class MailSettingsParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "安全类型", allowableValues = ["None", "SSL/TLS", "StartTls"], defaultValue = "None")
-    val securityType: MailSecurityType? = MailSecurityType.NONE,
+    val securityType: MailSecurityType?,
 
     /**
      * Username
@@ -44,7 +39,6 @@ data class MailSettingsParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "用户名")
     val username: String?,
 
     /**
@@ -53,7 +47,6 @@ data class MailSettingsParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "密码")
     val password: String?,
 
     /**
@@ -62,7 +55,6 @@ data class MailSettingsParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "发送者")
     val from: String?,
 
     /**
@@ -71,6 +63,5 @@ data class MailSettingsParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "发送者名称")
     val fromName: String?
 )

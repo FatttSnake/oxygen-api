@@ -1,4 +1,5 @@
 app:
+  app-name: FatWeb
   version: @project.version@
   build-time: @build.timestamp@
 

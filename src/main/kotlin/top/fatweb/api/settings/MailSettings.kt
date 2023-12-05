@@ -27,6 +27,14 @@ data class MailSettings(
     var port: Int? = null,
 
     /**
+     * Security type
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    var securityType: MailSecurityType? = MailSecurityType.NONE,
+
+    /**
      * Username
      *
      * @author FatttSnake, fatttsnake@gmail.com
@@ -49,4 +57,12 @@ data class MailSettings(
      * @since 1.0.0
      */
     var from: String? = null,
+
+    /**
+     * Sender name
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    var fromName: String? = null
 )

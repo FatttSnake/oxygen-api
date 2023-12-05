@@ -2,11 +2,14 @@ package top.fatweb.api.controller.system
 
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
+import jakarta.validation.Valid
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import top.fatweb.api.entity.common.ResponseResult
+import top.fatweb.api.param.system.MailSendParam
 import top.fatweb.api.param.system.MailSettingsParam
 import top.fatweb.api.service.system.ISettingsService
-import top.fatweb.api.vo.system.SettingsVo
+import top.fatweb.api.vo.system.MailSettingsVo
 
 /**
  * System settings controller
@@ -22,17 +25,18 @@ class SettingsController(
     private val settingsService: ISettingsService
 ) {
     /**
-     * Get all settings
+     * Get mail settings
      *
-     * @return Response object includes all settings
+     * @return Response object includes mail settings
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see ResponseResult
-     * @see SettingsVo
+     * @see MailSettingsVo
      */
-    @Operation(summary = "获取全部设置")
-    @GetMapping
-    fun get(): ResponseResult<SettingsVo> = ResponseResult.success(data = settingsService.get())
+    @Operation(summary = "获取邮件设置")
+    @GetMapping("/mail")
+    @PreAuthorize("hasAnyAuthority('system:settings:query:mail')")
+    fun getMail(): ResponseResult<MailSettingsVo> = ResponseResult.success(data = settingsService.getMail())
 
     /**
      * Update mail settings
@@ -46,8 +50,23 @@ class SettingsController(
      */
     @Operation(summary = "更新邮件设置")
     @PutMapping("/mail")
+    @PreAuthorize("hasAnyAuthority('system:settings:modify:mail')")
     fun updateMail(@RequestBody mailSettingsParam: MailSettingsParam): ResponseResult<Nothing> {
         settingsService.updateMail(mailSettingsParam)
+        return ResponseResult.success()
+    }
+
+    /**
+     * Send mail test
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @Operation(summary = "邮件发送测试")
+    @PostMapping("/mail")
+    @PreAuthorize("hasAnyAuthority('system:settings:modify:mail')")
+    fun sendMail(@RequestBody @Valid mailSendParam: MailSendParam): ResponseResult<Nothing> {
+        settingsService.sendMail(mailSendParam)
         return ResponseResult.success()
     }
 }

@@ -2,6 +2,7 @@ package top.fatweb.api.converter.system
 
 import top.fatweb.api.settings.MailSettings
 import top.fatweb.api.settings.SystemSettings
+import top.fatweb.api.vo.system.MailSettingsVo
 import top.fatweb.api.vo.system.SettingsVo
 
 /**
@@ -19,14 +20,16 @@ object SettingsConverter {
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see MailSettings
-     * @see SettingsVo.MailSettingsVo
+     * @see MailSettingsVo
      */
-    private fun mailSettingsToMailSettingsVo(mailSettings: MailSettings) = SettingsVo.MailSettingsVo(
+    fun mailSettingsToMailSettingsVo(mailSettings: MailSettings) = MailSettingsVo(
         host = mailSettings.host,
         port = mailSettings.port,
+        securityType = mailSettings.securityType,
         username = mailSettings.username,
         password = mailSettings.password,
-        from = mailSettings.from
+        from = mailSettings.from,
+        fromName = mailSettings.fromName
     )
 
     /**
