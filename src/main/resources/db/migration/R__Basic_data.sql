@@ -12,7 +12,8 @@ insert into t_power (id, type_id)
            (1020000, 2),
            (1030000, 2),
            (1040000, 2),
-           (1050000, 2),
+           (1510000, 2),
+           (1520000, 2),
            (1010100, 3),
            (1010200, 3),
            (1010300, 3),
@@ -26,8 +27,9 @@ insert into t_power (id, type_id)
            (1030300, 3),
            (1030400, 3),
            (1040100, 3),
-           (1050100, 3),
-           (1050300, 3),
+           (1510100, 3),
+           (1520100, 3),
+           (1520300, 3),
            (1010101, 4),
            (1010102, 4),
            (1010103, 4),
@@ -53,10 +55,11 @@ insert into t_power (id, type_id)
            (1030401, 4),
            (1030402, 4),
            (1040103, 4),
-           (1050101, 4),
-           (1050102, 4),
-           (1050301, 4),
-           (1050302, 4)
+           (1510101, 4),
+           (1520101, 4),
+           (1520102, 4),
+           (1520301, 4),
+           (1520302, 4)
         as new_value
 on duplicate key update type_id = new_value.type_id;
 
@@ -123,7 +126,7 @@ insert into t_operation(id, name, code, func_id)
            (1030401, '单个', 'system:group:delete:one', 1030400),
            (1030402, '多个', 'system:group:delete:multiple', 1030400),
            (1040103, '列表', 'system:power:query:list', 1040100),
-           (1510101, '列表', 'system:log:query:all', 1510100),
+           (1510101, '全部', 'system:log:query:all', 1510100),
            (1520101, '基础', 'system:settings:query:base', 1520100),
            (1520102, '邮件', 'system:settings:query:mail', 1520100),
            (1520301, '基础', 'system:settings:modify:base', 1520300),
