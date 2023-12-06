@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service
 import oshi.SystemInfo
 import top.fatweb.api.properties.ServerProperties
 import top.fatweb.api.service.system.IStatisticsService
+import top.fatweb.api.util.ByteUtil
 import top.fatweb.api.vo.system.HardwareInfoVo
 import top.fatweb.api.vo.system.SoftwareInfoVo
 import java.time.LocalDateTime
@@ -39,6 +40,8 @@ class StatisticsServiceImpl : IStatisticsService {
         cpuPhysicalPackageCount = systemInfo.hardware.processor.physicalPackageCount,
         cpuPhysicalProcessorCount = systemInfo.hardware.processor.physicalProcessorCount,
         cpuLogicalProcessorCount = systemInfo.hardware.processor.logicalProcessorCount,
-        microarchitecture = systemInfo.hardware.processor.processorIdentifier.microarchitecture
+        microarchitecture = systemInfo.hardware.processor.processorIdentifier.microarchitecture,
+        memories = "${ByteUtil.formatByteSize(systemInfo.hardware.memory.total)} (${systemInfo.hardware.memory.physicalMemory.joinToString(" + ") { ByteUtil.formatByteSize(it.capacity) }})",
+        disks = "${ByteUtil.formatByteSize(systemInfo.hardware.diskStores.sumOf { it.size })} (${systemInfo.hardware.diskStores.joinToString(" + ") {ByteUtil.formatByteSize(it.size)}})"
     )
 }

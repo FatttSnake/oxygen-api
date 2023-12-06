@@ -7,5 +7,7 @@ data class HardwareInfoVo(
     val cpuPhysicalPackageCount: Int,
     val cpuPhysicalProcessorCount: Int,
     val cpuLogicalProcessorCount: Int,
-    val microarchitecture: String
+    val microarchitecture: String,
+    val memories: String,
+    val disks: String
 )
