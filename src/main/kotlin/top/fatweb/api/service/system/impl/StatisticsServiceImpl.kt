@@ -2,21 +2,23 @@ package top.fatweb.api.service.system.impl
 
 import org.springframework.stereotype.Service
 import oshi.SystemInfo
+import oshi.hardware.CentralProcessor
 import top.fatweb.api.properties.ServerProperties
 import top.fatweb.api.service.system.IStatisticsService
 import top.fatweb.api.util.ByteUtil
-import top.fatweb.api.vo.system.HardwareInfoVo
-import top.fatweb.api.vo.system.SoftwareInfoVo
+import top.fatweb.api.vo.system.*
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.util.Properties
+import java.util.concurrent.TimeUnit
 
 @Service
 class StatisticsServiceImpl : IStatisticsService {
     private val systemProperties: Properties = System.getProperties()
     private val systemInfo: SystemInfo = SystemInfo()
+    private val runtime: Runtime = Runtime.getRuntime()
 
-    override fun software(): SoftwareInfoVo = SoftwareInfoVo(
+    override fun software() = SoftwareInfoVo(
         os = systemInfo.operatingSystem.toString(),
         bitness = systemInfo.operatingSystem.bitness,
         javaVersion = systemProperties.getProperty("java.version"),
@@ -33,7 +35,7 @@ class StatisticsServiceImpl : IStatisticsService {
         serverStartupTime = ServerProperties.startupTime
     )
 
-    override fun hardware(): HardwareInfoVo = HardwareInfoVo(
+    override fun hardware() = HardwareInfoVo(
         cpu = systemInfo.hardware.processor.processorIdentifier.name,
         arch = systemProperties.getProperty("os.arch"),
         is64Bit = systemInfo.hardware.processor.processorIdentifier.isCpu64bit,
@@ -41,7 +43,84 @@ class StatisticsServiceImpl : IStatisticsService {
         cpuPhysicalProcessorCount = systemInfo.hardware.processor.physicalProcessorCount,
         cpuLogicalProcessorCount = systemInfo.hardware.processor.logicalProcessorCount,
         microarchitecture = systemInfo.hardware.processor.processorIdentifier.microarchitecture,
-        memories = "${ByteUtil.formatByteSize(systemInfo.hardware.memory.total)} (${systemInfo.hardware.memory.physicalMemory.joinToString(" + ") { ByteUtil.formatByteSize(it.capacity) }})",
-        disks = "${ByteUtil.formatByteSize(systemInfo.hardware.diskStores.sumOf { it.size })} (${systemInfo.hardware.diskStores.joinToString(" + ") {ByteUtil.formatByteSize(it.size)}})"
+        memories = "${ByteUtil.formatByteSize(systemInfo.hardware.memory.total)} (${
+            systemInfo.hardware.memory.physicalMemory.joinToString(
+                " + "
+            ) { ByteUtil.formatByteSize(it.capacity) }
+        })",
+        disks = "${ByteUtil.formatByteSize(systemInfo.hardware.diskStores.sumOf { it.size })} (${
+            systemInfo.hardware.diskStores.joinToString(
+                " + "
+            ) { ByteUtil.formatByteSize(it.size) }
+        })"
+    )
+
+    override fun cpu(): CpuInfoVo {
+        val processor = systemInfo.hardware.processor
+        val prevTicks = processor.systemCpuLoadTicks
+        val processorPrevTicksList = processor.processorCpuLoadTicks
+        TimeUnit.MILLISECONDS.sleep(500)
+        val ticks = processor.systemCpuLoadTicks
+        val processorTicksList = processor.processorCpuLoadTicks
+
+        val user = ticks[CentralProcessor.TickType.USER.index] - prevTicks[CentralProcessor.TickType.USER.index]
+        val nice = ticks[CentralProcessor.TickType.NICE.index] - prevTicks[CentralProcessor.TickType.NICE.index]
+        val system = ticks[CentralProcessor.TickType.SYSTEM.index] - prevTicks[CentralProcessor.TickType.SYSTEM.index]
+        val idle = ticks[CentralProcessor.TickType.IDLE.index] - prevTicks[CentralProcessor.TickType.IDLE.index]
+        val iowait = ticks[CentralProcessor.TickType.IOWAIT.index] - prevTicks[CentralProcessor.TickType.IOWAIT.index]
+        val irq = ticks[CentralProcessor.TickType.IRQ.index] - prevTicks[CentralProcessor.TickType.IRQ.index]
+        val softirq =
+            ticks[CentralProcessor.TickType.SOFTIRQ.index] - prevTicks[CentralProcessor.TickType.SOFTIRQ.index]
+        val steal = ticks[CentralProcessor.TickType.STEAL.index] - prevTicks[CentralProcessor.TickType.STEAL.index]
+
+        return CpuInfoVo(user, nice, system, idle, iowait, irq, softirq, steal, mutableListOf()).apply {
+            processorPrevTicksList.forEachIndexed { index, processorPrevTicks ->
+                run {
+                    val processorTicks = processorTicksList[index]
+                    val processorUser =
+                        processorTicks[CentralProcessor.TickType.USER.index] - processorPrevTicks[CentralProcessor.TickType.USER.index]
+                    val processorNice =
+                        processorTicks[CentralProcessor.TickType.NICE.index] - processorPrevTicks[CentralProcessor.TickType.NICE.index]
+                    val processorSystem =
+                        processorTicks[CentralProcessor.TickType.SYSTEM.index] - processorPrevTicks[CentralProcessor.TickType.SYSTEM.index]
+                    val processorIdle =
+                        processorTicks[CentralProcessor.TickType.IDLE.index] - processorPrevTicks[CentralProcessor.TickType.IDLE.index]
+                    val processorIowait =
+                        processorTicks[CentralProcessor.TickType.IOWAIT.index] - processorPrevTicks[CentralProcessor.TickType.IOWAIT.index]
+                    val processorIrq =
+                        processorTicks[CentralProcessor.TickType.IRQ.index] - processorPrevTicks[CentralProcessor.TickType.IRQ.index]
+                    val processorSoftirq =
+                        processorTicks[CentralProcessor.TickType.SOFTIRQ.index] - processorPrevTicks[CentralProcessor.TickType.SOFTIRQ.index]
+                    val processorSteal =
+                        processorTicks[CentralProcessor.TickType.STEAL.index] - processorPrevTicks[CentralProcessor.TickType.STEAL.index]
+                    processors?.add(
+                        CpuInfoVo(
+                            processorUser,
+                            processorNice,
+                            processorSystem,
+                            processorIdle,
+                            processorIowait,
+                            processorIrq,
+                            processorSoftirq,
+                            processorSteal
+                        )
+                    )
+                }
+            }
+        }
+    }
+
+    override fun memory() = MemoryInfoVo(
+        total = systemInfo.hardware.memory.total,
+        free = systemInfo.hardware.memory.available,
+        virtualMax = systemInfo.hardware.memory.virtualMemory.virtualMax,
+        virtualInUse = systemInfo.hardware.memory.virtualMemory.virtualInUse,
+        swapTotal = systemInfo.hardware.memory.virtualMemory.swapTotal,
+        swapUsed = systemInfo.hardware.memory.virtualMemory.swapUsed
+    )
+
+    override fun jvm() = JvmInfoVo(
+        totalMemory = runtime.totalMemory(),
+        freeMemory = runtime.freeMemory()
     )
 }
