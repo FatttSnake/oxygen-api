@@ -72,8 +72,8 @@ class StatisticsServiceImpl : IStatisticsService {
         val softirq =
             ticks[CentralProcessor.TickType.SOFTIRQ.index] - prevTicks[CentralProcessor.TickType.SOFTIRQ.index]
         val steal = ticks[CentralProcessor.TickType.STEAL.index] - prevTicks[CentralProcessor.TickType.STEAL.index]
-
-        return CpuInfoVo(user, nice, system, idle, iowait, irq, softirq, steal, mutableListOf()).apply {
+        val total = user + nice + system + idle + iowait + irq + softirq + steal
+        return CpuInfoVo(user, nice, system, idle, iowait, irq, softirq, steal, total, mutableListOf()).apply {
             processorPrevTicksList.forEachIndexed { index, processorPrevTicks ->
                 run {
                     val processorTicks = processorTicksList[index]
@@ -93,6 +93,7 @@ class StatisticsServiceImpl : IStatisticsService {
                         processorTicks[CentralProcessor.TickType.SOFTIRQ.index] - processorPrevTicks[CentralProcessor.TickType.SOFTIRQ.index]
                     val processorSteal =
                         processorTicks[CentralProcessor.TickType.STEAL.index] - processorPrevTicks[CentralProcessor.TickType.STEAL.index]
+                    val processorTotal = processorUser + processorNice + processorSystem + processorIdle + processorIowait + processorIrq + processorSoftirq + processorSteal
                     processors?.add(
                         CpuInfoVo(
                             processorUser,
@@ -102,7 +103,8 @@ class StatisticsServiceImpl : IStatisticsService {
                             processorIowait,
                             processorIrq,
                             processorSoftirq,
-                            processorSteal
+                            processorSteal,
+                            processorTotal
                         )
                     )
                 }

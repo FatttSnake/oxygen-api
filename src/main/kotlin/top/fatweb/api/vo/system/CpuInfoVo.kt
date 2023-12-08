@@ -12,5 +12,6 @@ data class CpuInfoVo(
     val irq: Long,
     val softirq: Long,
     val steal: Long,
+    val total: Long,
     val processors: MutableList<CpuInfoVo>? = null
 )
