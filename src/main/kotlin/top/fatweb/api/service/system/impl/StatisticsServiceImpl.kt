@@ -118,11 +118,8 @@ class StatisticsServiceImpl : IStatisticsService {
         virtualMax = systemInfo.hardware.memory.virtualMemory.virtualMax,
         virtualInUse = systemInfo.hardware.memory.virtualMemory.virtualInUse,
         swapTotal = systemInfo.hardware.memory.virtualMemory.swapTotal,
-        swapUsed = systemInfo.hardware.memory.virtualMemory.swapUsed
-    )
-
-    override fun jvm() = JvmInfoVo(
-        totalMemory = runtime.totalMemory(),
-        freeMemory = runtime.freeMemory()
+        swapUsed = systemInfo.hardware.memory.virtualMemory.swapUsed,
+        jvmTotal = runtime.totalMemory(),
+        jvmFree = runtime.freeMemory()
     )
 }

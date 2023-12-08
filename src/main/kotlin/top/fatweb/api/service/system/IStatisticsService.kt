@@ -10,6 +10,4 @@ interface IStatisticsService {
     fun cpu(): CpuInfoVo
 
     fun memory(): MemoryInfoVo
-
-    fun jvm(): JvmInfoVo
 }

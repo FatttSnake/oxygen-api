@@ -30,8 +30,4 @@ class StatisticsController(
     @Operation(summary = "获取内存信息")
     @GetMapping("/memory")
     fun memory(): ResponseResult<MemoryInfoVo> = ResponseResult.success(data = statisticsService.memory())
-
-    @Operation(summary = "获取 jvm 信息")
-    @GetMapping("/jvm")
-    fun jvm(): ResponseResult<JvmInfoVo> = ResponseResult.success(data = statisticsService.jvm())
 }
