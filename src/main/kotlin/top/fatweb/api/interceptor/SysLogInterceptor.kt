@@ -64,7 +64,12 @@ class SysLogInterceptor(
         if (result is ResponseResult<*>) {
             if (result.success) {
                 sysLog.apply {
-                    logType = "INFO"
+                    logType = requestUri?.let {
+                        when {
+                            it.startsWith("/system/statistics/") -> "STATISTICS"
+                            else -> "INFO"
+                        }
+                    } ?: "INFO"
                     exception = 0
                 }
             } else {
