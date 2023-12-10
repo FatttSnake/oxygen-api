@@ -9,7 +9,7 @@ import top.fatweb.api.util.ByteUtil
 import top.fatweb.api.vo.system.*
 import java.time.LocalDateTime
 import java.time.ZoneOffset
-import java.util.Properties
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 @Service
@@ -93,7 +93,8 @@ class StatisticsServiceImpl : IStatisticsService {
                         processorTicks[CentralProcessor.TickType.SOFTIRQ.index] - processorPrevTicks[CentralProcessor.TickType.SOFTIRQ.index]
                     val processorSteal =
                         processorTicks[CentralProcessor.TickType.STEAL.index] - processorPrevTicks[CentralProcessor.TickType.STEAL.index]
-                    val processorTotal = processorUser + processorNice + processorSystem + processorIdle + processorIowait + processorIrq + processorSoftirq + processorSteal
+                    val processorTotal =
+                        processorUser + processorNice + processorSystem + processorIdle + processorIowait + processorIrq + processorSoftirq + processorSteal
                     processors?.add(
                         CpuInfoVo(
                             processorUser,
@@ -112,14 +113,21 @@ class StatisticsServiceImpl : IStatisticsService {
         }
     }
 
-    override fun memory() = MemoryInfoVo(
-        total = systemInfo.hardware.memory.total,
-        free = systemInfo.hardware.memory.available,
-        virtualMax = systemInfo.hardware.memory.virtualMemory.virtualMax,
-        virtualInUse = systemInfo.hardware.memory.virtualMemory.virtualInUse,
+    override fun storage() = StorageInfoVo(
+        memoryTotal = systemInfo.hardware.memory.total,
+        memoryFree = systemInfo.hardware.memory.available,
+        virtualMemoryMax = systemInfo.hardware.memory.virtualMemory.virtualMax,
+        virtualMemoryInUse = systemInfo.hardware.memory.virtualMemory.virtualInUse,
         swapTotal = systemInfo.hardware.memory.virtualMemory.swapTotal,
         swapUsed = systemInfo.hardware.memory.virtualMemory.swapUsed,
         jvmTotal = runtime.totalMemory(),
-        jvmFree = runtime.freeMemory()
+        jvmFree = runtime.freeMemory(),
+        fileStores = systemInfo.operatingSystem.fileSystem.fileStores.map {
+            FileStoreInfoVo(
+                mount = it.mount,
+                total = it.totalSpace,
+                free = it.freeSpace
+            )
+        }
     )
 }

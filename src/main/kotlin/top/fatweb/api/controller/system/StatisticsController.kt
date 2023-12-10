@@ -27,7 +27,7 @@ class StatisticsController(
     @GetMapping("/cpu")
     fun cpu(): ResponseResult<CpuInfoVo> = ResponseResult.success(data = statisticsService.cpu())
 
-    @Operation(summary = "获取内存信息")
-    @GetMapping("/memory")
-    fun memory(): ResponseResult<MemoryInfoVo> = ResponseResult.success(data = statisticsService.memory())
+    @Operation(summary = "获取存储信息")
+    @GetMapping("/storage")
+    fun storage(): ResponseResult<StorageInfoVo> = ResponseResult.success(data = statisticsService.storage())
 }

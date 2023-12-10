@@ -9,5 +9,5 @@ interface IStatisticsService {
 
     fun cpu(): CpuInfoVo
 
-    fun memory(): MemoryInfoVo
+    fun storage(): StorageInfoVo
 }
