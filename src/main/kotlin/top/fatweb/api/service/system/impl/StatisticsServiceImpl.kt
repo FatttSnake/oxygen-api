@@ -79,44 +79,50 @@ class StatisticsServiceImpl : IStatisticsService {
             ticks[CentralProcessor.TickType.SOFTIRQ.index] - prevTicks[CentralProcessor.TickType.SOFTIRQ.index]
         val steal = ticks[CentralProcessor.TickType.STEAL.index] - prevTicks[CentralProcessor.TickType.STEAL.index]
         val total = user + nice + system + idle + iowait + irq + softirq + steal
-        return CpuInfoVo(user, nice, system, idle, iowait, irq, softirq, steal, total, mutableListOf()).apply {
-            processorPrevTicksList.forEachIndexed { index, processorPrevTicks ->
-                run {
-                    val processorTicks = processorTicksList[index]
-                    val processorUser =
-                        processorTicks[CentralProcessor.TickType.USER.index] - processorPrevTicks[CentralProcessor.TickType.USER.index]
-                    val processorNice =
-                        processorTicks[CentralProcessor.TickType.NICE.index] - processorPrevTicks[CentralProcessor.TickType.NICE.index]
-                    val processorSystem =
-                        processorTicks[CentralProcessor.TickType.SYSTEM.index] - processorPrevTicks[CentralProcessor.TickType.SYSTEM.index]
-                    val processorIdle =
-                        processorTicks[CentralProcessor.TickType.IDLE.index] - processorPrevTicks[CentralProcessor.TickType.IDLE.index]
-                    val processorIowait =
-                        processorTicks[CentralProcessor.TickType.IOWAIT.index] - processorPrevTicks[CentralProcessor.TickType.IOWAIT.index]
-                    val processorIrq =
-                        processorTicks[CentralProcessor.TickType.IRQ.index] - processorPrevTicks[CentralProcessor.TickType.IRQ.index]
-                    val processorSoftirq =
-                        processorTicks[CentralProcessor.TickType.SOFTIRQ.index] - processorPrevTicks[CentralProcessor.TickType.SOFTIRQ.index]
-                    val processorSteal =
-                        processorTicks[CentralProcessor.TickType.STEAL.index] - processorPrevTicks[CentralProcessor.TickType.STEAL.index]
-                    val processorTotal =
-                        processorUser + processorNice + processorSystem + processorIdle + processorIowait + processorIrq + processorSoftirq + processorSteal
-                    processors?.add(
-                        CpuInfoVo(
-                            processorUser,
-                            processorNice,
-                            processorSystem,
-                            processorIdle,
-                            processorIowait,
-                            processorIrq,
-                            processorSoftirq,
-                            processorSteal,
-                            processorTotal
-                        )
-                    )
-                }
-            }
-        }
+        return CpuInfoVo(
+            user,
+            nice,
+            system,
+            idle,
+            iowait,
+            irq,
+            softirq,
+            steal,
+            total,
+            listOf(*processorPrevTicksList.mapIndexed { index, processorPrevTicks ->
+                val processorTicks = processorTicksList[index]
+                val processorUser =
+                    processorTicks[CentralProcessor.TickType.USER.index] - processorPrevTicks[CentralProcessor.TickType.USER.index]
+                val processorNice =
+                    processorTicks[CentralProcessor.TickType.NICE.index] - processorPrevTicks[CentralProcessor.TickType.NICE.index]
+                val processorSystem =
+                    processorTicks[CentralProcessor.TickType.SYSTEM.index] - processorPrevTicks[CentralProcessor.TickType.SYSTEM.index]
+                val processorIdle =
+                    processorTicks[CentralProcessor.TickType.IDLE.index] - processorPrevTicks[CentralProcessor.TickType.IDLE.index]
+                val processorIowait =
+                    processorTicks[CentralProcessor.TickType.IOWAIT.index] - processorPrevTicks[CentralProcessor.TickType.IOWAIT.index]
+                val processorIrq =
+                    processorTicks[CentralProcessor.TickType.IRQ.index] - processorPrevTicks[CentralProcessor.TickType.IRQ.index]
+                val processorSoftirq =
+                    processorTicks[CentralProcessor.TickType.SOFTIRQ.index] - processorPrevTicks[CentralProcessor.TickType.SOFTIRQ.index]
+                val processorSteal =
+                    processorTicks[CentralProcessor.TickType.STEAL.index] - processorPrevTicks[CentralProcessor.TickType.STEAL.index]
+                val processorTotal =
+                    processorUser + processorNice + processorSystem + processorIdle + processorIowait + processorIrq + processorSoftirq + processorSteal
+                CpuInfoVo(
+                    processorUser,
+                    processorNice,
+                    processorSystem,
+                    processorIdle,
+                    processorIowait,
+                    processorIrq,
+                    processorSoftirq,
+                    processorSteal,
+                    processorTotal
+                )
+
+            }.toTypedArray())
+        )
     }
 
     override fun storage() = StorageInfoVo(

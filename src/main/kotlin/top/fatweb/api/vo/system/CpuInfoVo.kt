@@ -101,7 +101,6 @@ data class CpuInfoVo(
      * @since 1.0.0
      */
     val total: Long,
-    val processors: MutableList<CpuInfoVo>? = null
 
     /**
      * List of CPU processors information
@@ -109,4 +108,5 @@ data class CpuInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    val processors: List<CpuInfoVo>? = null
 )
