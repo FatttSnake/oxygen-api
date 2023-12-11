@@ -12,6 +12,12 @@ import java.time.ZoneOffset
 import java.util.*
 import java.util.concurrent.TimeUnit
 
+/**
+ * Statistics service implement
+ *
+ * @author FatttSnake, fatttsnake@gmail.com
+ * @since 1.0.0
+ */
 @Service
 class StatisticsServiceImpl : IStatisticsService {
     private val systemProperties: Properties = System.getProperties()
