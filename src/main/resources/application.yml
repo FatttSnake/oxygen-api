@@ -7,8 +7,19 @@ spring:
   profiles:
     active: config
   datasource:
-    type: com.zaxxer.hikari.HikariDataSource
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    dynamic:
+      primary: master
+      strict: false
+      datasource:
+        master:
+          type: com.zaxxer.hikari.HikariDataSource
+          driver-class-name: com.mysql.cj.jdbc.Driver
+        local:
+          type: com.zaxxer.hikari.HikariDataSource
+          driver-class-name: org.sqlite.JDBC
+          url: jdbc:sqlite::resource:db/sqlite.db
+
+
   jackson:
     date-format: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
     time-zone: GMT
