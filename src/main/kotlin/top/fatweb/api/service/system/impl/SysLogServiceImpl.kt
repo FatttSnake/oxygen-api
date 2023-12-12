@@ -2,10 +2,12 @@ package top.fatweb.api.service.system.impl
 
 import com.baomidou.dynamic.datasource.annotation.DS
 import com.baomidou.mybatisplus.core.metadata.OrderItem
+import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
 import org.springframework.stereotype.Service
 import top.fatweb.api.converter.system.SysLogConverter
+import top.fatweb.api.entity.permission.User
 import top.fatweb.api.entity.system.SysLog
 import top.fatweb.api.mapper.system.SysLogMapper
 import top.fatweb.api.param.system.SysLogGetParam
@@ -46,6 +48,14 @@ class SysLogServiceImpl(
         sysLogIPage.records.forEach {
             it.operateUsername =
                 it.operateUserId?.let { it1 -> userService.getOne(it1)?.username }
+        }
+        val userIds = sysLogIPage.records.map { it.operateUserId }
+        userService.list(KtQueryWrapper(User()).select(User::id, User::username).`in`(User::id, userIds)).forEach { user ->
+            sysLogIPage.records.forEach {
+                if (it.operateUserId == user.id) {
+                    it.operateUsername = user.username
+                }
+            }
         }
 
         return SysLogConverter.sysLogPageToSysLogPageVo(sysLogIPage)
