@@ -23,7 +23,6 @@ interface SysLogMapper : BaseMapper<SysLog> {
      * @param logType List of log types
      * @param requestMethod List of request methods
      * @param searchRequestUrl Request URL to search for
-     * @param searchRegex Use regex
      * @param searchStartTime Start time to search for
      * @param searchEndTime end time to search for
      * @return System log in page
@@ -38,7 +37,6 @@ interface SysLogMapper : BaseMapper<SysLog> {
         logType: List<String>?,
         requestMethod: List<String>?,
         searchRequestUrl: String?,
-        searchRegex: Boolean,
         searchStartTime: LocalDateTime?,
         searchEndTime: LocalDateTime?
     ): IPage<SysLog>

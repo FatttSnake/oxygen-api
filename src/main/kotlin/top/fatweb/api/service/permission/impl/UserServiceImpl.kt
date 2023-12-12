@@ -1,5 +1,6 @@
 package top.fatweb.api.service.permission.impl
 
+import com.baomidou.dynamic.datasource.annotation.DS
 import com.baomidou.mybatisplus.core.metadata.OrderItem
 import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper
 import com.baomidou.mybatisplus.extension.kotlin.KtUpdateWrapper
@@ -47,6 +48,7 @@ import java.time.ZoneOffset
  * @see User
  * @see IUserService
  */
+@DS("master")
 @Service
 class UserServiceImpl(
     private val passwordEncoder: PasswordEncoder,

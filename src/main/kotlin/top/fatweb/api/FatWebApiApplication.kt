@@ -34,6 +34,26 @@ fun main(args: Array<String>) {
         }
     }
 
+    if (!File("data/db").isDirectory) {
+        if (!File("data/db").mkdir()) {
+            logger.error("Can not create directory 'data/db', please try again later.")
+            return
+        }
+    }
+
+    if (!File("data/db/sqlite.db").isFile || File("data/db/sqlite.db").inputStream()
+            .use { it.readNBytes(15).toString(Charsets.UTF_8) != "SQLite format 3" }
+    ) {
+        logger.warn("The 'data/db/sqlite.db' database is lost or damaged, recreating...")
+        if (File("data/db/sqlite.db").exists() && !File("data/db/sqlite.db").delete()) {
+            logger.error("Can not recreate database 'data/db/sqlite.db', please try again later.")
+        }
+
+        FatWebApiApplication::class.java.getResourceAsStream("/db/sqlite.db")?.let {
+            File("data/db/sqlite.db").writeBytes(it.readAllBytes())
+        }
+    }
+
     if (File("application-config.yml").exists() || File("data/application-config.yml").exists()) {
         runApplication<FatWebApiApplication>(*args)
     } else {

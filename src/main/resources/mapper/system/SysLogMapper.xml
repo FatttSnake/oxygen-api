@@ -16,10 +16,8 @@
         t_sys_log.start_time as sys_log_start_time,
         t_sys_log.end_time as sys_log_end_time,
         t_sys_log.execute_time as sys_log_execute_time,
-        t_sys_log.user_agent as sys_log_user_agent,
-        t_user.username as sys_log_operate_username
+        t_sys_log.user_agent as sys_log_user_agent
         from t_sys_log
-        left join t_user on t_user.id = t_sys_log.operate_user_id
         <where>
             <foreach collection="logType" item="item" index="index" open="and t_sys_log.log_type in (" separator=","
                      close=")" nullable="true">
@@ -30,17 +28,9 @@
                 #{item}
             </foreach>
             <if test="searchRequestUrl != null">
-                <choose>
-                    <when test="searchRegex == true">
-                        and concat_ws('?', concat(t_sys_log.request_server_address, t_sys_log.request_uri),
-                        if(length(t_sys_log.request_params) != 0, t_sys_log.request_params, null)) regexp #{searchRequestUrl}
-                    </when>
-                    <otherwise>
-                        and concat_ws('?', concat(t_sys_log.request_server_address, t_sys_log.request_uri),
-                        if(length(t_sys_log.request_params) != 0, t_sys_log.request_params, null)) like concat('%',
-                        #{searchRequestUrl}, '%')
-                    </otherwise>
-                </choose>
+                and t_sys_log.request_server_address || t_sys_log.request_uri ||
+                case when length(t_sys_log.request_params) != 0 then '?' || t_sys_log.request_params else '' end like
+                '%'||'mail'||'%'
             </if>
             <if test="searchStartTime != null and searchEndTime != null">
                 and t_sys_log.start_time between #{searchStartTime} and #{searchEndTime}
@@ -64,7 +54,5 @@
         <result property="endTime" column="sys_log_end_time"/>
         <result property="executeTime" column="sys_log_execute_time"/>
         <result property="userAgent" column="sys_log_user_agent"/>
-        <result property="operateUsername" column="sys_log_operate_username"/>
     </resultMap>
-
 </mapper>

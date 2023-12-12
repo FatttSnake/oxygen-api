@@ -1,9 +1,10 @@
 package top.fatweb.api.service.system
 
-import com.baomidou.mybatisplus.core.metadata.IPage
 import com.baomidou.mybatisplus.extension.service.IService
 import top.fatweb.api.entity.system.SysLog
 import top.fatweb.api.param.system.SysLogGetParam
+import top.fatweb.api.vo.PageVo
+import top.fatweb.api.vo.system.SysLogVo
 
 /**
  * System log service interface
@@ -22,8 +23,8 @@ interface ISysLogService : IService<SysLog> {
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see SysLogGetParam
-     * @see IPage
-     * @see SysLog
+     * @see PageVo
+     * @see SysLogVo
      */
-    fun getPage(sysLogGetParam: SysLogGetParam?): IPage<SysLog>
+    fun getPage(sysLogGetParam: SysLogGetParam?): PageVo<SysLogVo>
 }

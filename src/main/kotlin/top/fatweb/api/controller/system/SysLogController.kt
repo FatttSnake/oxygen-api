@@ -7,7 +7,6 @@ import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import top.fatweb.api.converter.system.SysLogConverter
 import top.fatweb.api.entity.common.ResponseCode
 import top.fatweb.api.entity.common.ResponseResult
 import top.fatweb.api.param.system.SysLogGetParam
@@ -44,9 +43,7 @@ class SysLogController(
     @PreAuthorize("hasAnyAuthority('system:log:query:all')")
     fun get(@Valid sysLogGetParam: SysLogGetParam?): ResponseResult<PageVo<SysLogVo>> {
         return ResponseResult.success(
-            ResponseCode.DATABASE_SELECT_SUCCESS, data = SysLogConverter.sysLogPageToSysLogPageVo(
-                sysLogService.getPage(sysLogGetParam)
-            )
+            ResponseCode.DATABASE_SELECT_SUCCESS, data = sysLogService.getPage(sysLogGetParam)
         )
     }
 }

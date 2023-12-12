@@ -14,10 +14,10 @@ spring:
         master:
           type: com.zaxxer.hikari.HikariDataSource
           driver-class-name: com.mysql.cj.jdbc.Driver
-        local:
+        sqlite:
           type: com.zaxxer.hikari.HikariDataSource
           driver-class-name: org.sqlite.JDBC
-          url: jdbc:sqlite::resource:db/sqlite.db
+          url: jdbc:sqlite:data/db/sqlite.db?date_string_format=yyyy-MM-dd'T'HH:mm:ss.SSS
 
 
   jackson:
