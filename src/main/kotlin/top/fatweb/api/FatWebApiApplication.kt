@@ -3,6 +3,7 @@ package top.fatweb.api
 import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
+import org.springframework.scheduling.annotation.EnableScheduling
 import org.springframework.transaction.annotation.EnableTransactionManagement
 import java.io.File
 import java.util.*
@@ -15,6 +16,7 @@ import java.util.*
  */
 @SpringBootApplication
 @EnableTransactionManagement
+@EnableScheduling
 class FatWebApiApplication
 
 /**
