@@ -17,16 +17,16 @@ spring:
         sqlite:
           type: com.zaxxer.hikari.HikariDataSource
           driver-class-name: org.sqlite.JDBC
-          url: jdbc:sqlite:data/db/sqlite.db?date_string_format=yyyy-MM-dd'T'HH:mm:ss.SSS
+          url: jdbc:sqlite:data/db/sqlite.db
 
 
   jackson:
     date-format: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
     time-zone: GMT
   flyway:
+    enabled: false
     baseline-on-migrate: true
     baseline-version: 0
-    clean-disabled: false
 
 mybatis-plus:
   global-config:

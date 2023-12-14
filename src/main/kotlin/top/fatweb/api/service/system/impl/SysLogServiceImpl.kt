@@ -49,11 +49,14 @@ class SysLogServiceImpl(
             it.operateUsername =
                 it.operateUserId?.let { it1 -> userService.getOne(it1)?.username }
         }
-        val userIds = sysLogIPage.records.map { it.operateUserId }
-        userService.list(KtQueryWrapper(User()).select(User::id, User::username).`in`(User::id, userIds)).forEach { user ->
-            sysLogIPage.records.forEach {
-                if (it.operateUserId == user.id) {
-                    it.operateUsername = user.username
+        if (sysLogIPage.records.isNotEmpty()) {
+            val userIds = sysLogIPage.records.map { it.operateUserId }
+
+            userService.list(KtQueryWrapper(User()).select(User::id, User::username).`in`(User::id, userIds)).forEach { user ->
+                sysLogIPage.records.forEach {
+                    if (it.operateUserId == user.id) {
+                        it.operateUsername = user.username
+                    }
                 }
             }
         }
