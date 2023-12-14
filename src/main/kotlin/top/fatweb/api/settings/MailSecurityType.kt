@@ -10,7 +10,7 @@ enum class MailSecurityType(val code: String) {
 
     @JsonCreator
     fun fromCode(code: String): MailSecurityType? {
-        values().forEach {
+        entries.forEach {
             if (it.code == code) {
                 return it
             }

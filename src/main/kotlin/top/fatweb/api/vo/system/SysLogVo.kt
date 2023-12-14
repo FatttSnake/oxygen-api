@@ -3,6 +3,7 @@ package top.fatweb.api.vo.system
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
 import io.swagger.v3.oas.annotations.media.Schema
+import top.fatweb.api.entity.system.SysLog
 import java.time.LocalDateTime
 
 /**
@@ -29,7 +30,7 @@ data class SysLogVo(
      * @since 1.0.0
      */
     @Schema(description = "日志类型")
-    val logType: String?,
+    val logType: SysLog.LogType?,
 
     /**
      * Operate user ID

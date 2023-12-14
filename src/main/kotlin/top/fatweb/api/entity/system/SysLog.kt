@@ -1,9 +1,11 @@
 package top.fatweb.api.entity.system
 
+import com.baomidou.mybatisplus.annotation.EnumValue
 import com.baomidou.mybatisplus.annotation.TableField
 import com.baomidou.mybatisplus.annotation.TableId
 import com.baomidou.mybatisplus.annotation.TableName
 import com.fasterxml.jackson.annotation.JsonFormat
+import com.fasterxml.jackson.annotation.JsonValue
 import java.io.Serializable
 import java.time.LocalDateTime
 
@@ -15,6 +17,18 @@ import java.time.LocalDateTime
  */
 @TableName("t_sys_log")
 class SysLog : Serializable {
+    /**
+     * Log type enum
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    enum class LogType(@field:EnumValue @field:JsonValue val code: String) {
+        INFO("INFO"), ERROR("ERROR"), LOGIN("LOGIN"), LOGOUT("LOGOUT"), REGISTER("REGISTER"), STATISTIC("STATISTIC"), API(
+            "API"
+        )
+    }
+
     /**
      * ID
      *
@@ -29,9 +43,10 @@ class SysLog : Serializable {
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see LogType
      */
     @TableField("log_type")
-    var logType: String? = null
+    var logType: LogType? = null
 
     /**
      * Operate user ID

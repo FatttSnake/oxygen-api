@@ -2,6 +2,7 @@ package top.fatweb.api.interceptor
 
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.core.MethodParameter
 import org.springframework.http.MediaType
 import org.springframework.http.converter.HttpMessageConverter
@@ -32,7 +33,7 @@ import java.util.concurrent.Executor
  */
 @ControllerAdvice
 class SysLogInterceptor(
-    private val customThreadPoolTaskExecutor: Executor, private val sysLogService: ISysLogService
+    @Qualifier("applicationTaskExecutor") private val customThreadPoolTaskExecutor: Executor, private val sysLogService: ISysLogService
 ) : HandlerInterceptor, ResponseBodyAdvice<Any> {
     private val sysLogThreadLocal = ThreadLocal<SysLog>()
     private val resultThreadLocal = ThreadLocal<Any>()
@@ -66,19 +67,19 @@ class SysLogInterceptor(
                 sysLog.apply {
                     logType = requestUri?.let {
                         when {
-                            it.startsWith("/login") -> "LOGIN"
-                            it.startsWith("/logout") -> "LOGOUT"
-                            it.startsWith("/register") -> "REGISTER"
-                            it.startsWith("/system/statistic/") -> "STATISTIC"
-                            it.startsWith("/api/") -> "API"
-                            else -> "INFO"
+                            it.startsWith("/login") -> SysLog.LogType.LOGIN
+                            it.startsWith("/logout") -> SysLog.LogType.LOGOUT
+                            it.startsWith("/register") -> SysLog.LogType.REGISTER
+                            it.startsWith("/system/statistic/") -> SysLog.LogType.STATISTIC
+                            it.startsWith("/api/") -> SysLog.LogType.API
+                            else -> SysLog.LogType.INFO
                         }
-                    } ?: "INFO"
+                    } ?: SysLog.LogType.INFO
                     exception = 0
                 }
             } else {
                 sysLog.apply {
-                    logType = "ERROR"
+                    logType = SysLog.LogType.ERROR
                     exception = 1
                     exceptionInfo = result.msg
                 }
