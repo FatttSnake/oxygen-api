@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service
 import oshi.SystemInfo
 import oshi.hardware.CentralProcessor
 import top.fatweb.api.properties.ServerProperties
-import top.fatweb.api.service.system.IStatisticsService
+import top.fatweb.api.service.system.IStatisticService
 import top.fatweb.api.util.ByteUtil
 import top.fatweb.api.vo.system.*
 import java.time.LocalDateTime
@@ -13,13 +13,13 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 /**
- * Statistics service implement
+ * Statistic service implement
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Service
-class StatisticsServiceImpl : IStatisticsService {
+class StatisticServiceImpl : IStatisticService {
     private val systemProperties: Properties = System.getProperties()
     private val systemInfo: SystemInfo = SystemInfo()
     private val runtime: Runtime = Runtime.getRuntime()

@@ -3,12 +3,12 @@ package top.fatweb.api.service.system
 import top.fatweb.api.vo.system.*
 
 /**
- * Statistics service interface
+ * Statistic service interface
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-interface IStatisticsService {
+interface IStatisticService {
     /**
      * Get software information
      *
