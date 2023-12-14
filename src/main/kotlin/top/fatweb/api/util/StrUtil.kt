@@ -1,7 +1,6 @@
 package top.fatweb.api.util
 
 import java.security.MessageDigest
-import java.util.regex.Pattern
 
 /**
  * String util
@@ -10,7 +9,7 @@ import java.util.regex.Pattern
  * @since 1.0.0
  */
 object StrUtil {
-    
+
     /**
      * Convert CamelCase string to underscore-delimited string
      *
@@ -22,16 +21,7 @@ object StrUtil {
     fun upperToUnderLetter(str: String?): String {
         str ?: let { return "" }
 
-        val matcher = Pattern.compile("([A-Z])").matcher(str)
-        val stringBuilder = StringBuilder()
-
-        while (matcher.find()) {
-            matcher.appendReplacement(stringBuilder, "_" + matcher.group().lowercase())
-        }
-
-        matcher.appendTail(stringBuilder)
-
-        return stringBuilder.toString()
+        return Regex("[A-Z]").replace(str) { matchResult -> "_${matchResult.value.lowercase()}" }
     }
 
     /**
@@ -45,16 +35,7 @@ object StrUtil {
     fun underToUpperLetter(str: String?): String {
         str ?: let { return "" }
 
-        val matcher = Pattern.compile("(_)([a-z])").matcher(str)
-        val stringBuilder = StringBuilder()
-
-        while (matcher.find()) {
-            matcher.appendReplacement(stringBuilder, matcher.group().replace("_", "").uppercase())
-        }
-
-        matcher.appendTail(stringBuilder)
-
-        return stringBuilder.toString()
+        return Regex("_[a-z]").replace(str) { matchResult -> matchResult.value.removePrefix("_").uppercase() }
     }
 
     /**
@@ -65,7 +46,7 @@ object StrUtil {
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-     fun getRandomPassword(length: Int): String {
+    fun getRandomPassword(length: Int): String {
         val characterSet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
         val password = StringBuilder()
 
@@ -92,7 +73,7 @@ object StrUtil {
             if (b < 0x10) {
                 str = "0$str"
             }
-            hex.append(str.substring(str.length -2))
+            hex.append(str.substring(str.length - 2))
         }
         return hex.toString()
     }

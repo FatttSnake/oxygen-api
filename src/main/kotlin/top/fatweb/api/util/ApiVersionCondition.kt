@@ -2,7 +2,6 @@ package top.fatweb.api.util
 
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.web.servlet.mvc.condition.RequestCondition
-import java.util.regex.Pattern
 
 /**
  * Api version condition
@@ -11,15 +10,13 @@ import java.util.regex.Pattern
  * @since 1.0.0
  */
 class ApiVersionCondition(private val apiVersion: Int) : RequestCondition<ApiVersionCondition> {
-    private val versionPrefixPattern: Pattern = Pattern.compile(".*v(\\d+).*")
+    private val versionPrefixRegex = Regex(".*v(\\d+).*")
 
     override fun combine(other: ApiVersionCondition): ApiVersionCondition = ApiVersionCondition(other.apiVersion)
 
     override fun getMatchingCondition(request: HttpServletRequest): ApiVersionCondition? {
-        val matcher = versionPrefixPattern.matcher(request.requestURI)
-        if (matcher.find()) {
-            val version = matcher.group(1).toInt()
-            if (version >= this.apiVersion) {
+        versionPrefixRegex.matchAt(request.requestURI, 0)?.let {
+            if (it.groupValues[1].toInt() >= this.apiVersion) {
                 return this
             }
         }
