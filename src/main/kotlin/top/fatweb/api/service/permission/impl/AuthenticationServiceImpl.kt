@@ -70,7 +70,11 @@ class AuthenticationServiceImpl(
         return LoginVo(jwt, loginUser.user.currentLoginTime, loginUser.user.currentLoginIp)
     }
 
-    override fun logout(token: String): Boolean = redisUtil.delObject("${SecurityProperties.jwtIssuer}_login:" + token)
+    override fun logout(token: String): Boolean {
+        val loginUser = WebUtil.getLoginUser() ?: let { throw TokenHasExpiredException() }
+
+        return redisUtil.delObject("${SecurityProperties.jwtIssuer}_login_${loginUser.user.id}:" + token)
+    }
 
     override fun renewToken(token: String): TokenVo {
         val loginUser = WebUtil.getLoginUser() ?: let { throw TokenHasExpiredException() }
