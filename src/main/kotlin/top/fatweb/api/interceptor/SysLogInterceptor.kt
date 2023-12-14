@@ -66,7 +66,11 @@ class SysLogInterceptor(
                 sysLog.apply {
                     logType = requestUri?.let {
                         when {
-                            it.startsWith("/system/statistics/") -> "STATISTICS"
+                            it.startsWith("/login") -> "LOGIN"
+                            it.startsWith("/logout") -> "LOGOUT"
+                            it.startsWith("/register") -> "REGISTER"
+                            it.startsWith("/system/statistic/") -> "STATISTIC"
+                            it.startsWith("/api/") -> "API"
                             else -> "INFO"
                         }
                     } ?: "INFO"
