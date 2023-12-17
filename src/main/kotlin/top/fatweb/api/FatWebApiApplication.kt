@@ -55,7 +55,7 @@ fun main(args: Array<String>) {
     if (File("application-config.yml").exists() || File("data/application-config.yml").exists()) {
         runApplication<FatWebApiApplication>(*args)
     } else {
-        logger.warn("File 'application.yml' cannot be found in data path. The configuration file template 'application.example.yml' has been created in directory 'data'. Please change the configuration file content, rename it to 'application.yml', and then restart the server.")
+        logger.warn("File 'application-config.yml' cannot be found in the running path or the data path. The configuration file template 'application-config.example.yml' has been created in directory 'data'. Please change the configuration file content, move it to the running path, rename it to 'application-config.yml', and then restart the server.")
         FatWebApiApplication::class.java.getResource("/application-config-template.yml")?.readText()?.let {
             File("data/application-config.example.yml").writeText(
                 it.replace(

@@ -15,7 +15,7 @@ import kotlin.reflect.KMutableProperty1
  * @since 1.0.0
  */
 object SettingsOperator {
-    private const val SETTINGS_FILE_NAME = "data/config/settings.yaml"
+    private const val SETTINGS_FILE_NAME = "data/config/settings.yml"
 
     private val yamlMapper = YAMLMapper()
     private val settingFile = File(SETTINGS_FILE_NAME)
