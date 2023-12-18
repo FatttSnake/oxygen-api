@@ -7,8 +7,10 @@ import org.slf4j.LoggerFactory
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.stereotype.Service
+import top.fatweb.api.annotation.EventLogRecord
 import top.fatweb.api.entity.permission.LoginUser
 import top.fatweb.api.entity.permission.User
+import top.fatweb.api.entity.system.EventLog
 import top.fatweb.api.exception.TokenHasExpiredException
 import top.fatweb.api.properties.SecurityProperties
 import top.fatweb.api.service.permission.IAuthenticationService
@@ -39,6 +41,7 @@ class AuthenticationServiceImpl(
 ) : IAuthenticationService {
     private val logger: Logger = LoggerFactory.getLogger(this::class.java)
 
+    @EventLogRecord(EventLog.Event.LOGIN)
     override fun login(request: HttpServletRequest, user: User): LoginVo {
         val usernamePasswordAuthenticationToken = UsernamePasswordAuthenticationToken(user.username, user.password)
         val authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken)
@@ -70,6 +73,7 @@ class AuthenticationServiceImpl(
         return LoginVo(jwt, loginUser.user.currentLoginTime, loginUser.user.currentLoginIp)
     }
 
+    @EventLogRecord(EventLog.Event.LOGOUT)
     override fun logout(token: String): Boolean {
         val loginUser = WebUtil.getLoginUser() ?: let { throw TokenHasExpiredException() }
 
