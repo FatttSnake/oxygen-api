@@ -1,10 +1,10 @@
 package top.fatweb.api.controller.permission
 
 import io.swagger.v3.oas.annotations.Operation
-import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
+import top.fatweb.api.annotation.BaseController
 import top.fatweb.api.entity.common.ResponseCode
 import top.fatweb.api.entity.common.ResponseResult
 import top.fatweb.api.exception.NoRecordFoundException
@@ -22,9 +22,7 @@ import top.fatweb.api.vo.permission.UserWithRoleInfoVo
  * @since 1.0.0
  * @see IUserService
  */
-@Tag(name = "用户管理", description = "用户管理相关接口")
-@RequestMapping("/system/user")
-@RestController
+@BaseController(path = ["/system/user"], name = "用户管理", description = "用户管理相关接口")
 class UserController(
     private val userService: IUserService
 ) {

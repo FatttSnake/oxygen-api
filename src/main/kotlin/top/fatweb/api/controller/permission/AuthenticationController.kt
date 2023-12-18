@@ -1,13 +1,12 @@
 package top.fatweb.api.controller.permission
 
 import io.swagger.v3.oas.annotations.Operation
-import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import top.fatweb.api.annotation.BaseController
 import top.fatweb.api.converter.permission.UserConverter
 import top.fatweb.api.entity.common.ResponseCode
 import top.fatweb.api.entity.common.ResponseResult
@@ -24,8 +23,7 @@ import top.fatweb.api.vo.permission.TokenVo
  * @since 1.0.0
  * @see IAuthenticationService
  */
-@Tag(name = "身份认证", description = "身份认证相关接口")
-@RestController
+@BaseController(name = "身份认证", description = "身份认证相关接口")
 class AuthenticationController(
     private val authenticationService: IAuthenticationService
 ) {
@@ -63,10 +61,11 @@ class AuthenticationController(
      */
     @Operation(summary = "登出")
     @PostMapping("/logout")
-    fun logout(request: HttpServletRequest): ResponseResult<Nothing> = when (authenticationService.logout(WebUtil.getToken(request))) {
-        true -> ResponseResult.success(ResponseCode.PERMISSION_LOGOUT_SUCCESS, "Logout success", null)
-        false -> ResponseResult.fail(ResponseCode.PERMISSION_LOGOUT_FAILED, "Logout failed", null)
-    }
+    fun logout(request: HttpServletRequest): ResponseResult<Nothing> =
+        when (authenticationService.logout(WebUtil.getToken(request))) {
+            true -> ResponseResult.success(ResponseCode.PERMISSION_LOGOUT_SUCCESS, "Logout success", null)
+            false -> ResponseResult.fail(ResponseCode.PERMISSION_LOGOUT_FAILED, "Logout failed", null)
+        }
 
     /**
      * Renew token

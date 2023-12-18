@@ -1,13 +1,14 @@
 package top.fatweb.api.controller.system
 
 import io.swagger.v3.oas.annotations.Operation
-import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import top.fatweb.api.annotation.BaseController
 import top.fatweb.api.entity.common.ResponseResult
 import top.fatweb.api.service.system.IStatisticService
-import top.fatweb.api.vo.system.*
+import top.fatweb.api.vo.system.CpuInfoVo
+import top.fatweb.api.vo.system.HardwareInfoVo
+import top.fatweb.api.vo.system.SoftwareInfoVo
+import top.fatweb.api.vo.system.StorageInfoVo
 
 /**
  * Statistic controller
@@ -16,9 +17,7 @@ import top.fatweb.api.vo.system.*
  * @since 1.0.0
  * @see IStatisticService
  */
-@Tag(name = "统计接口", description = "系统信息统计相关接口")
-@RequestMapping("/system/statistic")
-@RestController
+@BaseController(path = ["/system/statistic"], name = "统计接口", description = "系统信息统计相关接口")
 class StatisticController(
     private val statisticService: IStatisticService
 ) {

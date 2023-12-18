@@ -1,11 +1,9 @@
 package top.fatweb.api.controller.permission
 
 import io.swagger.v3.oas.annotations.Operation
-import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import top.fatweb.api.annotation.BaseController
 import top.fatweb.api.entity.common.ResponseResult
 import top.fatweb.api.service.permission.IPowerService
 import top.fatweb.api.vo.permission.PowerSetVo
@@ -17,9 +15,7 @@ import top.fatweb.api.vo.permission.PowerSetVo
  * @since 1.0.0
  * @see IPowerService
  */
-@Tag(name = "权限管理", description = "权限管理相关接口")
-@RequestMapping("/system/power")
-@RestController
+@BaseController(path = ["/system/power"], name = "权限管理", description = "权限管理相关接口")
 class PowerController(
     private val powerService: IPowerService
 ) {

@@ -1,9 +1,8 @@
 package top.fatweb.api.controller
 
-import io.swagger.v3.oas.annotations.Hidden
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import top.fatweb.api.annotation.HiddenController
 
 /**
  * Exception controller
@@ -11,9 +10,7 @@ import org.springframework.web.bind.annotation.RestController
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-@Hidden
-@RestController
-@RequestMapping("/error")
+@HiddenController(["/error"])
 class ExceptionController {
     @RequestMapping("/thrown")
     fun thrown(request: HttpServletRequest) {

@@ -1,9 +1,8 @@
 package top.fatweb.api.util
 
-import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.servlet.mvc.condition.RequestCondition
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping
-import top.fatweb.api.annotation.ApiVersion
+import top.fatweb.api.annotation.ApiController
 import java.lang.reflect.Method
 
 /**
@@ -13,22 +12,12 @@ import java.lang.reflect.Method
  * @since 1.0.0
  */
 class ApiResponseMappingHandlerMapping : RequestMappingHandlerMapping() {
-    private val versionFlag = "{apiVersion}"
 
     private fun createCondition(clazz: Class<*>): RequestCondition<ApiVersionCondition>? {
-        val classRequestMapping = clazz.getAnnotation(RequestMapping::class.java)
-        classRequestMapping ?: let { return null }
-        val mappingUrlBuilder = StringBuilder()
-        if (classRequestMapping.value.isNotEmpty()) {
-            mappingUrlBuilder.append(classRequestMapping.value[0])
-        }
-        val mappingUrl = mappingUrlBuilder.toString()
-        if (!mappingUrl.contains(versionFlag)) {
-            return null
-        }
-        val apiVersion = clazz.getAnnotation(ApiVersion::class.java)
+        val apiController = clazz.getAnnotation(ApiController::class.java)
+        apiController ?: let { return null }
 
-        return if (apiVersion == null) ApiVersionCondition(1) else ApiVersionCondition(apiVersion.version)
+        return ApiVersionCondition(apiController.version)
     }
 
     override fun getCustomMethodCondition(method: Method): RequestCondition<*>? = createCondition(method.javaClass)

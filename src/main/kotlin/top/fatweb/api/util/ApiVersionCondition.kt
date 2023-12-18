@@ -10,7 +10,7 @@ import org.springframework.web.servlet.mvc.condition.RequestCondition
  * @since 1.0.0
  */
 class ApiVersionCondition(private val apiVersion: Int) : RequestCondition<ApiVersionCondition> {
-    private val versionPrefixRegex = Regex(".*v(\\d+).*")
+    private val versionPrefixRegex = Regex("/api/v(\\d+)/.*")
 
     override fun combine(other: ApiVersionCondition): ApiVersionCondition = ApiVersionCondition(other.apiVersion)
 

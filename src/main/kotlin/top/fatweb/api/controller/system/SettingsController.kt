@@ -1,10 +1,13 @@
 package top.fatweb.api.controller.system
 
 import io.swagger.v3.oas.annotations.Operation
-import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
+import org.springframework.web.bind.annotation.RequestBody
+import top.fatweb.api.annotation.BaseController
 import top.fatweb.api.entity.common.ResponseResult
 import top.fatweb.api.param.system.MailSendParam
 import top.fatweb.api.param.system.MailSettingsParam
@@ -18,9 +21,7 @@ import top.fatweb.api.vo.system.MailSettingsVo
  * @since 1.0.0
  * @see ISettingsService
  */
-@Tag(name = "系统设置", description = "系统设置相关接口")
-@RequestMapping("/system/settings")
-@RestController
+@BaseController(path = ["/system/settings"], name = "系统设置", description = "系统设置相关接口")
 class SettingsController(
     private val settingsService: ISettingsService
 ) {
