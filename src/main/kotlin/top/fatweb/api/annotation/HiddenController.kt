@@ -5,6 +5,15 @@ import org.springframework.core.annotation.AliasFor
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
+/**
+ * Hidden controller annotation
+ *
+ * @author FatttSnake, fatttsnake@gmail.com
+ * @since 1.0.0
+ * @see Hidden
+ * @see RequestMapping
+ * @see RestController
+ */
 @Hidden
 @RequestMapping
 @RestController

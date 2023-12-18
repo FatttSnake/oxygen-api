@@ -6,7 +6,7 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 import top.fatweb.api.util.ApiResponseMappingHandlerMapping
 
 /**
- * Web MVC configuration
+ * Web MVC registrations configuration
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0

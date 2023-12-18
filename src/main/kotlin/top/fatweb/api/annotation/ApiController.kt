@@ -5,6 +5,15 @@ import org.springframework.core.annotation.AliasFor
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
+/**
+ * API controller annotation
+ *
+ * @author FatttSnake, fatttsnake@gmail.com
+ * @since 1.0.0
+ * @see Tag
+ * @see RequestMapping
+ * @see RestController
+ */
 @Tag(name = "")
 @RequestMapping
 @RestController

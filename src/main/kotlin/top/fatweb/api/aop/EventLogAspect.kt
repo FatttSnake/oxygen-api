@@ -13,6 +13,12 @@ import top.fatweb.api.entity.system.EventLog
 import top.fatweb.api.service.system.IEventLogService
 import top.fatweb.api.util.WebUtil
 
+/**
+ * Event log record aspect
+ *
+ * @author FatttSnake, fatttsnake@gmail.com
+ * @since 1.0.0
+ */
 @Aspect
 @Component
 class EventLogAspect(
