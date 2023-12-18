@@ -48,4 +48,12 @@ interface IStatisticService {
      * @see StorageInfoVo
      */
     fun storage(): StorageInfoVo
+    
+    /**
+     * Get the number of online users information
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    fun online(): OnlineInfoVo
 }

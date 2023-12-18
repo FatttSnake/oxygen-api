@@ -1,11 +1,16 @@
 package top.fatweb.api.service.system.impl
 
+import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper
 import org.springframework.stereotype.Service
 import oshi.SystemInfo
 import oshi.hardware.CentralProcessor
+import top.fatweb.api.entity.system.StatisticLog
+import top.fatweb.api.properties.SecurityProperties
 import top.fatweb.api.properties.ServerProperties
+import top.fatweb.api.service.system.IStatisticLogService
 import top.fatweb.api.service.system.IStatisticService
 import top.fatweb.api.util.ByteUtil
+import top.fatweb.api.util.RedisUtil
 import top.fatweb.api.vo.system.*
 import java.time.LocalDateTime
 import java.time.ZoneOffset
@@ -19,7 +24,10 @@ import java.util.concurrent.TimeUnit
  * @since 1.0.0
  */
 @Service
-class StatisticServiceImpl : IStatisticService {
+class StatisticServiceImpl(
+    private val redisUtil: RedisUtil,
+    private val statisticLogService: IStatisticLogService
+) : IStatisticService {
     private val systemProperties: Properties = System.getProperties()
     private val systemInfo: SystemInfo = SystemInfo()
     private val runtime: Runtime = Runtime.getRuntime()
@@ -142,4 +150,23 @@ class StatisticServiceImpl : IStatisticService {
             )
         }
     )
+
+    override fun online(): OnlineInfoVo {
+        val history: List<OnlineInfoVo.HistoryVo> = statisticLogService.list(
+            KtQueryWrapper(StatisticLog())
+                .select(StatisticLog::value, StatisticLog::recordTime)
+                .eq(StatisticLog::key, StatisticLog.KeyItem.ONLINE_USERS_COUNT)
+        ).map {
+            OnlineInfoVo.HistoryVo(
+                time = it.recordTime!!,
+                record = it.value!!
+            )
+        }
+
+        return OnlineInfoVo(
+            current = redisUtil.keys("${SecurityProperties.jwtIssuer}_login_*")
+                .distinctBy { Regex("FatWeb_login_(.*):.*").matchEntire(it)?.groupValues?.getOrNull(1) }.size.toLong(),
+            history = history
+        )
+    }
 }

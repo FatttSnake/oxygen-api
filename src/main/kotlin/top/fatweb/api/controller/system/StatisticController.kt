@@ -5,10 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import top.fatweb.api.annotation.BaseController
 import top.fatweb.api.entity.common.ResponseResult
 import top.fatweb.api.service.system.IStatisticService
-import top.fatweb.api.vo.system.CpuInfoVo
-import top.fatweb.api.vo.system.HardwareInfoVo
-import top.fatweb.api.vo.system.SoftwareInfoVo
-import top.fatweb.api.vo.system.StorageInfoVo
+import top.fatweb.api.vo.system.*
 
 /**
  * Statistic controller
@@ -72,4 +69,14 @@ class StatisticController(
     @Operation(summary = "获取存储信息")
     @GetMapping("/storage")
     fun storage(): ResponseResult<StorageInfoVo> = ResponseResult.success(data = statisticService.storage())
+
+    /**
+     * Get the number of online users information
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @Operation(summary = "获取在线用户数量信息")
+    @GetMapping("/online")
+    fun online(): ResponseResult<OnlineInfoVo> = ResponseResult.success(data = statisticService.online())
 }
