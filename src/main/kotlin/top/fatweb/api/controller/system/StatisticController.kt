@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation
 import org.springframework.web.bind.annotation.GetMapping
 import top.fatweb.api.annotation.BaseController
 import top.fatweb.api.entity.common.ResponseResult
+import top.fatweb.api.param.system.OnlineInfoGetParam
 import top.fatweb.api.service.system.IStatisticService
 import top.fatweb.api.vo.system.*
 
@@ -78,5 +79,6 @@ class StatisticController(
      */
     @Operation(summary = "获取在线用户数量信息")
     @GetMapping("/online")
-    fun online(): ResponseResult<OnlineInfoVo> = ResponseResult.success(data = statisticService.online())
+    fun online(onlineInfoGetParam: OnlineInfoGetParam?): ResponseResult<OnlineInfoVo> =
+        ResponseResult.success(data = statisticService.online(onlineInfoGetParam))
 }

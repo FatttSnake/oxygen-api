@@ -1,5 +1,6 @@
 package top.fatweb.api.service.system
 
+import top.fatweb.api.param.system.OnlineInfoGetParam
 import top.fatweb.api.vo.system.*
 
 /**
@@ -55,5 +56,5 @@ interface IStatisticService {
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    fun online(): OnlineInfoVo
+    fun online(onlineInfoGetParam: OnlineInfoGetParam?): OnlineInfoVo
 }

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service
 import oshi.SystemInfo
 import oshi.hardware.CentralProcessor
 import top.fatweb.api.entity.system.StatisticLog
+import top.fatweb.api.param.system.OnlineInfoGetParam
 import top.fatweb.api.properties.SecurityProperties
 import top.fatweb.api.properties.ServerProperties
 import top.fatweb.api.service.system.IStatisticLogService
@@ -151,11 +152,28 @@ class StatisticServiceImpl(
         }
     )
 
-    override fun online(): OnlineInfoVo {
+    override fun online(onlineInfoGetParam: OnlineInfoGetParam?): OnlineInfoVo {
         val history: List<OnlineInfoVo.HistoryVo> = statisticLogService.list(
             KtQueryWrapper(StatisticLog())
                 .select(StatisticLog::value, StatisticLog::recordTime)
                 .eq(StatisticLog::key, StatisticLog.KeyItem.ONLINE_USERS_COUNT)
+                .between(
+                    onlineInfoGetParam?.scope != OnlineInfoGetParam.Scope.ALL,
+                    StatisticLog::recordTime,
+                    LocalDateTime.now(ZoneOffset.UTC).run {
+                        when (onlineInfoGetParam?.scope) {
+                            OnlineInfoGetParam.Scope.DAY -> minusDays(1)
+                            OnlineInfoGetParam.Scope.MONTH -> minusMonths(1)
+                            OnlineInfoGetParam.Scope.QUARTER -> minusMonths(3)
+                            OnlineInfoGetParam.Scope.YEAR -> minusYears(1)
+                            OnlineInfoGetParam.Scope.TWO_YEARS -> minusYears(2)
+                            OnlineInfoGetParam.Scope.THREE_YEARS -> minusYears(3)
+                            OnlineInfoGetParam.Scope.FIVE_YEARS -> minusYears(5)
+                            else -> minusWeeks(1)
+                        }
+                    },
+                    LocalDateTime.now(ZoneOffset.UTC)
+                )
         ).map {
             OnlineInfoVo.HistoryVo(
                 time = it.recordTime!!,
