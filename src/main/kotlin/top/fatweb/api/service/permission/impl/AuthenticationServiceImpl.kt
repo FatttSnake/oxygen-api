@@ -70,7 +70,7 @@ class AuthenticationServiceImpl(
         val redisKey = "${SecurityProperties.jwtIssuer}_login_${userId}:" + jwt
         redisUtil.setObject(redisKey, loginUser, SecurityProperties.redisTtl, SecurityProperties.redisTtlUnit)
 
-        return LoginVo(jwt, loginUser.user.currentLoginTime, loginUser.user.currentLoginIp)
+        return LoginVo(jwt, loginUser.user.id, loginUser.user.currentLoginTime, loginUser.user.currentLoginIp)
     }
 
     @EventLogRecord(EventLog.Event.LOGOUT)

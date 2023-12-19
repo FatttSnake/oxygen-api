@@ -1,20 +1,26 @@
 package top.fatweb.api.service.system.impl
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper
 import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper
 import org.springframework.stereotype.Service
 import oshi.SystemInfo
 import oshi.hardware.CentralProcessor
+import top.fatweb.api.entity.system.EventLog
 import top.fatweb.api.entity.system.StatisticLog
+import top.fatweb.api.param.system.ActiveInfoGetParam
 import top.fatweb.api.param.system.OnlineInfoGetParam
 import top.fatweb.api.properties.SecurityProperties
 import top.fatweb.api.properties.ServerProperties
+import top.fatweb.api.service.system.IEventLogService
 import top.fatweb.api.service.system.IStatisticLogService
 import top.fatweb.api.service.system.IStatisticService
 import top.fatweb.api.util.ByteUtil
 import top.fatweb.api.util.RedisUtil
 import top.fatweb.api.vo.system.*
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -27,7 +33,8 @@ import java.util.concurrent.TimeUnit
 @Service
 class StatisticServiceImpl(
     private val redisUtil: RedisUtil,
-    private val statisticLogService: IStatisticLogService
+    private val statisticLogService: IStatisticLogService,
+    private val eventLogService: IEventLogService
 ) : IStatisticService {
     private val systemProperties: Properties = System.getProperties()
     private val systemInfo: SystemInfo = SystemInfo()
@@ -171,8 +178,8 @@ class StatisticServiceImpl(
                             OnlineInfoGetParam.Scope.FIVE_YEARS -> minusYears(5)
                             else -> minusWeeks(1)
                         }
-                    },
-                    LocalDateTime.now(ZoneOffset.UTC)
+                    }.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                    LocalDateTime.now(ZoneOffset.UTC).plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
                 )
         ).map {
             OnlineInfoVo.HistoryVo(
@@ -186,5 +193,36 @@ class StatisticServiceImpl(
                 .distinctBy { Regex("FatWeb_login_(.*):.*").matchEntire(it)?.groupValues?.getOrNull(1) }.size.toLong(),
             history = history
         )
+    }
+
+    override fun active(activeInfoGetParam: ActiveInfoGetParam?): ActiveInfoVo {
+        fun getHistory(event: String) = eventLogService.listMaps(
+            QueryWrapper<EventLog?>().select("strftime('%Y-%m-%d', operate_time) time, count(distinct operate_user_id) count")
+                .eq("event", event).groupBy("time").between(
+                    activeInfoGetParam?.scope != ActiveInfoGetParam.Scope.ALL,
+                    "operate_time",
+                    LocalDateTime.now(ZoneOffset.UTC).run {
+                        when (activeInfoGetParam?.scope) {
+                            ActiveInfoGetParam.Scope.MONTH -> minusMonths(1)
+                            ActiveInfoGetParam.Scope.QUARTER -> minusMonths(3)
+                            ActiveInfoGetParam.Scope.YEAR -> minusYears(1)
+                            ActiveInfoGetParam.Scope.TWO_YEARS -> minusYears(2)
+                            ActiveInfoGetParam.Scope.THREE_YEARS -> minusYears(3)
+                            ActiveInfoGetParam.Scope.FIVE_YEARS -> minusYears(5)
+                            else -> minusWeeks(1)
+                        }
+                    }.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")),
+                    LocalDateTime.now(ZoneOffset.UTC).plusDays(1).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+                )
+        ).map {
+            ActiveInfoVo.HistoryVo(
+                LocalDate.parse(
+                    it["time"] as String,
+                    DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                ), it["count"] as Int
+            )
+        }
+
+        return ActiveInfoVo(getHistory("REGISTER"), getHistory("LOGIN"))
     }
 }

@@ -16,6 +16,7 @@ import top.fatweb.api.entity.common.ResponseResult
 import top.fatweb.api.entity.system.SysLog
 import top.fatweb.api.service.system.ISysLogService
 import top.fatweb.api.util.WebUtil
+import top.fatweb.api.vo.permission.LoginVo
 import java.net.URI
 import java.time.LocalDateTime
 import java.time.ZoneOffset
@@ -33,7 +34,8 @@ import java.util.concurrent.Executor
  */
 @ControllerAdvice
 class SysLogInterceptor(
-    @Qualifier("applicationTaskExecutor") private val customThreadPoolTaskExecutor: Executor, private val sysLogService: ISysLogService
+    @Qualifier("applicationTaskExecutor") private val customThreadPoolTaskExecutor: Executor,
+    private val sysLogService: ISysLogService
 ) : HandlerInterceptor, ResponseBodyAdvice<Any> {
     private val sysLogThreadLocal = ThreadLocal<SysLog>()
     private val resultThreadLocal = ThreadLocal<Any>()
@@ -76,6 +78,9 @@ class SysLogInterceptor(
                         }
                     } ?: SysLog.LogType.INFO
                     exception = 0
+                }
+                if (result.data is LoginVo) {
+                    sysLog.operateUserId = result.data.userId ?: -1
                 }
             } else {
                 sysLog.apply {

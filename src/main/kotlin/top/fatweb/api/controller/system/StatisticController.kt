@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation
 import org.springframework.web.bind.annotation.GetMapping
 import top.fatweb.api.annotation.BaseController
 import top.fatweb.api.entity.common.ResponseResult
+import top.fatweb.api.param.system.ActiveInfoGetParam
 import top.fatweb.api.param.system.OnlineInfoGetParam
 import top.fatweb.api.service.system.IStatisticService
 import top.fatweb.api.vo.system.*
@@ -72,7 +73,7 @@ class StatisticController(
     fun storage(): ResponseResult<StorageInfoVo> = ResponseResult.success(data = statisticService.storage())
 
     /**
-     * Get the number of online users information
+     * Get the history of online users information
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
@@ -81,4 +82,15 @@ class StatisticController(
     @GetMapping("/online")
     fun online(onlineInfoGetParam: OnlineInfoGetParam?): ResponseResult<OnlineInfoVo> =
         ResponseResult.success(data = statisticService.online(onlineInfoGetParam))
+
+    /**
+     * Get the history of active information
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @Operation(summary = "获取用户活跃信息")
+    @GetMapping("/active")
+    fun active(activeInfoGetParam: ActiveInfoGetParam): ResponseResult<ActiveInfoVo> =
+        ResponseResult.success(data = statisticService.active(activeInfoGetParam))
 }

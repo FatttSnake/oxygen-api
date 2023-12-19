@@ -1,31 +1,31 @@
 package top.fatweb.api.vo.system
 
-import top.fatweb.api.vo.system.OnlineInfoVo.HistoryVo
-import java.time.LocalDateTime
+import top.fatweb.api.vo.system.ActiveInfoVo.HistoryVo
+import java.time.LocalDate
 
 /**
- * Online information value object
+ * Active information value object
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-data class OnlineInfoVo(
+data class ActiveInfoVo(
     /**
-     * Number of user currently online
+     * Register user number history
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    val current: Long,
+    val registerHistory: List<HistoryVo>,
 
     /**
-     * Online number history
+     * Login user number history
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see HistoryVo
      */
-    val history: List<HistoryVo>
+    val loginHistory: List<HistoryVo>
 ) {
     data class HistoryVo(
         /**
@@ -33,16 +33,16 @@ data class OnlineInfoVo(
          *
          * @author FatttSnake, fatttsnake@gmail.com
          * @since 1.0.0
-         * @see LocalDateTime
+         * @see LocalDate
          */
-        val time: LocalDateTime,
+        val time: LocalDate,
 
         /**
-         * Record
+         * Count
          *
          * @author FatttSnake, fatttsnake@gmail.com
          * @since 1.0.0
          */
-        val record: String
+        val count: Int
     )
 }

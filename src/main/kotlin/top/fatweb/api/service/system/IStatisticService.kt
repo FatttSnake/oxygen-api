@@ -1,5 +1,6 @@
 package top.fatweb.api.service.system
 
+import top.fatweb.api.param.system.ActiveInfoGetParam
 import top.fatweb.api.param.system.OnlineInfoGetParam
 import top.fatweb.api.vo.system.*
 
@@ -51,10 +52,18 @@ interface IStatisticService {
     fun storage(): StorageInfoVo
     
     /**
-     * Get the number of online users information
+     * Get the history of online users information
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
     fun online(onlineInfoGetParam: OnlineInfoGetParam?): OnlineInfoVo
+
+    /**
+     * Get the history of active information
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    fun active(activeInfoGetParam: ActiveInfoGetParam?): ActiveInfoVo
 }

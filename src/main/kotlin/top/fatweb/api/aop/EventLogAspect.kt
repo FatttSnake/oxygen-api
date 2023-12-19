@@ -12,6 +12,7 @@ import top.fatweb.api.annotation.EventLogRecord
 import top.fatweb.api.entity.system.EventLog
 import top.fatweb.api.service.system.IEventLogService
 import top.fatweb.api.util.WebUtil
+import top.fatweb.api.vo.permission.LoginVo
 
 /**
  * Event log record aspect
@@ -27,16 +28,18 @@ class EventLogAspect(
     private val logger: Logger = LoggerFactory.getLogger(this::class.java)
 
     @Pointcut("@annotation(top.fatweb.api.annotation.EventLogRecord)")
-    fun eventLogPointcut() {}
+    fun eventLogPointcut() {
+    }
 
-    @AfterReturning("eventLogPointcut()")
-    fun doAfter(joinPoint: JoinPoint) {
+    @AfterReturning(value = "eventLogPointcut()", returning = "retValue")
+    fun doAfter(joinPoint: JoinPoint, retValue: Any) {
         val annotation = (joinPoint.signature as MethodSignature).method.getAnnotation(EventLogRecord::class.java)
 
         try {
             eventLogService.save(EventLog().apply {
                 this.event = annotation.event
-                operateUserId = WebUtil.getLoginUserId() ?: -1
+                operateUserId = WebUtil.getLoginUserId()
+                    ?: if (retValue is LoginVo) retValue.userId else -1
             })
         } catch (e: Exception) {
             logger.error("Cannot record event!!!", e)
