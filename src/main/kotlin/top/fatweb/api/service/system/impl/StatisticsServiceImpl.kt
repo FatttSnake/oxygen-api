@@ -6,14 +6,14 @@ import org.springframework.stereotype.Service
 import oshi.SystemInfo
 import oshi.hardware.CentralProcessor
 import top.fatweb.api.entity.system.EventLog
-import top.fatweb.api.entity.system.StatisticLog
+import top.fatweb.api.entity.system.StatisticsLog
 import top.fatweb.api.param.system.ActiveInfoGetParam
 import top.fatweb.api.param.system.OnlineInfoGetParam
 import top.fatweb.api.properties.SecurityProperties
 import top.fatweb.api.properties.ServerProperties
 import top.fatweb.api.service.system.IEventLogService
-import top.fatweb.api.service.system.IStatisticLogService
-import top.fatweb.api.service.system.IStatisticService
+import top.fatweb.api.service.system.IStatisticsLogService
+import top.fatweb.api.service.system.IStatisticsService
 import top.fatweb.api.util.ByteUtil
 import top.fatweb.api.util.RedisUtil
 import top.fatweb.api.vo.system.*
@@ -25,17 +25,17 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 /**
- * Statistic service implement
+ * Statistics service implement
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @Service
-class StatisticServiceImpl(
+class StatisticsServiceImpl(
     private val redisUtil: RedisUtil,
-    private val statisticLogService: IStatisticLogService,
+    private val statisticsLogService: IStatisticsLogService,
     private val eventLogService: IEventLogService
-) : IStatisticService {
+) : IStatisticsService {
     private val systemProperties: Properties = System.getProperties()
     private val systemInfo: SystemInfo = SystemInfo()
     private val runtime: Runtime = Runtime.getRuntime()
@@ -160,13 +160,13 @@ class StatisticServiceImpl(
     )
 
     override fun online(onlineInfoGetParam: OnlineInfoGetParam?): OnlineInfoVo {
-        val history: List<OnlineInfoVo.HistoryVo> = statisticLogService.list(
-            KtQueryWrapper(StatisticLog())
-                .select(StatisticLog::value, StatisticLog::recordTime)
-                .eq(StatisticLog::key, StatisticLog.KeyItem.ONLINE_USERS_COUNT)
+        val history: List<OnlineInfoVo.HistoryVo> = statisticsLogService.list(
+            KtQueryWrapper(StatisticsLog())
+                .select(StatisticsLog::value, StatisticsLog::recordTime)
+                .eq(StatisticsLog::key, StatisticsLog.KeyItem.ONLINE_USERS_COUNT)
                 .between(
                     onlineInfoGetParam?.scope != OnlineInfoGetParam.Scope.ALL,
-                    StatisticLog::recordTime,
+                    StatisticsLog::recordTime,
                     LocalDateTime.now(ZoneOffset.UTC).run {
                         when (onlineInfoGetParam?.scope) {
                             OnlineInfoGetParam.Scope.DAY -> minusDays(1)

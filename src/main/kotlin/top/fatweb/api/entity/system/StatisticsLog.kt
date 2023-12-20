@@ -10,13 +10,13 @@ import java.io.Serializable
 import java.time.LocalDateTime
 
 /**
- * Statistic log entity
+ * Statistics log entity
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-@TableName("t_statistic_log")
-class StatisticLog : Serializable {
+@TableName("t_statistics_log")
+class StatisticsLog : Serializable {
     enum class KeyItem(@field:EnumValue @field:JsonValue val code: String) {
         ONLINE_USERS_COUNT("ONLINE_USER_COUNT")
     }
@@ -59,6 +59,6 @@ class StatisticLog : Serializable {
     var recordTime: LocalDateTime?= null
 
     override fun toString(): String {
-        return "StatisticLog(id=$id, key=$key, value=$value, recordTime=$recordTime)"
+        return "StatisticsLog(id=$id, key=$key, value=$value, recordTime=$recordTime)"
     }
 }

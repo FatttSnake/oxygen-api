@@ -5,12 +5,12 @@ import top.fatweb.api.param.system.OnlineInfoGetParam
 import top.fatweb.api.vo.system.*
 
 /**
- * Statistic service interface
+ * Statistics service interface
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-interface IStatisticService {
+interface IStatisticsService {
     /**
      * Get software information
      *

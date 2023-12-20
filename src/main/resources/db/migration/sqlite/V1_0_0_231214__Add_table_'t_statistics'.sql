@@ -1,6 +1,6 @@
-drop table if exists t_statistic_log;
+drop table if exists t_statistics_log;
 
-create table if not exists t_statistic_log -- 统计日志表
+create table if not exists t_statistics_log -- 统计日志表
 (
     id          bigint       not null primary key,
     key         varchar(50)  not null,                                               -- 记录键

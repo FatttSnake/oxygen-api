@@ -14,6 +14,7 @@ insert into t_power (id, type_id)
            (1040000, 2),
            (1510000, 2),
            (1520000, 2),
+           (1530000, 2),
            (1010100, 3),
            (1010200, 3),
            (1010300, 3),
@@ -29,7 +30,8 @@ insert into t_power (id, type_id)
            (1040100, 3),
            (1510100, 3),
            (1520100, 3),
-           (1520300, 3),
+           (1530100, 3),
+           (1530300, 3),
            (1010101, 4),
            (1010102, 4),
            (1010103, 4),
@@ -56,10 +58,13 @@ insert into t_power (id, type_id)
            (1030402, 4),
            (1040103, 4),
            (1510101, 4),
+           (1510102, 4),
+           (1510103, 4),
            (1520101, 4),
-           (1520102, 4),
-           (1520301, 4),
-           (1520302, 4)
+           (1530101, 4),
+           (1530102, 4),
+           (1530301, 4),
+           (1530302, 4)
         as new_value
 on duplicate key update type_id = new_value.type_id;
 
@@ -73,8 +78,9 @@ insert into t_menu (id, name, url, parent_id, module_id)
            (1020000, '角色管理', '/system/role', 1990000, 1000000),
            (1030000, '用户组管理', '/system/group', 1990000, 1000000),
            (1040000, '权限管理', '/system/power', 1990000, 1000000),
-           (1510000, '日志管理', '/system/log', 1990000, 1000000),
-           (1520000, '系统设置', '/system/settings', 1990000, 1000000) as new_value
+           (1510000, '系统概况', '/system/statistics', 1990000, 1000000),
+           (1520000, '日志管理', '/system/log', 1990000, 1000000),
+           (1530000, '系统设置', '/system/settings', 1990000, 1000000) as new_value
 on duplicate key update name      =new_value.name,
                         url       =new_value.url,
                         parent_id =new_value.parent_id;
@@ -95,7 +101,8 @@ insert into t_func(id, name, menu_id, parent_id)
            (1040100, '查询', 1040000, null),
            (1510100, '查询', 1510000, null),
            (1520100, '查询', 1520000, null),
-           (1520300, '修改', 1520000, null) as new_value
+           (1530100, '查询', 1530000, null),
+           (1530300, '修改', 1530000, null) as new_value
 on duplicate key update name      = new_value.name,
                         menu_id   = new_value.menu_id,
                         parent_id = new_value.parent_id;
@@ -126,11 +133,14 @@ insert into t_operation(id, name, code, func_id)
            (1030401, '单个', 'system:group:delete:one', 1030400),
            (1030402, '多个', 'system:group:delete:multiple', 1030400),
            (1040103, '列表', 'system:power:query:list', 1040100),
-           (1510101, '全部', 'system:log:query:all', 1510100),
-           (1520101, '基础', 'system:settings:query:base', 1520100),
-           (1520102, '邮件', 'system:settings:query:mail', 1520100),
-           (1520301, '基础', 'system:settings:modify:base', 1520300),
-           (1520302, '邮件', 'system:settings:modify:mail', 1520300) as new_value
+           (1510101, '使用情况', 'system:statistics:query:usage', 1510100),
+           (1510102, '基础信息', 'system:statistics:query:base', 1510100),
+           (1510103, '实时信息', 'system:statistics:query:real', 1510100),
+           (1520101, '全部', 'system:log:query:all', 1520100),
+           (1530101, '基础', 'system:settings:query:base', 1530100),
+           (1530102, '邮件', 'system:settings:query:mail', 1530100),
+           (1530301, '基础', 'system:settings:modify:base', 1530300),
+           (1530302, '邮件', 'system:settings:modify:mail', 1530300) as new_value
 on duplicate key update name=new_value.name,
                         code=new_value.code,
                         func_id=new_value.func_id;

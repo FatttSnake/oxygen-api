@@ -72,7 +72,7 @@ class SysLogInterceptor(
                             it.startsWith("/login") -> SysLog.LogType.LOGIN
                             it.startsWith("/logout") -> SysLog.LogType.LOGOUT
                             it.startsWith("/register") -> SysLog.LogType.REGISTER
-                            it.startsWith("/system/statistic/") -> SysLog.LogType.STATISTIC
+                            it.startsWith("/system/statistics/") -> SysLog.LogType.STATISTICS
                             it.startsWith("/api/") -> SysLog.LogType.API
                             else -> SysLog.LogType.INFO
                         }
