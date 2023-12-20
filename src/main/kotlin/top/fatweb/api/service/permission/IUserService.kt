@@ -19,15 +19,15 @@ import top.fatweb.api.vo.permission.UserWithRoleInfoVo
  */
 interface IUserService : IService<User> {
     /**
-     * Get user with power by username
+     * Get user with power by username or email
      *
-     * @param username Username
+     * @param account Username or email
      * @return User object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see User
      */
-    fun getUserWithPowerByUsername(username: String): User?
+    fun getUserWithPowerByAccount(account: String): User?
 
     /**
      * Get user information

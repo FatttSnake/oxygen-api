@@ -2,6 +2,7 @@ package top.fatweb.api.service.permission
 
 import jakarta.servlet.http.HttpServletRequest
 import top.fatweb.api.entity.permission.User
+import top.fatweb.api.param.permission.LoginParam
 import top.fatweb.api.vo.permission.LoginVo
 import top.fatweb.api.vo.permission.TokenVo
 
@@ -16,7 +17,7 @@ interface IAuthenticationService {
      * Login
      *
      * @param request
-     * @param user User object
+     * @param loginParam Login parameters
      * @return LoginVo object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
@@ -24,7 +25,7 @@ interface IAuthenticationService {
      * @see User
      * @see LoginVo
      */
-    fun login(request: HttpServletRequest, user: User): LoginVo
+    fun login(request: HttpServletRequest, loginParam: LoginParam): LoginVo
 
     /**
      * Logout

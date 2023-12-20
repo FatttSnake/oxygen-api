@@ -61,8 +61,8 @@ class UserServiceImpl(
     private val userRoleService: IUserRoleService,
     private val userGroupService: IUserGroupService
 ) : ServiceImpl<UserMapper, User>(), IUserService {
-    override fun getUserWithPowerByUsername(username: String): User? {
-        val user = baseMapper.selectOneWithPowerInfoByUsername(username)
+    override fun getUserWithPowerByAccount(account: String): User? {
+        val user = baseMapper.selectOneWithPowerInfoByAccount(account)
         user ?: let { return null }
 
         if (user.id == 0L) {
@@ -76,7 +76,7 @@ class UserServiceImpl(
     }
 
     override fun getInfo() = WebUtil.getLoginUsername()
-        ?.let { username -> getUserWithPowerByUsername(username)?.let { UserConverter.userToUserWithPowerInfoVo(it) } }
+        ?.let { username -> getUserWithPowerByAccount(username)?.let { UserConverter.userToUserWithPowerInfoVo(it) } }
 
     override fun getPage(userGetParam: UserGetParam?): PageVo<UserWithRoleInfoVo> {
         val userIdsPage = Page<Long>(userGetParam?.currentPage ?: 1, userGetParam?.pageSize ?: 20)

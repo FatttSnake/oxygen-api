@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import top.fatweb.api.annotation.BaseController
-import top.fatweb.api.converter.permission.UserConverter
 import top.fatweb.api.entity.common.ResponseCode
 import top.fatweb.api.entity.common.ResponseResult
 import top.fatweb.api.param.permission.LoginParam
@@ -46,7 +45,7 @@ class AuthenticationController(
         ResponseResult.success(
             ResponseCode.PERMISSION_LOGIN_SUCCESS,
             "Login success",
-            authenticationService.login(request, UserConverter.loginParamToUser(loginParam))
+            authenticationService.login(request, loginParam)
         )
 
     /**

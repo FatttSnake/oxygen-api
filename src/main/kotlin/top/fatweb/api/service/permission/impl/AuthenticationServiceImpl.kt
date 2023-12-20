@@ -12,6 +12,7 @@ import top.fatweb.api.entity.permission.LoginUser
 import top.fatweb.api.entity.permission.User
 import top.fatweb.api.entity.system.EventLog
 import top.fatweb.api.exception.TokenHasExpiredException
+import top.fatweb.api.param.permission.LoginParam
 import top.fatweb.api.properties.SecurityProperties
 import top.fatweb.api.service.permission.IAuthenticationService
 import top.fatweb.api.service.permission.IUserService
@@ -42,8 +43,9 @@ class AuthenticationServiceImpl(
     private val logger: Logger = LoggerFactory.getLogger(this::class.java)
 
     @EventLogRecord(EventLog.Event.LOGIN)
-    override fun login(request: HttpServletRequest, user: User): LoginVo {
-        val usernamePasswordAuthenticationToken = UsernamePasswordAuthenticationToken(user.username, user.password)
+    override fun login(request: HttpServletRequest, loginParam: LoginParam): LoginVo {
+        val usernamePasswordAuthenticationToken =
+            UsernamePasswordAuthenticationToken(loginParam.account, loginParam.password)
         val authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken)
         authentication ?: let {
             throw RuntimeException("Login failed")
@@ -52,13 +54,13 @@ class AuthenticationServiceImpl(
         val loginUser = authentication.principal as LoginUser
         loginUser.user.password = ""
 
-        logger.info("用户登录 [用户名: '{}', IP: '{}']", user.username, request.remoteAddr)
+        logger.info("用户登录 [用户名: '{}', IP: '{}']", loginUser.username, request.remoteAddr)
         userService.update(User().apply {
             currentLoginIp = request.remoteAddr
             currentLoginTime = LocalDateTime.now(ZoneOffset.UTC)
             lastLoginIp = loginUser.user.currentLoginIp
             lastLoginTime = loginUser.user.currentLoginTime
-        }, KtUpdateWrapper(User()).eq(User::username, user.username))
+        }, KtUpdateWrapper(User()).eq(User::username, loginUser.username))
 
         val userId = loginUser.user.id.toString()
         val jwt = JwtUtil.createJwt(userId)

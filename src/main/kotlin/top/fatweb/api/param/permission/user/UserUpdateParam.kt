@@ -2,6 +2,7 @@ package top.fatweb.api.param.permission.user
 
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotNull
+import jakarta.validation.constraints.Pattern
 import java.time.LocalDateTime
 
 /**
@@ -94,6 +95,7 @@ data class UserUpdateParam(
      * @since 1.0.0
      */
     @Schema(description = "邮箱")
+    @Pattern(regexp = "^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*\$", message = "Illegal email address")
     val email: String?,
 
     /**

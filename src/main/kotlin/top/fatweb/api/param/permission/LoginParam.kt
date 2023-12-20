@@ -12,14 +12,14 @@ import jakarta.validation.constraints.NotBlank
 @Schema(description = "登录请求参数")
 data class LoginParam(
     /**
-     * Username
+     * Account
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "用户名", example = "test", required = true)
-    @field:NotBlank(message = "Username can not be blank")
-    val username: String? = null,
+    @Schema(description = "账户", example = "test", required = true)
+    @field:NotBlank(message = "Account can not be blank")
+    val account: String? = null,
 
     /**
      * Password

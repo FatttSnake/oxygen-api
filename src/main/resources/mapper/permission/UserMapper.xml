@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="top.fatweb.api.mapper.permission.UserMapper">
-    <select id="selectOneWithPowerInfoByUsername" resultMap="userWithPowerInfoMap">
+    <select id="selectOneWithPowerInfoByAccount" resultMap="userWithPowerInfoMap">
         select t_user.id                     as user_id,
                t_user.username               as user_username,
                t_user.password               as user_password,
@@ -55,7 +55,7 @@
                  left join t_func as tf on tp.id = tf.id
                  left join t_operation as t on tp.id = t.id
         where t_user.deleted = 0
-          and t_user.username = #{username};
+          and (tui.email = #{account} or t_user.username = #{account});
     </select>
 
     <select id="selectPage" resultType="long">

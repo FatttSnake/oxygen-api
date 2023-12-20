@@ -17,15 +17,15 @@ import top.fatweb.api.entity.permission.User
 @Mapper
 interface UserMapper : BaseMapper<User> {
     /**
-     * Select one user with power and information by username
+     * Select one user with power and information by username or email
      *
-     * @param username Username
+     * @param account Username or email
      * @return User object with power and information
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see User
      */
-    fun selectOneWithPowerInfoByUsername(@Param("username") username: String): User?
+    fun selectOneWithPowerInfoByAccount(@Param("account") account: String): User?
 
     /**
      * Select user in page

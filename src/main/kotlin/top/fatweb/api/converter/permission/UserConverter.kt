@@ -5,7 +5,6 @@ import top.fatweb.api.entity.permission.Group
 import top.fatweb.api.entity.permission.Role
 import top.fatweb.api.entity.permission.User
 import top.fatweb.api.entity.permission.UserInfo
-import top.fatweb.api.param.permission.LoginParam
 import top.fatweb.api.param.permission.user.UserAddParam
 import top.fatweb.api.param.permission.user.UserUpdateParam
 import top.fatweb.api.vo.PageVo
@@ -22,21 +21,6 @@ import top.fatweb.avatargenerator.GitHubAvatar
  * @since 1.0.0
  */
 object UserConverter {
-    /**
-     * Convert LoginParam object into User object
-     *
-     * @param loginParam LoginParam object
-     * @return User object
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see LoginParam
-     * @see User
-     */
-    fun loginParamToUser(loginParam: LoginParam) = User().apply {
-        username = loginParam.username
-        password = loginParam.password
-    }
-
     /**
      * Convert User object into UserWithPowerInfoVo object
      *
