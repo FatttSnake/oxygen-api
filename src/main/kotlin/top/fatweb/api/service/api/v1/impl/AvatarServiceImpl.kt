@@ -25,6 +25,34 @@ import kotlin.io.encoding.ExperimentalEncodingApi
 @OptIn(ExperimentalEncodingApi::class)
 @Service
 class AvatarServiceImpl : IAvatarService {
+    override fun random(avatarBaseParam: AvatarBaseParam?): ByteArray =
+        when ((1..4).random()) {
+            1 -> triangle(avatarBaseParam)
+            2 -> square(avatarBaseParam)
+            3 -> identicon(avatarBaseParam)
+            else -> github(AvatarGitHubParam().apply {
+                seed = avatarBaseParam?.seed
+                size = avatarBaseParam?.size
+                margin = avatarBaseParam?.margin
+                padding = avatarBaseParam?.padding
+                colors = avatarBaseParam?.colors
+                background = avatarBaseParam?.background
+            })
+        }
+
+    override fun randomBase64(avatarBaseParam: AvatarBaseParam?): AvatarBase64Vo = when ((1..4).random()) {
+        1 -> triangleBase64(avatarBaseParam)
+        2 -> squareBase64(avatarBaseParam)
+        3 -> identiconBase64(avatarBaseParam)
+        else -> githubBase64(AvatarGitHubParam().apply {
+            seed = avatarBaseParam?.seed
+            size = avatarBaseParam?.size
+            margin = avatarBaseParam?.margin
+            padding = avatarBaseParam?.padding
+            colors = avatarBaseParam?.colors
+            background = avatarBaseParam?.background
+        })
+    }
 
     override fun triangle(avatarBaseParam: AvatarBaseParam?): ByteArray {
         val avatar = (

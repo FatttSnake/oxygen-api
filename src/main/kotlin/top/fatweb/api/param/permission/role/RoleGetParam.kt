@@ -19,7 +19,7 @@ data class RoleGetParam(
      * @since 1.0.0
      */
     @Schema(description = "查询角色名称")
-    val searchName: String? = null,
+    val searchName: String?,
 
     /**
      * Use regex

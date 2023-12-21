@@ -47,6 +47,15 @@ class User() : Serializable {
     var password: String? = null
 
     /**
+     * Verify
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @TableField("verify")
+    var verify: String? = null
+
+    /**
      * Locking
      *
      * @author FatttSnake, fatttsnake@gmail.com

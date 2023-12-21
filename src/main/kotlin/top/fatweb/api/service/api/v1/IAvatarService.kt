@@ -12,6 +12,22 @@ import top.fatweb.api.vo.api.v1.avatar.AvatarBase64Vo
  */
 interface IAvatarService {
     /**
+     * Generate random avatar
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    fun random(avatarBaseParam: AvatarBaseParam?): ByteArray
+
+    /**
+     * Generate random avatar as base64
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    fun randomBase64(avatarBaseParam: AvatarBaseParam?): AvatarBase64Vo
+
+    /**
      * Generate triangle style avatar
      *
      * @param avatarBaseParam Avatar base parameters

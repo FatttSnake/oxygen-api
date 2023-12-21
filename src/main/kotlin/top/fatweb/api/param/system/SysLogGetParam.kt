@@ -21,7 +21,7 @@ data class SysLogGetParam(
      * @since 1.0.0
      */
     @Schema(description = "类型过滤(多个使用逗号分隔)", example = "INFO", allowableValues = ["INFO", "ERROR"])
-    val logType: String? = null,
+    val logType: String?,
 
     /**
      * Request method to filter
@@ -34,7 +34,7 @@ data class SysLogGetParam(
         example = "GET,POST",
         allowableValues = ["GET", "POST", "PUT", "PATCH", "DELETE", "DELETE", "OPTIONS"]
     )
-    val requestMethod: String? = null,
+    val requestMethod: String?,
 
     /**
      * Request URL to search for
@@ -43,7 +43,7 @@ data class SysLogGetParam(
      * @since 1.0.0
      */
     @Schema(description = "查询请求 Url")
-    val searchRequestUrl: String? = null,
+    val searchRequestUrl: String?,
 
     /**
      * Use regex
@@ -65,7 +65,7 @@ data class SysLogGetParam(
      */
     @Schema(description = "查询开始时间")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-    val searchStartTime: LocalDateTime? = null,
+    val searchStartTime: LocalDateTime?,
 
     /**
      * End time to search for
@@ -76,5 +76,5 @@ data class SysLogGetParam(
      */
     @Schema(description = "查询结束时间")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-    val searchEndTime: LocalDateTime? = null
+    val searchEndTime: LocalDateTime?
 ) : PageSortParam()

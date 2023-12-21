@@ -28,7 +28,7 @@ data class UserGetParam(
      * @since 1.0.0
      */
     @Schema(description = "查询内容")
-    val searchValue: String? = null,
+    val searchValue: String?,
 
     /**
      * Use regex

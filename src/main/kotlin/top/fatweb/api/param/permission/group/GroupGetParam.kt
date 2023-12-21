@@ -19,7 +19,7 @@ data class GroupGetParam(
      * @since 1.0.0
      */
     @Schema(description = "查询用户组名称")
-    val searchName: String? = null,
+    val searchName: String?,
 
     /**
      * Use regex

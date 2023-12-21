@@ -48,5 +48,5 @@ data class GroupUpdateParam(
      * @since 1.0.0
      */
     @Schema(description = "角色 ID 列表")
-    val roleIds: List<Long>? = null
+    val roleIds: List<Long>?
 )

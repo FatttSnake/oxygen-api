@@ -10,6 +10,8 @@ import top.fatweb.api.annotation.BaseController
 import top.fatweb.api.entity.common.ResponseCode
 import top.fatweb.api.entity.common.ResponseResult
 import top.fatweb.api.param.permission.LoginParam
+import top.fatweb.api.param.permission.RegisterParam
+import top.fatweb.api.param.permission.VerifyParam
 import top.fatweb.api.service.permission.IAuthenticationService
 import top.fatweb.api.util.WebUtil
 import top.fatweb.api.vo.permission.LoginVo
@@ -26,6 +28,34 @@ import top.fatweb.api.vo.permission.TokenVo
 class AuthenticationController(
     private val authenticationService: IAuthenticationService
 ) {
+    /**
+     * Register
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @Operation(summary = "注册")
+    @PostMapping("/register")
+    fun register(@Valid @RequestBody registerParam: RegisterParam): ResponseResult<Nothing> {
+        authenticationService.register(registerParam)
+
+        return ResponseResult.success(ResponseCode.PERMISSION_REGISTER_SUCCESS)
+    }
+
+    /**
+     * Verify
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @Operation(summary = "验证")
+    @PostMapping("/verify")
+    fun verify(@Valid @RequestBody verifyParam: VerifyParam): ResponseResult<Nothing> {
+        authenticationService.verify(verifyParam)
+
+        return ResponseResult.success(ResponseCode.PERMISSION_VERIFY_SUCCESS)
+    }
+
     /**
      * Login
      *

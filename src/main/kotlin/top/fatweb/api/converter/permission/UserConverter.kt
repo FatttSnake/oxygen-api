@@ -74,6 +74,7 @@ object UserConverter {
     fun userToUserWithRoleInfoVo(user: User) = UserWithRoleInfoVo(
         id = user.id,
         username = user.username,
+        verify = user.verify,
         locking = user.locking?.let { it == 1 },
         expiration = user.expiration,
         credentialsExpiration = user.credentialsExpiration,
@@ -137,6 +138,7 @@ object UserConverter {
         id = user.id,
         username = user.username,
         password = user.password,
+        verify = user.verify,
         locking = user.locking?.let { it == 1 },
         expiration = user.expiration,
         credentialsExpiration = user.credentialsExpiration,

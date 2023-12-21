@@ -36,19 +36,7 @@ class AvatarController(
     @Operation(summary = "获取随机头像")
     @GetMapping(produces = [MediaType.IMAGE_PNG_VALUE])
     fun getRandom(@Valid avatarBaseParam: AvatarBaseParam?): ByteArray =
-        when ((1..4).random()) {
-            1 -> avatarService.triangle(avatarBaseParam)
-            2 -> avatarService.square(avatarBaseParam)
-            3 -> avatarService.identicon(avatarBaseParam)
-            else -> avatarService.github(AvatarGitHubParam().apply {
-                seed = avatarBaseParam?.seed
-                size = avatarBaseParam?.size
-                margin = avatarBaseParam?.margin
-                padding = avatarBaseParam?.padding
-                colors = avatarBaseParam?.colors
-                background = avatarBaseParam?.background
-            })
-        }
+        avatarService.random(avatarBaseParam)
 
     /**
      * Get random avatar as base64
@@ -67,19 +55,7 @@ class AvatarController(
         @Valid avatarBaseParam: AvatarBaseParam?
     ): ResponseResult<AvatarBase64Vo> =
         ResponseResult.success(
-            ResponseCode.API_AVATAR_SUCCESS, data = when ((1..4).random()) {
-                1 -> avatarService.triangleBase64(avatarBaseParam)
-                2 -> avatarService.squareBase64(avatarBaseParam)
-                3 -> avatarService.identiconBase64(avatarBaseParam)
-                else -> avatarService.githubBase64(AvatarGitHubParam().apply {
-                    seed = avatarBaseParam?.seed
-                    size = avatarBaseParam?.size
-                    margin = avatarBaseParam?.margin
-                    padding = avatarBaseParam?.padding
-                    colors = avatarBaseParam?.colors
-                    background = avatarBaseParam?.background
-                })
-            }
+            ResponseCode.API_AVATAR_SUCCESS, data = avatarService.randomBase64(avatarBaseParam)
         )
 
     /**

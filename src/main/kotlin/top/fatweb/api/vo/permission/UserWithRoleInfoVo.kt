@@ -35,6 +35,15 @@ data class UserWithRoleInfoVo(
     val username: String?,
 
     /**
+     * Verify
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @Schema(description = "验证信息")
+    val verify: String?,
+
+    /**
      * Locking
      *
      * @author FatttSnake, fatttsnake@gmail.com

@@ -48,5 +48,5 @@ data class RoleUpdateParam(
      * @since 1.0.0
      */
     @Schema(description = "权限 ID 列表")
-    val powerIds: List<Long>? = null
+    val powerIds: List<Long>?
 )

@@ -33,6 +33,15 @@ data class UserUpdateParam(
     val username: String?,
 
     /**
+     * Verified
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @Schema(description = "是否已验证")
+    val verified: Boolean = false,
+
+    /**
      * Locking
      *
      * @author FatttSnake, fatttsnake@gmail.com

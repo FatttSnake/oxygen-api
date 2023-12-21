@@ -3,6 +3,8 @@ package top.fatweb.api.service.permission
 import jakarta.servlet.http.HttpServletRequest
 import top.fatweb.api.entity.permission.User
 import top.fatweb.api.param.permission.LoginParam
+import top.fatweb.api.param.permission.RegisterParam
+import top.fatweb.api.param.permission.VerifyParam
 import top.fatweb.api.vo.permission.LoginVo
 import top.fatweb.api.vo.permission.TokenVo
 
@@ -13,6 +15,22 @@ import top.fatweb.api.vo.permission.TokenVo
  * @since 1.0.0
  */
 interface IAuthenticationService {
+    /**
+     * Register
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    fun register(registerParam: RegisterParam)
+
+    /**
+     * Verify
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    fun verify(verifyParam: VerifyParam)
+
     /**
      * Login
      *
