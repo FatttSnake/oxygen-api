@@ -34,6 +34,7 @@ object UserConverter {
     fun userToUserWithPowerInfoVo(user: User) = UserWithPowerInfoVo(
         id = user.id,
         username = user.username,
+        verified = user.verify.isNullOrBlank(),
         locking = user.locking?.let { it == 1 },
         expiration = user.expiration,
         credentialsExpiration = user.credentialsExpiration,
@@ -109,6 +110,7 @@ object UserConverter {
     fun userToUserWithInfoVo(user: User) = UserWithInfoVo(
         id = user.id,
         username = user.username,
+        verified = user.verify.isNullOrBlank(),
         locking = user.locking?.let { it == 1 },
         expiration = user.expiration,
         credentialsExpiration = user.credentialsExpiration,

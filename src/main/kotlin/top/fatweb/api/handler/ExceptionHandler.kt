@@ -16,8 +16,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import top.fatweb.api.entity.common.ResponseCode
 import top.fatweb.api.entity.common.ResponseResult
-import top.fatweb.api.exception.NoRecordFoundException
-import top.fatweb.api.exception.TokenHasExpiredException
+import top.fatweb.api.exception.*
 import top.fatweb.avatargenerator.AvatarException
 
 /**
@@ -121,6 +120,22 @@ class ExceptionHandler {
                 logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.PERMISSION_ACCESS_DENIED, "Access Denied", null)
             }
+
+            is NoVerificationRequiredException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.PERMISSION_NO_VERIFICATION_REQUIRED, e.localizedMessage, null)
+            }
+
+            is VerificationCodeErrorOrExpiredException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.PERMISSION_VERIFY_CODE_ERROR_OR_EXPIRED, e.localizedMessage, null)
+            }
+
+            is AccountNeedInitException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.PERMISSION_ACCOUNT_NEED_INIT, e.localizedMessage, null)
+            }
+
 
             is BadSqlGrammarException -> {
                 logger.debug(e.localizedMessage, e)

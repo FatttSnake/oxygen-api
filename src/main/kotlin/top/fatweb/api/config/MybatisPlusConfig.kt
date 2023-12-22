@@ -22,5 +22,4 @@ class MybatisPlusConfig {
 
         return mybatisPlusInterceptor
     }
-
 }

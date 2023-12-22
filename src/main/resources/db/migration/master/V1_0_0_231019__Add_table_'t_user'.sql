@@ -5,7 +5,7 @@ create table if not exists t_user
     id                     bigint      not null primary key,
     username               varchar(20) not null comment '用户名',
     password               char(70)    not null comment '密码',
-    verify                 varchar(36) null comment '验证信息',
+    verify                 varchar(50) null comment '验证信息',
     locking                int         not null comment '锁定',
     expiration             datetime comment '过期时间',
     credentials_expiration datetime comment '认证过期时间',

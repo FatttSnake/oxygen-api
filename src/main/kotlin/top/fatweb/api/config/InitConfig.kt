@@ -2,6 +2,7 @@ package top.fatweb.api.config
 
 import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper
 import jakarta.annotation.PostConstruct
+import org.apache.velocity.app.VelocityEngine
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.DependsOn
@@ -29,7 +30,7 @@ import top.fatweb.avatargenerator.GitHubAvatar
 class InitConfig(
     private val userService: IUserService,
     private val userInfoService: IUserInfoService,
-    private val passwordEncoder: PasswordEncoder,
+    private val passwordEncoder: PasswordEncoder
 ) {
     private val logger: Logger = LoggerFactory.getLogger(this::class.java)
 

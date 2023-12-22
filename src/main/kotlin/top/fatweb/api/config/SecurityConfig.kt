@@ -75,6 +75,7 @@ class SecurityConfig(
                     "/swagger-ui.html",
                     "/favicon.ico",
                     "/login",
+                    "/register"
                 ).anonymous()
                 // Authentication required
                 .anyRequest().authenticated()

@@ -33,6 +33,15 @@ data class UserWithPowerInfoVo(
     val username: String?,
 
     /**
+     * Verified
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @Schema(description = "已验证", example = "true")
+    val verified: Boolean?,
+
+    /**
      * Locking
      *
      * @author FatttSnake, fatttsnake@gmail.com

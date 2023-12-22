@@ -22,15 +22,6 @@ data class VerifyParam(
     val code: String?,
 
     /**
-     * Username
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     */
-    @Schema(description = "用户名", example = "adb")
-    val username: String?,
-
-    /**
      * Nickname
      *
      * @author FatttSnake, fatttsnake@gmail.com

@@ -24,6 +24,14 @@ interface IAuthenticationService {
     fun register(registerParam: RegisterParam)
 
     /**
+     * Send verify email
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    fun resend()
+
+    /**
      * Verify
      *
      * @author FatttSnake, fatttsnake@gmail.com

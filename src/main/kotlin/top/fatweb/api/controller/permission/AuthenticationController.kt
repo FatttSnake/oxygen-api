@@ -43,6 +43,20 @@ class AuthenticationController(
     }
 
     /**
+     * Send verify email
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @Operation(summary = "发送验证邮箱")
+    @PostMapping("/resend")
+    fun resend(): ResponseResult<Nothing> {
+        authenticationService.resend()
+
+        return ResponseResult.success(ResponseCode.PERMISSION_RESEND_SUCCESS)
+    }
+
+    /**
      * Verify
      *
      * @author FatttSnake, fatttsnake@gmail.com

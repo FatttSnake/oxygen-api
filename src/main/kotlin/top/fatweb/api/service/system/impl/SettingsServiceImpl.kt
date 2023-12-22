@@ -45,6 +45,7 @@ class SettingsServiceImpl : ISettingsService {
             MailUtil.sendSimpleMail(
                 "${ServerProperties.appName} Test Message",
                 "This is a test email sent when testing the system email sending service.",
+                false,
                 it
             )
         }

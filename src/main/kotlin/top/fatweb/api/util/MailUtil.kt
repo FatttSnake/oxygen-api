@@ -1,8 +1,8 @@
 package top.fatweb.api.util
 
-import org.springframework.mail.MailSender
-import org.springframework.mail.SimpleMailMessage
 import org.springframework.mail.javamail.JavaMailSenderImpl
+import org.springframework.mail.javamail.MimeMessageHelper
+import top.fatweb.api.exception.NoEmailConfigException
 import top.fatweb.api.settings.MailSecurityType
 import top.fatweb.api.settings.MailSettings
 import top.fatweb.api.settings.SettingsOperator
@@ -33,15 +33,19 @@ object MailUtil {
         mailSender.javaMailProperties = properties
     }
 
-    fun getSender(): MailSender = mailSender
+    fun sendSimpleMail(subject: String, text: String, html: Boolean = false, vararg to: String) {
+        val fromName = SettingsOperator.getMailValue(MailSettings::fromName) ?: throw NoEmailConfigException("fromName")
+        val from = SettingsOperator.getMailValue(MailSettings::from) ?: throw NoEmailConfigException("from")
 
-    fun sendSimpleMail(subject: String, text: String, vararg to: String) {
-        mailSender.send(SimpleMailMessage().apply {
+        val mimeMessage = mailSender.createMimeMessage()
+        val messageHelper = MimeMessageHelper(mimeMessage, true)
+        messageHelper.apply {
             setSubject(subject)
-            from = "${SettingsOperator.getMailValue(MailSettings::fromName)}<${SettingsOperator.getMailValue(MailSettings::from)}>"
-            sentDate = Date()
-            setTo(*to)
-            setText(text)
-        })
+            setFrom(from, fromName)
+            setSentDate(Date())
+            setTo(to)
+            setText(text, html)
+        }
+        mailSender.send(mimeMessage)
     }
 }

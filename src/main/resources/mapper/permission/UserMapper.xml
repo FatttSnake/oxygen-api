@@ -126,7 +126,7 @@
     <select id="selectListWithRoleInfoByIds" resultMap="userWithRoleInfoMap">
         select t_user.id as user_id,
         t_user.username as user_username,
-        t_user.password as user_password,
+        t_user.verify as user_verify,
         t_user.locking as user_locking,
         t_user.expiration as user_expiration,
         t_user.credentials_expiration as user_credentials_expiration,
@@ -177,7 +177,7 @@
     <select id="selectOneWithRoleInfoById" resultMap="userWithRoleInfoMap">
         select t_user.id                     as user_id,
                t_user.username               as user_username,
-               t_user.password               as user_password,
+               t_user.verify                 as user_verify,
                t_user.locking                as user_locking,
                t_user.expiration             as user_expiration,
                t_user.credentials_expiration as user_credentials_expiration,
@@ -224,7 +224,7 @@
     <select id="selectListWithInfo" resultMap="userWithInfoMap">
         select t_user.id                     as user_id,
                t_user.username               as user_username,
-               t_user.password               as user_password,
+               t_user.verify                 as user_verify,
                t_user.locking                as user_locking,
                t_user.expiration             as user_expiration,
                t_user.credentials_expiration as user_credentials_expiration,
@@ -282,6 +282,7 @@
     <resultMap id="userBaseMap" type="user">
         <id property="id" column="user_id"/>
         <result property="username" column="user_username"/>
+        <result property="verify" column="user_verify"/>
         <result property="locking" column="user_locking"/>
         <result property="expiration" column="user_expiration"/>
         <result property="credentialsExpiration" column="user_credentials_expiration"/>

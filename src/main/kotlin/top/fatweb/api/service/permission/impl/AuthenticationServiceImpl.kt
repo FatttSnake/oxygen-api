@@ -2,8 +2,11 @@ package top.fatweb.api.service.permission.impl
 
 import com.baomidou.mybatisplus.extension.kotlin.KtUpdateWrapper
 import jakarta.servlet.http.HttpServletRequest
+import org.apache.velocity.VelocityContext
+import org.apache.velocity.app.VelocityEngine
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -14,7 +17,10 @@ import top.fatweb.api.entity.permission.LoginUser
 import top.fatweb.api.entity.permission.User
 import top.fatweb.api.entity.permission.UserInfo
 import top.fatweb.api.entity.system.EventLog
+import top.fatweb.api.exception.AccountNeedInitException
+import top.fatweb.api.exception.NoVerificationRequiredException
 import top.fatweb.api.exception.TokenHasExpiredException
+import top.fatweb.api.exception.VerificationCodeErrorOrExpiredException
 import top.fatweb.api.param.permission.LoginParam
 import top.fatweb.api.param.permission.RegisterParam
 import top.fatweb.api.param.permission.VerifyParam
@@ -24,10 +30,13 @@ import top.fatweb.api.service.permission.IAuthenticationService
 import top.fatweb.api.service.permission.IUserInfoService
 import top.fatweb.api.service.permission.IUserService
 import top.fatweb.api.util.JwtUtil
+import top.fatweb.api.util.MailUtil
 import top.fatweb.api.util.RedisUtil
 import top.fatweb.api.util.WebUtil
 import top.fatweb.api.vo.permission.LoginVo
 import top.fatweb.api.vo.permission.TokenVo
+import java.io.StringWriter
+import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import java.util.*
@@ -44,6 +53,7 @@ import java.util.*
  */
 @Service
 class AuthenticationServiceImpl(
+    private val velocityEngine: VelocityEngine,
     private val authenticationManager: AuthenticationManager,
     private val passwordEncoder: PasswordEncoder,
     private val redisUtil: RedisUtil,
@@ -56,8 +66,10 @@ class AuthenticationServiceImpl(
     @Transactional
     override fun register(registerParam: RegisterParam) {
         val user = User().apply {
-            username = "\$UNNAMED_${UUID.randomUUID()}"
+            username = registerParam.username
             password = passwordEncoder.encode(registerParam.password)
+            verify =
+                "${LocalDateTime.now(ZoneOffset.UTC).toInstant(ZoneOffset.UTC).toEpochMilli()}-${UUID.randomUUID()}"
             locking = 0
             enable = 1
         }
@@ -67,9 +79,66 @@ class AuthenticationServiceImpl(
             avatar = avatarService.randomBase64(null).base64
             email = registerParam.email
         })
+
+        sendVerifyMail(user.username!!, "http://localhost:5173/verify?code=${user.verify!!}", registerParam.email!!)
     }
 
+    @Transactional
+    override fun resend() {
+        val user = userService.getById(WebUtil.getLoginUserId()) ?: throw AccessDeniedException("Access Denied")
+
+        user.verify ?: throw NoVerificationRequiredException()
+
+        user.verify =
+            "${LocalDateTime.now(ZoneOffset.UTC).toInstant(ZoneOffset.UTC).toEpochMilli()}-${UUID.randomUUID()}"
+        user.updateTime = LocalDateTime.now(ZoneOffset.UTC)
+        userService.updateById(user)
+
+        WebUtil.getLoginUser()?.user?.userInfo?.email?.let {
+            sendVerifyMail(user.username!!, "http://localhost:5173/verify?code=${user.verify!!}", it)
+        } ?: throw AccessDeniedException("Access Denied")
+    }
+
+    private fun sendVerifyMail(username: String, verifyUrl: String, email: String) {
+        val velocityContext = VelocityContext().apply {
+            put("appName", "氮工具")
+            put("appUrl", "http://localhost:5173/")
+            put("username", username)
+            put("verifyUrl", verifyUrl)
+        }
+        val template = velocityEngine.getTemplate("templates/email-verify-account-cn.vm")
+
+        val stringWriter = StringWriter()
+        template.merge(velocityContext, stringWriter)
+
+        MailUtil.sendSimpleMail(
+            "激活您的账号", stringWriter.toString(), true,
+            email
+        )
+    }
+
+    @Transactional
     override fun verify(verifyParam: VerifyParam) {
+        val user = userService.getById(WebUtil.getLoginUserId()) ?: throw AccessDeniedException("Access Denied")
+        user.verify ?: throw NoVerificationRequiredException()
+        if (LocalDateTime.ofInstant(Instant.ofEpochMilli(user.verify!!.split("-").first().toLong()), ZoneOffset.UTC)
+                .isBefore(LocalDateTime.now(ZoneOffset.UTC).minusHours(2)) || user.verify != verifyParam.code
+        ) {
+            throw VerificationCodeErrorOrExpiredException()
+        }
+
+        if (verifyParam.nickname.isNullOrBlank() || verifyParam.avatar.isNullOrBlank()) {
+            throw AccountNeedInitException()
+        }
+
+        userService.update(
+            KtUpdateWrapper(User()).eq(User::id, user.id).set(User::verify, null)
+                .set(User::updateTime, LocalDateTime.now(ZoneOffset.UTC))
+        )
+        userInfoService.update(
+            KtUpdateWrapper(UserInfo()).eq(UserInfo::userId, user.id).set(UserInfo::nickname, verifyParam.nickname)
+                .set(UserInfo::avatar, verifyParam.avatar)
+        )
     }
 
     @EventLogRecord(EventLog.Event.LOGIN)
