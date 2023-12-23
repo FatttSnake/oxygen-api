@@ -91,11 +91,8 @@ object SettingsOperator {
                 }
             }
             field.set(it, value)
-        } ?: {
-            MailSettings().also {
-                field.set(it, value)
-                systemSettings.mail = it
-            }
+        } ?: let {
+            systemSettings.mail = MailSettings().also { field.set(it, value) }
         }
 
         saveSettingsToFile()
