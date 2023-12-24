@@ -5,6 +5,7 @@
         select t_user.id                     as user_id,
                t_user.username               as user_username,
                t_user.password               as user_password,
+               t_user.verify                 as user_verify,
                t_user.locking                as user_locking,
                t_user.expiration             as user_expiration,
                t_user.credentials_expiration as user_credentials_expiration,

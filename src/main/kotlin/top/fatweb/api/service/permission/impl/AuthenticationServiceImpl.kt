@@ -76,6 +76,7 @@ class AuthenticationServiceImpl(
         userService.save(user)
         userInfoService.save(UserInfo().apply {
             userId = user.id
+            nickname = registerParam.username
             avatar = avatarService.randomBase64(null).base64
             email = registerParam.email
         })
