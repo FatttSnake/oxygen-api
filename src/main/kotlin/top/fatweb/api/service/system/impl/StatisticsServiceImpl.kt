@@ -223,6 +223,6 @@ class StatisticsServiceImpl(
             )
         }
 
-        return ActiveInfoVo(getHistory("REGISTER"), getHistory("LOGIN"))
+        return ActiveInfoVo(getHistory("REGISTER"), getHistory("LOGIN"), getHistory("VERIFY"))
     }
 }

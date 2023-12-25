@@ -86,6 +86,7 @@ data class UserAddParam(
      * @since 1.0.0
      */
     @Schema(description = "昵称")
+    @field:NotBlank(message = "Nickname can not be blank")
     val nickname: String?,
 
     /**

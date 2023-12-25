@@ -4,7 +4,7 @@ create table if not exists t_user_info
 (
     id          bigint       not null primary key,
     user_id     bigint       not null comment '用户ID',
-    nickname    varchar(50)  null comment '昵称',
+    nickname    varchar(50)  not null comment '昵称',
     avatar      text         null comment '头像',
     email       varchar(100) not null comment '邮箱',
     create_time datetime     not null default (utc_timestamp()) comment '创建时间',

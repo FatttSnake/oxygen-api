@@ -7,11 +7,23 @@ import top.fatweb.api.properties.SecurityProperties
 import top.fatweb.api.service.system.IStatisticsLogService
 import top.fatweb.api.util.RedisUtil
 
+/**
+ * Statistics scheduled tasks
+ *
+ * @author FatttSnake, fatttsnake@gmail.com
+ * @since 1.0.0
+ */
 @Component
 class StatisticsCron(
     private val redisUtil: RedisUtil,
     private val statisticsLogService: IStatisticsLogService
 ) {
+    /**
+     * Auto record number of online users
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     @Scheduled(cron = "0 * * * * *")
     fun onlineUserCount() {
         statisticsLogService.save(StatisticsLog().apply {

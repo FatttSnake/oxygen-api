@@ -3,6 +3,12 @@ package top.fatweb.api.settings
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonValue
 
+/**
+ * Type of mail security
+ *
+ * @author FatttSnake, fatttsnake@gmail.com
+ * @since 1.0.0
+ */
 enum class MailSecurityType(val code: String) {
     NONE("None"),
     SSL_TLS("SSL/TLS"),

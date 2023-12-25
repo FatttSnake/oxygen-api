@@ -15,6 +15,7 @@ import top.fatweb.api.param.permission.VerifyParam
 import top.fatweb.api.service.permission.IAuthenticationService
 import top.fatweb.api.util.WebUtil
 import top.fatweb.api.vo.permission.LoginVo
+import top.fatweb.api.vo.permission.RegisterVo
 import top.fatweb.api.vo.permission.TokenVo
 
 /**
@@ -36,11 +37,11 @@ class AuthenticationController(
      */
     @Operation(summary = "注册")
     @PostMapping("/register")
-    fun register(@Valid @RequestBody registerParam: RegisterParam): ResponseResult<Nothing> {
-        authenticationService.register(registerParam)
+    fun register(@Valid @RequestBody registerParam: RegisterParam): ResponseResult<RegisterVo> = ResponseResult.success(
+        ResponseCode.PERMISSION_REGISTER_SUCCESS,
+        data = authenticationService.register(registerParam)
+    )
 
-        return ResponseResult.success(ResponseCode.PERMISSION_REGISTER_SUCCESS)
-    }
 
     /**
      * Send verify email

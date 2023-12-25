@@ -28,6 +28,7 @@ import top.fatweb.api.vo.permission.UserWithPasswordRoleInfoVo
 import top.fatweb.api.vo.permission.UserWithRoleInfoVo
 import java.time.LocalDateTime
 import java.time.ZoneOffset
+import java.util.*
 
 /**
  * User service implement
@@ -111,9 +112,12 @@ class UserServiceImpl(
 
         user.apply {
             password = passwordEncoder.encode(rawPassword)
+            verify = if (userAddParam.verified) null else "${
+                LocalDateTime.now(ZoneOffset.UTC).toInstant(ZoneOffset.UTC).toEpochMilli()
+            }-${UUID.randomUUID()}-${UUID.randomUUID()}-${UUID.randomUUID()}"
         }
 
-        if (baseMapper.insert(user) == 1) {
+        if (this.save(user)) {
             user.userInfo?.let { userInfoService.save(it.apply { userId = user.id }) }
 
             if (!user.roles.isNullOrEmpty()) {
@@ -175,9 +179,16 @@ class UserServiceImpl(
         removeGroupIds.removeAll(addGroupIds)
         oldGroupList.toSet().let { addGroupIds.removeAll(it) }
 
-        baseMapper.updateById(user)
-        baseMapper.update(
-            KtUpdateWrapper(User()).eq(User::id, user.id).set(User::expiration, user.expiration)
+        this.updateById(user)
+        this.update(
+            KtUpdateWrapper(User()).eq(User::id, user.id)
+                .set(
+                    User::verify,
+                    if (userUpdateParam.verified) null else "${
+                        LocalDateTime.now(ZoneOffset.UTC).toInstant(ZoneOffset.UTC).toEpochMilli()
+                    }-${UUID.randomUUID()}-${UUID.randomUUID()}-${UUID.randomUUID()}"
+                )
+                .set(User::expiration, user.expiration)
                 .set(User::credentialsExpiration, user.credentialsExpiration)
         )
 
@@ -230,7 +241,7 @@ class UserServiceImpl(
             throw AccessDeniedException("Access denied")
         }
 
-        val user = baseMapper.selectById(userUpdatePasswordParam.id)
+        val user = this.getById(userUpdatePasswordParam.id)
         user?.let {
             val wrapper = KtUpdateWrapper(User())
             wrapper.eq(User::id, user.id)
@@ -265,7 +276,7 @@ class UserServiceImpl(
             return
         }
 
-        baseMapper.deleteBatchIds(ids)
+        this.removeBatchByIds(ids)
         userInfoService.remove(KtQueryWrapper(UserInfo()).`in`(UserInfo::userId, ids))
         userRoleService.remove(KtQueryWrapper(UserRole()).`in`(UserRole::userId, ids))
         userGroupService.remove(KtQueryWrapper(UserGroup()).`in`(UserGroup::userId, ids))

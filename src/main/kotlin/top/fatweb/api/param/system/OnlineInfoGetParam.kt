@@ -3,6 +3,12 @@ package top.fatweb.api.param.system
 import com.baomidou.mybatisplus.annotation.EnumValue
 import com.fasterxml.jackson.annotation.JsonValue
 
+/**
+ * Get online information parameters
+ *
+ * @author FatttSnake, fatttsnake@gmail.com
+ * @since 1.0.0
+ */
 data class OnlineInfoGetParam(
     val scope: Scope = Scope.WEAK
 ) {

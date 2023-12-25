@@ -8,6 +8,12 @@ import top.fatweb.api.settings.MailSettings
 import top.fatweb.api.settings.SettingsOperator
 import java.util.*
 
+/**
+ * Mail util
+ *
+ * @author FatttSnake, fatttsnake@gmail.com
+ * @since 1.0.0
+ */
 object MailUtil {
     private val mailSender: JavaMailSenderImpl = JavaMailSenderImpl()
 

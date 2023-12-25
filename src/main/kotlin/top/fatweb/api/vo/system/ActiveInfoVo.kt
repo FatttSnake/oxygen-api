@@ -25,7 +25,15 @@ data class ActiveInfoVo(
      * @since 1.0.0
      * @see HistoryVo
      */
-    val loginHistory: List<HistoryVo>
+    val loginHistory: List<HistoryVo>,
+
+    /**
+     * Verify user number history
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    val verifyHistory: List<HistoryVo>
 ) {
     data class HistoryVo(
         /**

@@ -34,6 +34,7 @@ import top.fatweb.api.util.MailUtil
 import top.fatweb.api.util.RedisUtil
 import top.fatweb.api.util.WebUtil
 import top.fatweb.api.vo.permission.LoginVo
+import top.fatweb.api.vo.permission.RegisterVo
 import top.fatweb.api.vo.permission.TokenVo
 import java.io.StringWriter
 import java.time.Instant
@@ -63,13 +64,14 @@ class AuthenticationServiceImpl(
 ) : IAuthenticationService {
     private val logger: Logger = LoggerFactory.getLogger(this::class.java)
 
+    @EventLogRecord(EventLog.Event.REGISTER)
     @Transactional
-    override fun register(registerParam: RegisterParam) {
+    override fun register(registerParam: RegisterParam): RegisterVo {
         val user = User().apply {
             username = registerParam.username
             password = passwordEncoder.encode(registerParam.password)
             verify =
-                "${LocalDateTime.now(ZoneOffset.UTC).toInstant(ZoneOffset.UTC).toEpochMilli()}-${UUID.randomUUID()}"
+                "${LocalDateTime.now(ZoneOffset.UTC).toInstant(ZoneOffset.UTC).toEpochMilli()}-${UUID.randomUUID()}-${UUID.randomUUID()}-${UUID.randomUUID()}"
             locking = 0
             enable = 1
         }
@@ -82,6 +84,8 @@ class AuthenticationServiceImpl(
         })
 
         sendVerifyMail(user.username!!, "http://localhost:5173/verify?code=${user.verify!!}", registerParam.email!!)
+
+        return RegisterVo(userId = user.id)
     }
 
     @Transactional
@@ -91,7 +95,7 @@ class AuthenticationServiceImpl(
         user.verify ?: throw NoVerificationRequiredException()
 
         user.verify =
-            "${LocalDateTime.now(ZoneOffset.UTC).toInstant(ZoneOffset.UTC).toEpochMilli()}-${UUID.randomUUID()}"
+            "${LocalDateTime.now(ZoneOffset.UTC).toInstant(ZoneOffset.UTC).toEpochMilli()}-${UUID.randomUUID()}-${UUID.randomUUID()}-${UUID.randomUUID()}"
         user.updateTime = LocalDateTime.now(ZoneOffset.UTC)
         userService.updateById(user)
 
@@ -113,11 +117,12 @@ class AuthenticationServiceImpl(
         template.merge(velocityContext, stringWriter)
 
         MailUtil.sendSimpleMail(
-            "激活您的账号", stringWriter.toString(), true,
+            "验证您的账号", stringWriter.toString(), true,
             email
         )
     }
 
+    @EventLogRecord(EventLog.Event.VERIFY)
     @Transactional
     override fun verify(verifyParam: VerifyParam) {
         val user = userService.getById(WebUtil.getLoginUserId()) ?: throw AccessDeniedException("Access Denied")

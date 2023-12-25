@@ -6,6 +6,7 @@ import top.fatweb.api.param.permission.LoginParam
 import top.fatweb.api.param.permission.RegisterParam
 import top.fatweb.api.param.permission.VerifyParam
 import top.fatweb.api.vo.permission.LoginVo
+import top.fatweb.api.vo.permission.RegisterVo
 import top.fatweb.api.vo.permission.TokenVo
 
 /**
@@ -21,7 +22,7 @@ interface IAuthenticationService {
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    fun register(registerParam: RegisterParam)
+    fun register(registerParam: RegisterParam): RegisterVo
 
     /**
      * Send verify email
