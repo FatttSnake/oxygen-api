@@ -3,6 +3,7 @@ package top.fatweb.api.mapper.permission
 import com.baomidou.mybatisplus.core.mapper.BaseMapper
 import com.baomidou.mybatisplus.core.metadata.IPage
 import org.apache.ibatis.annotations.Mapper
+import org.apache.ibatis.annotations.Param
 import top.fatweb.api.entity.permission.Group
 
 /**
@@ -26,7 +27,11 @@ interface GroupMapper : BaseMapper<Group> {
      * @since 1.0.0
      * @see IPage
      */
-    fun selectPage(page: IPage<Long>, searchName: String?, searchRegex: Boolean): IPage<Long>
+    fun selectPage(
+        page: IPage<Long>,
+        @Param("searchName") searchName: String?,
+        @Param("searchRegex") searchRegex: Boolean
+    ): IPage<Long>
 
     /**
      * Select group with role list by list of group IDs
@@ -37,7 +42,7 @@ interface GroupMapper : BaseMapper<Group> {
      * @since 1.0.0
      * @see Group
      */
-    fun selectListWithRoleByIds(groupIds: List<Long>): List<Group>?
+    fun selectListWithRoleByIds(@Param("groupIds") groupIds: List<Long>): List<Group>?
 
     /**
      * Select one group by ID
@@ -48,5 +53,5 @@ interface GroupMapper : BaseMapper<Group> {
      * @since 1.0.0
      * @see Group
      */
-    fun selectOneById(id: Long): Group?
+    fun selectOneById(@Param("id") id: Long): Group?
 }

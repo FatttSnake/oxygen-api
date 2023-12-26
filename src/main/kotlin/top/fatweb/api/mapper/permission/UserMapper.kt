@@ -39,7 +39,12 @@ interface UserMapper : BaseMapper<User> {
      * @since 1.0.0
      * @see IPage
      */
-    fun selectPage(page: IPage<Long>, searchType: String, searchValue: String?, searchRegex: Boolean): IPage<Long>
+    fun selectPage(
+        page: IPage<Long>,
+        @Param("searchType") searchType: String,
+        @Param("searchValue") searchValue: String?,
+        @Param("searchRegex") searchRegex: Boolean
+    ): IPage<Long>
 
     /**
      * Select user with role and information list by list of user IDs
@@ -50,7 +55,7 @@ interface UserMapper : BaseMapper<User> {
      * @since 1.0.0
      * @see User
      */
-    fun selectListWithRoleInfoByIds(userIds: List<Long>): List<User>
+    fun selectListWithRoleInfoByIds(@Param("userIds") userIds: List<Long>): List<User>
 
     /**
      * Select one user by ID
@@ -61,7 +66,7 @@ interface UserMapper : BaseMapper<User> {
      * @since 1.0.0
      * @see User
      */
-    fun selectOneWithRoleInfoById(id: Long): User?
+    fun selectOneWithRoleInfoById(@Param("id") id: Long): User?
 
     /**
      * Select all user with information list
@@ -81,7 +86,7 @@ interface UserMapper : BaseMapper<User> {
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    fun selectIdsWithRoleIds(roleIds: List<Long>): List<Long>
+    fun selectIdsWithRoleIds(@Param("roleIds") roleIds: List<Long>): List<Long>
 
     /**
      * Select user IDs list by list of group IDs
@@ -91,5 +96,5 @@ interface UserMapper : BaseMapper<User> {
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    fun selectIdsWithGroupIds(groupIds: List<Long>): List<Long>
+    fun selectIdsWithGroupIds(@Param("groupIds") groupIds: List<Long>): List<Long>
 }

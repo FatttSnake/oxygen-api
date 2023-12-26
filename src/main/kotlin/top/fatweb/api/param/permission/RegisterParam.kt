@@ -19,7 +19,7 @@ data class RegisterParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "用户名", example = "abc", required = true)
+    @Schema(description = "用户名", required = true, example = "abc")
     @field:NotBlank(message = "Username can not be blank")
     @field:Pattern(regexp = "[a-zA-Z-_][0-9a-zA-Z-_]{2,38}", message = "Illegal username")
     val username: String?,
@@ -30,7 +30,7 @@ data class RegisterParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "邮箱", example = "guest@fatweb.top", required = true)
+    @Schema(description = "邮箱", required = true, example = "user@email.com")
     @field:NotBlank(message = "Email can not be blank")
     @field:Pattern(regexp = "^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*\$", message = "Illegal email address")
     val email: String?,
@@ -41,7 +41,7 @@ data class RegisterParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "密码", example = "test123456", required = true)
+    @Schema(description = "密码", required = true)
     @field:NotBlank(message = "Password can not be blank")
     @field:Size(min = 10, max = 30)
     val password: String?

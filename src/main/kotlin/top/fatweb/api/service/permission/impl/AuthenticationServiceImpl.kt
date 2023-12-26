@@ -1,5 +1,6 @@
 package top.fatweb.api.service.permission.impl
 
+import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper
 import com.baomidou.mybatisplus.extension.kotlin.KtUpdateWrapper
 import jakarta.servlet.http.HttpServletRequest
 import org.apache.velocity.VelocityContext
@@ -17,13 +18,8 @@ import top.fatweb.api.entity.permission.LoginUser
 import top.fatweb.api.entity.permission.User
 import top.fatweb.api.entity.permission.UserInfo
 import top.fatweb.api.entity.system.EventLog
-import top.fatweb.api.exception.AccountNeedInitException
-import top.fatweb.api.exception.NoVerificationRequiredException
-import top.fatweb.api.exception.TokenHasExpiredException
-import top.fatweb.api.exception.VerificationCodeErrorOrExpiredException
-import top.fatweb.api.param.permission.LoginParam
-import top.fatweb.api.param.permission.RegisterParam
-import top.fatweb.api.param.permission.VerifyParam
+import top.fatweb.api.exception.*
+import top.fatweb.api.param.permission.*
 import top.fatweb.api.properties.SecurityProperties
 import top.fatweb.api.service.api.v1.IAvatarService
 import top.fatweb.api.service.permission.IAuthenticationService
@@ -71,7 +67,9 @@ class AuthenticationServiceImpl(
             username = registerParam.username
             password = passwordEncoder.encode(registerParam.password)
             verify =
-                "${LocalDateTime.now(ZoneOffset.UTC).toInstant(ZoneOffset.UTC).toEpochMilli()}-${UUID.randomUUID()}-${UUID.randomUUID()}-${UUID.randomUUID()}"
+                "${
+                    LocalDateTime.now(ZoneOffset.UTC).toInstant(ZoneOffset.UTC).toEpochMilli()
+                }-${UUID.randomUUID()}-${UUID.randomUUID()}-${UUID.randomUUID()}"
             locking = 0
             enable = 1
         }
@@ -83,7 +81,7 @@ class AuthenticationServiceImpl(
             email = registerParam.email
         })
 
-        sendVerifyMail(user.username!!, "http://localhost:5173/verify?code=${user.verify!!}", registerParam.email!!)
+        sendVerifyMail(user.username!!, user.verify!!, registerParam.email!!)
 
         return RegisterVo(userId = user.id)
     }
@@ -95,21 +93,23 @@ class AuthenticationServiceImpl(
         user.verify ?: throw NoVerificationRequiredException()
 
         user.verify =
-            "${LocalDateTime.now(ZoneOffset.UTC).toInstant(ZoneOffset.UTC).toEpochMilli()}-${UUID.randomUUID()}-${UUID.randomUUID()}-${UUID.randomUUID()}"
+            "${
+                LocalDateTime.now(ZoneOffset.UTC).toInstant(ZoneOffset.UTC).toEpochMilli()
+            }-${UUID.randomUUID()}-${UUID.randomUUID()}-${UUID.randomUUID()}"
         user.updateTime = LocalDateTime.now(ZoneOffset.UTC)
         userService.updateById(user)
 
         WebUtil.getLoginUser()?.user?.userInfo?.email?.let {
-            sendVerifyMail(user.username!!, "http://localhost:5173/verify?code=${user.verify!!}", it)
+            sendVerifyMail(user.username!!, user.verify!!, it)
         } ?: throw AccessDeniedException("Access Denied")
     }
 
-    private fun sendVerifyMail(username: String, verifyUrl: String, email: String) {
+    private fun sendVerifyMail(username: String, code: String, email: String) {
         val velocityContext = VelocityContext().apply {
             put("appName", "氮工具")
             put("appUrl", "http://localhost:5173/")
             put("username", username)
-            put("verifyUrl", verifyUrl)
+            put("verifyUrl", "http://localhost:5173/verify?code=${code}")
         }
         val template = velocityEngine.getTemplate("templates/email-verify-account-cn.vm")
 
@@ -144,6 +144,82 @@ class AuthenticationServiceImpl(
         userInfoService.update(
             KtUpdateWrapper(UserInfo()).eq(UserInfo::userId, user.id).set(UserInfo::nickname, verifyParam.nickname)
                 .set(UserInfo::avatar, verifyParam.avatar)
+        )
+    }
+
+    @Transactional
+    override fun forget(request: HttpServletRequest, forgetParam: ForgetParam) {
+        val user = userService.getUserWithPowerByAccount(forgetParam.email!!)
+        user ?: let { throw UserNotFoundException() }
+        val code = "${
+            LocalDateTime.now(ZoneOffset.UTC).toInstant(ZoneOffset.UTC).toEpochMilli()
+        }-${UUID.randomUUID()}-${UUID.randomUUID()}-${UUID.randomUUID()}"
+        userService.update(KtUpdateWrapper(User()).eq(User::id, user.id).set(User::forget, code))
+        sendRetrieveMail(user.username!!, request.remoteAddr, code, forgetParam.email)
+    }
+
+    private fun sendRetrieveMail(username: String, ip: String, code: String, email: String) {
+        val velocityContext = VelocityContext().apply {
+            put("appName", "氮工具")
+            put("appUrl", "http://localhost:5173/")
+            put("username", username)
+            put("ipAddress", ip)
+            put("retrieveUrl", "http://localhost:5173/forget?code=${code}")
+        }
+        val template = velocityEngine.getTemplate("templates/email-retrieve-password-cn.vm")
+
+        val stringWriter = StringWriter()
+        template.merge(velocityContext, stringWriter)
+
+        MailUtil.sendSimpleMail(
+            "找回您的密码", stringWriter.toString(), true,
+            email
+        )
+    }
+
+    @Transactional
+    override fun retrieve(request: HttpServletRequest, retrieveParam: RetrieveParam) {
+        val codeStrings = retrieveParam.code!!.split("-")
+        if (codeStrings.size != 16) {
+            throw RetrieveCodeErrorOrExpiredException()
+        }
+        try {
+            if (LocalDateTime.ofInstant(Instant.ofEpochMilli(codeStrings.first().toLong()), ZoneOffset.UTC)
+                    .isBefore(LocalDateTime.now(ZoneOffset.UTC).minusHours(2))
+            ) {
+                throw RetrieveCodeErrorOrExpiredException()
+            }
+        } catch (e: Exception) {
+            throw RetrieveCodeErrorOrExpiredException()
+        }
+
+        val user = userService.getOne(KtQueryWrapper(User()).eq(User::forget, retrieveParam.code))
+            ?: throw RetrieveCodeErrorOrExpiredException()
+        val userInfo = userInfoService.getOne(KtQueryWrapper(UserInfo()).eq(UserInfo::userId, user.id))
+
+        userService.update(
+            KtUpdateWrapper(User()).eq(User::id, user.id).set(User::forget, null)
+                .set(User::password, passwordEncoder.encode(retrieveParam.password!!))
+        )
+
+        sendPasswordChangedMail(user.username!!, request.remoteAddr, userInfo!!.email!!)
+    }
+
+    private fun sendPasswordChangedMail(username: String, ip: String, email: String) {
+        val velocityContext = VelocityContext().apply {
+            put("appName", "氮工具")
+            put("appUrl", "http://localhost:5173/")
+            put("username", username)
+            put("ipAddress", ip)
+        }
+        val template = velocityEngine.getTemplate("templates/email-password-changed-cn.vm")
+
+        val stringWriter = StringWriter()
+        template.merge(velocityContext, stringWriter)
+
+        MailUtil.sendSimpleMail(
+            "您的密码已更改", stringWriter.toString(), true,
+            email
         )
     }
 

@@ -121,6 +121,11 @@ class ExceptionHandler {
                 ResponseResult.fail(ResponseCode.PERMISSION_ACCESS_DENIED, "Access Denied", null)
             }
 
+            is UserNotFoundException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.PERMISSION_USER_NOT_FOUND, e.localizedMessage, null)
+            }
+
             is NoVerificationRequiredException -> {
                 logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.PERMISSION_NO_VERIFICATION_REQUIRED, e.localizedMessage, null)
@@ -134,6 +139,16 @@ class ExceptionHandler {
             is AccountNeedInitException -> {
                 logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.PERMISSION_ACCOUNT_NEED_INIT, e.localizedMessage, null)
+            }
+
+            is RetrieveCodeErrorOrExpiredException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.PERMISSION_RETRIEVE_CODE_ERROR_OR_EXPIRED, e.localizedMessage, null)
+            }
+
+            is AccountNeedResetPasswordException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.PERMISSION_ACCOUNT_NEED_RESET_PASSWORD, e.localizedMessage, null)
             }
 
 

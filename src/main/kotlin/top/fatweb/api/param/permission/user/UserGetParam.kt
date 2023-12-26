@@ -18,7 +18,12 @@ data class UserGetParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "搜索类型", allowableValues = ["ALL", "ID", "USERNAME", "NICKNAME", "EMAIL"], defaultValue = "ALL")
+    @Schema(
+        description = "搜索类型",
+        allowableValues = ["ALL", "ID", "USERNAME", "NICKNAME", "EMAIL"],
+        defaultValue = "ALL",
+        example = "ALL"
+    )
     val searchType: String = "ALL",
 
     /**
@@ -27,7 +32,7 @@ data class UserGetParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "查询内容")
+    @Schema(description = "查询内容", example = "User_1")
     val searchValue: String?,
 
     /**
@@ -36,6 +41,11 @@ data class UserGetParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "查询使用正则表达式", allowableValues = ["true", "false"], defaultValue = "false")
+    @Schema(
+        description = "查询使用正则表达式",
+        allowableValues = ["true", "false"],
+        defaultValue = "false",
+        example = "false"
+    )
     val searchRegex: Boolean = false,
 ) : PageSortParam()

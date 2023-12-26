@@ -3,6 +3,7 @@ package top.fatweb.api.mapper.permission
 import com.baomidou.mybatisplus.core.mapper.BaseMapper
 import com.baomidou.mybatisplus.core.metadata.IPage
 import org.apache.ibatis.annotations.Mapper
+import org.apache.ibatis.annotations.Param
 import top.fatweb.api.entity.permission.Role
 
 /**
@@ -26,7 +27,11 @@ interface RoleMapper : BaseMapper<Role> {
      * @since 1.0.0
      * @see IPage
      */
-    fun selectPage(page: IPage<Long>, searchName: String?, searchRegex: Boolean): IPage<Long>
+    fun selectPage(
+        page: IPage<Long>,
+        @Param("searchName") searchName: String?,
+        @Param("searchRegex") searchRegex: Boolean
+    ): IPage<Long>
 
     /**
      * Select role with power list by list of role IDs
@@ -37,7 +42,7 @@ interface RoleMapper : BaseMapper<Role> {
      * @since 1.0.0
      * @see Role
      */
-    fun selectListWithPowerByIds(roleIds: List<Long>): List<Role>?
+    fun selectListWithPowerByIds(@Param("roleIds") roleIds: List<Long>): List<Role>?
 
     /**
      * Select one role by ID
@@ -48,5 +53,5 @@ interface RoleMapper : BaseMapper<Role> {
      * @since 1.0.0
      * @see Role
      */
-    fun selectOneById(id: Long): Role?
+    fun selectOneById(@Param("id") id: Long): Role?
 }

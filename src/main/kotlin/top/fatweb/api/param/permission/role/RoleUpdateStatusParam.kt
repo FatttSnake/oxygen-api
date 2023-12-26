@@ -17,7 +17,7 @@ data class RoleUpdateStatusParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "角色 ID")
+    @Schema(description = "角色 ID", required = true)
     @field:NotNull(message = "Role id can not be null")
     val id: Long?,
 
@@ -27,6 +27,6 @@ data class RoleUpdateStatusParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "启用", allowableValues = ["true", "false"], defaultValue = "true")
+    @Schema(description = "启用", allowableValues = ["true", "false"], defaultValue = "true", example = "true")
     val enable: Boolean = true
 )

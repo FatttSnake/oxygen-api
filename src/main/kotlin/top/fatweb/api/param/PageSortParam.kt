@@ -16,7 +16,7 @@ open class PageSortParam {
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "分页页码", example = "1", defaultValue = "1")
+    @Schema(description = "分页页码", defaultValue = "1", example = "1")
     @field:Min(1, message = "Pagination page number must be a positive integer")
     var currentPage: Long = 1
 
@@ -26,7 +26,7 @@ open class PageSortParam {
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "分页大小", example = "20", defaultValue = "20")
+    @Schema(description = "分页大小", defaultValue = "20", example = "20")
     @field:Min(1, message = "The number of data per page must be a positive integer")
     var pageSize: Long = 20
 
@@ -45,6 +45,6 @@ open class PageSortParam {
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "排序方式", example = "desc", allowableValues = ["desc", "asc"])
+    @Schema(description = "排序方式", allowableValues = ["desc", "asc"], defaultValue = "desc", example = "desc")
     var sortOrder: String? = null
 }

@@ -16,6 +16,6 @@ data class UserDeleteParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "用户 ID 列表")
+    @Schema(description = "用户 ID 列表", required = true)
     val ids: List<Long>
 )

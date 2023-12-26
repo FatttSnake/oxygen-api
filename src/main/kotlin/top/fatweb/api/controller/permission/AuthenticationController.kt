@@ -9,9 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import top.fatweb.api.annotation.BaseController
 import top.fatweb.api.entity.common.ResponseCode
 import top.fatweb.api.entity.common.ResponseResult
-import top.fatweb.api.param.permission.LoginParam
-import top.fatweb.api.param.permission.RegisterParam
-import top.fatweb.api.param.permission.VerifyParam
+import top.fatweb.api.param.permission.*
 import top.fatweb.api.service.permission.IAuthenticationService
 import top.fatweb.api.util.WebUtil
 import top.fatweb.api.vo.permission.LoginVo
@@ -49,7 +47,7 @@ class AuthenticationController(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Operation(summary = "发送验证邮箱")
+    @Operation(summary = "发送验证邮件")
     @PostMapping("/resend")
     fun resend(): ResponseResult<Nothing> {
         authenticationService.resend()
@@ -58,17 +56,45 @@ class AuthenticationController(
     }
 
     /**
-     * Verify
+     * Verify email
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Operation(summary = "验证")
+    @Operation(summary = "验证邮箱")
     @PostMapping("/verify")
     fun verify(@Valid @RequestBody verifyParam: VerifyParam): ResponseResult<Nothing> {
         authenticationService.verify(verifyParam)
 
         return ResponseResult.success(ResponseCode.PERMISSION_VERIFY_SUCCESS)
+    }
+
+    /**
+     * Forget password
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @Operation(summary = "忘记密码")
+    @PostMapping("/forget")
+    fun forget(request: HttpServletRequest, @Valid @RequestBody forgetParam: ForgetParam): ResponseResult<Nothing> {
+        authenticationService.forget(request, forgetParam)
+
+        return ResponseResult.success(ResponseCode.PERMISSION_FORGET_SUCCESS)
+    }
+
+    /**
+     * Retrieve password
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @Operation(summary = "找回密码")
+    @PostMapping("/retrieve")
+    fun retrieve(request: HttpServletRequest, @Valid @RequestBody retrieveParam: RetrieveParam): ResponseResult<Nothing> {
+        authenticationService.retrieve(request, retrieveParam)
+
+        return ResponseResult.success(ResponseCode.PERMISSION_RETRIEVE_SUCCESS)
     }
 
     /**

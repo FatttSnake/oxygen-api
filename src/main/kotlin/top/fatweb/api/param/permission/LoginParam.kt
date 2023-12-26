@@ -17,7 +17,7 @@ data class LoginParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "账户", example = "test", required = true)
+    @Schema(description = "账户", required = true, example = "test")
     @field:NotBlank(message = "Account can not be blank")
     val account: String?,
 
@@ -27,7 +27,7 @@ data class LoginParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "密码", example = "test123456", required = true)
+    @Schema(description = "密码", required = true)
     @field:NotBlank(message = "Password can not be blank")
     val password: String?
 )

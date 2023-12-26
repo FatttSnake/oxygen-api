@@ -3,6 +3,7 @@ package top.fatweb.api.mapper.system
 import com.baomidou.mybatisplus.core.mapper.BaseMapper
 import com.baomidou.mybatisplus.core.metadata.IPage
 import org.apache.ibatis.annotations.Mapper
+import org.apache.ibatis.annotations.Param
 import top.fatweb.api.entity.system.SysLog
 import java.time.LocalDateTime
 
@@ -34,10 +35,10 @@ interface SysLogMapper : BaseMapper<SysLog> {
      */
     fun selectPage(
         page: IPage<SysLog>,
-        logType: List<String>?,
-        requestMethod: List<String>?,
-        searchRequestUrl: String?,
-        searchStartTime: LocalDateTime?,
-        searchEndTime: LocalDateTime?
+        @Param("logType") logType: List<String>?,
+        @Param("requestMethod") requestMethod: List<String>?,
+        @Param("searchRequestUrl") searchRequestUrl: String?,
+        @Param("searchStartTime") searchStartTime: LocalDateTime?,
+        @Param("searchEndTime") searchEndTime: LocalDateTime?
     ): IPage<SysLog>
 }

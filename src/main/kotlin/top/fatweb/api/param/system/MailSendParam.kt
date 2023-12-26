@@ -17,7 +17,7 @@ data class MailSendParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "接收者")
+    @Schema(description = "接收者", required = true, example = "user@email.com")
     @field:NotBlank
     val to: String?
 )

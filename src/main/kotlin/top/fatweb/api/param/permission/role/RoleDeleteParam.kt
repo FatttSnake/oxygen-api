@@ -16,6 +16,6 @@ data class RoleDeleteParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "角色 ID 列表")
+    @Schema(description = "角色 ID 列表", required = true)
     val ids: List<Long>
 )

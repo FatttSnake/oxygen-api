@@ -19,7 +19,7 @@ data class UserAddParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "用户名")
+    @Schema(description = "用户名", required = true, example = "User_1")
     @field:NotBlank(message = "Username can not be blank")
     val username: String?,
 
@@ -38,7 +38,7 @@ data class UserAddParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "是否已验证")
+    @Schema(description = "是否已验证", allowableValues = ["true", "false"], defaultValue = "false", example = "false")
     val verified: Boolean = false,
 
     /**
@@ -47,7 +47,7 @@ data class UserAddParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "锁定", allowableValues = ["true", "false"], defaultValue = "false")
+    @Schema(description = "锁定", allowableValues = ["true", "false"], defaultValue = "false", example = "false")
     val locking: Boolean = false,
 
     /**
@@ -57,7 +57,7 @@ data class UserAddParam(
      * @since 1.0.0
      * @see LocalDateTime
      */
-    @Schema(description = "过期时间")
+    @Schema(description = "过期时间", example = "1900-01-01T00:00:00.000Z")
     val expiration: LocalDateTime?,
 
     /**
@@ -67,7 +67,7 @@ data class UserAddParam(
      * @since 1.0.0
      * @see LocalDateTime
      */
-    @Schema(description = "认证过期时间")
+    @Schema(description = "认证过期时间", example = "1900-01-01T00:00:00.000Z")
     val credentialsExpiration: LocalDateTime?,
 
     /**
@@ -76,7 +76,7 @@ data class UserAddParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "启用", allowableValues = ["true", "false"], defaultValue = "true")
+    @Schema(description = "启用", allowableValues = ["true", "false"], defaultValue = "true", example = "true")
     val enable: Boolean = true,
 
     /**
@@ -85,7 +85,7 @@ data class UserAddParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "昵称")
+    @Schema(description = "昵称", required = true, example = "Nickname_1")
     @field:NotBlank(message = "Nickname can not be blank")
     val nickname: String?,
 
@@ -104,7 +104,8 @@ data class UserAddParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "邮箱")
+    @Schema(description = "邮箱", required = true, example = "user@email.com")
+    @NotBlank(message = "Email can not be blank")
     @Pattern(regexp = "^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*\$", message = "Illegal email address")
     val email: String?,
 

@@ -2,15 +2,16 @@ package top.fatweb.api.param.permission
 
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.Size
 
 /**
- * Verify email parameters
+ * Retrieve password parameters
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-@Schema(description = "验证邮箱请求参数")
-data class VerifyParam(
+@Schema(description = "找回密码请求参数")
+data class RetrieveParam(
     /**
      * Code
      *
@@ -22,20 +23,13 @@ data class VerifyParam(
     val code: String?,
 
     /**
-     * Nickname
+     * New password
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "昵称", example = "QwQ")
-    val nickname: String?,
-
-    /**
-     * Avatar
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     */
-    @Schema(description = "头像")
-    val avatar: String?
+    @Schema(description = "新密码")
+    @field:NotBlank(message = "New password can not be blank")
+    @field:Size(min = 10, max = 30)
+    val password: String?
 )

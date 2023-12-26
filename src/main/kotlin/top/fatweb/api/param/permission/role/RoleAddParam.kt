@@ -17,7 +17,7 @@ data class RoleAddParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "角色名称")
+    @Schema(description = "角色名称", required = true, example = "Role_1")
     @field:NotBlank(message = "Name can not be blank")
     val name: String?,
 
@@ -27,7 +27,7 @@ data class RoleAddParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "启用", allowableValues = ["true", "false"], defaultValue = "true")
+    @Schema(description = "启用", allowableValues = ["true", "false"], defaultValue = "true", example = "true")
     val enable: Boolean = true,
 
     /**

@@ -19,7 +19,7 @@ data class UserUpdatePasswordParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "用户 ID")
+    @Schema(description = "用户 ID", required = true)
     @field:NotNull(message = "ID can not be null")
     val id: Long?,
 
@@ -29,7 +29,7 @@ data class UserUpdatePasswordParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "新密码")
+    @Schema(description = "新密码", required = true)
     @field:NotBlank(message = "Password can not be blank")
     val password: String?,
 
@@ -40,6 +40,6 @@ data class UserUpdatePasswordParam(
      * @since 1.0.0
      * @see LocalDateTime
      */
-    @Schema(description = "认证过期时间")
+    @Schema(description = "认证过期时间", example = "1900-01-01T00:00:00.000Z")
     val credentialsExpiration: LocalDateTime?
 )

@@ -17,7 +17,7 @@ data class GroupAddParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "用户组名称")
+    @Schema(description = "用户组名称", required = true, example = "Group_1")
     @field:NotBlank(message = "Name can not be blank")
     val name: String?,
 
@@ -27,7 +27,7 @@ data class GroupAddParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "启用", allowableValues = ["true", "false"], defaultValue = "true")
+    @Schema(description = "启用", allowableValues = ["true", "false"], defaultValue = "true", example = "true")
     val enable: Boolean = true,
 
     /**

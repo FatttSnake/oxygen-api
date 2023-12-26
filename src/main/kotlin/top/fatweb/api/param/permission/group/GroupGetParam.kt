@@ -18,7 +18,7 @@ data class GroupGetParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "查询用户组名称")
+    @Schema(description = "查询用户组名称", example = "Group_1")
     val searchName: String?,
 
     /**
@@ -27,6 +27,11 @@ data class GroupGetParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "查询使用正则表达式", allowableValues = ["true", "false"], defaultValue = "false")
+    @Schema(
+        description = "查询使用正则表达式",
+        allowableValues = ["true", "false"],
+        defaultValue = "false",
+        example = "false"
+    )
     val searchRegex: Boolean = false,
 ) : PageSortParam()

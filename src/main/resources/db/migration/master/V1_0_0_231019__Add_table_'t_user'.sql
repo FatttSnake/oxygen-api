@@ -5,7 +5,8 @@ create table if not exists t_user
     id                     bigint      not null primary key,
     username               varchar(20) not null comment '用户名',
     password               char(70)    not null comment '密码',
-    verify                 varchar(144) null comment '验证信息',
+    verify                 varchar(144) null comment '验证邮箱',
+    forget                 varchar(144) null comment '忘记密码',
     locking                int         not null comment '锁定',
     expiration             datetime comment '过期时间',
     credentials_expiration datetime comment '认证过期时间',
@@ -19,5 +20,6 @@ create table if not exists t_user
     deleted                bigint      not null default 0,
     version                int         not null default 0,
     constraint t_user_unique_username unique (username, deleted),
-    constraint t_user_unique_verify unique (verify, deleted)
+    constraint t_user_unique_verify unique (verify, deleted),
+    constraint t_user_unique_forget unique (forget, deleted)
 ) comment '用户表';

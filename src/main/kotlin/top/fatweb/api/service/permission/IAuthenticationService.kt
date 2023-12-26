@@ -2,9 +2,7 @@ package top.fatweb.api.service.permission
 
 import jakarta.servlet.http.HttpServletRequest
 import top.fatweb.api.entity.permission.User
-import top.fatweb.api.param.permission.LoginParam
-import top.fatweb.api.param.permission.RegisterParam
-import top.fatweb.api.param.permission.VerifyParam
+import top.fatweb.api.param.permission.*
 import top.fatweb.api.vo.permission.LoginVo
 import top.fatweb.api.vo.permission.RegisterVo
 import top.fatweb.api.vo.permission.TokenVo
@@ -33,12 +31,28 @@ interface IAuthenticationService {
     fun resend()
 
     /**
-     * Verify
+     * Verify email
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
     fun verify(verifyParam: VerifyParam)
+
+    /**
+     * Forget password
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    fun forget(request: HttpServletRequest, forgetParam: ForgetParam)
+
+    /**
+     * Retrieve password
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    fun retrieve(request: HttpServletRequest, retrieveParam: RetrieveParam)
 
     /**
      * Login
