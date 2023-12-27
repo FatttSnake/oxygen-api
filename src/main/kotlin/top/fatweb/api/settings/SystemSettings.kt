@@ -11,6 +11,14 @@ import com.fasterxml.jackson.annotation.JsonInclude
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class SystemSettings(
     /**
+     * Base setting
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    var base: BaseSettings? = null,
+
+    /**
      * Mail setting
      *
      * @author FatttSnake, fatttsnake@gmail.com

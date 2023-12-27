@@ -30,8 +30,13 @@ class AuthenticationController(
     /**
      * Register
      *
+     * @param registerParam Register parameters
+     * @return Response object includes user ID
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see RegisterParam
+     * @see ResponseResult
+     * @see RegisterVo
      */
     @Operation(summary = "注册")
     @PostMapping("/register")
@@ -44,8 +49,10 @@ class AuthenticationController(
     /**
      * Send verify email
      *
+     * @return Response object includes resend result
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see ResponseResult
      */
     @Operation(summary = "发送验证邮件")
     @PostMapping("/resend")
@@ -58,8 +65,12 @@ class AuthenticationController(
     /**
      * Verify email
      *
+     * @param verifyParam Verify parameters
+     * @return Response object includes verify result
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see VerifyParam
+     * @see ResponseResult
      */
     @Operation(summary = "验证邮箱")
     @PostMapping("/verify")
@@ -72,8 +83,14 @@ class AuthenticationController(
     /**
      * Forget password
      *
+     * @param request
+     * @param forgetParam Forget parameters
+     * @return Response object includes forget result
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see HttpServletRequest
+     * @see ForgetParam
+     * @see ResponseResult
      */
     @Operation(summary = "忘记密码")
     @PostMapping("/forget")
@@ -86,8 +103,14 @@ class AuthenticationController(
     /**
      * Retrieve password
      *
+     * @param request
+     * @param retrieveParam Retrieve parameters
+     * @return Response object include retrieve result
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see HttpServletRequest
+     * @see RetrieveParam
+     * @see ResponseResult
      */
     @Operation(summary = "找回密码")
     @PostMapping("/retrieve")

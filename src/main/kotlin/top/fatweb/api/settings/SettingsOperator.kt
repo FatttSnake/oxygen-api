@@ -72,6 +72,51 @@ object SettingsOperator {
     }
 
     /**
+     * Set base settings value
+     *
+     * @param field Field to set value. e.g. BaseSettings::appName
+     * @param value Value to set
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see KMutableProperty1
+     * @see BaseSettings
+     */
+    fun <V> setAppValue(field: KMutableProperty1<BaseSettings, V?>, value: V?) {
+        systemSettings.base?.let {
+            field.set(it, value)
+        } ?: let {
+            systemSettings.base = BaseSettings().also { field.set(it, value) }
+        }
+
+        saveSettingsToFile()
+    }
+
+    /**
+     * Get base settings value
+     *
+     * @param field Field to get value from. e.g. BaseSettings::appName
+     * @return Value
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see KMutableProperty1
+     * @see BaseSettings
+     */
+    fun <V> getAppValue(field: KMutableProperty1<BaseSettings, V?>): V? = this.getAppValue(field, null)
+
+    /**
+     * Get base settings value with default value
+     *
+     * @param field Field to get value from. e.g. BaseSettings::appName
+     * @param default Return default value when setting not found
+     * @return Value
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see KMutableProperty1
+     * @see BaseSettings
+     */
+    fun <V> getAppValue(field: KMutableProperty1<BaseSettings, V?>, default: V): V = systemSettings.base?.let(field) ?: default
+
+    /**
      * Set mail settings value
      *
      * @param field Field to set value. e.g. MailSettings::host
@@ -108,36 +153,18 @@ object SettingsOperator {
      * @see KMutableProperty1
      * @see MailSettings
      */
-    fun <V> getMailValue(field: KMutableProperty1<MailSettings, V?>): V? = systemSettings.mail?.let(field)
+    fun <V> getMailValue(field: KMutableProperty1<MailSettings, V?>): V? = this.getMailValue(field, null)
 
     /**
-     * Get system settings object
+     * Get value from mail settings with default value
      *
-     * @return System settings object (Copy)
+     * @param field Field to get value from. e.g. MailSettings::host
+     * @param default Return default value when setting not found
+     * @return Value
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
-     * @see SystemSettings
+     * @see KMutableProperty1
+     * @see MailSettings
      */
-    fun settings(): SystemSettings = systemSettings.copy(
-        mail = systemSettings.mail?.copy()
-    ).apply {
-        mail?.apply {
-            password = password?.let {
-                StrUtil.md5(it)
-            }
-        }
-    }
-
-    /**
-     * Overwrite all settings
-     *
-     * @param systemSettings SystemSettings object
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see SystemSettings
-     */
-    fun overwrite(systemSettings: SystemSettings) {
-        this.systemSettings = systemSettings
-        saveSettingsToFile()
-    }
+    fun <V> getMailValue(field: KMutableProperty1<MailSettings, V?>, default: V): V = systemSettings.mail?.let(field) ?: default
 }

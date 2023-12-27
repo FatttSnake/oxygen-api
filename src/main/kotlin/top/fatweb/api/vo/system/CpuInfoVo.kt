@@ -1,6 +1,7 @@
 package top.fatweb.api.vo.system
 
 import com.fasterxml.jackson.annotation.JsonInclude
+import io.swagger.v3.oas.annotations.media.Schema
 
 /**
  * CPU information value object
@@ -8,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
+@Schema(description = "CPU 信息返回参数")
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class CpuInfoVo(
     /**
@@ -18,6 +20,7 @@ data class CpuInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "user")
     val user: Long,
 
     /**
@@ -28,6 +31,7 @@ data class CpuInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "nice")
     val nice: Long,
 
     /**
@@ -40,6 +44,7 @@ data class CpuInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "system")
     val system: Long,
 
     /**
@@ -50,6 +55,7 @@ data class CpuInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "idle")
     val idle: Long,
 
     /**
@@ -61,6 +67,7 @@ data class CpuInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "iowait")
     val iowait: Long,
 
     /**
@@ -71,6 +78,7 @@ data class CpuInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "irq")
     val irq: Long,
 
     /**
@@ -81,6 +89,7 @@ data class CpuInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "softirq")
     val softirq: Long,
 
     /**
@@ -92,6 +101,7 @@ data class CpuInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "steal")
     val steal: Long,
 
     /**
@@ -100,6 +110,7 @@ data class CpuInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "total")
     val total: Long,
 
     /**
@@ -108,5 +119,6 @@ data class CpuInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "处理器列表")
     val processors: List<CpuInfoVo>? = null
 )

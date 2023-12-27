@@ -17,17 +17,32 @@ import top.fatweb.api.vo.permission.RegisterVo
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see IEventLogService
  */
 @Aspect
 @Component
 class EventLogAspect(
     private val eventLogService: IEventLogService
 ) {
-
+    /**
+     * Event log record pointcut
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     @Pointcut("@annotation(top.fatweb.api.annotation.EventLogRecord)")
     fun eventLogPointcut() {
     }
 
+    /**
+     * Do after event log record pointcut
+     *
+     * @param joinPoint Join point
+     * @param retValue Return value
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see JoinPoint
+     */
     @AfterReturning(value = "eventLogPointcut()", returning = "retValue")
     fun doAfter(joinPoint: JoinPoint, retValue: Any?) {
         val annotation = (joinPoint.signature as MethodSignature).method.getAnnotation(EventLogRecord::class.java)

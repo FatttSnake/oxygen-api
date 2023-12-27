@@ -1,11 +1,14 @@
 package top.fatweb.api.vo.system
 
+import io.swagger.v3.oas.annotations.media.Schema
+
 /**
  * Hardware information value object
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
+@Schema(description = "硬件信息返回参数")
 data class HardwareInfoVo(
     /**
      * Name of CPU
@@ -13,6 +16,7 @@ data class HardwareInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "CPU")
     val cpu: String,
 
     /**
@@ -21,6 +25,7 @@ data class HardwareInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "架构")
     val arch: String,
 
     /**
@@ -29,6 +34,7 @@ data class HardwareInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "是否为64位")
     val is64Bit: Boolean,
 
     /**
@@ -38,6 +44,7 @@ data class HardwareInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "物理 CPU")
     val cpuPhysicalPackageCount: Int,
 
     /**
@@ -51,6 +58,7 @@ data class HardwareInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "物理核心")
     val cpuPhysicalProcessorCount: Int,
 
     /**
@@ -64,6 +72,7 @@ data class HardwareInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "逻辑核心")
     val cpuLogicalProcessorCount: Int,
 
     /**
@@ -72,6 +81,7 @@ data class HardwareInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "微架构")
     val microarchitecture: String,
 
     /**
@@ -80,6 +90,7 @@ data class HardwareInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "内存")
     val memories: String,
 
     /**
@@ -88,5 +99,6 @@ data class HardwareInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "存储")
     val disks: String
 )

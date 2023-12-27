@@ -1,11 +1,14 @@
 package top.fatweb.api.vo.system
 
+import io.swagger.v3.oas.annotations.media.Schema
+
 /**
  * Storage information value object
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
+@Schema(description = "存储信息返回参数")
 data class StorageInfoVo(
     /**
      * The amount of actual physical memory.
@@ -13,6 +16,7 @@ data class StorageInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "总内存容量")
     val memoryTotal: Long,
 
     /**
@@ -22,6 +26,7 @@ data class StorageInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "空闲内存容量")
     val memoryFree: Long,
 
     /**
@@ -40,6 +45,7 @@ data class StorageInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "总虚拟内存容量")
     val virtualMemoryMax: Long,
 
     /**
@@ -57,6 +63,7 @@ data class StorageInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "已用虚拟内存容量")
     val virtualMemoryInUse: Long,
 
     /**
@@ -67,6 +74,7 @@ data class StorageInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "总交换区容量")
     val swapTotal: Long,
 
     /**
@@ -76,6 +84,7 @@ data class StorageInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "可用交换区容量")
     val swapUsed: Long,
 
     /**
@@ -84,6 +93,7 @@ data class StorageInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "Java 虚拟机总内存容量")
     val jvmTotal: Long,
 
     /**
@@ -92,6 +102,7 @@ data class StorageInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "Java 虚拟机空闲内存容量")
     val jvmFree: Long,
 
     /**
@@ -101,5 +112,6 @@ data class StorageInfoVo(
      * @since 1.0.0
      * @see FileStoreInfoVo
      */
+    @Schema(description = "文件存储信息列表")
     val fileStores: List<FileStoreInfoVo>
 )

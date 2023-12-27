@@ -1,5 +1,6 @@
 package top.fatweb.api.vo.system
 
+import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDateTime
 
 /**
@@ -8,6 +9,7 @@ import java.time.LocalDateTime
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
+@Schema(description = "软甲信息返回参数")
 data class SoftwareInfoVo(
     /**
      * Operating system
@@ -15,6 +17,7 @@ data class SoftwareInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "操作系统")
     val os: String,
 
     /**
@@ -23,6 +26,7 @@ data class SoftwareInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "位数")
     val bitness: Int,
 
     /**
@@ -31,6 +35,7 @@ data class SoftwareInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "Java 版本")
     val javaVersion: String,
 
     /**
@@ -39,6 +44,7 @@ data class SoftwareInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "Java 版本日期")
     val javaVersionDate: String,
 
     /**
@@ -47,6 +53,7 @@ data class SoftwareInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "Java 供应商")
     val javaVendor: String,
 
     /**
@@ -55,6 +62,7 @@ data class SoftwareInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "Java 运行时")
     val javaRuntime: String,
 
     /**
@@ -63,6 +71,7 @@ data class SoftwareInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "Java 运行时版本")
     val javaRuntimeVersion: String,
 
     /**
@@ -71,6 +80,7 @@ data class SoftwareInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "Java 虚拟机")
     val jvm: String,
 
     /**
@@ -79,6 +89,7 @@ data class SoftwareInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "Java 虚拟机版本")
     val jvmVersion: String,
 
     /**
@@ -87,6 +98,7 @@ data class SoftwareInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "Java 虚拟机信息")
     val jvmInfo: String,
 
     /**
@@ -95,6 +107,7 @@ data class SoftwareInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "Java 虚拟机供应商")
     val jvmVendor: String,
 
     /**
@@ -103,6 +116,7 @@ data class SoftwareInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "Java 字节文件版本")
     val javaClassVersion: String,
 
     /**
@@ -111,6 +125,7 @@ data class SoftwareInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "操作系统启动时间")
     val osBootTime: LocalDateTime,
 
     /**
@@ -119,5 +134,6 @@ data class SoftwareInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "服务器启动时间")
     val serverStartupTime: LocalDateTime
 )

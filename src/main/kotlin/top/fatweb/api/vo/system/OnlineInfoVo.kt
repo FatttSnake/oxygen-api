@@ -1,5 +1,6 @@
 package top.fatweb.api.vo.system
 
+import io.swagger.v3.oas.annotations.media.Schema
 import top.fatweb.api.vo.system.OnlineInfoVo.HistoryVo
 import java.time.LocalDateTime
 
@@ -9,6 +10,7 @@ import java.time.LocalDateTime
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
+@Schema(description = "在线信息返回参数")
 data class OnlineInfoVo(
     /**
      * Number of user currently online
@@ -16,6 +18,7 @@ data class OnlineInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "当前在线用户数量")
     val current: Long,
 
     /**
@@ -25,6 +28,7 @@ data class OnlineInfoVo(
      * @since 1.0.0
      * @see HistoryVo
      */
+    @Schema(description = "历史记录")
     val history: List<HistoryVo>
 ) {
     data class HistoryVo(
@@ -35,6 +39,7 @@ data class OnlineInfoVo(
          * @since 1.0.0
          * @see LocalDateTime
          */
+        @Schema(description = "记录时间")
         val time: LocalDateTime,
 
         /**
@@ -43,6 +48,7 @@ data class OnlineInfoVo(
          * @author FatttSnake, fatttsnake@gmail.com
          * @since 1.0.0
          */
+        @Schema(description = "记录")
         val record: String
     )
 }

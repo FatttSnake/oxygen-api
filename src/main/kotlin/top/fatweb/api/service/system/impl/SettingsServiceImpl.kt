@@ -1,14 +1,17 @@
 package top.fatweb.api.service.system.impl
 
 import org.springframework.stereotype.Service
-import top.fatweb.api.converter.system.SettingsConverter
+import top.fatweb.api.param.system.BaseSettingsParam
 import top.fatweb.api.param.system.MailSendParam
 import top.fatweb.api.param.system.MailSettingsParam
 import top.fatweb.api.properties.ServerProperties
 import top.fatweb.api.service.system.ISettingsService
+import top.fatweb.api.settings.BaseSettings
 import top.fatweb.api.settings.MailSettings
 import top.fatweb.api.settings.SettingsOperator
 import top.fatweb.api.util.MailUtil
+import top.fatweb.api.util.StrUtil
+import top.fatweb.api.vo.system.BaseSettingsVo
 import top.fatweb.api.vo.system.MailSettingsVo
 
 /**
@@ -20,14 +23,40 @@ import top.fatweb.api.vo.system.MailSettingsVo
  */
 @Service
 class SettingsServiceImpl : ISettingsService {
-    override fun getMail(): MailSettingsVo? = SettingsOperator.settings().mail?.let {
-        SettingsConverter.mailSettingsToMailSettingsVo(
-            it
+    override fun getBase() = BaseSettingsVo(
+        appName = SettingsOperator.getAppValue(BaseSettings::appName, "氧工具"),
+        appUrl = SettingsOperator.getAppValue(BaseSettings::appUrl, "http://localhost"),
+        verifyUrl = SettingsOperator.getAppValue(
+            BaseSettings::verifyUrl,
+            "http://localhost/verify?code=\${verifyCode}"
+        ),
+        retrieveUrl = SettingsOperator.getAppValue(
+            BaseSettings::retrieveUrl,
+            "http://localhost/retrieve?code=\${retrieveCode}"
         )
+    )
+
+    override fun updateBase(baseSettingsParam: BaseSettingsParam) {
+        baseSettingsParam.run {
+            SettingsOperator.setAppValue(BaseSettings::appName, appName)
+            SettingsOperator.setAppValue(BaseSettings::appUrl, appUrl)
+            SettingsOperator.setAppValue(BaseSettings::verifyUrl, verifyUrl)
+            SettingsOperator.setAppValue(BaseSettings::retrieveUrl, retrieveUrl)
+        }
     }
 
+    override fun getMail() = MailSettingsVo(
+        host = SettingsOperator.getMailValue(MailSettings::host),
+        port = SettingsOperator.getMailValue(MailSettings::port),
+        securityType = SettingsOperator.getMailValue(MailSettings::securityType),
+        username = SettingsOperator.getMailValue(MailSettings::username),
+        password = SettingsOperator.getMailValue(MailSettings::password)?.let { StrUtil.md5(it) },
+        from = SettingsOperator.getMailValue(MailSettings::from),
+        fromName = SettingsOperator.getMailValue(MailSettings::fromName)
+    )
+
     override fun updateMail(mailSettingsParam: MailSettingsParam) {
-        mailSettingsParam.apply {
+        mailSettingsParam.run {
             SettingsOperator.setMailValue(MailSettings::host, host)
             SettingsOperator.setMailValue(MailSettings::port, port)
             SettingsOperator.setMailValue(MailSettings::securityType, securityType)

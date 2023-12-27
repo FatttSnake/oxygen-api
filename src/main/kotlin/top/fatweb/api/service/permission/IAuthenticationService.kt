@@ -17,8 +17,12 @@ interface IAuthenticationService {
     /**
      * Register
      *
+     * @param registerParam Register parameters
+     * @return RegisterVo object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see RegisterParam
+     * @see RegisterVo
      */
     fun register(registerParam: RegisterParam): RegisterVo
 
@@ -33,24 +37,34 @@ interface IAuthenticationService {
     /**
      * Verify email
      *
+     * @param verifyParam Verify parameters
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see VerifyParam
      */
     fun verify(verifyParam: VerifyParam)
 
     /**
      * Forget password
      *
+     * @param request
+     * @param forgetParam Forget parameters
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see HttpServletRequest
+     * @see ForgetParam
      */
     fun forget(request: HttpServletRequest, forgetParam: ForgetParam)
 
     /**
      * Retrieve password
      *
+     * @param request
+     * @param retrieveParam Retrieve parameters
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see HttpServletRequest
+     * @see RetrieveParam
      */
     fun retrieve(request: HttpServletRequest, retrieveParam: RetrieveParam)
 

@@ -25,6 +25,8 @@ import top.fatweb.api.service.api.v1.IAvatarService
 import top.fatweb.api.service.permission.IAuthenticationService
 import top.fatweb.api.service.permission.IUserInfoService
 import top.fatweb.api.service.permission.IUserService
+import top.fatweb.api.settings.BaseSettings
+import top.fatweb.api.settings.SettingsOperator
 import top.fatweb.api.util.JwtUtil
 import top.fatweb.api.util.MailUtil
 import top.fatweb.api.util.RedisUtil
@@ -106,10 +108,16 @@ class AuthenticationServiceImpl(
 
     private fun sendVerifyMail(username: String, code: String, email: String) {
         val velocityContext = VelocityContext().apply {
-            put("appName", "氮工具")
-            put("appUrl", "http://localhost:5173/")
+            put("appName", SettingsOperator.getAppValue(BaseSettings::appName, "氧工具"))
+            put("appUrl", SettingsOperator.getAppValue(BaseSettings::appUrl, "http://localhost"))
             put("username", username)
-            put("verifyUrl", "http://localhost:5173/verify?code=${code}")
+            put(
+                "verifyUrl",
+                SettingsOperator.getAppValue(BaseSettings::verifyUrl, "http://localhost/verify?code=\${verifyCode}")
+                    .replace(
+                        Regex("(?<=([^\\\\]))\\$\\{verifyCode}"), code
+                    )
+            )
         }
         val template = velocityEngine.getTemplate("templates/email-verify-account-cn.vm")
 
@@ -160,11 +168,17 @@ class AuthenticationServiceImpl(
 
     private fun sendRetrieveMail(username: String, ip: String, code: String, email: String) {
         val velocityContext = VelocityContext().apply {
-            put("appName", "氮工具")
-            put("appUrl", "http://localhost:5173/")
+            put("appName", SettingsOperator.getAppValue(BaseSettings::appName, "氧工具"))
+            put("appUrl", SettingsOperator.getAppValue(BaseSettings::appUrl, "http://localhost"))
             put("username", username)
             put("ipAddress", ip)
-            put("retrieveUrl", "http://localhost:5173/forget?code=${code}")
+            put(
+                "retrieveUrl",
+                SettingsOperator.getAppValue(BaseSettings::retrieveUrl, "http://localhost/retrieve?code=\${retrieveCode}")
+                    .replace(
+                        Regex("(?<=([^\\\\]))\\$\\{retrieveCode}"), code
+                    )
+            )
         }
         val template = velocityEngine.getTemplate("templates/email-retrieve-password-cn.vm")
 
@@ -209,8 +223,8 @@ class AuthenticationServiceImpl(
 
     private fun sendPasswordChangedMail(username: String, ip: String, email: String) {
         val velocityContext = VelocityContext().apply {
-            put("appName", "氮工具")
-            put("appUrl", "http://localhost:5173/")
+            put("appName", SettingsOperator.getAppValue(BaseSettings::appName, "氧工具"))
+            put("appUrl", SettingsOperator.getAppValue(BaseSettings::appUrl, "http://localhost"))
             put("username", username)
             put("ipAddress", ip)
         }

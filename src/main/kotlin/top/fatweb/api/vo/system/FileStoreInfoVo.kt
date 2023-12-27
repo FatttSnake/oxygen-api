@@ -1,11 +1,14 @@
 package top.fatweb.api.vo.system
 
+import io.swagger.v3.oas.annotations.media.Schema
+
 /**
  * File storage information value object
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
+@Schema(description = "文件存储信息返回参数")
 data class FileStoreInfoVo(
     /**
      * Mount point of the File System. The
@@ -15,6 +18,7 @@ data class FileStoreInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "挂载点")
     val mount: String,
 
     /**
@@ -23,6 +27,7 @@ data class FileStoreInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "总容量")
     val total: Long,
 
     /**
@@ -33,5 +38,6 @@ data class FileStoreInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Schema(description = "空闲容量")
     val free: Long
 )

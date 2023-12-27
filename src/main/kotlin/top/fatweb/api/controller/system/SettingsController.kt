@@ -9,9 +9,11 @@ import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import top.fatweb.api.annotation.BaseController
 import top.fatweb.api.entity.common.ResponseResult
+import top.fatweb.api.param.system.BaseSettingsParam
 import top.fatweb.api.param.system.MailSendParam
 import top.fatweb.api.param.system.MailSettingsParam
 import top.fatweb.api.service.system.ISettingsService
+import top.fatweb.api.vo.system.BaseSettingsVo
 import top.fatweb.api.vo.system.MailSettingsVo
 
 /**
@@ -25,6 +27,31 @@ import top.fatweb.api.vo.system.MailSettingsVo
 class SettingsController(
     private val settingsService: ISettingsService
 ) {
+    /**
+     * Get base settings
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @Operation(summary = "获取基础设置")
+    @GetMapping("/base")
+    @PreAuthorize("hasAnyAuthority('system:settings:query:base')")
+    fun getApp(): ResponseResult<BaseSettingsVo> = ResponseResult.success(data = settingsService.getBase())
+
+    /**
+     * Update base settings
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @Operation(summary = "更新基础设置")
+    @PutMapping("/base")
+    @PreAuthorize("hasAnyAuthority('system:settings:modify:base')")
+    fun updateApp(@RequestBody baseSettingsParam: BaseSettingsParam): ResponseResult<Nothing> {
+        settingsService.updateBase(baseSettingsParam)
+        return ResponseResult.success()
+    }
+
     /**
      * Get mail settings
      *

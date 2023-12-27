@@ -6,6 +6,12 @@ import org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
+/**
+ * Velocity engine configuration
+ *
+ * @author FatttSnake, fatttsnake@gmail.com
+ * @since 1.0.0
+ */
 @Configuration
 class VelocityEngineConfig {
     @Bean
