@@ -202,6 +202,8 @@ class AuthenticationServiceImpl(
                 .set(User::password, passwordEncoder.encode(retrieveParam.password!!))
         )
 
+        WebUtil.offlineUser(redisUtil, user.id!!)
+
         sendPasswordChangedMail(user.username!!, request.remoteAddr, userInfo!!.email!!)
     }
 
