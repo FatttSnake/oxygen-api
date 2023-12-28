@@ -35,7 +35,7 @@ mybatis-plus:
       logic-not-delete-value: 0
       logic-delete-value: id
       id-type: assign_id
-  type-aliases-package: top.fatweb.api.entity
+  type-aliases-package: top.fatweb.oxygen.api.entity
 
 logging:
   level:

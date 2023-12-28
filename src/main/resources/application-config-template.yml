@@ -3,14 +3,14 @@ app:
 #    username: admin # Username of administrator
 #    password: admin # Default password of administrator
 #    nickname: Administrator # Nickname of administrator
-#    email: admin@fatweb.top # Email of administrator
+#    email: admin@mail.com # Email of administrator
   security:
 #    header-string: "Authorization" # The key of head to get token
 #    token-prefix: "Bearer " # Token prefix
 #    jwt-ttl: 2 # The life of token
 #    jwt-ttl-unit: hours # Unit of life of token [nanoseconds, microseconds, milliseconds, seconds, minutes, hours, days]
     jwt-key: $uuid$ # Key to generate token (Only numbers and letters allow)
-#    jwt-issuer: FatWeb # Token issuer
+#    jwt-issuer: Oxygen # Token issuer
 #    redis-ttl: 20 # The life of token in redis
 #    redis-ttl-unit: minutes # Unit of life of token in redis [nanoseconds, microseconds, milliseconds, seconds, minutes, hours, days]
 

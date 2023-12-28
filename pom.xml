@@ -11,8 +11,8 @@
     <groupId>top.fatweb</groupId>
     <artifactId>api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>fatweb-api</name>
-    <description>fatweb-api</description>
+    <name>oxygen-api</name>
+    <description>oxygen-api</description>
 
     <repositories>
         <repository>

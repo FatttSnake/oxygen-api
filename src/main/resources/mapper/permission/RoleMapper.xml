@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="top.fatweb.api.mapper.permission.RoleMapper">
+<mapper namespace="top.fatweb.oxygen.api.mapper.permission.RoleMapper">
     <select id="selectPage" resultType="long">
         select id
         from t_role
@@ -101,9 +101,9 @@
     </resultMap>
 
     <resultMap id="roleWithPowerMap" type="role" extends="roleMap">
-        <collection property="modules" resultMap="top.fatweb.api.mapper.permission.ModuleMapper.moduleMap"/>
-        <collection property="menus" resultMap="top.fatweb.api.mapper.permission.MenuMapper.menuMap"/>
-        <collection property="funcs" resultMap="top.fatweb.api.mapper.permission.FuncMapper.funcMap"/>
-        <collection property="operations" resultMap="top.fatweb.api.mapper.permission.OperationMapper.operationMap"/>
+        <collection property="modules" resultMap="top.fatweb.oxygen.api.mapper.permission.ModuleMapper.moduleMap"/>
+        <collection property="menus" resultMap="top.fatweb.oxygen.api.mapper.permission.MenuMapper.menuMap"/>
+        <collection property="funcs" resultMap="top.fatweb.oxygen.api.mapper.permission.FuncMapper.funcMap"/>
+        <collection property="operations" resultMap="top.fatweb.oxygen.api.mapper.permission.OperationMapper.operationMap"/>
     </resultMap>
 </mapper>

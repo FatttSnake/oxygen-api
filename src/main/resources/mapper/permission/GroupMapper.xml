@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="top.fatweb.api.mapper.permission.GroupMapper">
+<mapper namespace="top.fatweb.oxygen.api.mapper.permission.GroupMapper">
     <select id="selectPage" resultType="long">
         select id
         from t_group
@@ -77,6 +77,6 @@
     </resultMap>
 
     <resultMap id="groupWithRoleMap" type="group" extends="groupMap">
-        <collection property="roles" resultMap="top.fatweb.api.mapper.permission.RoleMapper.roleMap"/>
+        <collection property="roles" resultMap="top.fatweb.oxygen.api.mapper.permission.RoleMapper.roleMap"/>
     </resultMap>
 </mapper>
