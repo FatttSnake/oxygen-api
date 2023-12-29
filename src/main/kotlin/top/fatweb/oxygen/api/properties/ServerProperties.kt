@@ -48,6 +48,14 @@ object ServerProperties {
      */
     val startupTime: LocalDateTime = LocalDateTime.now(ZoneOffset.UTC)
 
+    /**
+     * Turnstile secret key
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    lateinit var turnstileSecretKey: String
+
     fun buildZoneDateTime(zoneId: ZoneId = ZoneId.systemDefault()): ZonedDateTime =
         LocalDateTime.parse(buildTime).atZone(ZoneId.of("UTC")).withZoneSameInstant(zoneId)
 }

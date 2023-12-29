@@ -1,4 +1,6 @@
 app:
+  app-name: Oxygen Toolbox # Application name
+  turnstile-secret-key: 1x0000000000000000000000000000000AA # Turnstile secret key
   admin:
 #    username: admin # Username of administrator
 #    password: admin # Default password of administrator

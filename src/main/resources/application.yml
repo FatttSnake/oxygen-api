@@ -1,5 +1,5 @@
 app:
-  app-name: FatWeb
+  app-name: Oxygen Toolbox
   version: @project.version@
   build-time: @build.timestamp@
 

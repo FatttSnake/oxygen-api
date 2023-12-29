@@ -19,6 +19,7 @@ import top.fatweb.oxygen.api.entity.permission.User
 import top.fatweb.oxygen.api.entity.permission.UserInfo
 import top.fatweb.oxygen.api.entity.system.EventLog
 import top.fatweb.oxygen.api.exception.*
+import top.fatweb.oxygen.api.http.TurnstileApi
 import top.fatweb.oxygen.api.param.permission.*
 import top.fatweb.oxygen.api.properties.SecurityProperties
 import top.fatweb.oxygen.api.service.api.v1.IAvatarService
@@ -56,6 +57,7 @@ class AuthenticationServiceImpl(
     private val authenticationManager: AuthenticationManager,
     private val passwordEncoder: PasswordEncoder,
     private val redisUtil: RedisUtil,
+    private val turnstileApi: TurnstileApi,
     private val userService: IUserService,
     private val userInfoService: IUserInfoService,
     private val avatarService: IAvatarService
@@ -64,7 +66,7 @@ class AuthenticationServiceImpl(
 
     @EventLogRecord(EventLog.Event.REGISTER)
     @Transactional
-    override fun register(registerParam: RegisterParam): RegisterVo {
+    override fun register(request: HttpServletRequest, registerParam: RegisterParam): RegisterVo {
         val user = User().apply {
             username = registerParam.username
             password = passwordEncoder.encode(registerParam.password)
@@ -85,7 +87,9 @@ class AuthenticationServiceImpl(
 
         sendVerifyMail(user.username!!, user.verify!!, registerParam.email!!)
 
-        return RegisterVo(userId = user.id)
+        val loginVo = this.login(request, registerParam.username!!, registerParam.password!!)
+
+        return RegisterVo(token = loginVo.token, userId = loginVo.userId)
     }
 
     @Transactional
@@ -244,8 +248,21 @@ class AuthenticationServiceImpl(
 
     @EventLogRecord(EventLog.Event.LOGIN)
     override fun login(request: HttpServletRequest, loginParam: LoginParam): LoginVo {
+        try {
+            val siteverifyResponse = turnstileApi.siteverify(loginParam.captchaCode!!)
+            if (!siteverifyResponse.success) {
+                throw InvalidCaptchaCodeException()
+            }
+        } catch (e: Exception) {
+            throw InvalidCaptchaCodeException()
+        }
+
+        return this.login(request, loginParam.account!!, loginParam.password!!)
+    }
+
+    private fun login(request: HttpServletRequest, account: String, password: String): LoginVo {
         val usernamePasswordAuthenticationToken =
-            UsernamePasswordAuthenticationToken(loginParam.account, loginParam.password)
+            UsernamePasswordAuthenticationToken(account, password)
         val authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken)
         authentication ?: let {
             throw RuntimeException("Login failed")

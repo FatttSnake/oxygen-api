@@ -40,9 +40,12 @@ class AuthenticationController(
      */
     @Operation(summary = "注册")
     @PostMapping("/register")
-    fun register(@Valid @RequestBody registerParam: RegisterParam): ResponseResult<RegisterVo> = ResponseResult.success(
+    fun register(
+        request: HttpServletRequest,
+        @Valid @RequestBody registerParam: RegisterParam
+    ): ResponseResult<RegisterVo> = ResponseResult.success(
         ResponseCode.PERMISSION_REGISTER_SUCCESS,
-        data = authenticationService.register(registerParam)
+        data = authenticationService.register(request, registerParam)
     )
 
 

@@ -24,7 +24,7 @@ interface IAuthenticationService {
      * @see RegisterParam
      * @see RegisterVo
      */
-    fun register(registerParam: RegisterParam): RegisterVo
+    fun register(request: HttpServletRequest, registerParam: RegisterParam): RegisterVo
 
     /**
      * Send verify email

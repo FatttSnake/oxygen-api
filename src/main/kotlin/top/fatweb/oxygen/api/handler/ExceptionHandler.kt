@@ -151,6 +151,11 @@ class ExceptionHandler {
                 ResponseResult.fail(ResponseCode.PERMISSION_ACCOUNT_NEED_RESET_PASSWORD, e.localizedMessage, null)
             }
 
+            is InvalidCaptchaCodeException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.SYSTEM_INVALID_CAPTCHA_CODE, e.localizedMessage, null)
+            }
+
 
             is BadSqlGrammarException -> {
                 logger.debug(e.localizedMessage, e)
