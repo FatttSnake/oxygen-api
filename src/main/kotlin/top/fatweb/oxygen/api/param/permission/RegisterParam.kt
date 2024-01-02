@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
 import jakarta.validation.constraints.Size
+import top.fatweb.oxygen.api.param.CaptchaCodeParam
 
 /**
  * Register parameters
@@ -45,4 +46,4 @@ data class RegisterParam(
     @field:NotBlank(message = "Password can not be blank")
     @field:Size(min = 10, max = 30)
     val password: String?
-)
+) : CaptchaCodeParam()

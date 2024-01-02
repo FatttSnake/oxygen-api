@@ -58,6 +58,11 @@ class ExceptionHandler {
                 ResponseResult.fail(ResponseCode.SYSTEM_ARGUMENT_NOT_VALID, errorMessage, null)
             }
 
+            is RequestTooFrequent -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.SYSTEM_REQUEST_TOO_FREQUENT, e.localizedMessage, null)
+            }
+
             is InsufficientAuthenticationException -> {
                 logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.PERMISSION_UNAUTHORIZED, e.localizedMessage, null)

@@ -3,6 +3,7 @@ package top.fatweb.oxygen.api.param.permission
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
+import top.fatweb.oxygen.api.param.CaptchaCodeParam
 
 /**
  * Forget password parameters
@@ -22,4 +23,4 @@ data class ForgetParam(
     @field:NotBlank(message = "Email can not be blank")
     @field:Pattern(regexp = "^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*\$", message = "Illegal email address")
     val email: String?
-)
+) : CaptchaCodeParam()

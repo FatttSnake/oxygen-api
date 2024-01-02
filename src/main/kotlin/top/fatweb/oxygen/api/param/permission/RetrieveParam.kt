@@ -3,6 +3,7 @@ package top.fatweb.oxygen.api.param.permission
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
+import top.fatweb.oxygen.api.param.CaptchaCodeParam
 
 /**
  * Retrieve password parameters
@@ -32,4 +33,4 @@ data class RetrieveParam(
     @field:NotBlank(message = "New password can not be blank")
     @field:Size(min = 10, max = 30)
     val password: String?
-)
+) : CaptchaCodeParam()

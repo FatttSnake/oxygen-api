@@ -2,6 +2,7 @@ package top.fatweb.oxygen.api.param.permission
 
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotBlank
+import top.fatweb.oxygen.api.param.CaptchaCodeParam
 
 /**
  * Login parameters
@@ -29,15 +30,5 @@ data class LoginParam(
      */
     @Schema(description = "密码", required = true)
     @field:NotBlank(message = "Password can not be blank")
-    val password: String?,
-
-    /**
-     * Captcha code
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     */
-    @Schema(description = "验证码", required = true)
-    @field:NotBlank(message = "Captcha code can not be blank")
-    val captchaCode: String?
-)
+    val password: String?
+) : CaptchaCodeParam()

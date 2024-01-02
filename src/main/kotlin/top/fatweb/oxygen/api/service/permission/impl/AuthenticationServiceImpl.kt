@@ -67,6 +67,8 @@ class AuthenticationServiceImpl(
     @EventLogRecord(EventLog.Event.REGISTER)
     @Transactional
     override fun register(request: HttpServletRequest, registerParam: RegisterParam): RegisterVo {
+        verifyCaptcha(registerParam.captchaCode!!)
+
         val user = User().apply {
             username = registerParam.username
             password = passwordEncoder.encode(registerParam.password)
@@ -98,6 +100,12 @@ class AuthenticationServiceImpl(
 
         user.verify ?: throw NoVerificationRequiredException()
 
+        if (LocalDateTime.ofInstant(Instant.ofEpochMilli(user.verify!!.split("-").first().toLong()), ZoneOffset.UTC)
+                .isAfter(LocalDateTime.now(ZoneOffset.UTC).minusMinutes(5))
+        ) {
+            throw RequestTooFrequent()
+        }
+
         user.verify =
             "${
                 LocalDateTime.now(ZoneOffset.UTC).toInstant(ZoneOffset.UTC).toEpochMilli()
@@ -108,30 +116,6 @@ class AuthenticationServiceImpl(
         WebUtil.getLoginUser()?.user?.userInfo?.email?.let {
             sendVerifyMail(user.username!!, user.verify!!, it)
         } ?: throw AccessDeniedException("Access Denied")
-    }
-
-    private fun sendVerifyMail(username: String, code: String, email: String) {
-        val velocityContext = VelocityContext().apply {
-            put("appName", SettingsOperator.getAppValue(BaseSettings::appName, "氧工具"))
-            put("appUrl", SettingsOperator.getAppValue(BaseSettings::appUrl, "http://localhost"))
-            put("username", username)
-            put(
-                "verifyUrl",
-                SettingsOperator.getAppValue(BaseSettings::verifyUrl, "http://localhost/verify?code=\${verifyCode}")
-                    .replace(
-                        Regex("(?<=([^\\\\]))\\$\\{verifyCode}"), code
-                    )
-            )
-        }
-        val template = velocityEngine.getTemplate("templates/email-verify-account-cn.vm")
-
-        val stringWriter = StringWriter()
-        template.merge(velocityContext, stringWriter)
-
-        MailUtil.sendSimpleMail(
-            "验证您的账号", stringWriter.toString(), true,
-            email
-        )
     }
 
     @EventLogRecord(EventLog.Event.VERIFY)
@@ -161,13 +145,113 @@ class AuthenticationServiceImpl(
 
     @Transactional
     override fun forget(request: HttpServletRequest, forgetParam: ForgetParam) {
+        verifyCaptcha(forgetParam.captchaCode!!)
+
         val user = userService.getUserWithPowerByAccount(forgetParam.email!!)
         user ?: let { throw UserNotFoundException() }
+
+        user.forget?.let {
+            if (LocalDateTime.ofInstant(Instant.ofEpochMilli(it.split("-").first().toLong()), ZoneOffset.UTC)
+                    .isAfter(LocalDateTime.now(ZoneOffset.UTC).minusMinutes(5))
+            ) {
+                throw RequestTooFrequent()
+            }
+        }
+
         val code = "${
             LocalDateTime.now(ZoneOffset.UTC).toInstant(ZoneOffset.UTC).toEpochMilli()
         }-${UUID.randomUUID()}-${UUID.randomUUID()}-${UUID.randomUUID()}"
         userService.update(KtUpdateWrapper(User()).eq(User::id, user.id).set(User::forget, code))
         sendRetrieveMail(user.username!!, request.remoteAddr, code, forgetParam.email)
+    }
+
+    @Transactional
+    override fun retrieve(request: HttpServletRequest, retrieveParam: RetrieveParam) {
+        verifyCaptcha(retrieveParam.captchaCode!!)
+
+        val codeStrings = retrieveParam.code!!.split("-")
+        if (codeStrings.size != 16) {
+            throw RetrieveCodeErrorOrExpiredException()
+        }
+        try {
+            if (LocalDateTime.ofInstant(Instant.ofEpochMilli(codeStrings.first().toLong()), ZoneOffset.UTC)
+                    .isBefore(LocalDateTime.now(ZoneOffset.UTC).minusHours(2))
+            ) {
+                throw RetrieveCodeErrorOrExpiredException()
+            }
+        } catch (e: Exception) {
+            throw RetrieveCodeErrorOrExpiredException()
+        }
+
+        val user = userService.getOne(KtQueryWrapper(User()).eq(User::forget, retrieveParam.code))
+            ?: throw RetrieveCodeErrorOrExpiredException()
+        val userInfo = userInfoService.getOne(KtQueryWrapper(UserInfo()).eq(UserInfo::userId, user.id))
+
+        userService.update(
+            KtUpdateWrapper(User()).eq(User::id, user.id).set(User::forget, null)
+                .set(User::password, passwordEncoder.encode(retrieveParam.password!!))
+        )
+
+        WebUtil.offlineUser(redisUtil, user.id!!)
+
+        sendPasswordChangedMail(user.username!!, request.remoteAddr, userInfo!!.email!!)
+    }
+
+    @EventLogRecord(EventLog.Event.LOGIN)
+    override fun login(request: HttpServletRequest, loginParam: LoginParam): LoginVo {
+        verifyCaptcha(loginParam.captchaCode!!)
+
+        return this.login(request, loginParam.account!!, loginParam.password!!)
+    }
+
+    @EventLogRecord(EventLog.Event.LOGOUT)
+    override fun logout(token: String): Boolean {
+        val loginUser = WebUtil.getLoginUser() ?: let { throw TokenHasExpiredException() }
+
+        return redisUtil.delObject("${SecurityProperties.jwtIssuer}_login_${loginUser.user.id}:" + token)
+    }
+
+    override fun renewToken(token: String): TokenVo {
+        val loginUser = WebUtil.getLoginUser() ?: let { throw TokenHasExpiredException() }
+
+        val oldRedisKey = "${SecurityProperties.jwtIssuer}_login_${loginUser.user.id}:" + token
+        redisUtil.delObject(oldRedisKey)
+        val jwt = JwtUtil.createJwt(WebUtil.getLoginUserId().toString())
+
+        jwt ?: let {
+            throw RuntimeException("Login failed")
+        }
+
+        val redisKey = "${SecurityProperties.jwtIssuer}_login_${loginUser.user.id}:" + jwt
+        redisUtil.setObject(
+            redisKey, loginUser, SecurityProperties.redisTtl, SecurityProperties.redisTtlUnit
+        )
+
+        return TokenVo(jwt)
+    }
+
+    private fun sendVerifyMail(username: String, code: String, email: String) {
+        val velocityContext = VelocityContext().apply {
+            put("appName", SettingsOperator.getAppValue(BaseSettings::appName, "氧工具"))
+            put("appUrl", SettingsOperator.getAppValue(BaseSettings::appUrl, "http://localhost"))
+            put("username", username)
+            put(
+                "verifyUrl",
+                SettingsOperator.getAppValue(BaseSettings::verifyUrl, "http://localhost/verify?code=\${verifyCode}")
+                    .replace(
+                        Regex("(?<=([^\\\\]))\\$\\{verifyCode}"), code
+                    )
+            )
+        }
+        val template = velocityEngine.getTemplate("templates/email-verify-account-cn.vm")
+
+        val stringWriter = StringWriter()
+        template.merge(velocityContext, stringWriter)
+
+        MailUtil.sendSimpleMail(
+            "验证您的账号", stringWriter.toString(), true,
+            email
+        )
     }
 
     private fun sendRetrieveMail(username: String, ip: String, code: String, email: String) {
@@ -198,36 +282,6 @@ class AuthenticationServiceImpl(
         )
     }
 
-    @Transactional
-    override fun retrieve(request: HttpServletRequest, retrieveParam: RetrieveParam) {
-        val codeStrings = retrieveParam.code!!.split("-")
-        if (codeStrings.size != 16) {
-            throw RetrieveCodeErrorOrExpiredException()
-        }
-        try {
-            if (LocalDateTime.ofInstant(Instant.ofEpochMilli(codeStrings.first().toLong()), ZoneOffset.UTC)
-                    .isBefore(LocalDateTime.now(ZoneOffset.UTC).minusHours(2))
-            ) {
-                throw RetrieveCodeErrorOrExpiredException()
-            }
-        } catch (e: Exception) {
-            throw RetrieveCodeErrorOrExpiredException()
-        }
-
-        val user = userService.getOne(KtQueryWrapper(User()).eq(User::forget, retrieveParam.code))
-            ?: throw RetrieveCodeErrorOrExpiredException()
-        val userInfo = userInfoService.getOne(KtQueryWrapper(UserInfo()).eq(UserInfo::userId, user.id))
-
-        userService.update(
-            KtUpdateWrapper(User()).eq(User::id, user.id).set(User::forget, null)
-                .set(User::password, passwordEncoder.encode(retrieveParam.password!!))
-        )
-
-        WebUtil.offlineUser(redisUtil, user.id!!)
-
-        sendPasswordChangedMail(user.username!!, request.remoteAddr, userInfo!!.email!!)
-    }
-
     private fun sendPasswordChangedMail(username: String, ip: String, email: String) {
         val velocityContext = VelocityContext().apply {
             put("appName", SettingsOperator.getAppValue(BaseSettings::appName, "氧工具"))
@@ -244,20 +298,6 @@ class AuthenticationServiceImpl(
             "您的密码已更改", stringWriter.toString(), true,
             email
         )
-    }
-
-    @EventLogRecord(EventLog.Event.LOGIN)
-    override fun login(request: HttpServletRequest, loginParam: LoginParam): LoginVo {
-        try {
-            val siteverifyResponse = turnstileApi.siteverify(loginParam.captchaCode!!)
-            if (!siteverifyResponse.success) {
-                throw InvalidCaptchaCodeException()
-            }
-        } catch (e: Exception) {
-            throw InvalidCaptchaCodeException()
-        }
-
-        return this.login(request, loginParam.account!!, loginParam.password!!)
     }
 
     private fun login(request: HttpServletRequest, account: String, password: String): LoginVo {
@@ -292,29 +332,14 @@ class AuthenticationServiceImpl(
         return LoginVo(jwt, loginUser.user.id, loginUser.user.currentLoginTime, loginUser.user.currentLoginIp)
     }
 
-    @EventLogRecord(EventLog.Event.LOGOUT)
-    override fun logout(token: String): Boolean {
-        val loginUser = WebUtil.getLoginUser() ?: let { throw TokenHasExpiredException() }
-
-        return redisUtil.delObject("${SecurityProperties.jwtIssuer}_login_${loginUser.user.id}:" + token)
-    }
-
-    override fun renewToken(token: String): TokenVo {
-        val loginUser = WebUtil.getLoginUser() ?: let { throw TokenHasExpiredException() }
-
-        val oldRedisKey = "${SecurityProperties.jwtIssuer}_login_${loginUser.user.id}:" + token
-        redisUtil.delObject(oldRedisKey)
-        val jwt = JwtUtil.createJwt(WebUtil.getLoginUserId().toString())
-
-        jwt ?: let {
-            throw RuntimeException("Login failed")
+    private fun verifyCaptcha(captchaCode: String) {
+        try {
+            val siteverifyResponse = turnstileApi.siteverify(captchaCode)
+            if (!siteverifyResponse.success) {
+                throw InvalidCaptchaCodeException()
+            }
+        } catch (e: Exception) {
+            throw InvalidCaptchaCodeException()
         }
-
-        val redisKey = "${SecurityProperties.jwtIssuer}_login_${loginUser.user.id}:" + jwt
-        redisUtil.setObject(
-            redisKey, loginUser, SecurityProperties.redisTtl, SecurityProperties.redisTtlUnit
-        )
-
-        return TokenVo(jwt)
     }
 }

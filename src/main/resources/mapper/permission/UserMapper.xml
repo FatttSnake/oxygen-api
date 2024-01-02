@@ -6,6 +6,7 @@
                t_user.username               as user_username,
                t_user.password               as user_password,
                t_user.verify                 as user_verify,
+               t_user.forget                 as user_forget,
                t_user.locking                as user_locking,
                t_user.expiration             as user_expiration,
                t_user.credentials_expiration as user_credentials_expiration,
@@ -128,6 +129,7 @@
         select t_user.id as user_id,
         t_user.username as user_username,
         t_user.verify as user_verify,
+        t_user.forget as user_forget,
         t_user.locking as user_locking,
         t_user.expiration as user_expiration,
         t_user.credentials_expiration as user_credentials_expiration,
@@ -179,6 +181,7 @@
         select t_user.id                     as user_id,
                t_user.username               as user_username,
                t_user.verify                 as user_verify,
+               t_user.forget                 as user_forget,
                t_user.locking                as user_locking,
                t_user.expiration             as user_expiration,
                t_user.credentials_expiration as user_credentials_expiration,
@@ -227,6 +230,7 @@
                t_user.username               as user_username,
                t_user.verify                 as user_verify,
                t_user.locking                as user_locking,
+               t_user.forget                 as user_forget,
                t_user.expiration             as user_expiration,
                t_user.credentials_expiration as user_credentials_expiration,
                t_user.enable                 as user_enable,
@@ -284,6 +288,7 @@
         <id property="id" column="user_id"/>
         <result property="username" column="user_username"/>
         <result property="verify" column="user_verify"/>
+        <result property="forget" column="user_forget"/>
         <result property="locking" column="user_locking"/>
         <result property="expiration" column="user_expiration"/>
         <result property="credentialsExpiration" column="user_credentials_expiration"/>
@@ -299,7 +304,8 @@
     </resultMap>
 
     <resultMap id="userWithInfoMap" type="user" extends="userBaseMap">
-        <association property="userInfo" resultMap="top.fatweb.oxygen.api.mapper.permission.UserInfoMapper.userInfoMap"/>
+        <association property="userInfo"
+                     resultMap="top.fatweb.oxygen.api.mapper.permission.UserInfoMapper.userInfoMap"/>
     </resultMap>
 
     <resultMap id="userWithPowerInfoMap" type="user" extends="userWithInfoMap">
@@ -307,7 +313,8 @@
         <collection property="modules" resultMap="top.fatweb.oxygen.api.mapper.permission.ModuleMapper.moduleMap"/>
         <collection property="menus" resultMap="top.fatweb.oxygen.api.mapper.permission.MenuMapper.menuMap"/>
         <collection property="funcs" resultMap="top.fatweb.oxygen.api.mapper.permission.FuncMapper.funcMap"/>
-        <collection property="operations" resultMap="top.fatweb.oxygen.api.mapper.permission.OperationMapper.operationMap"/>
+        <collection property="operations"
+                    resultMap="top.fatweb.oxygen.api.mapper.permission.OperationMapper.operationMap"/>
     </resultMap>
 
     <resultMap id="userWithRoleInfoMap" type="user" extends="userWithInfoMap">
