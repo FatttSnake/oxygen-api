@@ -28,9 +28,9 @@
                 #{item}
             </foreach>
             <if test="searchRequestUrl != null">
-                and t_sys_log.request_server_address || t_sys_log.request_uri ||
-                case when length(t_sys_log.request_params) != 0 then '?' || t_sys_log.request_params else '' end like
-                '%'||#{searchRequestUrl}||'%'
+                and ((t_sys_log.request_server_address || t_sys_log.request_uri ||
+                (case when length(t_sys_log.request_params) != 0 then '?' || t_sys_log.request_params else '' end))
+                like #{searchRequestUrl})
             </if>
             <if test="searchStartTime != null and searchEndTime != null">
                 and t_sys_log.start_time between #{searchStartTime} and #{searchEndTime}
