@@ -45,10 +45,7 @@ class SysLogServiceImpl(
             sysLogGetParam?.searchStartTime,
             sysLogGetParam?.searchEndTime
         )
-        sysLogIPage.records.forEach {
-            it.operateUsername =
-                it.operateUserId?.let { it1 -> userService.getOne(it1)?.username }
-        }
+
         if (sysLogIPage.records.isNotEmpty()) {
             val userIds = sysLogIPage.records.map { it.operateUserId }
 
