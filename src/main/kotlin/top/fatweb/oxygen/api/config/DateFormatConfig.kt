@@ -14,13 +14,13 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 /**
- * Data format configuration
+ * Date format configuration
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @JsonComponent
-class DataFormatConfig {
+class DateFormatConfig {
     /**
      * The format of the time in response when request APIs
      *
@@ -28,7 +28,7 @@ class DataFormatConfig {
      * @since 1.0.0
      */
     @set:Value("\${spring.jackson.date-format}")
-    lateinit var dataFormat: String
+    lateinit var dateFormat: String
 
     /**
      * The timezone of the time in response when request APIs
@@ -43,7 +43,7 @@ class DataFormatConfig {
     @Bean
     fun jackson2ObjectMapperBuilder() = Jackson2ObjectMapperBuilderCustomizer { builder: Jackson2ObjectMapperBuilder ->
         val tz = timeZone
-        val df: DateFormat = SimpleDateFormat(dataFormat)
+        val df: DateFormat = SimpleDateFormat(dateFormat)
         df.timeZone = tz
         builder.failOnEmptyBeans(false).failOnUnknownProperties(false)
             .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS).dateFormat(df)
@@ -53,7 +53,7 @@ class DataFormatConfig {
     fun jackson2ObjectMapperBuilderCustomizer() =
         Jackson2ObjectMapperBuilderCustomizer { builder: Jackson2ObjectMapperBuilder ->
             builder.serializerByType(
-                LocalDateTime::class.java, LocalDateTimeSerializer(DateTimeFormatter.ofPattern(dataFormat))
+                LocalDateTime::class.java, LocalDateTimeSerializer(DateTimeFormatter.ofPattern(dateFormat))
             )
         }
 

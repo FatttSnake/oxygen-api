@@ -14,6 +14,7 @@ import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import org.springframework.web.servlet.resource.NoResourceFoundException
 import top.fatweb.avatargenerator.AvatarException
 import top.fatweb.oxygen.api.entity.common.ResponseCode
 import top.fatweb.oxygen.api.entity.common.ResponseResult
@@ -42,7 +43,7 @@ class ExceptionHandler {
     @ExceptionHandler(value = [Exception::class])
     fun exceptionHandler(e: Exception): ResponseResult<*> {
         return when (e) {
-            is HttpRequestMethodNotSupportedException -> {
+            is HttpRequestMethodNotSupportedException, is NoResourceFoundException -> {
                 logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.SYSTEM_REQUEST_ILLEGAL, e.localizedMessage, null)
             }
