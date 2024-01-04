@@ -11,5 +11,12 @@ import top.fatweb.oxygen.api.entity.system.EventLog
  * @since 1.0.0
  */
 interface IEventLogService : IService<EventLog> {
+    /**
+     * Save event
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see EventLogRecord
+     */
     fun saveEvent(annotation: EventLogRecord, userId: Long)
 }

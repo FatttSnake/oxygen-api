@@ -26,6 +26,7 @@ import top.fatweb.oxygen.api.service.api.v1.IAvatarService
 import top.fatweb.oxygen.api.service.permission.IAuthenticationService
 import top.fatweb.oxygen.api.service.permission.IUserInfoService
 import top.fatweb.oxygen.api.service.permission.IUserService
+import top.fatweb.oxygen.api.service.system.ISensitiveWordService
 import top.fatweb.oxygen.api.settings.BaseSettings
 import top.fatweb.oxygen.api.settings.SettingsOperator
 import top.fatweb.oxygen.api.util.JwtUtil
@@ -60,6 +61,7 @@ class AuthenticationServiceImpl(
     private val turnstileApi: TurnstileApi,
     private val userService: IUserService,
     private val userInfoService: IUserInfoService,
+    private val sensitiveWordService: ISensitiveWordService,
     private val avatarService: IAvatarService
 ) : IAuthenticationService {
     private val logger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -68,6 +70,7 @@ class AuthenticationServiceImpl(
     @Transactional
     override fun register(request: HttpServletRequest, registerParam: RegisterParam): RegisterVo {
         verifyCaptcha(registerParam.captchaCode!!)
+        sensitiveWordService.checkSensitiveWord(registerParam.username!!)
 
         val user = User().apply {
             username = registerParam.username
@@ -132,6 +135,7 @@ class AuthenticationServiceImpl(
         if (verifyParam.nickname.isNullOrBlank() || verifyParam.avatar.isNullOrBlank()) {
             throw AccountNeedInitException()
         }
+        sensitiveWordService.checkSensitiveWord(verifyParam.nickname)
 
         userService.update(
             KtUpdateWrapper(User()).eq(User::id, user.id).set(User::verify, null)

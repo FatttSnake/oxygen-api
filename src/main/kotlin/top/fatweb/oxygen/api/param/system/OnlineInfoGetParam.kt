@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
+@Schema(description = "在线信息请求参数")
 data class OnlineInfoGetParam(
     /**
      * Scope

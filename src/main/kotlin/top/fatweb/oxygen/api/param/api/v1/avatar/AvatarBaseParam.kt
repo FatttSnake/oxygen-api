@@ -54,7 +54,7 @@ open class AvatarBaseParam {
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(defaultValue = "颜色列表", example = "#FFFFFFAA")
+    @Schema(description = "颜色列表", example = "#FFFFFFAA")
     var colors: List<String>? = null
 
     /**
@@ -63,7 +63,7 @@ open class AvatarBaseParam {
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(defaultValue = "背景颜色", example = "#FFFFFFAA")
+    @Schema(description = "背景颜色", example = "#FFFFFFAA")
     @field:Pattern(regexp = "^#[0-9a-fA-F]{6}|#[0-9a-fA-F]{8}$", message = "Background color must be a hex color code")
     var background: String? = null
 }

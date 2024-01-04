@@ -63,8 +63,10 @@ insert into t_power (id, type_id)
            (1520101, 4),
            (1530101, 4),
            (1530102, 4),
+           (1530103, 4),
            (1530301, 4),
-           (1530302, 4)
+           (1530302, 4),
+           (1530303, 4)
         as new_value
 on duplicate key update type_id = new_value.type_id;
 
@@ -139,8 +141,10 @@ insert into t_operation(id, name, code, func_id)
            (1520101, '全部', 'system:log:query:all', 1520100),
            (1530101, '基础', 'system:settings:query:base', 1530100),
            (1530102, '邮件', 'system:settings:query:mail', 1530100),
+           (1530103, '敏感词', 'system:settings:query:sensitive', 1530100),
            (1530301, '基础', 'system:settings:modify:base', 1530300),
-           (1530302, '邮件', 'system:settings:modify:mail', 1530300) as new_value
+           (1530302, '邮件', 'system:settings:modify:mail', 1530300),
+           (1530303, '敏感词', 'system:settings:modify:sensitive', 1530300) as new_value
 on duplicate key update name=new_value.name,
                         code=new_value.code,
                         func_id=new_value.func_id;

@@ -12,6 +12,12 @@ import top.fatweb.oxygen.api.entity.system.EventLog
 import top.fatweb.oxygen.api.mapper.system.EventLogMapper
 import top.fatweb.oxygen.api.service.system.IEventLogService
 
+/**
+ * Event log service implement
+ *
+ * @author FatttSnake, fatttsnake@gmail.com
+ * @since 1.0.0
+ */
 @DS("sqlite")
 @Service
 class EventLogServiceImpl : ServiceImpl<EventLogMapper, EventLog>(), IEventLogService {

@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.jdbc.BadSqlGrammarException
+import org.springframework.jdbc.UncategorizedSQLException
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.authentication.*
 import org.springframework.web.HttpRequestMethodNotSupportedException
@@ -43,6 +44,7 @@ class ExceptionHandler {
     @ExceptionHandler(value = [Exception::class])
     fun exceptionHandler(e: Exception): ResponseResult<*> {
         return when (e) {
+            /* Request */
             is HttpRequestMethodNotSupportedException, is NoResourceFoundException -> {
                 logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.SYSTEM_REQUEST_ILLEGAL, e.localizedMessage, null)
@@ -64,6 +66,7 @@ class ExceptionHandler {
                 ResponseResult.fail(ResponseCode.SYSTEM_REQUEST_TOO_FREQUENT, e.localizedMessage, null)
             }
 
+            /* Authentication */
             is InsufficientAuthenticationException -> {
                 logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.PERMISSION_UNAUTHORIZED, e.localizedMessage, null)
@@ -162,7 +165,7 @@ class ExceptionHandler {
                 ResponseResult.fail(ResponseCode.SYSTEM_INVALID_CAPTCHA_CODE, e.localizedMessage, null)
             }
 
-
+            /* SQL */
             is BadSqlGrammarException -> {
                 logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.DATABASE_EXECUTE_ERROR, "Incorrect SQL syntax", null)
@@ -178,6 +181,23 @@ class ExceptionHandler {
                 ResponseResult.fail(ResponseCode.DATABASE_NO_RECORD_FOUND, e.localizedMessage, null)
             }
 
+            is UncategorizedSQLException -> {
+                if (e.localizedMessage.contains("SQLITE_CONSTRAINT_UNIQUE")) {
+                    logger.debug(e.localizedMessage, e)
+                    return ResponseResult.fail(ResponseCode.DATABASE_DUPLICATE_KEY, "Duplicate key", null)
+                }
+
+                logger.error(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.DATABASE_EXECUTE_ERROR, e.localizedMessage, null)
+            }
+
+            /* Other */
+            is MatchSensitiveWordException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.SYSTEM_MATCH_SENSITIVE_WORD, e.localizedMessage, null)
+            }
+
+            /* API */
             is AvatarException -> {
                 logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.API_AVATAR_ERROR, e.localizedMessage, null)
