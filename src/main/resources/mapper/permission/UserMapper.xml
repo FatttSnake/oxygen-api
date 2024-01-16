@@ -2,121 +2,121 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="top.fatweb.oxygen.api.mapper.permission.UserMapper">
     <select id="selectOneWithPowerInfoByAccount" resultMap="userWithPowerInfoMap">
-        select t_user.id                     as user_id,
-               t_user.username               as user_username,
-               t_user.password               as user_password,
-               t_user.verify                 as user_verify,
-               t_user.forget                 as user_forget,
-               t_user.locking                as user_locking,
-               t_user.expiration             as user_expiration,
-               t_user.credentials_expiration as user_credentials_expiration,
-               t_user.enable                 as user_enable,
-               t_user.current_login_time     as user_current_login_time,
-               t_user.current_login_ip       as user_current_login_ip,
-               t_user.last_login_time        as user_last_login_time,
-               t_user.last_login_ip          as user_last_login_ip,
-               t_user.create_time            as user_create_time,
-               t_user.update_time            as user_update_time,
-               t_user.deleted                as user_deleted,
-               t_user.version                as user_version,
-               tui.id                        as user_info_id,
-               tui.user_id                   as user_info_user_id,
-               tui.nickname                  as user_info_nickname,
-               tui.avatar                    as user_info_avatar,
-               tui.email                     as user_info_email,
-               tui.create_time               as user_info_create_time,
-               tui.update_time               as user_info_update_time,
-               tui.deleted                   as user_info_deleted,
-               tui.version                   as user_info_version,
-               tmo.id                        as module_id,
-               tmo.name                      as module_name,
-               tm.id                         as menu_id,
-               tm.name                       as menu_name,
-               tm.url                        as menu_url,
-               tm.parent_id                  as menu_parent_id,
-               tf.id                         as func_id,
-               tf.name                       as func_name,
-               tf.parent_id                  as func_parent_id,
-               tf.menu_id                    as func_menu_id,
-               t.id                          as operation_id,
-               t.name                        as operation_name,
-               t.code                        as operation_code,
-               t.func_id                     as operation_func_id
-        from t_user
-                 left join (select * from t_user_info where deleted = 0) as tui on t_user.id = tui.user_id
-                 left join (select * from t_user_group where deleted = 0) as tug on t_user.id = tug.user_id
-                 left join (select * from t_group where deleted = 0 and enable = 1) as tg on tg.id = tug.group_id
-                 left join (select * from t_role_group where deleted = 0) as trg on tg.id = trg.group_id
-                 left join (select * from t_user_role where deleted = 0) as tur on t_user.id = tur.user_id
-                 left join (select * from t_role where deleted = 0 and enable = 1) as tr
-                           on tr.id = trg.role_id or tr.id = tur.role_id
-                 left join (select * from t_power_role where deleted = 0) as tpr on tr.id = tpr.role_id
-                 left join t_power as tp on tp.id = tpr.power_id
-                 left join t_module as tmo on tp.id = tmo.id
-                 left join t_menu as tm on tp.id = tm.id
-                 left join t_func as tf on tp.id = tf.id
-                 left join t_operation as t on tp.id = t.id
-        where t_user.deleted = 0
-          and (tui.email = #{account} or t_user.username = #{account});
+        select t_s_user.id                     as user_id,
+               t_s_user.username               as user_username,
+               t_s_user.password               as user_password,
+               t_s_user.verify                 as user_verify,
+               t_s_user.forget                 as user_forget,
+               t_s_user.locking                as user_locking,
+               t_s_user.expiration             as user_expiration,
+               t_s_user.credentials_expiration as user_credentials_expiration,
+               t_s_user.enable                 as user_enable,
+               t_s_user.current_login_time     as user_current_login_time,
+               t_s_user.current_login_ip       as user_current_login_ip,
+               t_s_user.last_login_time        as user_last_login_time,
+               t_s_user.last_login_ip          as user_last_login_ip,
+               t_s_user.create_time            as user_create_time,
+               t_s_user.update_time            as user_update_time,
+               t_s_user.deleted                as user_deleted,
+               t_s_user.version                as user_version,
+               tsui.id                         as user_info_id,
+               tsui.user_id                    as user_info_user_id,
+               tsui.nickname                   as user_info_nickname,
+               tsui.avatar                     as user_info_avatar,
+               tsui.email                      as user_info_email,
+               tsui.create_time                as user_info_create_time,
+               tsui.update_time                as user_info_update_time,
+               tsui.deleted                    as user_info_deleted,
+               tsui.version                    as user_info_version,
+               tsmo.id                         as module_id,
+               tsmo.name                       as module_name,
+               tsm.id                          as menu_id,
+               tsm.name                        as menu_name,
+               tsm.url                         as menu_url,
+               tsm.parent_id                   as menu_parent_id,
+               tsf.id                          as func_id,
+               tsf.name                        as func_name,
+               tsf.parent_id                   as func_parent_id,
+               tsf.menu_id                     as func_menu_id,
+               tso.id                          as operation_id,
+               tso.name                        as operation_name,
+               tso.code                        as operation_code,
+               tso.func_id                     as operation_func_id
+        from t_s_user
+                 left join (select * from t_s_user_info where deleted = 0) as tsui on t_s_user.id = tsui.user_id
+                 left join (select * from t_r_user_group where deleted = 0) as trug on t_s_user.id = trug.user_id
+                 left join (select * from t_s_group where deleted = 0 and enable = 1) as tsg on tsg.id = trug.group_id
+                 left join (select * from t_r_role_group where deleted = 0) as trrg on tsg.id = trrg.group_id
+                 left join (select * from t_r_user_role where deleted = 0) as trur on t_s_user.id = trur.user_id
+                 left join (select * from t_s_role where deleted = 0 and enable = 1) as tsr
+                           on tsr.id = trrg.role_id or tsr.id = trur.role_id
+                 left join (select * from t_r_power_role where deleted = 0) as trpr on tsr.id = trpr.role_id
+                 left join t_s_power as tsp on tsp.id = trpr.power_id
+                 left join t_s_module as tsmo on tsp.id = tsmo.id
+                 left join t_s_menu as tsm on tsp.id = tsm.id
+                 left join t_s_func as tsf on tsp.id = tsf.id
+                 left join t_s_operation as tso on tsp.id = tso.id
+        where t_s_user.deleted = 0
+          and (tsui.email = #{account} or t_s_user.username = #{account});
     </select>
 
     <select id="selectPage" resultType="long">
-        select t_user.id
-        from t_user
-        left join (select * from t_user_info where deleted = 0) as tui on t_user.id = tui.user_id
+        select t_s_user.id
+        from t_s_user
+        left join (select * from t_s_user_info where deleted = 0) as tsui on t_s_user.id = tsui.user_id
         <where>
-            t_user.deleted = 0
+            t_s_user.deleted = 0
             <if test="searchValue != null">
                 <choose>
                     <when test="searchType == 'ID'">
                         <choose>
                             <when test="searchRegex == true">
-                                and t_user.id regexp #{searchValue}
+                                and t_s_user.id regexp #{searchValue}
                             </when>
                             <otherwise>
-                                and t_user.id like concat('%' ,#{searchValue}, '%')
+                                and t_s_user.id like concat('%' ,#{searchValue}, '%')
                             </otherwise>
                         </choose>
                     </when>
                     <when test="searchType == 'USERNAME'">
                         <choose>
                             <when test="searchRegex == true">
-                                and t_user.username regexp #{searchValue}
+                                and t_s_user.username regexp #{searchValue}
                             </when>
                             <otherwise>
-                                and t_user.username like concat('%' ,#{searchValue}, '%')
+                                and t_s_user.username like concat('%' ,#{searchValue}, '%')
                             </otherwise>
                         </choose>
                     </when>
                     <when test="searchType == 'NICKNAME'">
                         <choose>
                             <when test="searchRegex == true">
-                                and tui.nickname regexp #{searchValue}
+                                and tsui.nickname regexp #{searchValue}
                             </when>
                             <otherwise>
-                                and tui.nickname like concat('%' ,#{searchValue}, '%')
+                                and tsui.nickname like concat('%' ,#{searchValue}, '%')
                             </otherwise>
                         </choose>
                     </when>
                     <when test="searchType == 'EMAIL'">
                         <choose>
                             <when test="searchRegex == true">
-                                and tui.email regexp #{searchValue}
+                                and tsui.email regexp #{searchValue}
                             </when>
                             <otherwise>
-                                and tui.email like concat('%' ,#{searchValue}, '%')
+                                and tsui.email like concat('%' ,#{searchValue}, '%')
                             </otherwise>
                         </choose>
                     </when>
                     <otherwise>
                         <choose>
                             <when test="searchRegex == true">
-                                and ( t_user.username regexp #{searchValue} or tui.nickname regexp #{searchValue} or
-                                tui.email regexp #{searchValue})
+                                and ( t_s_user.username regexp #{searchValue} or tui.nickname regexp #{searchValue} or
+                                tsui.email regexp #{searchValue})
                             </when>
                             <otherwise>
-                                and (t_user.username like concat('%' ,#{searchValue}, '%') or tui.nickname like
-                                concat('%' ,#{searchValue}, '%') or tui.email like concat('%' ,#{searchValue}, '%'))
+                                and (t_s_user.username like concat('%' ,#{searchValue}, '%') or tsui.nickname like
+                                concat('%' ,#{searchValue}, '%') or tsui.email like concat('%' ,#{searchValue}, '%'))
                             </otherwise>
                         </choose>
                     </otherwise>
@@ -126,51 +126,51 @@
     </select>
 
     <select id="selectListWithRoleInfoByIds" resultMap="userWithRoleInfoMap">
-        select t_user.id as user_id,
-        t_user.username as user_username,
-        t_user.verify as user_verify,
-        t_user.forget as user_forget,
-        t_user.locking as user_locking,
-        t_user.expiration as user_expiration,
-        t_user.credentials_expiration as user_credentials_expiration,
-        t_user.enable as user_enable,
-        t_user.current_login_time as user_current_login_time,
-        t_user.current_login_ip as user_current_login_ip,
-        t_user.last_login_time as user_last_login_time,
-        t_user.last_login_ip as user_last_login_ip,
-        t_user.create_time as user_create_time,
-        t_user.update_time as user_update_time,
-        t_user.deleted as user_deleted,
-        t_user.version as user_version,
-        tui.id as user_info_id,
-        tui.user_id as user_info_user_id,
-        tui.nickname as user_info_nickname,
-        tui.avatar as user_info_avatar,
-        tui.email as user_info_email,
-        tui.create_time as user_info_create_time,
-        tui.update_time as user_info_update_time,
-        tui.deleted as user_info_deleted,
-        tui.version as user_info_version,
-        tr.id as role_id,
-        tr.name as role_name,
-        tr.enable as role_enable,
-        tr.deleted as role_deleted,
-        tr.version as role_version,
-        tg.id as group_id,
-        tg.name as group_name,
-        tg.enable as group_enable,
-        tg.deleted as group_deleted,
-        tg.version as group_version
-        from t_user
-        left join (select * from t_user_info where deleted = 0) as tui on t_user.id = tui.user_id
-        left join (select * from t_user_group where deleted = 0) as tug on t_user.id = tug.user_id
-        left join (select * from t_group where deleted = 0) as tg on tg.id = tug.group_id
-        left join (select * from t_role_group where deleted = 0) as trg on tg.id = trg.group_id
-        left join (select * from t_user_role where deleted = 0) as tur on t_user.id = tur.user_id
-        left join (select * from t_role where deleted = 0) as tr
-        on tr.id = trg.role_id or tr.id = tur.role_id
+        select t_s_user.id as user_id,
+        t_s_user.username as user_username,
+        t_s_user.verify as user_verify,
+        t_s_user.forget as user_forget,
+        t_s_user.locking as user_locking,
+        t_s_user.expiration as user_expiration,
+        t_s_user.credentials_expiration as user_credentials_expiration,
+        t_s_user.enable as user_enable,
+        t_s_user.current_login_time as user_current_login_time,
+        t_s_user.current_login_ip as user_current_login_ip,
+        t_s_user.last_login_time as user_last_login_time,
+        t_s_user.last_login_ip as user_last_login_ip,
+        t_s_user.create_time as user_create_time,
+        t_s_user.update_time as user_update_time,
+        t_s_user.deleted as user_deleted,
+        t_s_user.version as user_version,
+        tsui.id as user_info_id,
+        tsui.user_id as user_info_user_id,
+        tsui.nickname as user_info_nickname,
+        tsui.avatar as user_info_avatar,
+        tsui.email as user_info_email,
+        tsui.create_time as user_info_create_time,
+        tsui.update_time as user_info_update_time,
+        tsui.deleted as user_info_deleted,
+        tsui.version as user_info_version,
+        tsr.id as role_id,
+        tsr.name as role_name,
+        tsr.enable as role_enable,
+        tsr.deleted as role_deleted,
+        tsr.version as role_version,
+        tsg.id as group_id,
+        tsg.name as group_name,
+        tsg.enable as group_enable,
+        tsg.deleted as group_deleted,
+        tsg.version as group_version
+        from t_s_user
+        left join (select * from t_s_user_info where deleted = 0) as tsui on t_s_user.id = tsui.user_id
+        left join (select * from t_r_user_group where deleted = 0) as trug on t_s_user.id = trug.user_id
+        left join (select * from t_s_group where deleted = 0) as tsg on tsg.id = trug.group_id
+        left join (select * from t_r_role_group where deleted = 0) as trrg on tsg.id = trrg.group_id
+        left join (select * from t_r_user_role where deleted = 0) as trur on t_s_user.id = trur.user_id
+        left join (select * from t_s_role where deleted = 0) as tsr
+        on tsr.id = trrg.role_id or tsr.id = trur.role_id
         <where>
-            <foreach collection="userIds" item="item" index="index" open="and t_user.id in (" separator="," close=")"
+            <foreach collection="userIds" item="item" index="index" open="and t_s_user.id in (" separator="," close=")"
                      nullable="true">
                 #{item}
             </foreach>
@@ -178,92 +178,92 @@
     </select>
 
     <select id="selectOneWithRoleInfoById" resultMap="userWithRoleInfoMap">
-        select t_user.id                     as user_id,
-               t_user.username               as user_username,
-               t_user.verify                 as user_verify,
-               t_user.forget                 as user_forget,
-               t_user.locking                as user_locking,
-               t_user.expiration             as user_expiration,
-               t_user.credentials_expiration as user_credentials_expiration,
-               t_user.enable                 as user_enable,
-               t_user.current_login_time     as user_current_login_time,
-               t_user.current_login_ip       as user_current_login_ip,
-               t_user.last_login_time        as user_last_login_time,
-               t_user.last_login_ip          as user_last_login_ip,
-               t_user.create_time            as user_create_time,
-               t_user.update_time            as user_update_time,
-               t_user.deleted                as user_deleted,
-               t_user.version                as user_version,
-               tui.id                        as user_info_id,
-               tui.user_id                   as user_info_user_id,
-               tui.nickname                  as user_info_nickname,
-               tui.avatar                    as user_info_avatar,
-               tui.email                     as user_info_email,
-               tui.create_time               as user_info_create_time,
-               tui.update_time               as user_info_update_time,
-               tui.deleted                   as user_info_deleted,
-               tui.version                   as user_info_version,
-               tr.id                         as role_id,
-               tr.name                       as role_name,
-               tr.enable                     as role_enable,
-               tr.deleted                    as role_deleted,
-               tr.version                    as role_version,
-               tg.id                         as group_id,
-               tg.name                       as group_name,
-               tg.enable                     as group_enable,
-               tg.deleted                    as group_deleted,
-               tg.version                    as group_version
-        from t_user
-                 left join (select * from t_user_info where deleted = 0) as tui on t_user.id = tui.user_id
-                 left join (select * from t_user_group where deleted = 0) as tug on t_user.id = tug.user_id
-                 left join (select * from t_group where deleted = 0) as tg on tg.id = tug.group_id
-                 left join (select * from t_role_group where deleted = 0) as trg on tg.id = trg.group_id
-                 left join (select * from t_user_role where deleted = 0) as tur on t_user.id = tur.user_id
-                 left join (select * from t_role where deleted = 0) as tr
-                           on tr.id = trg.role_id or tr.id = tur.role_id
-        where t_user.deleted = 0
-          and t_user.id = #{id}
+        select t_s_user.id                     as user_id,
+               t_s_user.username               as user_username,
+               t_s_user.verify                 as user_verify,
+               t_s_user.forget                 as user_forget,
+               t_s_user.locking                as user_locking,
+               t_s_user.expiration             as user_expiration,
+               t_s_user.credentials_expiration as user_credentials_expiration,
+               t_s_user.enable                 as user_enable,
+               t_s_user.current_login_time     as user_current_login_time,
+               t_s_user.current_login_ip       as user_current_login_ip,
+               t_s_user.last_login_time        as user_last_login_time,
+               t_s_user.last_login_ip          as user_last_login_ip,
+               t_s_user.create_time            as user_create_time,
+               t_s_user.update_time            as user_update_time,
+               t_s_user.deleted                as user_deleted,
+               t_s_user.version                as user_version,
+               tsui.id                         as user_info_id,
+               tsui.user_id                    as user_info_user_id,
+               tsui.nickname                   as user_info_nickname,
+               tsui.avatar                     as user_info_avatar,
+               tsui.email                      as user_info_email,
+               tsui.create_time                as user_info_create_time,
+               tsui.update_time                as user_info_update_time,
+               tsui.deleted                    as user_info_deleted,
+               tsui.version                    as user_info_version,
+               tsr.id                          as role_id,
+               tsr.name                        as role_name,
+               tsr.enable                      as role_enable,
+               tsr.deleted                     as role_deleted,
+               tsr.version                     as role_version,
+               tsg.id                          as group_id,
+               tsg.name                        as group_name,
+               tsg.enable                      as group_enable,
+               tsg.deleted                     as group_deleted,
+               tsg.version                     as group_version
+        from t_s_user
+                 left join (select * from t_s_user_info where deleted = 0) as tsui on t_s_user.id = tsui.user_id
+                 left join (select * from t_r_user_group where deleted = 0) as trug on t_s_user.id = trug.user_id
+                 left join (select * from t_s_group where deleted = 0) as tsg on tsg.id = trug.group_id
+                 left join (select * from t_r_role_group where deleted = 0) as trrg on tsg.id = trrg.group_id
+                 left join (select * from t_r_user_role where deleted = 0) as trur on t_s_user.id = trur.user_id
+                 left join (select * from t_s_role where deleted = 0) as tsr
+                           on tsr.id = trrg.role_id or tsr.id = trur.role_id
+        where t_s_user.deleted = 0
+          and t_s_user.id = #{id}
     </select>
 
     <select id="selectListWithInfo" resultMap="userWithInfoMap">
-        select t_user.id                     as user_id,
-               t_user.username               as user_username,
-               t_user.verify                 as user_verify,
-               t_user.locking                as user_locking,
-               t_user.forget                 as user_forget,
-               t_user.expiration             as user_expiration,
-               t_user.credentials_expiration as user_credentials_expiration,
-               t_user.enable                 as user_enable,
-               t_user.current_login_time     as user_current_login_time,
-               t_user.current_login_ip       as user_current_login_ip,
-               t_user.last_login_time        as user_last_login_time,
-               t_user.last_login_ip          as user_last_login_ip,
-               t_user.create_time            as user_create_time,
-               t_user.update_time            as user_update_time,
-               t_user.deleted                as user_deleted,
-               t_user.version                as user_version,
-               tui.id                        as user_info_id,
-               tui.user_id                   as user_info_user_id,
-               tui.nickname                  as user_info_nickname,
-               tui.avatar                    as user_info_avatar,
-               tui.email                     as user_info_email,
-               tui.create_time               as user_info_create_time,
-               tui.update_time               as user_info_update_time,
-               tui.deleted                   as user_info_deleted,
-               tui.version                   as user_info_version
-        from t_user
-                 left join (select * from t_user_info where deleted = 0) as tui on t_user.id = tui.user_id
-        where t_user.deleted = 0
+        select t_s_user.id                     as user_id,
+               t_s_user.username               as user_username,
+               t_s_user.verify                 as user_verify,
+               t_s_user.locking                as user_locking,
+               t_s_user.forget                 as user_forget,
+               t_s_user.expiration             as user_expiration,
+               t_s_user.credentials_expiration as user_credentials_expiration,
+               t_s_user.enable                 as user_enable,
+               t_s_user.current_login_time     as user_current_login_time,
+               t_s_user.current_login_ip       as user_current_login_ip,
+               t_s_user.last_login_time        as user_last_login_time,
+               t_s_user.last_login_ip          as user_last_login_ip,
+               t_s_user.create_time            as user_create_time,
+               t_s_user.update_time            as user_update_time,
+               t_s_user.deleted                as user_deleted,
+               t_s_user.version                as user_version,
+               tsui.id                         as user_info_id,
+               tsui.user_id                    as user_info_user_id,
+               tsui.nickname                   as user_info_nickname,
+               tsui.avatar                     as user_info_avatar,
+               tsui.email                      as user_info_email,
+               tsui.create_time                as user_info_create_time,
+               tsui.update_time                as user_info_update_time,
+               tsui.deleted                    as user_info_deleted,
+               tsui.version                    as user_info_version
+        from t_s_user
+                 left join (select * from t_s_user_info where deleted = 0) as tsui on t_s_user.id = tsui.user_id
+        where t_s_user.deleted = 0
     </select>
 
     <select id="selectIdsWithRoleIds" resultType="long">
-        select t_user.id
-        from t_user
-        left join (select * from t_user_role where deleted = 0) as tur on t_user.id = tur.user_id
-        left join (select * from t_role where deleted = 0) as tr on tr.id = tur.role_id
+        select t_s_user.id
+        from t_s_user
+        left join (select * from t_r_user_role where deleted = 0) as trur on t_s_user.id = trur.user_id
+        left join (select * from t_s_role where deleted = 0) as tsr on tsr.id = trur.role_id
         <where>
-            t_user.deleted = 0
-            <foreach collection="roleIds" item="item" index="index" open="and tr.id in (" separator="," close=")"
+            t_s_user.deleted = 0
+            <foreach collection="roleIds" item="item" index="index" open="and tsr.id in (" separator="," close=")"
                      nullable="true">
                 #{item}
             </foreach>
@@ -271,13 +271,13 @@
     </select>
 
     <select id="selectIdsWithGroupIds" resultType="long">
-        select t_user.id
-        from t_user
-        left join (select * from t_user_group where deleted = 0) as tug on t_user.id = tug.user_id
-        left join (select * from t_group where deleted = 0) as tg on tg.id = tug.group_id
+        select t_s_user.id
+        from t_s_user
+        left join (select * from t_r_user_group where deleted = 0) as trug on t_s_user.id = trug.user_id
+        left join (select * from t_s_group where deleted = 0) as tsg on tsg.id = trug.group_id
         <where>
-            t_user.deleted = 0
-            <foreach collection="groupIds" item="item" index="index" open="and tg.id in (" separator="," close=")"
+            t_s_user.deleted = 0
+            <foreach collection="groupIds" item="item" index="index" open="and tsg.id in (" separator="," close=")"
                      nullable="true">
                 #{item}
             </foreach>

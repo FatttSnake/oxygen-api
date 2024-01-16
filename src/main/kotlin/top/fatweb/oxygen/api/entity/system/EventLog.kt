@@ -15,7 +15,7 @@ import java.time.LocalDateTime
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-@TableName("t_event_log")
+@TableName("t_l_event_log")
 class EventLog : Serializable {
     enum class Event(@field:EnumValue @field:JsonValue val code: String) {
         LOGIN("LOGIN"), LOGOUT("LOGOUT"), REGISTER("REGISTER"), VERIFY("VERIFY"), API("API")

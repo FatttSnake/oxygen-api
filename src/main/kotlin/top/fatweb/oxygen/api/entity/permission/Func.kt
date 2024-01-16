@@ -11,7 +11,7 @@ import java.io.Serializable
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-@TableName("t_func")
+@TableName("t_s_func")
 class Func : Serializable {
     /**
      * ID

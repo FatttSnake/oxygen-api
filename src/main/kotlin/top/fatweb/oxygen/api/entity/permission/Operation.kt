@@ -11,7 +11,7 @@ import java.io.Serializable
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-@TableName("t_operation")
+@TableName("t_s_operation")
 class Operation : Serializable {
     /**
      * ID

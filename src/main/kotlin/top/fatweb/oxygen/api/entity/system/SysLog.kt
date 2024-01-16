@@ -15,7 +15,7 @@ import java.time.LocalDateTime
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-@TableName("t_sys_log")
+@TableName("t_l_sys_log")
 class SysLog : Serializable {
     /**
      * Log type enum

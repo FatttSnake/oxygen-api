@@ -9,7 +9,7 @@ import java.io.Serializable
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-@TableName("t_role_group")
+@TableName("t_r_role_group")
 class RoleGroup : Serializable {
     /**
      * ID

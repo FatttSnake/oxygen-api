@@ -1,6 +1,6 @@
-drop table if exists t_sys_log;
+drop table if exists t_l_sys_log;
 
-create table t_sys_log -- 系统日志表
+create table t_l_sys_log -- 本地-系统日志表
 (
     id                     integer not null,
     log_type               text    not null,                                                -- 日志类型

@@ -2,38 +2,38 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="top.fatweb.oxygen.api.mapper.system.SysLogMapper">
     <select id="selectPage" resultMap="sysLogMap">
-        select t_sys_log.id as sys_log_id,
-        t_sys_log.log_type as sys_log_log_type,
-        t_sys_log.operate_user_id as sys_log_operate_user_id,
-        t_sys_log.operate_time as sys_log_operate_time,
-        t_sys_log.request_uri as sys_log_request_uri,
-        t_sys_log.request_method as sys_log_request_method,
-        t_sys_log.request_params as sys_log_request_params,
-        t_sys_log.request_ip as sys_log_request_ip,
-        t_sys_log.request_server_address as sys_log_request_server_address,
-        t_sys_log.exception as sys_log_exception,
-        t_sys_log.exception_info as sys_log_exception_info,
-        t_sys_log.start_time as sys_log_start_time,
-        t_sys_log.end_time as sys_log_end_time,
-        t_sys_log.execute_time as sys_log_execute_time,
-        t_sys_log.user_agent as sys_log_user_agent
-        from t_sys_log
+        select t_l_sys_log.id as sys_log_id,
+        t_l_sys_log.log_type as sys_log_log_type,
+        t_l_sys_log.operate_user_id as sys_log_operate_user_id,
+        t_l_sys_log.operate_time as sys_log_operate_time,
+        t_l_sys_log.request_uri as sys_log_request_uri,
+        t_l_sys_log.request_method as sys_log_request_method,
+        t_l_sys_log.request_params as sys_log_request_params,
+        t_l_sys_log.request_ip as sys_log_request_ip,
+        t_l_sys_log.request_server_address as sys_log_request_server_address,
+        t_l_sys_log.exception as sys_log_exception,
+        t_l_sys_log.exception_info as sys_log_exception_info,
+        t_l_sys_log.start_time as sys_log_start_time,
+        t_l_sys_log.end_time as sys_log_end_time,
+        t_l_sys_log.execute_time as sys_log_execute_time,
+        t_l_sys_log.user_agent as sys_log_user_agent
+        from t_l_sys_log
         <where>
-            <foreach collection="logType" item="item" index="index" open="and t_sys_log.log_type in (" separator=","
+            <foreach collection="logType" item="item" index="index" open="and t_l_sys_log.log_type in (" separator=","
                      close=")" nullable="true">
                 #{item}
             </foreach>
-            <foreach collection="requestMethod" item="item" index="index" open="and t_sys_log.request_method in ("
+            <foreach collection="requestMethod" item="item" index="index" open="and t_l_sys_log.request_method in ("
                      separator="," close=")" nullable="true">
                 #{item}
             </foreach>
             <if test="searchRequestUrl != null">
-                and ((t_sys_log.request_server_address || t_sys_log.request_uri ||
-                (case when length(t_sys_log.request_params) != 0 then '?' || t_sys_log.request_params else '' end))
+                and ((t_l_sys_log.request_server_address || t_l_sys_log.request_uri ||
+                (case when length(t_l_sys_log.request_params) != 0 then '?' || t_l_sys_log.request_params else '' end))
                 like #{searchRequestUrl})
             </if>
             <if test="searchStartTime != null and searchEndTime != null">
-                and t_sys_log.start_time between #{searchStartTime} and #{searchEndTime}
+                and t_l_sys_log.start_time between #{searchStartTime} and #{searchEndTime}
             </if>
         </where>
     </select>

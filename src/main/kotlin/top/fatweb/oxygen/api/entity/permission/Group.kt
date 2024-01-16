@@ -10,7 +10,7 @@ import java.time.LocalDateTime
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-@TableName("t_group")
+@TableName("t_s_group")
 class Group : Serializable {
     /**
      * ID

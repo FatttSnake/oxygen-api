@@ -9,7 +9,7 @@ import java.io.Serializable
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-@TableName("t_power_role")
+@TableName("t_r_power_role")
 class PowerRole : Serializable {
     /**
      * ID

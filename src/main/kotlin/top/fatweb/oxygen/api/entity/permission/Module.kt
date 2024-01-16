@@ -11,7 +11,7 @@ import java.io.Serializable
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-@TableName("t_module")
+@TableName("t_s_module")
 class Module : Serializable {
     /**
      * ID

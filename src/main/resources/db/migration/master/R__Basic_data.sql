@@ -1,11 +1,11 @@
-insert into t_power_type (id, name)
+insert into t_s_power_type (id, name)
     values (1, 'module'),
            (2, 'menu'),
            (3, 'func'),
            (4, 'operation') as new_value
 on duplicate key update name = new_value.name;
 
-insert into t_power (id, type_id)
+insert into t_s_power (id, type_id)
     values (1000000, 1),
            (1990000, 2),
            (1010000, 2),
@@ -70,11 +70,11 @@ insert into t_power (id, type_id)
         as new_value
 on duplicate key update type_id = new_value.type_id;
 
-insert into t_module (id, name)
+insert into t_s_module (id, name)
     values (1000000, '系统') as new_value
-on duplicate key update name     = new_value.name;
+on duplicate key update name = new_value.name;
 
-insert into t_menu (id, name, url, parent_id, module_id)
+insert into t_s_menu (id, name, url, parent_id, module_id)
     values (1990000, '系统管理', '/system', null, 1000000),
            (1010000, '用户管理', '/system/user', 1990000, 1000000),
            (1020000, '角色管理', '/system/role', 1990000, 1000000),
@@ -87,7 +87,7 @@ on duplicate key update name      =new_value.name,
                         url       =new_value.url,
                         parent_id =new_value.parent_id;
 
-insert into t_func(id, name, menu_id, parent_id)
+insert into t_s_func(id, name, menu_id, parent_id)
     values (1010100, '查询', 1010000, null),
            (1010200, '增加', 1010000, null),
            (1010300, '修改', 1010000, null),
@@ -109,7 +109,7 @@ on duplicate key update name      = new_value.name,
                         menu_id   = new_value.menu_id,
                         parent_id = new_value.parent_id;
 
-insert into t_operation(id, name, code, func_id)
+insert into t_s_operation(id, name, code, func_id)
     values (1010101, '单个', 'system:user:query:one', 1010100),
            (1010102, '全部', 'system:user:query:all', 1010100),
            (1010103, '列表', 'system:user:query:list', 1010100),

@@ -1,6 +1,6 @@
-drop table if exists t_event_log;
+drop table if exists t_l_event_log;
 
-create table if not exists t_event_log -- 事件日志表
+create table if not exists t_l_event_log -- 本地-事件日志表
 (
     id              integer not null primary key,
     event           text    not null,                                               -- 事件,

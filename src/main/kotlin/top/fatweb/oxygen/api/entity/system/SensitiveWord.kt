@@ -14,7 +14,7 @@ import java.io.Serializable
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-@TableName("t_sensitive_word", autoResultMap = true)
+@TableName("t_s_sensitive_word", autoResultMap = true)
 class SensitiveWord : Serializable {
     enum class Use(@field:EnumValue @field:JsonValue val code: String) {
         USERNAME("USERNAME"), TITLE("TITLE");

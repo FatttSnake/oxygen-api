@@ -1,6 +1,5 @@
 package top.fatweb.oxygen.api.service.system.impl
 
-import com.baomidou.dynamic.datasource.annotation.DS
 import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper
 import com.baomidou.mybatisplus.extension.kotlin.KtUpdateWrapper
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
@@ -22,7 +21,6 @@ import top.fatweb.oxygen.api.vo.system.SensitiveWordVo
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-@DS("sqlite")
 @Service
 class SensitiveWordServiceImpl : ServiceImpl<SensitiveWordMapper, SensitiveWord>(), ISensitiveWordService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)

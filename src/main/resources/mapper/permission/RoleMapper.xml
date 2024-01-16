@@ -3,16 +3,16 @@
 <mapper namespace="top.fatweb.oxygen.api.mapper.permission.RoleMapper">
     <select id="selectPage" resultType="long">
         select id
-        from t_role
+        from t_s_role
         <where>
             deleted = 0
             <if test="searchName != null">
                 <choose>
                     <when test="searchRegex == true">
-                        and t_role.name regexp #{searchName}
+                        and t_s_role.name regexp #{searchName}
                     </when>
                     <otherwise>
-                        and t_role.name like concat('%' ,#{searchName}, '%')
+                        and t_s_role.name like concat('%' ,#{searchName}, '%')
                     </otherwise>
                 </choose>
             </if>
@@ -20,37 +20,37 @@
     </select>
 
     <select id="selectListWithPowerByIds" resultMap="roleWithPowerMap">
-        select distinct t_role.id as role_id,
-        t_role.name as role_name,
-        t_role.enable as role_enable,
-        t_role.create_time as role_create_time,
-        t_role.update_time as role_update_time,
-        t_role.deleted as role_deleted,
-        t_role.version as role_version,
-        tm.id as module_id,
-        tm.name as module_name,
-        tmn.id as menu_id,
-        tmn.name as menu_name,
-        tmn.url as menu_url,
-        tmn.parent_id as menu_parent_id,
-        tmn.module_id as menu_module_id,
-        tf.id as func_id,
-        tf.name as func_name,
-        tf.parent_id as func_parent_id,
-        tf.menu_id as func_menu_id,
-        t.id as operation_id,
-        t.name as operation_name,
-        t.code as operation_code,
-        t.func_id as operation_func_id
-        from (select * from t_role where deleted = 0) as t_role
-        left join (select * from t_power_role where deleted = 0) as tpr on t_role.id = tpr.role_id
-        left join t_power tp on tp.id = tpr.power_id
-        left join t_module tm on tp.id = tm.id
-        left join t_menu tmn on tp.id = tmn.id
-        left join t_func tf on tp.id = tf.id
-        left join t_operation t on tp.id = t.id
+        select distinct t_s_role.id as role_id,
+        t_s_role.name as role_name,
+        t_s_role.enable as role_enable,
+        t_s_role.create_time as role_create_time,
+        t_s_role.update_time as role_update_time,
+        t_s_role.deleted as role_deleted,
+        t_s_role.version as role_version,
+        tsm.id as module_id,
+        tsm.name as module_name,
+        tsmn.id as menu_id,
+        tsmn.name as menu_name,
+        tsmn.url as menu_url,
+        tsmn.parent_id as menu_parent_id,
+        tsmn.module_id as menu_module_id,
+        tsf.id as func_id,
+        tsf.name as func_name,
+        tsf.parent_id as func_parent_id,
+        tsf.menu_id as func_menu_id,
+        tso.id as operation_id,
+        tso.name as operation_name,
+        tso.code as operation_code,
+        tso.func_id as operation_func_id
+        from (select * from t_s_role where deleted = 0) as t_s_role
+        left join (select * from t_r_power_role where deleted = 0) as trpr on t_s_role.id = trpr.role_id
+        left join t_s_power tsp on tsp.id = trpr.power_id
+        left join t_s_module tsm on tsp.id = tsm.id
+        left join t_s_menu tsmn on tsp.id = tsmn.id
+        left join t_s_func tsf on tsp.id = tsf.id
+        left join t_s_operation tso on tsp.id = tso.id
         <where>
-            <foreach collection="roleIds" item="item" index="index" open="and t_role.id in (" separator="," close=")"
+            <foreach collection="roleIds" item="item" index="index" open="and t_s_role.id in (" separator="," close=")"
                      nullable="true">
                 #{item}
             </foreach>
@@ -58,36 +58,36 @@
     </select>
 
     <select id="selectOneById" resultMap="roleWithPowerMap">
-        select distinct t_role.id      as role_id,
-                        t_role.name    as role_name,
-                        t_role.enable  as role_enable,
-                        t_role.create_time as role_create_time,
-                        t_role.update_time as role_update_time,
-                        t_role.deleted as role_deleted,
-                        t_role.version as role_version,
-                        tm.id          as module_id,
-                        tm.name        as module_name,
-                        tmn.id         as menu_id,
-                        tmn.name       as menu_name,
-                        tmn.url        as menu_url,
-                        tmn.parent_id  as menu_parent_id,
-                        tmn.module_id  as menu_module_id,
-                        tf.id          as func_id,
-                        tf.name        as func_name,
-                        tf.parent_id   as func_parent_id,
-                        tf.menu_id     as func_menu_id,
-                        t.id           as operation_id,
-                        t.name         as operation_name,
-                        t.code         as operation_code,
-                        t.func_id   as operation_func_id
-        from (select * from t_role where deleted = 0) as t_role
-                 left join (select * from t_power_role where deleted = 0) as tpr on t_role.id = tpr.role_id
-                 left join t_power tp on tp.id = tpr.power_id
-                 left join t_module tm on tp.id = tm.id
-                 left join t_menu tmn on tp.id = tmn.id
-                 left join t_func tf on tp.id = tf.id
-                 left join t_operation t on tp.id = t.id
-        where t_role.id = #{id}
+        select distinct t_s_role.id          as role_id,
+                        t_s_role.name        as role_name,
+                        t_s_role.enable      as role_enable,
+                        t_s_role.create_time as role_create_time,
+                        t_s_role.update_time as role_update_time,
+                        t_s_role.deleted     as role_deleted,
+                        t_s_role.version     as role_version,
+                        tsm.id               as module_id,
+                        tsm.name             as module_name,
+                        tsmn.id              as menu_id,
+                        tsmn.name            as menu_name,
+                        tsmn.url             as menu_url,
+                        tsmn.parent_id       as menu_parent_id,
+                        tsmn.module_id       as menu_module_id,
+                        tsf.id               as func_id,
+                        tsf.name             as func_name,
+                        tsf.parent_id        as func_parent_id,
+                        tsf.menu_id          as func_menu_id,
+                        tso.id               as operation_id,
+                        tso.name             as operation_name,
+                        tso.code             as operation_code,
+                        tso.func_id          as operation_func_id
+        from (select * from t_s_role where deleted = 0) as t_s_role
+                 left join (select * from t_r_power_role where deleted = 0) as trpr on t_s_role.id = trpr.role_id
+                 left join t_s_power tsp on tsp.id = trpr.power_id
+                 left join t_s_module tsm on tsp.id = tsm.id
+                 left join t_s_menu tsmn on tsp.id = tsmn.id
+                 left join t_s_func tsf on tsp.id = tsf.id
+                 left join t_s_operation tso on tsp.id = tso.id
+        where t_s_role.id = #{id}
     </select>
 
     <resultMap id="roleMap" type="role">
@@ -104,6 +104,7 @@
         <collection property="modules" resultMap="top.fatweb.oxygen.api.mapper.permission.ModuleMapper.moduleMap"/>
         <collection property="menus" resultMap="top.fatweb.oxygen.api.mapper.permission.MenuMapper.menuMap"/>
         <collection property="funcs" resultMap="top.fatweb.oxygen.api.mapper.permission.FuncMapper.funcMap"/>
-        <collection property="operations" resultMap="top.fatweb.oxygen.api.mapper.permission.OperationMapper.operationMap"/>
+        <collection property="operations"
+                    resultMap="top.fatweb.oxygen.api.mapper.permission.OperationMapper.operationMap"/>
     </resultMap>
 </mapper>

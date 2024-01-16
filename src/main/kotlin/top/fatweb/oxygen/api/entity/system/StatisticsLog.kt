@@ -15,7 +15,7 @@ import java.time.LocalDateTime
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-@TableName("t_statistics_log")
+@TableName("t_l_statistics_log")
 class StatisticsLog : Serializable {
     enum class KeyItem(@field:EnumValue @field:JsonValue val code: String) {
         ONLINE_USERS_COUNT("ONLINE_USER_COUNT")

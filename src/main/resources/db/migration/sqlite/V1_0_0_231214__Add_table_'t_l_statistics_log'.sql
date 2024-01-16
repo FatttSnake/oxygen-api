@@ -1,6 +1,6 @@
-drop table if exists t_statistics_log;
+drop table if exists t_l_statistics_log;
 
-create table if not exists t_statistics_log -- 统计日志表
+create table if not exists t_l_statistics_log -- 本地-统计日志表
 (
     id          integer not null primary key,
     key         text    not null,                                               -- 记录键

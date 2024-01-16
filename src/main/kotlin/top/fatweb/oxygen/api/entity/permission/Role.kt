@@ -10,7 +10,7 @@ import java.time.LocalDateTime
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-@TableName("t_role")
+@TableName("t_s_role")
 class Role : Serializable {
     /**
      * ID

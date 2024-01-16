@@ -10,7 +10,7 @@ import java.time.LocalDateTime
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-@TableName("t_user")
+@TableName("t_s_user")
 class User() : Serializable {
     constructor(id: Long?, username: String, password: String, enable: Boolean = true) : this() {
         this.id = id
