@@ -15,6 +15,7 @@ insert into t_s_power (id, type_id)
            (1510000, 2),
            (1520000, 2),
            (1530000, 2),
+           (1540000, 2),
            (1010100, 3),
            (1010200, 3),
            (1010300, 3),
@@ -32,6 +33,10 @@ insert into t_s_power (id, type_id)
            (1520100, 3),
            (1530100, 3),
            (1530300, 3),
+           (1540100, 3),
+           (1540200, 3),
+           (1540300, 3),
+           (1540400, 3),
            (1010101, 4),
            (1010102, 4),
            (1010103, 4),
@@ -66,8 +71,15 @@ insert into t_s_power (id, type_id)
            (1530103, 4),
            (1530301, 4),
            (1530302, 4),
-           (1530303, 4)
-        as new_value
+           (1530303, 4),
+           (1540101, 4),
+           (1540102, 4),
+           (1540201, 4),
+           (1540202, 4),
+           (1540301, 4),
+           (1540302, 4),
+           (1540401, 4),
+           (1540402, 4) as new_value
 on duplicate key update type_id = new_value.type_id;
 
 insert into t_s_module (id, name)
@@ -82,7 +94,8 @@ insert into t_s_menu (id, name, url, parent_id, module_id)
            (1040000, '权限管理', '/system/power', 1990000, 1000000),
            (1510000, '系统概况', '/system/statistics', 1990000, 1000000),
            (1520000, '日志管理', '/system/log', 1990000, 1000000),
-           (1530000, '系统设置', '/system/settings', 1990000, 1000000) as new_value
+           (1530000, '系统设置', '/system/settings', 1990000, 1000000),
+           (1540000, '工具配置', '/system/tools', 1990000, 1000000) as new_value
 on duplicate key update name      =new_value.name,
                         url       =new_value.url,
                         parent_id =new_value.parent_id;
@@ -104,7 +117,11 @@ insert into t_s_func(id, name, menu_id, parent_id)
            (1510100, '查询', 1510000, null),
            (1520100, '查询', 1520000, null),
            (1530100, '查询', 1530000, null),
-           (1530300, '修改', 1530000, null) as new_value
+           (1530300, '修改', 1530000, null),
+           (1540100, '查询', 1540000, null),
+           (1540200, '增加', 1540000, null),
+           (1540300, '修改', 1540000, null),
+           (1540400, '删除', 1540000, null) as new_value
 on duplicate key update name      = new_value.name,
                         menu_id   = new_value.menu_id,
                         parent_id = new_value.parent_id;
@@ -144,7 +161,15 @@ insert into t_s_operation(id, name, code, func_id)
            (1530103, '敏感词', 'system:settings:query:sensitive', 1530100),
            (1530301, '基础', 'system:settings:modify:base', 1530300),
            (1530302, '邮件', 'system:settings:modify:mail', 1530300),
-           (1530303, '敏感词', 'system:settings:modify:sensitive', 1530300) as new_value
+           (1530303, '敏感词', 'system:settings:modify:sensitive', 1530300),
+           (1540101, '基板', 'system:tools:query:base', 1540100),
+           (1540102, '模板', 'system:tools:query:template', 1540100),
+           (1540201, '基板', 'system:tools:add:base', 1540200),
+           (1540202, '模板', 'system:tools:add:template', 1540200),
+           (1540301, '基板', 'system:tools:modify:base', 1540300),
+           (1540302, '模板', 'system:tools:modify:template', 1540300),
+           (1540401, '基板', 'system:tools:delete:base', 1540400),
+           (1540402, '模板', 'system:tools:delete:template', 1540400) as new_value
 on duplicate key update name=new_value.name,
                         code=new_value.code,
                         func_id=new_value.func_id;
