@@ -9,6 +9,8 @@ import top.fatweb.oxygen.api.entity.system.SensitiveWord
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see BaseMapper
+ * @see SensitiveWord
  */
 @Mapper
 interface SensitiveWordMapper : BaseMapper<SensitiveWord>
