@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import top.fatweb.oxygen.api.converter.permission.RoleConverter
-import top.fatweb.oxygen.api.entity.permission.PowerRole
+import top.fatweb.oxygen.api.entity.permission.RPowerRole
 import top.fatweb.oxygen.api.entity.permission.Role
 import top.fatweb.oxygen.api.mapper.permission.RoleMapper
 import top.fatweb.oxygen.api.param.permission.role.*
@@ -24,7 +24,7 @@ import top.fatweb.oxygen.api.vo.permission.base.RoleVo
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  * @see RedisUtil
- * @see IPowerRoleService
+ * @see IRPowerRoleService
  * @see IFuncService
  * @see IMenuService
  * @see IUserService
@@ -36,7 +36,7 @@ import top.fatweb.oxygen.api.vo.permission.base.RoleVo
 @Service
 class RoleServiceImpl(
     private val redisUtil: RedisUtil,
-    private val powerRoleService: IPowerRoleService,
+    private val rPowerRoleService: IRPowerRoleService,
     private val funcService: IFuncService,
     private val menuService: IMenuService,
     private val userService: IUserService
@@ -79,8 +79,8 @@ class RoleServiceImpl(
                 return RoleConverter.roleToRoleVo(role)
             }
 
-            if (powerRoleService.saveBatch(fullPowerIds.map {
-                    PowerRole().apply {
+            if (rPowerRoleService.saveBatch(fullPowerIds.map {
+                    RPowerRole().apply {
                         roleId = role.id
                         powerId = it
                     }
@@ -97,8 +97,8 @@ class RoleServiceImpl(
         val fullPowerIds = roleUpdateParam.powerIds?.let { getFullPowerIds(it) }
 
         val role = RoleConverter.roleUpdateParamToRole(roleUpdateParam)
-        val oldPowerList = powerRoleService.list(
-            KtQueryWrapper(PowerRole()).select(PowerRole::powerId).eq(PowerRole::roleId, roleUpdateParam.id)
+        val oldPowerList = rPowerRoleService.list(
+            KtQueryWrapper(RPowerRole()).select(RPowerRole::powerId).eq(RPowerRole::roleId, roleUpdateParam.id)
         ).map { it.powerId }
         val addPowerIds = HashSet<Long>()
         val removePowerIds = HashSet<Long>()
@@ -114,15 +114,15 @@ class RoleServiceImpl(
         baseMapper.updateById(role)
 
         removePowerIds.forEach {
-            powerRoleService.remove(
-                KtQueryWrapper(PowerRole()).eq(
-                    PowerRole::roleId, roleUpdateParam.id
-                ).eq(PowerRole::powerId, it)
+            rPowerRoleService.remove(
+                KtQueryWrapper(RPowerRole()).eq(
+                    RPowerRole::roleId, roleUpdateParam.id
+                ).eq(RPowerRole::powerId, it)
             )
         }
 
         addPowerIds.forEach {
-            powerRoleService.save(PowerRole().apply {
+            rPowerRoleService.save(RPowerRole().apply {
                 roleId = roleUpdateParam.id
                 powerId = it
             })
@@ -151,7 +151,7 @@ class RoleServiceImpl(
     @Transactional
     override fun delete(roleDeleteParam: RoleDeleteParam) {
         baseMapper.deleteBatchIds(roleDeleteParam.ids)
-        powerRoleService.remove(KtQueryWrapper(PowerRole()).`in`(PowerRole::roleId, roleDeleteParam.ids))
+        rPowerRoleService.remove(KtQueryWrapper(RPowerRole()).`in`(RPowerRole::roleId, roleDeleteParam.ids))
         offlineUser(*roleDeleteParam.ids.toLongArray())
     }
 

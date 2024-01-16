@@ -10,7 +10,7 @@ import java.io.Serializable
  * @since 1.0.0
  */
 @TableName("t_r_power_role")
-class PowerRole : Serializable {
+class RPowerRole : Serializable {
     /**
      * ID
      *
@@ -59,6 +59,6 @@ class PowerRole : Serializable {
     var version: Int? = null
 
     override fun toString(): String {
-        return "PowerRole(id=$id, powerId=$powerId, roleId=$roleId, deleted=$deleted, version=$version)"
+        return "RPowerRole(id=$id, powerId=$powerId, roleId=$roleId, deleted=$deleted, version=$version)"
     }
 }

@@ -2,15 +2,15 @@ package top.fatweb.oxygen.api.mapper.permission
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper
 import org.apache.ibatis.annotations.Mapper
-import top.fatweb.oxygen.api.entity.permission.PowerRole
+import top.fatweb.oxygen.api.entity.permission.RUserGroup
 
 /**
- * Power role intermediate mapper
+ * User group intermediate mapper
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  * @see BaseMapper
- * @see PowerRole
+ * @see RUserGroup
  */
 @Mapper
-interface PowerRoleMapper : BaseMapper<PowerRole>
+interface RUserGroupMapper : BaseMapper<RUserGroup>

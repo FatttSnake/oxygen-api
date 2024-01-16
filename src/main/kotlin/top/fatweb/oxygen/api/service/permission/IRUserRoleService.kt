@@ -1,14 +1,14 @@
 package top.fatweb.oxygen.api.service.permission
 
 import com.baomidou.mybatisplus.extension.service.IService
-import top.fatweb.oxygen.api.entity.permission.PowerRole
+import top.fatweb.oxygen.api.entity.permission.RUserRole
 
 /**
- * Power role intermediate service interface
+ * User role intermediate service interface
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  * @see IService
- * @see PowerRole
+ * @see RUserRole
  */
-interface IPowerRoleService : IService<PowerRole>
+interface IRUserRoleService : IService<RUserRole>

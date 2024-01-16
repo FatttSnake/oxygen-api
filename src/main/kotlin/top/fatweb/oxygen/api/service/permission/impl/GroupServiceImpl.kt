@@ -7,11 +7,11 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import top.fatweb.oxygen.api.converter.permission.GroupConverter
 import top.fatweb.oxygen.api.entity.permission.Group
-import top.fatweb.oxygen.api.entity.permission.RoleGroup
+import top.fatweb.oxygen.api.entity.permission.RRoleGroup
 import top.fatweb.oxygen.api.mapper.permission.GroupMapper
 import top.fatweb.oxygen.api.param.permission.group.*
 import top.fatweb.oxygen.api.service.permission.IGroupService
-import top.fatweb.oxygen.api.service.permission.IRoleGroupService
+import top.fatweb.oxygen.api.service.permission.IRRoleGroupService
 import top.fatweb.oxygen.api.service.permission.IUserService
 import top.fatweb.oxygen.api.util.PageUtil
 import top.fatweb.oxygen.api.util.RedisUtil
@@ -26,7 +26,7 @@ import top.fatweb.oxygen.api.vo.permission.base.GroupVo
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  * @see RedisUtil
- * @see IRoleGroupService
+ * @see IRRoleGroupService
  * @see IUserService
  * @see ServiceImpl
  * @see GroupMapper
@@ -36,7 +36,7 @@ import top.fatweb.oxygen.api.vo.permission.base.GroupVo
 @Service
 class GroupServiceImpl(
     private val redisUtil: RedisUtil,
-    private val roleGroupService: IRoleGroupService,
+    private val rRoleGroupService: IRRoleGroupService,
     private val userService: IUserService
 ) : ServiceImpl<GroupMapper, Group>(), IGroupService {
     override fun getPage(groupGetParam: GroupGetParam?): PageVo<GroupWithRoleVo> {
@@ -72,8 +72,8 @@ class GroupServiceImpl(
                 return GroupConverter.groupToGroupVo(group)
             }
 
-            if (roleGroupService.saveBatch(group.roles!!.map {
-                    RoleGroup().apply {
+            if (rRoleGroupService.saveBatch(group.roles!!.map {
+                    RRoleGroup().apply {
                         groupId = group.id
                         roleId = it.id
                     }
@@ -88,8 +88,8 @@ class GroupServiceImpl(
     @Transactional
     override fun update(groupUpdateParam: GroupUpdateParam): GroupVo? {
         val group = GroupConverter.groupUpdateParamToGroup(groupUpdateParam)
-        val oldRoleList = roleGroupService.list(
-            KtQueryWrapper(RoleGroup()).select(RoleGroup::roleId).eq(RoleGroup::groupId, groupUpdateParam.id)
+        val oldRoleList = rRoleGroupService.list(
+            KtQueryWrapper(RRoleGroup()).select(RRoleGroup::roleId).eq(RRoleGroup::groupId, groupUpdateParam.id)
         ).map { it.roleId }
         val addRoleIds = HashSet<Long>()
         val removeRoleIds = HashSet<Long>()
@@ -105,15 +105,15 @@ class GroupServiceImpl(
         baseMapper.updateById(group)
 
         removeRoleIds.forEach {
-            roleGroupService.remove(
-                KtQueryWrapper(RoleGroup()).eq(
-                    RoleGroup::groupId, groupUpdateParam.id
-                ).eq(RoleGroup::roleId, it)
+            rRoleGroupService.remove(
+                KtQueryWrapper(RRoleGroup()).eq(
+                    RRoleGroup::groupId, groupUpdateParam.id
+                ).eq(RRoleGroup::roleId, it)
             )
         }
 
         addRoleIds.forEach {
-            roleGroupService.save(RoleGroup().apply {
+            rRoleGroupService.save(RRoleGroup().apply {
                 groupId = groupUpdateParam.id
                 roleId = it
             })
@@ -142,7 +142,7 @@ class GroupServiceImpl(
     @Transactional
     override fun delete(groupDeleteParam: GroupDeleteParam) {
         baseMapper.deleteBatchIds(groupDeleteParam.ids)
-        roleGroupService.remove(KtQueryWrapper(RoleGroup()).`in`(RoleGroup::groupId, groupDeleteParam.ids))
+        rRoleGroupService.remove(KtQueryWrapper(RRoleGroup()).`in`(RRoleGroup::groupId, groupDeleteParam.ids))
         offlineUser(*groupDeleteParam.ids.toLongArray())
     }
 

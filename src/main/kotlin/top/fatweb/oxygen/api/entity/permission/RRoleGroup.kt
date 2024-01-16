@@ -10,7 +10,7 @@ import java.io.Serializable
  * @since 1.0.0
  */
 @TableName("t_r_role_group")
-class RoleGroup : Serializable {
+class RRoleGroup : Serializable {
     /**
      * ID
      *
@@ -59,6 +59,6 @@ class RoleGroup : Serializable {
     var version: Int? = null
 
     override fun toString(): String {
-        return "RoleGroup(id=$id, roleId=$roleId, groupId=$groupId, deleted=$deleted, version=$version)"
+        return "RRoleGroup(id=$id, roleId=$roleId, groupId=$groupId, deleted=$deleted, version=$version)"
     }
 }

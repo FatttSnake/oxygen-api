@@ -1,14 +1,14 @@
 package top.fatweb.oxygen.api.service.permission
 
 import com.baomidou.mybatisplus.extension.service.IService
-import top.fatweb.oxygen.api.entity.permission.UserGroup
+import top.fatweb.oxygen.api.entity.permission.RRoleGroup
 
 /**
- * User group intermediate service interface
+ * Role group intermediate service interface
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  * @see IService
- * @see UserGroup
+ * @see RRoleGroup
  */
-interface IUserGroupService : IService<UserGroup>
+interface IRRoleGroupService : IService<RRoleGroup>

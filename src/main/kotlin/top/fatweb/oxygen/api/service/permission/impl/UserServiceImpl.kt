@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import top.fatweb.oxygen.api.converter.permission.UserConverter
 import top.fatweb.oxygen.api.entity.permission.User
-import top.fatweb.oxygen.api.entity.permission.UserGroup
+import top.fatweb.oxygen.api.entity.permission.RUserGroup
 import top.fatweb.oxygen.api.entity.permission.UserInfo
-import top.fatweb.oxygen.api.entity.permission.UserRole
+import top.fatweb.oxygen.api.entity.permission.RUserRole
 import top.fatweb.oxygen.api.exception.NoRecordFoundException
 import top.fatweb.oxygen.api.mapper.permission.UserMapper
 import top.fatweb.oxygen.api.param.permission.user.*
@@ -42,8 +42,8 @@ import java.util.*
  * @see IMenuService
  * @see IFuncService
  * @see IOperationService
- * @see IUserRoleService
- * @see IUserGroupService
+ * @see IRUserRoleService
+ * @see IRUserGroupService
  * @see ServiceImpl
  * @see UserMapper
  * @see User
@@ -59,8 +59,8 @@ class UserServiceImpl(
     private val menuService: IMenuService,
     private val funcService: IFuncService,
     private val operationService: IOperationService,
-    private val userRoleService: IUserRoleService,
-    private val userGroupService: IUserGroupService
+    private val rUserRoleService: IRUserRoleService,
+    private val rUserGroupService: IRUserGroupService
 ) : ServiceImpl<UserMapper, User>(), IUserService {
     override fun getUserWithPowerByAccount(account: String): User? {
         val user = baseMapper.selectOneWithPowerInfoByAccount(account)
@@ -121,8 +121,8 @@ class UserServiceImpl(
             user.userInfo?.let { userInfoService.save(it.apply { userId = user.id }) }
 
             if (!user.roles.isNullOrEmpty()) {
-                userRoleService.saveBatch(user.roles!!.map {
-                    UserRole().apply {
+                rUserRoleService.saveBatch(user.roles!!.map {
+                    RUserRole().apply {
                         userId = user.id
                         roleId = it.id
                     }
@@ -130,8 +130,8 @@ class UserServiceImpl(
             }
 
             if (!user.groups.isNullOrEmpty()) {
-                userGroupService.saveBatch(user.groups!!.map {
-                    UserGroup().apply {
+                rUserGroupService.saveBatch(user.groups!!.map {
+                    RUserGroup().apply {
                         userId = user.id
                         groupId = it.id
                     }
@@ -151,8 +151,8 @@ class UserServiceImpl(
         val user = UserConverter.userUpdateParamToUser(userUpdateParam)
         user.updateTime = LocalDateTime.now(ZoneOffset.UTC)
 
-        val oldRoleList = userRoleService.list(
-            KtQueryWrapper(UserRole()).select(UserRole::roleId).eq(UserRole::userId, userUpdateParam.id)
+        val oldRoleList = rUserRoleService.list(
+            KtQueryWrapper(RUserRole()).select(RUserRole::roleId).eq(RUserRole::userId, userUpdateParam.id)
         ).map { it.roleId }
         val addRoleIds = HashSet<Long>()
         val removeRoleIds = HashSet<Long>()
@@ -165,8 +165,8 @@ class UserServiceImpl(
         removeRoleIds.removeAll(addRoleIds)
         oldRoleList.toSet().let { addRoleIds.removeAll(it) }
 
-        val oldGroupList = userGroupService.list(
-            KtQueryWrapper(UserGroup()).select(UserGroup::groupId).eq(UserGroup::userId, userUpdateParam.id)
+        val oldGroupList = rUserGroupService.list(
+            KtQueryWrapper(RUserGroup()).select(RUserGroup::groupId).eq(RUserGroup::userId, userUpdateParam.id)
         ).map { it.groupId }
         val addGroupIds = HashSet<Long>()
         val removeGroupIds = HashSet<Long>()
@@ -202,30 +202,30 @@ class UserServiceImpl(
         }
 
         removeRoleIds.forEach {
-            userRoleService.remove(
-                KtQueryWrapper(UserRole()).eq(
-                    UserRole::userId, userUpdateParam.id
-                ).eq(UserRole::roleId, it)
+            rUserRoleService.remove(
+                KtQueryWrapper(RUserRole()).eq(
+                    RUserRole::userId, userUpdateParam.id
+                ).eq(RUserRole::roleId, it)
             )
         }
 
         addRoleIds.forEach {
-            userRoleService.save(UserRole().apply {
+            rUserRoleService.save(RUserRole().apply {
                 userId = userUpdateParam.id
                 roleId = it
             })
         }
 
         removeGroupIds.forEach {
-            userGroupService.remove(
-                KtQueryWrapper(UserGroup()).eq(
-                    UserGroup::userId, userUpdateParam.id
-                ).eq(UserGroup::groupId, it)
+            rUserGroupService.remove(
+                KtQueryWrapper(RUserGroup()).eq(
+                    RUserGroup::userId, userUpdateParam.id
+                ).eq(RUserGroup::groupId, it)
             )
         }
 
         addGroupIds.forEach {
-            userGroupService.save(UserGroup().apply {
+            rUserGroupService.save(RUserGroup().apply {
                 userId = userUpdateParam.id
                 groupId = it
             })
@@ -278,8 +278,8 @@ class UserServiceImpl(
 
         this.removeBatchByIds(ids)
         userInfoService.remove(KtQueryWrapper(UserInfo()).`in`(UserInfo::userId, ids))
-        userRoleService.remove(KtQueryWrapper(UserRole()).`in`(UserRole::userId, ids))
-        userGroupService.remove(KtQueryWrapper(UserGroup()).`in`(UserGroup::userId, ids))
+        rUserRoleService.remove(KtQueryWrapper(RUserRole()).`in`(RUserRole::userId, ids))
+        rUserGroupService.remove(KtQueryWrapper(RUserGroup()).`in`(RUserGroup::userId, ids))
 
         WebUtil.offlineUser(redisUtil, *ids.toLongArray())
     }

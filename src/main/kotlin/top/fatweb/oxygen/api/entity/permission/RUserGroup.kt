@@ -10,7 +10,7 @@ import java.io.Serializable
  * @since 1.0.0
  */
 @TableName("t_r_user_group")
-class UserGroup : Serializable {
+class RUserGroup : Serializable {
     /**
      * ID
      *
@@ -59,6 +59,6 @@ class UserGroup : Serializable {
     var version: Int? = null
 
     override fun toString(): String {
-        return "UserGroup(id=$id, userId=$userId, groupId=$groupId, deleted=$deleted, version=$version)"
+        return "RUserGroup(id=$id, userId=$userId, groupId=$groupId, deleted=$deleted, version=$version)"
     }
 }
