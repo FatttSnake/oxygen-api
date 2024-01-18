@@ -2,6 +2,8 @@ package top.fatweb.oxygen.api.entity.tool
 
 import com.baomidou.mybatisplus.annotation.*
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler
+import top.fatweb.oxygen.api.entity.permission.UserInfo
+import java.time.LocalDateTime
 
 /**
  * Tool entity
@@ -48,13 +50,22 @@ class Tool {
     var description: String? = null
 
     /**
-     * Author
+     * Base ID
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @TableField("author")
-    var author: Long? = null
+    @TableField("base_id")
+    var baseId: Long? = null
+
+    /**
+     * Author ID
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @TableField("author_id")
+    var authorId: Long? = null
 
     /**
      * Version of tool
@@ -75,30 +86,31 @@ class Tool {
     var privately: Int? = null
 
     /**
-     * Keyword
+     * Keywords
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @TableField("keyword", typeHandler = JacksonTypeHandler::class)
-    var keyword: List<String>? = null
+    @TableField("keywords", typeHandler = JacksonTypeHandler::class)
+    var keywords: List<String>? = null
 
     /**
-     * Source code
+     * Source code ID
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @TableField("source")
-    var source: Long? = null
+    @TableField("source_id")
+    var sourceId: Long? = null
 
     /**
-     * Compile product
+     * Compile product ID
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    var dist: Long? = null
+    @TableField("dist_id")
+    var distId: Long? = null
 
     /**
      * Publish
@@ -106,6 +118,7 @@ class Tool {
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @TableField("publish")
     var publish: Int? = null
 
     /**
@@ -114,7 +127,28 @@ class Tool {
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @TableField("review")
     var review: Int? = null
+
+    /**
+     * Create time
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see LocalDateTime
+     */
+    @TableField("create_time", fill = FieldFill.INSERT)
+    var createTime: LocalDateTime? = null
+
+    /**
+     * Update time
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see LocalDateTime
+     */
+    @TableField("update_time", fill = FieldFill.INSERT_UPDATE)
+    var updateTime: LocalDateTime? = null
 
     /**
      * Deleted
@@ -136,7 +170,43 @@ class Tool {
     @Version
     var version: Int? = null
 
+    /**
+     * Author
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @TableField(exist = false)
+    var author: UserInfo? = null
+
+    /**
+     * Categories
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @TableField(exist = false)
+    var categories: List<ToolCategory>? = null
+
+    /**
+     * Source
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @TableField(exist = false)
+    var source: ToolData? = null
+
+    /**
+     * Dist
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @TableField(exist = false)
+    var dist: ToolData? = null
+
     override fun toString(): String {
-        return "Tool(id=$id, name=$name, toolId=$toolId, description=$description, author=$author, ver=$ver, privately=$privately, keyword=$keyword, source=$source, dist=$dist, publish=$publish, review=$review, deleted=$deleted, version=$version)"
+        return "Tool(id=$id, name=$name, toolId=$toolId, description=$description, baseId=$baseId, authorId=$authorId, ver=$ver, privately=$privately, keywords=$keywords, sourceId=$sourceId, distId=$distId, publish=$publish, review=$review, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version, author=$author, categories=$categories, source=$source, dist=$dist)"
     }
 }

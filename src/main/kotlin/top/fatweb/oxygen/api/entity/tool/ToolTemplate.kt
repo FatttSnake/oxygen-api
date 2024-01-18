@@ -4,13 +4,13 @@ import com.baomidou.mybatisplus.annotation.*
 import java.time.LocalDateTime
 
 /**
- * Tool category entity
+ * Tool template entity
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-@TableName("t_b_tool_category")
-class ToolCategory {
+@TableName("t_b_tool_template")
+class ToolTemplate {
     /**
      * ID
      *
@@ -30,13 +30,40 @@ class ToolCategory {
     var name: String? = null
 
     /**
-     * Enabel
+     * ver
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @TableField("enable")
-    var enable: Int? = null
+    @TableField("ver")
+    var ver: String? = null
+
+    /**
+     * Base ID
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @TableField("base_id")
+    var baseId: Long? = null
+
+    /**
+     * Source ID
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @TableField("source_id")
+    var sourceId: Long? = null
+
+    /**
+     * Dist ID
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @TableField("dist_id")
+    var distId: Long? = null
 
     /**
      * Create time
@@ -78,7 +105,25 @@ class ToolCategory {
     @Version
     var version: Int? = null
 
+    /**
+     * Source
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @TableField(exist = false)
+    var source: ToolData? = null
+
+    /**
+     * Dist
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @TableField(exist = false)
+    var dist: ToolData? = null
+
     override fun toString(): String {
-        return "ToolCategory(id=$id, name=$name, enable=$enable, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version)"
+        return "ToolTemplate(id=$id, name=$name, ver=$ver, baseId=$baseId, sourceId=$sourceId, distId=$distId, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version)"
     }
 }

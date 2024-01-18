@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.fatweb.oxygen.api.mapper.tool.ToolTemplateMapper">
+    <select id="selectOne" resultMap="toolTemplateMap">
+        select t_b_tool_template.id          as tool_template_id,
+               t_b_tool_template.name        as tool_template_name,
+               t_b_tool_template.ver         as tool_template_ver,
+               t_b_tool_template.base_id     as tool_template_base_id,
+               t_b_tool_template.source_id   as tool_template_source_id,
+               t_b_tool_template.dist_id     as tool_template_dist_id,
+               t_b_tool_template.create_time as tool_template_create_time,
+               t_b_tool_template.update_time as tool_template_update_time,
+               t_b_tool_template.deleted     as tool_template_deleted,
+               t_b_tool_template.version     as tool_template_version,
+               tbtds.data                    as tool_template_source_data,
+               tbtds.create_time             as tool_template_source_create_time,
+               tbtds.update_time             as tool_template_source_update_time,
+               tbtds.deleted                 as tool_template_source_delete,
+               tbtds.version                 as tool_template_source_version,
+               tbtdd.data                    as tool_template_dist_data,
+               tbtdd.create_time             as tool_template_dist_create_time,
+               tbtdd.update_time             as tool_template_dist_update_time,
+               tbtdd.deleted                 as tool_template_dist_delete,
+               tbtdd.version                 as tool_template_dist_version
+        from t_b_tool_template
+                 left join (select * from t_b_tool_data where deleted = 0) as tbtds
+                           on tbtds.id = t_b_tool_template.source_id
+                 left join (select * from t_b_tool_data where deleted = 0) as tbtdd
+                           on tbtdd.id = t_b_tool_template.dist_id
+        where t_b_tool_template.deleted = 0
+          and t_b_tool_template.id = #{id}
+    </select>
+
+    <select id="selectList" resultMap="toolTemplateMap">
+        select t_b_tool_template.id          as tool_template_id,
+               t_b_tool_template.name        as tool_template_name,
+               t_b_tool_template.ver         as tool_template_ver,
+               t_b_tool_template.base_id     as tool_template_base_id,
+               t_b_tool_template.source_id   as tool_template_source_id,
+               t_b_tool_template.dist_id     as tool_template_dist_id,
+               t_b_tool_template.create_time as tool_template_create_time,
+               t_b_tool_template.update_time as tool_template_update_time,
+               t_b_tool_template.deleted     as tool_template_deleted,
+               t_b_tool_template.version     as tool_template_version,
+               tbtds.data                    as tool_template_source_data,
+               tbtds.create_time             as tool_template_source_create_time,
+               tbtds.update_time             as tool_template_source_update_time,
+               tbtds.deleted                 as tool_template_source_delete,
+               tbtds.version                 as tool_template_source_version,
+               tbtdd.data                    as tool_template_dist_data,
+               tbtdd.create_time             as tool_template_dist_create_time,
+               tbtdd.update_time             as tool_template_dist_update_time,
+               tbtdd.deleted                 as tool_template_dist_delete,
+               tbtdd.version                 as tool_template_dist_version
+        from t_b_tool_template
+                 left join (select * from t_b_tool_data where deleted = 0) as tbtds
+                           on tbtds.id = t_b_tool_template.source_id
+                 left join (select * from t_b_tool_data where deleted = 0) as tbtdd
+                           on tbtdd.id = t_b_tool_template.dist_id
+        where t_b_tool_template.deleted = 0
+    </select>
+
+    <resultMap id="toolTemplateMap" type="toolTemplate">
+        <id property="id" column="tool_template_id"/>
+        <result property="name" column="tool_template_name"/>
+        <result property="ver" column="tool_template_ver"/>
+        <result property="baseId" column="tool_template_base_id"/>
+        <result property="sourceId" column="tool_template_source_id"/>
+        <result property="distId" column="tool_template_dist_id"/>
+        <result property="createTime" column="tool_template_create_time"/>
+        <result property="updateTime" column="tool_template_update_time"/>
+        <result property="deleted" column="tool_template_deleted"/>
+        <result property="version" column="tool_template_version"/>
+        <association property="source">
+            <id property="id" column="tool_template_source_id"/>
+            <result property="data" column="tool_template_source_data"/>
+            <result property="createTime" column="tool_template_source_create_time"/>
+            <result property="updateTime" column="tool_template_source_update_time"/>
+            <result property="deleted" column="tool_template_source_deleted"/>
+            <result property="version" column="tool_template_source_version"/>
+        </association>
+        <association property="dist">
+            <id property="id" column="tool_template_dist_id"/>
+            <result property="data" column="tool_template_dist_data"/>
+            <result property="createTime" column="tool_template_dist_create_time"/>
+            <result property="updateTime" column="tool_template_dist_update_time"/>
+            <result property="deleted" column="tool_template_dist_deleted"/>
+            <result property="version" column="tool_template_dist_version"/>
+        </association>
+    </resultMap>
+</mapper>

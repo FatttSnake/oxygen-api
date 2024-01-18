@@ -4,13 +4,13 @@ import com.baomidou.mybatisplus.annotation.*
 import java.time.LocalDateTime
 
 /**
- * Tool data entity
+ * Tool base entity
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-@TableName("t_b_tool_data")
-class ToolData {
+@TableName("t_b_tool_base")
+class ToolBase {
     /**
      * ID
      *
@@ -21,13 +21,31 @@ class ToolData {
     var id: Long? = null
 
     /**
-     * Data
+     * Name
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @TableField("data")
-    var data: String? = null
+    @TableField("name")
+    var name: String? = null
+
+    /**
+     * Source ID
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @TableField("source_id")
+    var sourceId: Long? = null
+
+    /**
+     * Dist ID
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @TableField("dist_id")
+    var distId: Long? = null
 
     /**
      * Create time
@@ -69,7 +87,25 @@ class ToolData {
     @Version
     var version: Int? = null
 
+    /**
+     * Source
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @TableField(exist = false)
+    var source: ToolData? = null
+
+    /**
+     * Dist
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @TableField(exist = false)
+    var dist: ToolData? = null
+
     override fun toString(): String {
-        return "ToolData(id=$id, data=$data, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version)"
+        return "ToolBase(id=$id, name=$name, sourceId=$sourceId, distId=$distId, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version, source=$source, dist=$dist)"
     }
 }

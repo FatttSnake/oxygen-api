@@ -25,6 +25,7 @@ import top.fatweb.oxygen.api.vo.system.SensitiveWordVo
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  * @see ISettingsService
+ * @see ISensitiveWordService
  */
 @BaseController(path = ["/system/settings"], name = "系统设置", description = "系统设置相关接口")
 class SettingsController(

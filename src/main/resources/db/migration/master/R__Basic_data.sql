@@ -74,12 +74,20 @@ insert into t_s_power (id, type_id)
            (1530303, 4),
            (1540101, 4),
            (1540102, 4),
+           (1540103, 4),
+           (1540104, 4),
            (1540201, 4),
            (1540202, 4),
+           (1540203, 4),
+           (1540204, 4),
            (1540301, 4),
            (1540302, 4),
+           (1540303, 4),
+           (1540304, 4),
            (1540401, 4),
-           (1540402, 4) as new_value
+           (1540402, 4),
+           (1540403, 4),
+           (1540404, 4) as new_value
 on duplicate key update type_id = new_value.type_id;
 
 insert into t_s_module (id, name)
@@ -87,15 +95,15 @@ insert into t_s_module (id, name)
 on duplicate key update name = new_value.name;
 
 insert into t_s_menu (id, name, url, parent_id, module_id)
-    values (1990000, '系统管理', '/system', null, 1000000),
-           (1010000, '用户管理', '/system/user', 1990000, 1000000),
-           (1020000, '角色管理', '/system/role', 1990000, 1000000),
-           (1030000, '用户组管理', '/system/group', 1990000, 1000000),
-           (1040000, '权限管理', '/system/power', 1990000, 1000000),
-           (1510000, '系统概况', '/system/statistics', 1990000, 1000000),
-           (1520000, '日志管理', '/system/log', 1990000, 1000000),
-           (1530000, '系统设置', '/system/settings', 1990000, 1000000),
-           (1540000, '工具配置', '/system/tools', 1990000, 1000000) as new_value
+    values (1990000, '系统管理', '^/system$', null, 1000000),
+           (1010000, '用户管理', '^/system/user$', 1990000, 1000000),
+           (1020000, '角色管理', '^/system/role$', 1990000, 1000000),
+           (1030000, '用户组管理', '^/system/group$', 1990000, 1000000),
+           (1040000, '权限管理', '^/system/power$', 1990000, 1000000),
+           (1510000, '系统概况', '^/system/statistics$', 1990000, 1000000),
+           (1520000, '日志管理', '^/system/log$', 1990000, 1000000),
+           (1530000, '系统设置', '^/system/settings$', 1990000, 1000000),
+           (1540000, '工具配置', '^/system/tools(/.*)?$', 1990000, 1000000) as new_value
 on duplicate key update name      =new_value.name,
                         url       =new_value.url,
                         parent_id =new_value.parent_id;
@@ -162,14 +170,22 @@ insert into t_s_operation(id, name, code, func_id)
            (1530301, '基础', 'system:settings:modify:base', 1530300),
            (1530302, '邮件', 'system:settings:modify:mail', 1530300),
            (1530303, '敏感词', 'system:settings:modify:sensitive', 1530300),
-           (1540101, '基板', 'system:tools:query:base', 1540100),
-           (1540102, '模板', 'system:tools:query:template', 1540100),
-           (1540201, '基板', 'system:tools:add:base', 1540200),
-           (1540202, '模板', 'system:tools:add:template', 1540200),
-           (1540301, '基板', 'system:tools:modify:base', 1540300),
-           (1540302, '模板', 'system:tools:modify:template', 1540300),
-           (1540401, '基板', 'system:tools:delete:base', 1540400),
-           (1540402, '模板', 'system:tools:delete:template', 1540400) as new_value
+           (1540101, '类别', 'system:tool:query:category', 1540100),
+           (1540102, '基板', 'system:tool:query:base', 1540100),
+           (1540103, '模板', 'system:tool:query:template', 1540100),
+           (1540104, '工具', 'system:tool:query:tool', 1540100),
+           (1540201, '类别', 'system:tool:add:category', 1540200),
+           (1540202, '基板', 'system:tool:add:base', 1540200),
+           (1540203, '模板', 'system:tool:add:template', 1540200),
+           (1540204, '工具', 'system:tool:add:tool', 1540200),
+           (1540301, '类别', 'system:tool:modify:category', 1540300),
+           (1540302, '基板', 'system:tool:modify:base', 1540300),
+           (1540303, '模板', 'system:tool:modify:template', 1540300),
+           (1540304, '工具', 'system:tool:modify:tool', 1540300),
+           (1540401, '类别', 'system:tool:delete:category', 1540400),
+           (1540402, '基板', 'system:tool:delete:base', 1540400),
+           (1540403, '模板', 'system:tool:delete:template', 1540400),
+           (1540404, '工具', 'system:tool:delete:tool', 1540400) as new_value
 on duplicate key update name=new_value.name,
                         code=new_value.code,
                         func_id=new_value.func_id;
