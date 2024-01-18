@@ -18,8 +18,7 @@ class BaseController(
     @Operation(summary = "获取单个基板")
     @GetMapping("/{id}")
     fun getOne(@PathVariable id: Long): ResponseResult<ToolBaseVo> =
-        toolBaseService.getOne(id)?.let { ResponseResult.databaseSuccess(data = it) }
-            ?: let { ResponseResult.databaseFail(ResponseCode.DATABASE_NO_RECORD_FOUND) }
+        ResponseResult.databaseSuccess(data = toolBaseService.getOne(id))
 
     @Operation(summary = "获取基板")
     @GetMapping
@@ -46,5 +45,5 @@ class BaseController(
     @DeleteMapping("/{id}")
     fun delete(@PathVariable id: Long): ResponseResult<Nothing> =
         if (toolBaseService.delete(id)) ResponseResult.databaseSuccess(ResponseCode.DATABASE_DELETE_SUCCESS)
-        else ResponseResult.databaseFail(ResponseCode.DATABASE_DELETE_FILED)
+        else ResponseResult.databaseFail(ResponseCode.DATABASE_DELETE_FAILED)
 }

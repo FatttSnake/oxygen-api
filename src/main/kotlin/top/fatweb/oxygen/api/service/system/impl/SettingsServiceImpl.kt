@@ -50,7 +50,7 @@ class SettingsServiceImpl : ISettingsService {
         port = SettingsOperator.getMailValue(MailSettings::port),
         securityType = SettingsOperator.getMailValue(MailSettings::securityType),
         username = SettingsOperator.getMailValue(MailSettings::username),
-        password = SettingsOperator.getMailValue(MailSettings::password)?.let { StrUtil.md5(it) },
+        password = SettingsOperator.getMailValue(MailSettings::password)?.let(StrUtil::md5),
         from = SettingsOperator.getMailValue(MailSettings::from),
         fromName = SettingsOperator.getMailValue(MailSettings::fromName)
     )

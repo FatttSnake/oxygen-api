@@ -92,7 +92,7 @@ class AuthenticationServiceImpl(
 
         sendVerifyMail(user.username!!, user.verify!!, registerParam.email!!)
 
-        val loginVo = this.login(request, registerParam.username!!, registerParam.password!!)
+        val loginVo = this.login(request, registerParam.username, registerParam.password!!)
 
         return RegisterVo(token = loginVo.token, userId = loginVo.userId)
     }

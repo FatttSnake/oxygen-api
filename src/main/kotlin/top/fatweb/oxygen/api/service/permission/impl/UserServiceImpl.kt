@@ -11,11 +11,14 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import top.fatweb.oxygen.api.converter.permission.UserConverter
-import top.fatweb.oxygen.api.entity.permission.User
 import top.fatweb.oxygen.api.entity.permission.RUserGroup
-import top.fatweb.oxygen.api.entity.permission.UserInfo
 import top.fatweb.oxygen.api.entity.permission.RUserRole
+import top.fatweb.oxygen.api.entity.permission.User
+import top.fatweb.oxygen.api.entity.permission.UserInfo
+import top.fatweb.oxygen.api.exception.DatabaseInsertException
+import top.fatweb.oxygen.api.exception.DatabaseUpdateException
 import top.fatweb.oxygen.api.exception.NoRecordFoundException
+import top.fatweb.oxygen.api.exception.UserNotFoundException
 import top.fatweb.oxygen.api.mapper.permission.UserMapper
 import top.fatweb.oxygen.api.param.permission.user.*
 import top.fatweb.oxygen.api.service.permission.*
@@ -25,6 +28,7 @@ import top.fatweb.oxygen.api.util.StrUtil
 import top.fatweb.oxygen.api.util.WebUtil
 import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.permission.UserWithPasswordRoleInfoVo
+import top.fatweb.oxygen.api.vo.permission.UserWithPowerInfoVo
 import top.fatweb.oxygen.api.vo.permission.UserWithRoleInfoVo
 import java.time.LocalDateTime
 import java.time.ZoneOffset
@@ -76,8 +80,13 @@ class UserServiceImpl(
         return user
     }
 
-    override fun getInfo() = WebUtil.getLoginUsername()
-        ?.let { username -> getUserWithPowerByAccount(username)?.let { UserConverter.userToUserWithPowerInfoVo(it) } }
+    override fun getInfo(): UserWithPowerInfoVo =
+        WebUtil.getLoginUsername()?.let(this::getUserWithPowerByAccount)?.let(UserConverter::userToUserWithPowerInfoVo)
+            ?: throw UserNotFoundException()
+
+    override fun getOne(id: Long): UserWithRoleInfoVo =
+        baseMapper.selectOneWithRoleInfoById(id)?.let(UserConverter::userToUserWithRoleInfoVo)
+            ?: throw UserNotFoundException()
 
     override fun getPage(userGetParam: UserGetParam?): PageVo<UserWithRoleInfoVo> {
         val userIdsPage = Page<Long>(userGetParam?.currentPage ?: 1, userGetParam?.pageSize ?: 20)
@@ -99,13 +108,10 @@ class UserServiceImpl(
         return UserConverter.userPageToUserWithRoleInfoPageVo(userPage)
     }
 
-    override fun getOne(id: Long) =
-        baseMapper.selectOneWithRoleInfoById(id)?.let { UserConverter.userToUserWithRoleInfoVo(it) }
-
-    override fun listAll() = baseMapper.selectListWithInfo().map { UserConverter.userToUserWithInfoVo(it) }
+    override fun getList() = baseMapper.selectListWithInfo().map(UserConverter::userToUserWithInfoVo)
 
     @Transactional
-    override fun add(userAddParam: UserAddParam): UserWithPasswordRoleInfoVo? {
+    override fun add(userAddParam: UserAddParam): UserWithPasswordRoleInfoVo {
         val rawPassword =
             if (userAddParam.password.isNullOrBlank()) StrUtil.getRandomPassword(10) else userAddParam.password
         val user = UserConverter.userAddParamToUser(userAddParam)
@@ -117,37 +123,38 @@ class UserServiceImpl(
             }-${UUID.randomUUID()}-${UUID.randomUUID()}-${UUID.randomUUID()}"
         }
 
-        if (this.save(user)) {
-            user.userInfo?.let { userInfoService.save(it.apply { userId = user.id }) }
-
-            if (!user.roles.isNullOrEmpty()) {
-                rUserRoleService.saveBatch(user.roles!!.map {
-                    RUserRole().apply {
-                        userId = user.id
-                        roleId = it.id
-                    }
-                })
-            }
-
-            if (!user.groups.isNullOrEmpty()) {
-                rUserGroupService.saveBatch(user.groups!!.map {
-                    RUserGroup().apply {
-                        userId = user.id
-                        groupId = it.id
-                    }
-                })
-            }
-
-            user.password = rawPassword
-
-            return UserConverter.userToUserWithPasswordRoleInfoVo(user)
+        if (!this.save(user)) {
+            throw DatabaseInsertException()
         }
 
-        return null
+
+        user.userInfo?.apply { userId = user.id }?.let(userInfoService::save)
+
+        if (!user.roles.isNullOrEmpty()) {
+            rUserRoleService.saveBatch(user.roles!!.map {
+                RUserRole().apply {
+                    userId = user.id
+                    roleId = it.id
+                }
+            })
+        }
+
+        if (!user.groups.isNullOrEmpty()) {
+            rUserGroupService.saveBatch(user.groups!!.map {
+                RUserGroup().apply {
+                    userId = user.id
+                    groupId = it.id
+                }
+            })
+        }
+
+        user.password = rawPassword
+
+        return UserConverter.userToUserWithPasswordRoleInfoVo(user)
     }
 
     @Transactional
-    override fun update(userUpdateParam: UserUpdateParam): UserWithRoleInfoVo? {
+    override fun update(userUpdateParam: UserUpdateParam): UserWithRoleInfoVo {
         val user = UserConverter.userUpdateParamToUser(userUpdateParam)
         user.updateTime = LocalDateTime.now(ZoneOffset.UTC)
 
@@ -156,28 +163,24 @@ class UserServiceImpl(
         ).map { it.roleId }
         val addRoleIds = HashSet<Long>()
         val removeRoleIds = HashSet<Long>()
-        userUpdateParam.roleIds?.forEach { addRoleIds.add(it) }
+        userUpdateParam.roleIds?.forEach(addRoleIds::add)
         oldRoleList.forEach {
-            if (it != null) {
-                removeRoleIds.add(it)
-            }
+            it?.let(removeRoleIds::add)
         }
         removeRoleIds.removeAll(addRoleIds)
-        oldRoleList.toSet().let { addRoleIds.removeAll(it) }
+        oldRoleList.toSet().let(addRoleIds::removeAll)
 
         val oldGroupList = rUserGroupService.list(
             KtQueryWrapper(RUserGroup()).select(RUserGroup::groupId).eq(RUserGroup::userId, userUpdateParam.id)
         ).map { it.groupId }
         val addGroupIds = HashSet<Long>()
         val removeGroupIds = HashSet<Long>()
-        userUpdateParam.groupIds?.forEach { addGroupIds.add(it) }
+        userUpdateParam.groupIds?.forEach(addGroupIds::add)
         oldGroupList.forEach {
-            if (it != null) {
-                removeGroupIds.add(it)
-            }
+            it?.let(removeGroupIds::add)
         }
         removeGroupIds.removeAll(addGroupIds)
-        oldGroupList.toSet().let { addGroupIds.removeAll(it) }
+        oldGroupList.toSet().let(addGroupIds::removeAll)
 
         this.updateById(user)
         this.update(
@@ -252,7 +255,9 @@ class UserServiceImpl(
                 )
                 .set(User::updateTime, LocalDateTime.now(ZoneOffset.UTC))
 
-            this.update(wrapper)
+            if (!this.update(wrapper)) {
+                throw DatabaseUpdateException()
+            }
 
             userUpdatePasswordParam.id?.let { WebUtil.offlineUser(redisUtil, it) }
         } ?: let {

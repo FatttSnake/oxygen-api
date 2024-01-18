@@ -2,11 +2,9 @@ package top.fatweb.oxygen.api.service.tool
 
 import com.baomidou.mybatisplus.extension.service.IService
 import top.fatweb.oxygen.api.entity.tool.ToolBase
-import top.fatweb.oxygen.api.entity.tool.ToolCategory
 import top.fatweb.oxygen.api.param.tool.ToolBaseAddParam
 import top.fatweb.oxygen.api.param.tool.ToolBaseUpdateParam
 import top.fatweb.oxygen.api.vo.tool.ToolBaseVo
-import top.fatweb.oxygen.api.vo.tool.ToolCategoryVo
 
 /**
  * Tool base service interface
@@ -17,7 +15,7 @@ import top.fatweb.oxygen.api.vo.tool.ToolCategoryVo
  * @see ToolBase
  */
 interface IToolBaseService : IService<ToolBase> {
-    fun getOne(id: Long): ToolBaseVo?
+    fun getOne(id: Long): ToolBaseVo
 
     fun get(): List<ToolBaseVo>
 

@@ -37,11 +37,8 @@ class RoleController(
     @Operation(summary = "获取单个角色")
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('system:role:query:one')")
-    fun getOne(@PathVariable id: Long): ResponseResult<RoleWithPowerVo> {
-        return ResponseResult.databaseSuccess(
-            data = roleService.getOne(id)
-        )
-    }
+    fun getOne(@PathVariable id: Long): ResponseResult<RoleWithPowerVo> =
+        ResponseResult.databaseSuccess(data = roleService.getOne(id))
 
     /**
      * Get role paging information
@@ -57,11 +54,10 @@ class RoleController(
     @Operation(summary = "获取角色")
     @GetMapping
     @PreAuthorize("hasAnyAuthority('system:role:query:all')")
-    fun get(roleGetParam: RoleGetParam?): ResponseResult<PageVo<RoleWithPowerVo>> {
-        return ResponseResult.databaseSuccess(
+    fun get(roleGetParam: RoleGetParam?): ResponseResult<PageVo<RoleWithPowerVo>> =
+        ResponseResult.databaseSuccess(
             data = roleService.getPage(roleGetParam)
         )
-    }
 
     /**
      * Get role list
@@ -77,7 +73,7 @@ class RoleController(
     @PreAuthorize("hasAnyAuthority('system:role:query:list', 'system:group:add:one', 'system:group:modify:one', 'system:user:add:one', 'system:user:modify:one')")
     fun list(): ResponseResult<List<RoleVo>> {
         return ResponseResult.databaseSuccess(
-            data = roleService.listAll()
+            data = roleService.getList()
         )
     }
 
@@ -95,13 +91,10 @@ class RoleController(
     @Operation(summary = "添加角色")
     @PostMapping
     @PreAuthorize("hasAnyAuthority('system:role:add:one')")
-    fun add(@Valid @RequestBody roleAddParam: RoleAddParam): ResponseResult<RoleVo> {
-        return roleService.add(roleAddParam)?.let {
-            ResponseResult.databaseSuccess(
-                ResponseCode.DATABASE_INSERT_SUCCESS, data = it
-            )
-        } ?: let { ResponseResult.databaseFail(ResponseCode.DATABASE_INSERT_FAILED) }
-    }
+    fun add(@Valid @RequestBody roleAddParam: RoleAddParam): ResponseResult<RoleVo> =
+        ResponseResult.databaseSuccess(
+            ResponseCode.DATABASE_INSERT_SUCCESS, data = roleService.add(roleAddParam)
+        )
 
     /**
      * Update role
@@ -117,13 +110,10 @@ class RoleController(
     @Operation(summary = "修改角色")
     @PutMapping
     @PreAuthorize("hasAnyAuthority('system:role:modify:one')")
-    fun update(@Valid @RequestBody roleUpdateParam: RoleUpdateParam): ResponseResult<RoleVo> {
-        return roleService.update(roleUpdateParam)?.let {
-            ResponseResult.databaseSuccess(
-                ResponseCode.DATABASE_UPDATE_SUCCESS, data = it
-            )
-        } ?: let { ResponseResult.databaseFail(ResponseCode.DATABASE_UPDATE_FILED) }
-    }
+    fun update(@Valid @RequestBody roleUpdateParam: RoleUpdateParam): ResponseResult<RoleVo> =
+        ResponseResult.databaseSuccess(
+            ResponseCode.DATABASE_UPDATE_SUCCESS, data = roleService.update(roleUpdateParam)
+        )
 
     /**
      * Update status of role
@@ -139,11 +129,8 @@ class RoleController(
     @PatchMapping
     @PreAuthorize("hasAnyAuthority('system:role:modify:status')")
     fun status(@Valid @RequestBody roleUpdateStatusParam: RoleUpdateStatusParam): ResponseResult<Nothing> {
-        return if (roleService.status(roleUpdateStatusParam)) {
-            ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
-        } else {
-            ResponseResult.databaseFail(ResponseCode.DATABASE_UPDATE_FILED)
-        }
+        roleService.status(roleUpdateStatusParam)
+        return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
     }
 
     /**

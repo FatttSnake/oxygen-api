@@ -18,8 +18,7 @@ class TemplateController(
     @Operation(summary = "获取单个模板")
     @GetMapping("/{id}")
     fun getOne(@PathVariable id: Long): ResponseResult<ToolTemplateVo> =
-        toolTemplateService.getOne(id)?.let { ResponseResult.databaseSuccess(data = it) }
-            ?: let { ResponseResult.databaseFail(ResponseCode.DATABASE_NO_RECORD_FOUND) }
+        ResponseResult.databaseSuccess(data = toolTemplateService.getOne(id))
 
     @Operation(summary = "获取模板")
     @GetMapping
@@ -46,5 +45,5 @@ class TemplateController(
     @DeleteMapping("/{id}")
     fun delete(@PathVariable id: Long): ResponseResult<Nothing> =
         if (toolTemplateService.delete(id)) ResponseResult.databaseSuccess(ResponseCode.DATABASE_DELETE_SUCCESS)
-        else ResponseResult.databaseFail(ResponseCode.DATABASE_DELETE_FILED)
+        else ResponseResult.databaseFail(ResponseCode.DATABASE_DELETE_FAILED)
 }

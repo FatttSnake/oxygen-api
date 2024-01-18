@@ -17,6 +17,17 @@ import top.fatweb.oxygen.api.vo.permission.base.RoleVo
  */
 interface IRoleService : IService<Role> {
     /**
+     * Get user by ID
+     *
+     * @param id ID
+     * @return RoleWithPowerVo object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see RoleWithPowerVo
+     */
+    fun getOne(id: Long): RoleWithPowerVo
+
+    /**
      * Get role in page
      *
      * @param roleGetParam Get role parameters
@@ -30,17 +41,6 @@ interface IRoleService : IService<Role> {
     fun getPage(roleGetParam: RoleGetParam?): PageVo<RoleWithPowerVo>
 
     /**
-     * Get user by ID
-     *
-     * @param id ID
-     * @return RoleWithPowerVo object
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see RoleWithPowerVo
-     */
-    fun getOne(id: Long): RoleWithPowerVo?
-
-    /**
      * Get all role in list
      *
      * @return List of RoleVo object
@@ -48,7 +48,7 @@ interface IRoleService : IService<Role> {
      * @since 1.0.0
      * @see RoleVo
      */
-    fun listAll(): List<RoleVo>
+    fun getList(): List<RoleVo>
 
     /**
      * Add role
@@ -60,7 +60,7 @@ interface IRoleService : IService<Role> {
      * @see RoleAddParam
      * @see RoleVo
      */
-    fun add(roleAddParam: RoleAddParam): RoleVo?
+    fun add(roleAddParam: RoleAddParam): RoleVo
 
     /**
      * Update role
@@ -72,7 +72,7 @@ interface IRoleService : IService<Role> {
      * @see RoleUpdateParam
      * @see RoleVo
      */
-    fun update(roleUpdateParam: RoleUpdateParam): RoleVo?
+    fun update(roleUpdateParam: RoleUpdateParam): RoleVo
 
     /**
      * Update status of role
@@ -83,7 +83,7 @@ interface IRoleService : IService<Role> {
      * @since 1.0.0
      * @see RoleUpdateStatusParam
      */
-    fun status(roleUpdateStatusParam: RoleUpdateStatusParam): Boolean
+    fun status(roleUpdateStatusParam: RoleUpdateStatusParam)
 
     /**
      * Delete role by ID

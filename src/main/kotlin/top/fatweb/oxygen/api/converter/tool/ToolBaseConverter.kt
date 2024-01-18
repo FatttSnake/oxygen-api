@@ -1,7 +1,6 @@
 package top.fatweb.oxygen.api.converter.tool
 
 import top.fatweb.oxygen.api.entity.tool.ToolBase
-import top.fatweb.oxygen.api.param.tool.ToolBaseAddParam
 import top.fatweb.oxygen.api.vo.tool.ToolBaseVo
 
 object ToolBaseConverter {

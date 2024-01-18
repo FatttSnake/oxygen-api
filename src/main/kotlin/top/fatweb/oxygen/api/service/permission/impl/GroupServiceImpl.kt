@@ -8,6 +8,9 @@ import org.springframework.transaction.annotation.Transactional
 import top.fatweb.oxygen.api.converter.permission.GroupConverter
 import top.fatweb.oxygen.api.entity.permission.Group
 import top.fatweb.oxygen.api.entity.permission.RRoleGroup
+import top.fatweb.oxygen.api.exception.DatabaseInsertException
+import top.fatweb.oxygen.api.exception.DatabaseUpdateException
+import top.fatweb.oxygen.api.exception.NoRecordFoundException
 import top.fatweb.oxygen.api.mapper.permission.GroupMapper
 import top.fatweb.oxygen.api.param.permission.group.*
 import top.fatweb.oxygen.api.service.permission.IGroupService
@@ -54,55 +57,51 @@ class GroupServiceImpl(
         return GroupConverter.groupPageToGroupWithRolePageVo(groupPage)
     }
 
-    override fun getOne(id: Long): GroupWithRoleVo? {
-        return baseMapper.selectOneById(id)?.let { GroupConverter.groupToGroupWithRoleVo(it) } ?: let { null }
-    }
+    override fun getOne(id: Long): GroupWithRoleVo =
+        baseMapper.selectOneById(id)?.let(GroupConverter::groupToGroupWithRoleVo) ?: throw NoRecordFoundException()
 
-    override fun listAll(): List<GroupVo> {
-        val groups = this.list()
-
-        return groups.map { GroupConverter.groupToGroupVo(it) }
-    }
+    override fun getList(): List<GroupVo> = this.list().map(GroupConverter::groupToGroupVo)
 
     @Transactional
-    override fun add(groupAddParam: GroupAddParam): GroupVo? {
+    override fun add(groupAddParam: GroupAddParam): GroupVo {
         val group = GroupConverter.groupAddParamToGroup(groupAddParam)
-        if (baseMapper.insert(group) == 1) {
-            if (group.roles.isNullOrEmpty()) {
-                return GroupConverter.groupToGroupVo(group)
-            }
-
-            if (rRoleGroupService.saveBatch(group.roles!!.map {
-                    RRoleGroup().apply {
-                        groupId = group.id
-                        roleId = it.id
-                    }
-                })) {
-                return GroupConverter.groupToGroupVo(group)
-            }
+        if (baseMapper.insert(group) != 1) {
+            throw DatabaseInsertException()
         }
 
-        return null
+        if (group.roles.isNullOrEmpty()) {
+            return GroupConverter.groupToGroupVo(group)
+        }
+
+        rRoleGroupService.saveBatch(group.roles!!.map {
+            RRoleGroup().apply {
+                groupId = group.id
+                roleId = it.id
+            }
+        })
+
+        return GroupConverter.groupToGroupVo(group)
     }
 
     @Transactional
-    override fun update(groupUpdateParam: GroupUpdateParam): GroupVo? {
+    override fun update(groupUpdateParam: GroupUpdateParam): GroupVo {
         val group = GroupConverter.groupUpdateParamToGroup(groupUpdateParam)
+
+        if (baseMapper.updateById(group) != 1) {
+            throw DatabaseUpdateException()
+        }
+
         val oldRoleList = rRoleGroupService.list(
             KtQueryWrapper(RRoleGroup()).select(RRoleGroup::roleId).eq(RRoleGroup::groupId, groupUpdateParam.id)
         ).map { it.roleId }
         val addRoleIds = HashSet<Long>()
         val removeRoleIds = HashSet<Long>()
-        groupUpdateParam.roleIds?.forEach { addRoleIds.add(it) }
+        groupUpdateParam.roleIds?.forEach(addRoleIds::add)
         oldRoleList.forEach {
-            if (it != null) {
-                removeRoleIds.add(it)
-            }
+            it?.let(removeRoleIds::add)
         }
         removeRoleIds.removeAll(addRoleIds)
-        oldRoleList.toSet().let { addRoleIds.removeAll(it) }
-
-        baseMapper.updateById(group)
+        oldRoleList.toSet().let(addRoleIds::removeAll)
 
         removeRoleIds.forEach {
             rRoleGroupService.remove(
@@ -124,13 +123,15 @@ class GroupServiceImpl(
         return GroupConverter.groupToGroupVo(group)
     }
 
-    override fun status(groupUpdateStatusParam: GroupUpdateStatusParam): Boolean {
+    override fun status(groupUpdateStatusParam: GroupUpdateStatusParam) {
         updateById(GroupConverter.groupUpdateStatusParamToGroup(groupUpdateStatusParam)).let {
-            if (it && !groupUpdateStatusParam.enable) {
-                groupUpdateStatusParam.id?.let { id -> offlineUser(id) }
+            if (!it) {
+                throw DatabaseUpdateException()
             }
 
-            return it
+            if (!groupUpdateStatusParam.enable) {
+                groupUpdateStatusParam.id?.let { id -> offlineUser(id) }
+            }
         }
     }
 

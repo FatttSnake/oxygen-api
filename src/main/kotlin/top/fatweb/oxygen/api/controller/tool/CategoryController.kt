@@ -25,8 +25,7 @@ class CategoryController(
     @Operation(summary = "获取单个类别")
     @GetMapping("/{id}")
     fun getOne(@PathVariable id: Long): ResponseResult<ToolCategoryVo> =
-        toolCategoryService.getOne(id)?.let { ResponseResult.databaseSuccess(data = it) }
-            ?: let { ResponseResult.databaseFail(ResponseCode.DATABASE_NO_RECORD_FOUND) }
+        ResponseResult.databaseSuccess(data = toolCategoryService.getOne(id))
 
     @Operation(summary = "获取类别")
     @GetMapping
@@ -53,5 +52,5 @@ class CategoryController(
     @DeleteMapping("/{id}")
     fun delete(@PathVariable id: Long): ResponseResult<Nothing> =
         if (toolCategoryService.delete(id)) ResponseResult.databaseSuccess(ResponseCode.DATABASE_DELETE_SUCCESS)
-        else ResponseResult.databaseFail(ResponseCode.DATABASE_DELETE_FILED)
+        else ResponseResult.databaseFail(ResponseCode.DATABASE_DELETE_FAILED)
 }

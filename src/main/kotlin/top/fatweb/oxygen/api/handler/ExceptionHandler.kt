@@ -166,6 +166,26 @@ class ExceptionHandler {
             }
 
             /* SQL */
+            is DatabaseSelectException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.databaseFail(ResponseCode.DATABASE_SELECT_FAILED, e.localizedMessage, null)
+            }
+
+            is DatabaseInsertException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.databaseFail(ResponseCode.DATABASE_INSERT_FAILED, e.localizedMessage, null)
+            }
+
+            is DatabaseUpdateException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.databaseFail(ResponseCode.DATABASE_UPDATE_FAILED, e.localizedMessage, null)
+            }
+
+            is DatabaseDeleteException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.databaseFail(ResponseCode.DATABASE_DELETE_FAILED, e.localizedMessage, null)
+            }
+
             is BadSqlGrammarException -> {
                 logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.DATABASE_EXECUTE_ERROR, "Incorrect SQL syntax", null)

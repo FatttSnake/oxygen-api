@@ -10,7 +10,6 @@ import top.fatweb.oxygen.api.entity.tool.Tool
 import top.fatweb.oxygen.api.entity.tool.ToolData
 import top.fatweb.oxygen.api.exception.NoRecordFoundException
 import top.fatweb.oxygen.api.exception.ToolHasPublish
-import top.fatweb.oxygen.api.exception.UserNotFoundException
 import top.fatweb.oxygen.api.mapper.tool.ToolMapper
 import top.fatweb.oxygen.api.param.tool.ToolAddParam
 import top.fatweb.oxygen.api.param.tool.ToolUpdateParam
@@ -36,14 +35,15 @@ class ToolServiceImpl(
     private val rToolCategoryService: IRToolCategoryService,
     private val userService: IUserService
 ) : ServiceImpl<ToolMapper, Tool>(), IToolService {
-    override fun getOne(id: Long): ToolVo? = baseMapper.selectOne(id)?.let(ToolConverter::toolToToolVo)
+    override fun getOne(id: Long): ToolVo =
+        baseMapper.selectOne(id)?.let(ToolConverter::toolToToolVo) ?: throw NoRecordFoundException()
 
     override fun get(): List<ToolVo> = baseMapper.selectList().map(ToolConverter::toolToToolVo)
 
     @Transactional
     override fun add(toolAddParam: ToolAddParam): ToolVo {
-        toolBaseService.getOne(toolAddParam.baseId!!) ?: throw NoRecordFoundException()
-        userService.getOne(toolAddParam.authorId!!) ?: throw UserNotFoundException()
+        toolBaseService.getOne(toolAddParam.baseId!!)
+        userService.getOne(toolAddParam.authorId!!)
 
         val newSource = ToolData().apply { data = toolAddParam.source }
         val newDist = ToolData().apply { data = toolAddParam.dist }
@@ -74,7 +74,7 @@ class ToolServiceImpl(
             })
         }
 
-        return this.getOne(tool.id!!)!!
+        return this.getOne(tool.id!!)
     }
 
     @Transactional
@@ -83,7 +83,7 @@ class ToolServiceImpl(
         if (tool.publish == 1) {
             throw ToolHasPublish()
         }
-        userService.getOne(toolUpdateParam.authorId!!) ?: throw UserNotFoundException()
+        userService.getOne(toolUpdateParam.authorId!!)
 
         toolDataService.updateById(ToolData().apply {
             id = tool.sourceId
@@ -106,9 +106,9 @@ class ToolServiceImpl(
             keywords = toolUpdateParam.keywords
         })
 
-        // TODO
+        // TODO Category process
 
-        return this.getOne(tool.id!!)!!
+        return this.getOne(tool.id!!)
     }
 
     @Transactional

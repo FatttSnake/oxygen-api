@@ -30,15 +30,16 @@ class ToolTemplateServiceImpl(
     private val toolDataService: IToolDataService,
     private val toolBaseService: IToolBaseService
 ) : ServiceImpl<ToolTemplateMapper, ToolTemplate>(), IToolTemplateService {
-    override fun getOne(id: Long): ToolTemplateVo? =
+    override fun getOne(id: Long): ToolTemplateVo =
         baseMapper.selectOne(id)?.let(ToolTemplateConverter::toolTemplateToToolTemplateVo)
+            ?: throw NoRecordFoundException()
 
     override fun get(): List<ToolTemplateVo> =
         baseMapper.selectList().map(ToolTemplateConverter::toolTemplateToToolTemplateVo)
 
     @Transactional
     override fun add(toolTemplateAddParam: ToolTemplateAddParam): ToolTemplateVo {
-        toolBaseService.getOne(toolTemplateAddParam.baseId!!) ?: throw NoRecordFoundException()
+        toolBaseService.getOne(toolTemplateAddParam.baseId!!)
 
         val newSource = ToolData().apply { data = toolTemplateAddParam.source }
         val newDist = ToolData().apply { data = toolTemplateAddParam.dist }
@@ -64,7 +65,7 @@ class ToolTemplateServiceImpl(
     @Transactional
     override fun update(toolTemplateUpdateParam: ToolTemplateUpdateParam): ToolTemplateVo {
         val toolTemplate = baseMapper.selectOne(toolTemplateUpdateParam.id!!) ?: throw NoRecordFoundException()
-        toolTemplateUpdateParam.baseId?.let { toolBaseService.getOne(it) ?: throw NoRecordFoundException() }
+        toolTemplateUpdateParam.baseId?.let(toolBaseService::getOne)
 
         toolDataService.updateById(ToolData().apply {
             id = toolTemplate.sourceId
@@ -83,7 +84,7 @@ class ToolTemplateServiceImpl(
             baseId = toolTemplateUpdateParam.baseId
         })
 
-        return this.getOne(toolTemplate.id!!)!!
+        return this.getOne(toolTemplate.id!!)
     }
 
     @Transactional

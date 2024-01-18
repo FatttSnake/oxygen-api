@@ -8,6 +8,9 @@ import org.springframework.transaction.annotation.Transactional
 import top.fatweb.oxygen.api.converter.permission.RoleConverter
 import top.fatweb.oxygen.api.entity.permission.RPowerRole
 import top.fatweb.oxygen.api.entity.permission.Role
+import top.fatweb.oxygen.api.exception.DatabaseInsertException
+import top.fatweb.oxygen.api.exception.DatabaseUpdateException
+import top.fatweb.oxygen.api.exception.NoRecordFoundException
 import top.fatweb.oxygen.api.mapper.permission.RoleMapper
 import top.fatweb.oxygen.api.param.permission.role.*
 import top.fatweb.oxygen.api.service.permission.*
@@ -58,60 +61,54 @@ class RoleServiceImpl(
         return RoleConverter.rolePageToRoleWithPowerPageVo(rolePage)
     }
 
-    override fun getOne(id: Long): RoleWithPowerVo? {
-        return baseMapper.selectOneById(id)?.let { RoleConverter.roleToRoleWithPowerVo(it) } ?: let { null }
-    }
+    override fun getOne(id: Long): RoleWithPowerVo =
+        baseMapper.selectOneById(id)?.let(RoleConverter::roleToRoleWithPowerVo) ?: throw NoRecordFoundException()
 
-    override fun listAll(): List<RoleVo> {
-        val roles = this.list()
-
-        return roles.map { RoleConverter.roleToRoleVo(it) }
-    }
-
+    override fun getList(): List<RoleVo> = this.list().map(RoleConverter::roleToRoleVo)
 
     @Transactional
-    override fun add(roleAddParam: RoleAddParam): RoleVo? {
-        val fullPowerIds = roleAddParam.powerIds?.let { getFullPowerIds(it) }
+    override fun add(roleAddParam: RoleAddParam): RoleVo {
+        val fullPowerIds = roleAddParam.powerIds?.let(this::getFullPowerIds)
 
         val role = RoleConverter.roleAddParamToRole(roleAddParam)
-        if (baseMapper.insert(role) == 1) {
-            if (fullPowerIds.isNullOrEmpty()) {
-                return RoleConverter.roleToRoleVo(role)
-            }
-
-            if (rPowerRoleService.saveBatch(fullPowerIds.map {
-                    RPowerRole().apply {
-                        roleId = role.id
-                        powerId = it
-                    }
-                })) {
-                return RoleConverter.roleToRoleVo(role)
-            }
+        if (baseMapper.insert(role) != 1) {
+            throw DatabaseInsertException()
         }
 
-        return null
+        if (fullPowerIds.isNullOrEmpty()) {
+            return RoleConverter.roleToRoleVo(role)
+        }
+
+        rPowerRoleService.saveBatch(fullPowerIds.map {
+            RPowerRole().apply {
+                roleId = role.id
+                powerId = it
+            }
+        })
+        return RoleConverter.roleToRoleVo(role)
     }
 
     @Transactional
-    override fun update(roleUpdateParam: RoleUpdateParam): RoleVo? {
-        val fullPowerIds = roleUpdateParam.powerIds?.let { getFullPowerIds(it) }
+    override fun update(roleUpdateParam: RoleUpdateParam): RoleVo {
+        val fullPowerIds = roleUpdateParam.powerIds?.let(this::getFullPowerIds)
 
         val role = RoleConverter.roleUpdateParamToRole(roleUpdateParam)
+
+        if (baseMapper.updateById(role) != 1) {
+            throw DatabaseUpdateException()
+        }
+
         val oldPowerList = rPowerRoleService.list(
             KtQueryWrapper(RPowerRole()).select(RPowerRole::powerId).eq(RPowerRole::roleId, roleUpdateParam.id)
         ).map { it.powerId }
         val addPowerIds = HashSet<Long>()
         val removePowerIds = HashSet<Long>()
-        fullPowerIds?.forEach { addPowerIds.add(it) }
+        fullPowerIds?.forEach(addPowerIds::add)
         oldPowerList.forEach {
-            if (it != null) {
-                removePowerIds.add(it)
-            }
+            it?.let(removePowerIds::add)
         }
         removePowerIds.removeAll(addPowerIds)
-        oldPowerList.toSet().let { addPowerIds.removeAll(it) }
-
-        baseMapper.updateById(role)
+        oldPowerList.toSet().let(addPowerIds::removeAll)
 
         removePowerIds.forEach {
             rPowerRoleService.remove(
@@ -133,13 +130,15 @@ class RoleServiceImpl(
         return RoleConverter.roleToRoleVo(role)
     }
 
-    override fun status(roleUpdateStatusParam: RoleUpdateStatusParam): Boolean {
+    override fun status(roleUpdateStatusParam: RoleUpdateStatusParam) {
         updateById(RoleConverter.roleUpdateStatusParamToRole(roleUpdateStatusParam)).let {
-            if (it && !roleUpdateStatusParam.enable) {
-                roleUpdateStatusParam.id?.let { id -> offlineUser(id) }
+            if (!it) {
+                throw DatabaseUpdateException()
             }
 
-            return it
+            if (!roleUpdateStatusParam.enable) {
+                roleUpdateStatusParam.id?.let { id -> offlineUser(id) }
+            }
         }
     }
 

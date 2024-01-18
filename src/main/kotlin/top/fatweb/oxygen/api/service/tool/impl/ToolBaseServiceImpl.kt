@@ -28,7 +28,8 @@ import top.fatweb.oxygen.api.vo.tool.ToolBaseVo
 class ToolBaseServiceImpl(
     private val toolDataService: IToolDataService
 ) : ServiceImpl<ToolBaseMapper, ToolBase>(), IToolBaseService {
-    override fun getOne(id: Long): ToolBaseVo? = baseMapper.selectOne(id)?.let(ToolBaseConverter::toolBaseToToolBaseVo)
+    override fun getOne(id: Long): ToolBaseVo =
+        baseMapper.selectOne(id)?.let(ToolBaseConverter::toolBaseToToolBaseVo) ?: throw NoRecordFoundException()
 
     override fun get(): List<ToolBaseVo> = baseMapper.selectList().map(ToolBaseConverter::toolBaseToToolBaseVo)
 
@@ -72,7 +73,7 @@ class ToolBaseServiceImpl(
             name = toolBaseUpdateParam.name
         })
 
-        return this.getOne(toolBase.id!!)!!
+        return this.getOne(toolBase.id!!)
     }
 
     @Transactional

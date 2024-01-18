@@ -18,8 +18,7 @@ class ManagementController(
     @Operation(summary = "获取单个工具")
     @GetMapping("/{id}")
     fun getOne(@PathVariable id: Long): ResponseResult<ToolVo> =
-        toolService.getOne(id)?.let { ResponseResult.databaseSuccess(data = it) }
-            ?: let { ResponseResult.databaseFail(ResponseCode.DATABASE_NO_RECORD_FOUND) }
+        ResponseResult.databaseSuccess(data = toolService.getOne(id))
 
     @Operation(summary = "获取工具")
     @GetMapping
@@ -46,5 +45,5 @@ class ManagementController(
     @DeleteMapping("/{id}")
     fun delete(@PathVariable id: Long): ResponseResult<Nothing> =
         if (toolService.delete(id)) ResponseResult.databaseSuccess(ResponseCode.DATABASE_DELETE_SUCCESS)
-        else ResponseResult.databaseFail(ResponseCode.DATABASE_DELETE_FILED)
+        else ResponseResult.databaseFail(ResponseCode.DATABASE_DELETE_FAILED)
 }

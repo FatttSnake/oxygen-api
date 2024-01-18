@@ -38,9 +38,7 @@ class GroupController(
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('system:group:query:one')")
     fun getOne(@PathVariable id: Long): ResponseResult<GroupWithRoleVo> =
-        ResponseResult.databaseSuccess(
-            data = groupService.getOne(id)
-        )
+        ResponseResult.databaseSuccess(data = groupService.getOne(id))
 
     /**
      * Get group paging information
@@ -76,7 +74,7 @@ class GroupController(
     @PreAuthorize("hasAnyAuthority('system:group:query:list', 'system:user:add:one', 'system:user:modify:one')")
     fun list(): ResponseResult<List<GroupVo>> =
         ResponseResult.databaseSuccess(
-            data = groupService.listAll()
+            data = groupService.getList()
         )
 
     /**
@@ -94,11 +92,9 @@ class GroupController(
     @PostMapping
     @PreAuthorize("hasAnyAuthority('system:group:add:one')")
     fun add(@Valid @RequestBody groupAddParam: GroupAddParam): ResponseResult<GroupVo> =
-        groupService.add(groupAddParam)?.let {
-            ResponseResult.databaseSuccess(
-                ResponseCode.DATABASE_INSERT_SUCCESS, data = it
-            )
-        } ?: let { ResponseResult.databaseFail(ResponseCode.DATABASE_INSERT_FAILED) }
+        ResponseResult.databaseSuccess(
+            ResponseCode.DATABASE_INSERT_SUCCESS, data = groupService.add(groupAddParam)
+        )
 
     /**
      * Update group
@@ -115,11 +111,9 @@ class GroupController(
     @PutMapping
     @PreAuthorize("hasAnyAuthority('system:group:modify:one')")
     fun update(@Valid @RequestBody groupUpdateParam: GroupUpdateParam): ResponseResult<GroupVo> =
-        groupService.update(groupUpdateParam)?.let {
-            ResponseResult.databaseSuccess(
-                ResponseCode.DATABASE_UPDATE_SUCCESS, data = it
-            )
-        } ?: let { ResponseResult.databaseFail(ResponseCode.DATABASE_UPDATE_FILED) }
+        ResponseResult.databaseSuccess(
+            ResponseCode.DATABASE_UPDATE_SUCCESS, data = groupService.update(groupUpdateParam)
+        )
 
     /**
      * Update status of group
@@ -134,12 +128,10 @@ class GroupController(
     @Operation(summary = "修改用户组状态")
     @PatchMapping
     @PreAuthorize("hasAnyAuthority('system:group:modify:status')")
-    fun updateStatus(@Valid @RequestBody groupUpdateStatusParam: GroupUpdateStatusParam): ResponseResult<Nothing> =
-        if (groupService.status(groupUpdateStatusParam)) {
-            ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
-        } else {
-            ResponseResult.databaseFail(ResponseCode.DATABASE_UPDATE_FILED)
-        }
+    fun updateStatus(@Valid @RequestBody groupUpdateStatusParam: GroupUpdateStatusParam): ResponseResult<Nothing> {
+        groupService.status(groupUpdateStatusParam)
+        return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
+    }
 
     /**
      * Delete group by ID

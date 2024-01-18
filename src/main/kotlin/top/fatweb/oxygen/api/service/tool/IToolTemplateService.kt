@@ -15,7 +15,7 @@ import top.fatweb.oxygen.api.vo.tool.ToolTemplateVo
  * @see ToolTemplate
  */
 interface IToolTemplateService : IService<ToolTemplate> {
-    fun getOne(id: Long): ToolTemplateVo?
+    fun getOne(id: Long): ToolTemplateVo
 
     fun get(): List<ToolTemplateVo>
 

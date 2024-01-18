@@ -17,6 +17,17 @@ import top.fatweb.oxygen.api.vo.permission.base.GroupVo
  */
 interface IGroupService : IService<Group> {
     /**
+     * Get one group by ID
+     *
+     * @param id ID
+     * @return GroupWithRoleVo object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see GroupWithRoleVo
+     */
+    fun getOne(id: Long): GroupWithRoleVo
+
+    /**
      * Get group in page
      *
      * @param groupGetParam Get group parameters
@@ -30,17 +41,6 @@ interface IGroupService : IService<Group> {
     fun getPage(groupGetParam: GroupGetParam?): PageVo<GroupWithRoleVo>
 
     /**
-     * Get one group by ID
-     *
-     * @param id ID
-     * @return GroupWithRoleVo object
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see GroupWithRoleVo
-     */
-    fun getOne(id: Long): GroupWithRoleVo?
-
-    /**
      * Get all group in list
      *
      * @return List of GroupVo object
@@ -48,7 +48,7 @@ interface IGroupService : IService<Group> {
      * @since 1.0.0
      * @see GroupVo
      */
-    fun listAll(): List<GroupVo>
+    fun getList(): List<GroupVo>
 
     /**
      * Add group
@@ -60,7 +60,7 @@ interface IGroupService : IService<Group> {
      * @see GroupAddParam
      * @see GroupVo
      */
-    fun add(groupAddParam: GroupAddParam): GroupVo?
+    fun add(groupAddParam: GroupAddParam): GroupVo
 
     /**
      * Update group
@@ -72,7 +72,7 @@ interface IGroupService : IService<Group> {
      * @see GroupUpdateParam
      * @see GroupVo
      */
-    fun update(groupUpdateParam: GroupUpdateParam): GroupVo?
+    fun update(groupUpdateParam: GroupUpdateParam): GroupVo
 
     /**
      * Update status of group
@@ -83,7 +83,7 @@ interface IGroupService : IService<Group> {
      * @since 1.0.0
      * @see GroupUpdateStatusParam
      */
-    fun status(groupUpdateStatusParam: GroupUpdateStatusParam): Boolean
+    fun status(groupUpdateStatusParam: GroupUpdateStatusParam)
 
     /**
      * Delete group by ID

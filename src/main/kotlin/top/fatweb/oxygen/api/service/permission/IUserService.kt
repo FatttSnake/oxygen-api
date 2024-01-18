@@ -37,7 +37,18 @@ interface IUserService : IService<User> {
      * @since 1.0.0
      * @see UserWithPowerInfoVo
      */
-    fun getInfo(): UserWithPowerInfoVo?
+    fun getInfo(): UserWithPowerInfoVo
+
+    /**
+     * Get one user by ID
+     *
+     * @param id ID
+     * @return UserWithRoleInfoVo object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see UserWithRoleInfoVo
+     */
+    fun getOne(id: Long): UserWithRoleInfoVo
 
     /**
      * Get user in page
@@ -53,17 +64,6 @@ interface IUserService : IService<User> {
     fun getPage(userGetParam: UserGetParam?): PageVo<UserWithRoleInfoVo>
 
     /**
-     * Get one user by ID
-     *
-     * @param id ID
-     * @return UserWithRoleInfoVo object
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see UserWithRoleInfoVo
-     */
-    fun getOne(id: Long): UserWithRoleInfoVo?
-
-    /**
      * Get all user as list
      *
      * @return List of UserWithInfoVo object
@@ -71,7 +71,7 @@ interface IUserService : IService<User> {
      * @since 1.0.0
      * @see UserWithInfoVo
      */
-    fun listAll(): List<UserWithInfoVo>
+    fun getList(): List<UserWithInfoVo>
 
     /**
      * Add user
@@ -83,7 +83,7 @@ interface IUserService : IService<User> {
      * @see UserAddParam
      * @see UserWithPasswordRoleInfoVo
      */
-    fun add(userAddParam: UserAddParam): UserWithPasswordRoleInfoVo?
+    fun add(userAddParam: UserAddParam): UserWithPasswordRoleInfoVo
 
     /**
      * Update user
@@ -95,7 +95,7 @@ interface IUserService : IService<User> {
      * @see UserUpdateParam
      * @see UserWithRoleInfoVo
      */
-    fun update(userUpdateParam: UserUpdateParam): UserWithRoleInfoVo?
+    fun update(userUpdateParam: UserUpdateParam): UserWithRoleInfoVo
 
     /**
      * Update user password

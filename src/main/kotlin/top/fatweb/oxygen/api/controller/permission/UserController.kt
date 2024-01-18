@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*
 import top.fatweb.oxygen.api.annotation.BaseController
 import top.fatweb.oxygen.api.entity.common.ResponseCode
 import top.fatweb.oxygen.api.entity.common.ResponseResult
-import top.fatweb.oxygen.api.exception.NoRecordFoundException
 import top.fatweb.oxygen.api.param.permission.user.*
 import top.fatweb.oxygen.api.service.permission.IUserService
 import top.fatweb.oxygen.api.vo.PageVo
@@ -38,9 +37,7 @@ class UserController(
     @Operation(summary = "获取当前用户信息")
     @GetMapping("info")
     fun getInfo(): ResponseResult<UserWithPowerInfoVo> =
-        userService.getInfo()?.let {
-            ResponseResult.databaseSuccess(data = it)
-        } ?: let { ResponseResult.databaseFail() }
+        ResponseResult.databaseSuccess(data = userService.getInfo())
 
     /**
      * Get user by ID
@@ -56,11 +53,7 @@ class UserController(
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('system:user:query:one')")
     fun getOne(@PathVariable id: Long): ResponseResult<UserWithRoleInfoVo> =
-        userService.getOne(id)?.let {
-            ResponseResult.databaseSuccess(data = it)
-        } ?: let {
-            throw NoRecordFoundException()
-        }
+        ResponseResult.databaseSuccess(data = userService.getOne(id))
 
     /**
      * Get user paging information
@@ -96,11 +89,9 @@ class UserController(
     @PostMapping
     @PreAuthorize("hasAnyAuthority('system:user:add:one')")
     fun add(@Valid @RequestBody userAddParam: UserAddParam): ResponseResult<UserWithPasswordRoleInfoVo> =
-        userService.add(userAddParam)?.let {
-            ResponseResult.databaseSuccess(
-                ResponseCode.DATABASE_INSERT_SUCCESS, data = it
-            )
-        } ?: let { ResponseResult.databaseFail(ResponseCode.DATABASE_INSERT_FAILED) }
+        ResponseResult.databaseSuccess(
+            ResponseCode.DATABASE_INSERT_SUCCESS, data = userService.add(userAddParam)
+        )
 
     /**
      * Update user
@@ -117,11 +108,9 @@ class UserController(
     @PutMapping
     @PreAuthorize("hasAnyAuthority('system:user:modify:one')")
     fun update(@Valid @RequestBody userUpdateParam: UserUpdateParam): ResponseResult<UserWithRoleInfoVo> =
-        userService.update(userUpdateParam)?.let {
-            ResponseResult.databaseSuccess(
-                ResponseCode.DATABASE_UPDATE_SUCCESS, data = it
-            )
-        } ?: let { ResponseResult.databaseFail(ResponseCode.DATABASE_UPDATE_FILED) }
+        ResponseResult.databaseSuccess(
+            ResponseCode.DATABASE_UPDATE_SUCCESS, data = userService.update(userUpdateParam)
+        )
 
     /**
      * Update user password
