@@ -32,6 +32,7 @@ class ToolBaseServiceImpl(
         baseMapper.selectOne(id)?.let(ToolBaseConverter::toolBaseToToolBaseVo) ?: throw NoRecordFoundException()
 
     override fun get(): List<ToolBaseVo> = baseMapper.selectList().map(ToolBaseConverter::toolBaseToToolBaseVo)
+    override fun getList(): List<ToolBaseVo> = this.list().map(ToolBaseConverter::toolBaseToToolBaseVoByGetList)
 
     @Transactional
     override fun add(toolBaseAddParam: ToolBaseAddParam): ToolBaseVo {
@@ -47,6 +48,7 @@ class ToolBaseServiceImpl(
             distId = newDist.id
             source = newSource
             dist = newDist
+            enable = if (toolBaseAddParam.enable) 1 else 0
         }
 
         this.save(toolBase)
@@ -71,6 +73,7 @@ class ToolBaseServiceImpl(
         this.updateById(ToolBase().apply {
             id = toolBaseUpdateParam.id
             name = toolBaseUpdateParam.name
+            enable = toolBaseUpdateParam.enable?.let { if (it) 1 else 0 }
         })
 
         return this.getOne(toolBase.id!!)

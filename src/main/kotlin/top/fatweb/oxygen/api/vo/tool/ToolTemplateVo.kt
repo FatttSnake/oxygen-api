@@ -19,6 +19,8 @@ data class ToolTemplateVo(
 
     val dist: ToolDataVo?,
 
+    val enable: Boolean?,
+
     val createTime: LocalDateTime?,
 
     val updateTime: LocalDateTime?

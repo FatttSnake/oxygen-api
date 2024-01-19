@@ -8,6 +8,7 @@ create table if not exists t_b_tool_template
     base_id     bigint      not null comment '基板 ID',
     source_id   bigint      not null comment '源码 ID',
     dist_id     bigint      not null comment '产物 ID',
+    enable      int         not null default 1 comment '启用',
     create_time datetime    not null default (utc_timestamp()) comment '创建时间',
     update_time datetime    not null default (utc_timestamp()) comment '修改时间',
     deleted     bigint      not null default 0,

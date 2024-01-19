@@ -19,5 +19,7 @@ data class ToolTemplateAddParam(
     val source: String?,
 
     @field:NotNull(message = "Dist can not be null")
-    val dist: String?
+    val dist: String?,
+
+    val enable: Boolean = true
 )

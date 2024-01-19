@@ -48,6 +48,15 @@ class ToolBase {
     var distId: Long? = null
 
     /**
+     * Enable
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @TableField("enable")
+    var enable: Int? = null
+
+    /**
      * Create time
      *
      * @author FatttSnake, fatttsnake@gmail.com

@@ -8,6 +8,7 @@
                t_b_tool_template.base_id     as tool_template_base_id,
                t_b_tool_template.source_id   as tool_template_source_id,
                t_b_tool_template.dist_id     as tool_template_dist_id,
+               t_b_tool_template.enable      as tool_template_enable,
                t_b_tool_template.create_time as tool_template_create_time,
                t_b_tool_template.update_time as tool_template_update_time,
                t_b_tool_template.deleted     as tool_template_deleted,
@@ -38,6 +39,7 @@
                t_b_tool_template.base_id     as tool_template_base_id,
                t_b_tool_template.source_id   as tool_template_source_id,
                t_b_tool_template.dist_id     as tool_template_dist_id,
+               t_b_tool_template.enable      as tool_template_enable,
                t_b_tool_template.create_time as tool_template_create_time,
                t_b_tool_template.update_time as tool_template_update_time,
                t_b_tool_template.deleted     as tool_template_deleted,
@@ -67,6 +69,7 @@
         <result property="baseId" column="tool_template_base_id"/>
         <result property="sourceId" column="tool_template_source_id"/>
         <result property="distId" column="tool_template_dist_id"/>
+        <result property="enable" column="tool_template_enable"/>
         <result property="createTime" column="tool_template_create_time"/>
         <result property="updateTime" column="tool_template_update_time"/>
         <result property="deleted" column="tool_template_deleted"/>

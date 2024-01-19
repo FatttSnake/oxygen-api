@@ -12,6 +12,7 @@ object ToolTemplateConverter {
         source = toolTemplate.source?.let(ToolDataConverter::toolDataToToolDataVo),
         dist = toolTemplate.dist?.let(ToolDataConverter::toolDataToToolDataVo),
         createTime = toolTemplate.createTime,
-        updateTime = toolTemplate.updateTime
+        updateTime = toolTemplate.updateTime,
+        enable = toolTemplate.enable == 1
     )
 }

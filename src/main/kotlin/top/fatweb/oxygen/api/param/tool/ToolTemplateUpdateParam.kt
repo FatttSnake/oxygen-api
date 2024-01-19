@@ -16,5 +16,7 @@ data class ToolTemplateUpdateParam(
 
     val source: String?,
 
-    val dist: String?
+    val dist: String?,
+
+    val enable: Boolean?
 )

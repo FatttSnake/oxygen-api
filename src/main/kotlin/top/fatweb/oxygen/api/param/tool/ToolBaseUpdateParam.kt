@@ -10,5 +10,7 @@ data class ToolBaseUpdateParam(
 
     val source: String?,
 
-    val dist: String?
+    val dist: String?,
+
+    val enable: Boolean?
 )

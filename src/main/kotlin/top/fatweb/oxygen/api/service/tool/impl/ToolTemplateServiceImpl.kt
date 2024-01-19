@@ -55,6 +55,7 @@ class ToolTemplateServiceImpl(
             distId = newDist.id
             source = newSource
             dist = newDist
+            enable = if (toolTemplateAddParam.enable) 1 else 0
         }
 
         this.save(toolTemplate)
@@ -82,6 +83,7 @@ class ToolTemplateServiceImpl(
             name = toolTemplateUpdateParam.name
             ver = toolTemplateUpdateParam.ver
             baseId = toolTemplateUpdateParam.baseId
+            enable = toolTemplateUpdateParam.enable?.let { if (it) 1 else 0 }
         })
 
         return this.getOne(toolTemplate.id!!)
