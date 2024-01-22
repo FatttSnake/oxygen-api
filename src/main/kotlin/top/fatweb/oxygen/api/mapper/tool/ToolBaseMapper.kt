@@ -16,6 +16,4 @@ import top.fatweb.oxygen.api.entity.tool.ToolBase
 @Mapper
 interface ToolBaseMapper : BaseMapper<ToolBase> {
     fun selectOne(@Param("id") id: Long): ToolBase?
-
-    fun selectList(): List<ToolBase>
 }

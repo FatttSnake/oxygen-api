@@ -30,15 +30,6 @@ class ToolTemplate {
     var name: String? = null
 
     /**
-     * ver
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     */
-    @TableField("ver")
-    var ver: String? = null
-
-    /**
      * Base ID
      *
      * @author FatttSnake, fatttsnake@gmail.com
@@ -55,15 +46,6 @@ class ToolTemplate {
      */
     @TableField("source_id")
     var sourceId: Long? = null
-
-    /**
-     * Dist ID
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     */
-    @TableField("dist_id")
-    var distId: Long? = null
 
     /**
      * Enable
@@ -124,15 +106,15 @@ class ToolTemplate {
     var source: ToolData? = null
 
     /**
-     * Dist
+     * Base
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
     @TableField(exist = false)
-    var dist: ToolData? = null
+    var base: ToolBase? = null
 
     override fun toString(): String {
-        return "ToolTemplate(id=$id, name=$name, ver=$ver, baseId=$baseId, sourceId=$sourceId, distId=$distId, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version)"
+        return "ToolTemplate(id=$id, name=$name, baseId=$baseId, sourceId=$sourceId, enable=$enable, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version, source=$source, base=$base)"
     }
 }

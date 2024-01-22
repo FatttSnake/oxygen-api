@@ -42,19 +42,14 @@ class ToolTemplateServiceImpl(
         toolBaseService.getOne(toolTemplateAddParam.baseId!!)
 
         val newSource = ToolData().apply { data = toolTemplateAddParam.source }
-        val newDist = ToolData().apply { data = toolTemplateAddParam.dist }
 
         toolDataService.save(newSource)
-        toolDataService.save(newDist)
 
         val toolTemplate = ToolTemplate().apply {
             name = toolTemplateAddParam.name
-            ver = toolTemplateAddParam.ver
             baseId = toolTemplateAddParam.baseId
             sourceId = newSource.id
-            distId = newDist.id
             source = newSource
-            dist = newDist
             enable = if (toolTemplateAddParam.enable) 1 else 0
         }
 
@@ -73,15 +68,9 @@ class ToolTemplateServiceImpl(
             data = toolTemplateUpdateParam.source
         })
 
-        toolDataService.updateById(ToolData().apply {
-            id = toolTemplate.distId
-            data = toolTemplateUpdateParam.dist
-        })
-
         this.updateById(ToolTemplate().apply {
             id = toolTemplateUpdateParam.id
             name = toolTemplateUpdateParam.name
-            ver = toolTemplateUpdateParam.ver
             baseId = toolTemplateUpdateParam.baseId
             enable = toolTemplateUpdateParam.enable?.let { if (it) 1 else 0 }
         })
@@ -93,7 +82,7 @@ class ToolTemplateServiceImpl(
     override fun delete(id: Long): Boolean {
         val toolTemplate = this.getById(id)
 
-        return toolDataService.removeBatchByIds(listOf(toolTemplate.sourceId, toolTemplate.distId))
+        return toolDataService.removeById(toolTemplate.sourceId)
             && this.removeById(id)
     }
 }

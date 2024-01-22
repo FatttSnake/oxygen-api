@@ -19,8 +19,6 @@ interface IToolBaseService : IService<ToolBase> {
 
     fun get(): List<ToolBaseVo>
 
-    fun getList(): List<ToolBaseVo>
-
     fun add(toolBaseAddParam: ToolBaseAddParam): ToolBaseVo
 
     fun update(toolBaseUpdateParam: ToolBaseUpdateParam): ToolBaseVo

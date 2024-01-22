@@ -7,10 +7,8 @@ object ToolTemplateConverter {
     fun toolTemplateToToolTemplateVo(toolTemplate: ToolTemplate) = ToolTemplateVo(
         id = toolTemplate.id,
         name = toolTemplate.name,
-        ver = toolTemplate.ver,
-        baseId = toolTemplate.baseId,
+        base = toolTemplate.base?.let(ToolBaseConverter::toolBaseToToolBaseVo),
         source = toolTemplate.source?.let(ToolDataConverter::toolDataToToolDataVo),
-        dist = toolTemplate.dist?.let(ToolDataConverter::toolDataToToolDataVo),
         createTime = toolTemplate.createTime,
         updateTime = toolTemplate.updateTime,
         enable = toolTemplate.enable == 1

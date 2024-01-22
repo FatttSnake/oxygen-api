@@ -10,14 +10,9 @@ data class ToolTemplateVo(
 
     val name: String?,
 
-    val ver: String?,
-
-    @JsonSerialize(using = ToStringSerializer::class)
-    val baseId: Long?,
+    val base: ToolBaseVo?,
 
     val source: ToolDataVo?,
-
-    val dist: ToolDataVo?,
 
     val enable: Boolean?,
 

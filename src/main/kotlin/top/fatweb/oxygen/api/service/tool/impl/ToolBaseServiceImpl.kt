@@ -31,8 +31,7 @@ class ToolBaseServiceImpl(
     override fun getOne(id: Long): ToolBaseVo =
         baseMapper.selectOne(id)?.let(ToolBaseConverter::toolBaseToToolBaseVo) ?: throw NoRecordFoundException()
 
-    override fun get(): List<ToolBaseVo> = baseMapper.selectList().map(ToolBaseConverter::toolBaseToToolBaseVo)
-    override fun getList(): List<ToolBaseVo> = this.list().map(ToolBaseConverter::toolBaseToToolBaseVoByGetList)
+    override fun get(): List<ToolBaseVo> = this.list().map(ToolBaseConverter::toolBaseToToolBaseVoByGetList)
 
     @Transactional
     override fun add(toolBaseAddParam: ToolBaseAddParam): ToolBaseVo {

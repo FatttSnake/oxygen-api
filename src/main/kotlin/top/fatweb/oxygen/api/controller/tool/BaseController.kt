@@ -25,11 +25,6 @@ class BaseController(
     fun get(): ResponseResult<List<ToolBaseVo>> =
         ResponseResult.databaseSuccess(data = toolBaseService.get())
 
-    @Operation(summary = "获取基板列表")
-    @GetMapping("/list")
-    fun getList(): ResponseResult<List<ToolBaseVo>> =
-        ResponseResult.databaseSuccess(data = toolBaseService.getList())
-
     @Operation(summary = "新增基板")
     @PostMapping
     fun add(@RequestBody @Valid toolBaseAddParam: ToolBaseAddParam): ResponseResult<ToolBaseVo> =
