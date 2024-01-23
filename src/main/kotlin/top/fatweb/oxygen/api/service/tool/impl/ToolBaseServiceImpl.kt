@@ -59,19 +59,28 @@ class ToolBaseServiceImpl(
     override fun update(toolBaseUpdateParam: ToolBaseUpdateParam): ToolBaseVo {
         val toolBase = baseMapper.selectOne(toolBaseUpdateParam.id!!) ?: throw NoRecordFoundException()
 
-        toolDataService.updateById(ToolData().apply {
-            id = toolBase.sourceId
-            data = toolBaseUpdateParam.source
-        })
+        var hasCompiled: Int? = null
 
-        toolDataService.updateById(ToolData().apply {
-            id = toolBase.distId
-            data = toolBaseUpdateParam.dist
-        })
+        if (!toolBaseUpdateParam.source.isNullOrBlank()) {
+            toolDataService.updateById(ToolData().apply {
+                id = toolBase.sourceId
+                data = toolBaseUpdateParam.source
+            })
+            hasCompiled = 0
+        }
+
+        if (!toolBaseUpdateParam.dist.isNullOrBlank()) {
+            toolDataService.updateById(ToolData().apply {
+                id = toolBase.distId
+                data = toolBaseUpdateParam.dist
+            })
+            hasCompiled = 1
+        }
 
         this.updateById(ToolBase().apply {
             id = toolBaseUpdateParam.id
             name = toolBaseUpdateParam.name
+            compiled = hasCompiled
             enable = toolBaseUpdateParam.enable?.let { if (it) 1 else 0 }
         })
 

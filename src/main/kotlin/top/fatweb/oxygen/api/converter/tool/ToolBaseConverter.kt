@@ -10,6 +10,7 @@ object ToolBaseConverter {
         name = toolBase.name,
         source = toolBase.source?.let(ToolDataConverter::toolDataToToolDataVo),
         dist = toolBase.dist?.let(ToolDataConverter::toolDataToToolDataVo),
+        compiled = toolBase.compiled == 1,
         createTime = toolBase.createTime,
         updateTime = toolBase.updateTime,
         enable = toolBase.enable == 1
@@ -20,6 +21,7 @@ object ToolBaseConverter {
         name = toolBase.name,
         source = ToolDataVo(id = toolBase.sourceId, data = null, createTime = null, updateTime = null),
         dist = ToolDataVo(id = toolBase.distId, data = null, createTime = null, updateTime = null),
+        compiled = toolBase.compiled == 1,
         createTime = toolBase.createTime,
         updateTime = toolBase.updateTime,
         enable = toolBase.enable == 1
