@@ -41,7 +41,7 @@ class ToolTemplateServiceImpl(
     override fun add(toolTemplateAddParam: ToolTemplateAddParam): ToolTemplateVo {
         toolBaseService.getOne(toolTemplateAddParam.baseId!!)
 
-        val newSource = ToolData().apply { data = toolTemplateAddParam.source }
+        val newSource = ToolData().apply { data = "" }
 
         toolDataService.save(newSource)
 

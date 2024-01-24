@@ -4,7 +4,23 @@ import top.fatweb.oxygen.api.converter.permission.UserInfoConverter
 import top.fatweb.oxygen.api.entity.tool.Tool
 import top.fatweb.oxygen.api.vo.tool.ToolVo
 
+/**
+ * Tool converter
+ *
+ * @author FatttSnake, fatttsnake@gmail.com
+ * @since 1.0.0
+ */
 object ToolConverter {
+    /**
+     * Convert Tool object into ToolVo object
+     *
+     * @param tool Tool object
+     * @return ToolVo object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see Tool
+     * @see ToolVo
+     */
     fun toolToToolVo(tool: Tool) = ToolVo(
         id = tool.id,
         name = tool.name,

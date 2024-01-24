@@ -35,8 +35,8 @@ class ToolBaseServiceImpl(
 
     @Transactional
     override fun add(toolBaseAddParam: ToolBaseAddParam): ToolBaseVo {
-        val newSource = ToolData().apply { data = toolBaseAddParam.source }
-        val newDist = ToolData().apply { data = toolBaseAddParam.dist }
+        val newSource = ToolData().apply { data = "" }
+        val newDist = ToolData().apply { data = "" }
 
         toolDataService.save(newSource)
         toolDataService.save(newDist)
