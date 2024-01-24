@@ -181,7 +181,7 @@ class User() : Serializable {
     var version: Int? = null
 
     /**
-     * User info
+     * User information
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0

@@ -13,7 +13,7 @@ import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.system.SysLogVo
 
 /**
- * System log controller
+ * System log viewer controller
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0

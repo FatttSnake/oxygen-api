@@ -14,7 +14,7 @@ import top.fatweb.oxygen.api.vo.permission.RoleWithPowerVo
 import top.fatweb.oxygen.api.vo.permission.base.RoleVo
 
 /**
- * Role controller
+ * Role management controller
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0

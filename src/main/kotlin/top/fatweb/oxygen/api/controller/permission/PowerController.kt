@@ -9,7 +9,7 @@ import top.fatweb.oxygen.api.service.permission.IPowerService
 import top.fatweb.oxygen.api.vo.permission.PowerSetVo
 
 /**
- * Power controller
+ * Power management controller
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0

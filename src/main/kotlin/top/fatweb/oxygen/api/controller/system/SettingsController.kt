@@ -20,7 +20,7 @@ import top.fatweb.oxygen.api.vo.system.MailSettingsVo
 import top.fatweb.oxygen.api.vo.system.SensitiveWordVo
 
 /**
- * System settings controller
+ * System settings management controller
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0

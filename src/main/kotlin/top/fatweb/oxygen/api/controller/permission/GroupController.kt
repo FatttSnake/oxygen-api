@@ -14,7 +14,7 @@ import top.fatweb.oxygen.api.vo.permission.GroupWithRoleVo
 import top.fatweb.oxygen.api.vo.permission.base.GroupVo
 
 /**
- * Group controller
+ * Group management controller
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
@@ -28,7 +28,7 @@ class GroupController(
      * Get group by ID
      *
      * @param id Group ID
-     * @return Response object includes group info
+     * @return Response object includes group information
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see ResponseResult

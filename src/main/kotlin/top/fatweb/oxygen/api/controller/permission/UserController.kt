@@ -15,7 +15,7 @@ import top.fatweb.oxygen.api.vo.permission.UserWithPowerInfoVo
 import top.fatweb.oxygen.api.vo.permission.UserWithRoleInfoVo
 
 /**
- * User controller
+ * User management controller
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0

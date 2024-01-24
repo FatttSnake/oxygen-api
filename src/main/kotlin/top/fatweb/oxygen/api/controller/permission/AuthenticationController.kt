@@ -108,7 +108,7 @@ class AuthenticationController(
      *
      * @param request
      * @param retrieveParam Retrieve parameters
-     * @return Response object include retrieve result
+     * @return Response object includes retrieve result
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see HttpServletRequest

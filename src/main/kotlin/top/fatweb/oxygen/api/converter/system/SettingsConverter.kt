@@ -11,6 +11,16 @@ import top.fatweb.oxygen.api.vo.system.SensitiveWordVo
  * @since 1.0.0
  */
 object SettingsConverter {
+    /**
+     * Convert SensitiveWord object into SensitiveWordVo object
+     *
+     * @param sensitiveWord SensitiveWord object
+     * @return SensitiveWordVo object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see SensitiveWord
+     * @see SensitiveWordVo
+     */
     fun sensitiveWordToSensitiveWordVo(sensitiveWord: SensitiveWord) = SensitiveWordVo(
         id = sensitiveWord.id,
         word = sensitiveWord.word,
@@ -18,6 +28,16 @@ object SettingsConverter {
         enable = sensitiveWord.enable == 1
     )
 
+    /**
+     * Convert SensitiveWordAddParam object into SensitiveWord object
+     *
+     * @param sensitiveWordAddParam SensitiveWordAddParam object
+     * @return SensitiveWord object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see SensitiveWordAddParam
+     * @see SensitiveWord
+     */
     fun sensitiveWordAddParamToSensitiveWord(sensitiveWordAddParam: SensitiveWordAddParam) = SensitiveWord().apply {
         word = sensitiveWordAddParam.word
         useFor = sensitiveWordAddParam.useFor.map(SensitiveWord.Use::code).toSet()

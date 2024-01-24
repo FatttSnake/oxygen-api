@@ -11,7 +11,7 @@ import top.fatweb.oxygen.api.service.system.IStatisticsService
 import top.fatweb.oxygen.api.vo.system.*
 
 /**
- * Statistics controller
+ * Statistics management controller
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0

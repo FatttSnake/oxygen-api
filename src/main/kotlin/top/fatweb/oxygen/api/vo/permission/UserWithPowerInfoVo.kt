@@ -119,7 +119,7 @@ data class UserWithPowerInfoVo(
     val lastLoginIp: String?,
 
     /**
-     * Update time
+     * Create time
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
