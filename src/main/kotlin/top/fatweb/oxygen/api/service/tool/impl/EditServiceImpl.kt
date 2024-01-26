@@ -62,6 +62,7 @@ class EditServiceImpl(
         val tool = Tool().apply {
             name = toolCreateParam.name!!.trim()
             toolId = toolCreateParam.toolId
+            icon = toolCreateParam.icon
             description = toolCreateParam.description
             baseId = template.base!!.id
             authorId = WebUtil.getLoginUserId() ?: throw UserNotFoundException()

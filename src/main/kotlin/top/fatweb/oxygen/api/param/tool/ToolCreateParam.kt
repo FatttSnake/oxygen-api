@@ -39,6 +39,16 @@ data class ToolCreateParam(
     val toolId: String?,
 
     /**
+     * Icon
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @Schema(description = "图标", required = true)
+    @field: NotBlank(message = "Icon can not be blank")
+    val icon: String?,
+
+    /**
      * Description
      *
      * @author FatttSnake, fatttsnake@gmail.com

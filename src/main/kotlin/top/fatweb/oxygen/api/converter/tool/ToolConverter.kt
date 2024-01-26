@@ -25,6 +25,7 @@ object ToolConverter {
         id = tool.id,
         name = tool.name,
         toolId = tool.toolId,
+        icon = tool.icon,
         description = tool.description,
         baseId = tool.baseId,
         author = tool.author?.let(UserConverter::userToUserWithInfoVo),
@@ -37,6 +38,7 @@ object ToolConverter {
         entryPoint = tool.entryPoint,
         publish = tool.publish == 1,
         review = tool.review,
+        publishTime = tool.publishTime,
         createTime = tool.createTime,
         updateTime = tool.updateTime
     )

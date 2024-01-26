@@ -42,6 +42,15 @@ data class ToolVo(
     val toolId: String?,
 
     /**
+     * Icon
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @Schema(description = "图标")
+    val icon: String?,
+
+    /**
      * Description
      *
      * @author FatttSnake, fatttsnake@gmail.com
@@ -154,6 +163,16 @@ data class ToolVo(
      */
     @Schema(description = "审核")
     val review: Tool.ReviewType?,
+
+    /**
+     * Publish time
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see LocalDateTime
+     */
+    @Schema(description = "发布时间", example = "1900-01-01T00:00:00.000Z")
+    val publishTime: LocalDateTime?,
 
     /**
      * Create time
