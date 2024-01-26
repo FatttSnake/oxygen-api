@@ -59,15 +59,6 @@ data class ToolBaseVo(
     val compiled: Boolean?,
 
     /**
-     * Enable
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     */
-    @Schema(description = "启用")
-    val enable: Boolean?,
-
-    /**
      * Create time
      *
      * @author FatttSnake, fatttsnake@gmail.com

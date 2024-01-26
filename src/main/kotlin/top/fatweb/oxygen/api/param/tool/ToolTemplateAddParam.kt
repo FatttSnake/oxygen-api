@@ -32,6 +32,16 @@ data class ToolTemplateAddParam(
     val baseId: Long? = null,
 
     /**
+     * Entry point
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @Schema(description = "入口文件", required = true)
+    @field:NotBlank(message = "EntryPoint can not be null")
+    val entryPoint: String? = null,
+
+    /**
      * Enable
      *
      * @author FatttSnake, fatttsnake@gmail.com

@@ -28,8 +28,7 @@ object ToolBaseConverter {
         dist = toolBase.dist?.let(ToolDataConverter::toolDataToToolDataVo),
         compiled = toolBase.compiled == 1,
         createTime = toolBase.createTime,
-        updateTime = toolBase.updateTime,
-        enable = toolBase.enable == 1
+        updateTime = toolBase.updateTime
     )
 
     /**
@@ -49,7 +48,6 @@ object ToolBaseConverter {
         dist = ToolDataVo(id = toolBase.distId, data = null, createTime = null, updateTime = null),
         compiled = toolBase.compiled == 1,
         createTime = toolBase.createTime,
-        updateTime = toolBase.updateTime,
-        enable = toolBase.enable == 1
+        updateTime = toolBase.updateTime
     )
 }

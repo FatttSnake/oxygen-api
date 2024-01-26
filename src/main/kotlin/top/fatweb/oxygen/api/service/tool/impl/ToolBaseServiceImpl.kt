@@ -38,8 +38,7 @@ class ToolBaseServiceImpl(
         val newSource = ToolData().apply { data = "" }
         val newDist = ToolData().apply { data = "" }
 
-        toolDataService.save(newSource)
-        toolDataService.save(newDist)
+        toolDataService.saveBatch(listOf(newSource, newDist))
 
         val toolBase = ToolBase().apply {
             name = toolBaseAddParam.name
@@ -47,7 +46,6 @@ class ToolBaseServiceImpl(
             distId = newDist.id
             source = newSource
             dist = newDist
-            enable = if (toolBaseAddParam.enable) 1 else 0
         }
 
         this.save(toolBase)
@@ -81,7 +79,6 @@ class ToolBaseServiceImpl(
             id = toolBaseUpdateParam.id
             name = toolBaseUpdateParam.name
             compiled = hasCompiled
-            enable = toolBaseUpdateParam.enable?.let { if (it) 1 else 0 }
         })
 
         return this.getOne(toolBase.id!!)

@@ -45,14 +45,5 @@ data class ToolBaseUpdateParam(
      * @since 1.0.0
      */
     @Schema(description = "产物")
-    val dist: String?,
-
-    /**
-     * Enable
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     */
-    @Schema(description = "启用", allowableValues = ["true", "false"])
-    val enable: Boolean?
+    val dist: String?
 )

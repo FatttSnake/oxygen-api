@@ -13,6 +13,7 @@ create table if not exists t_b_tool_main
     keywords    varchar(500) not null comment '关键字',
     source_id   bigint       not null comment '源码 ID',
     dist_id     bigint       not null comment '产物 ID',
+    entry_point varchar(64)  not null default 'main.tsx' comment '入口文件',
     publish     int          not null default 0 comment '发布',
     review      varchar(10)  not null default 'NONE' comment '审核',
     create_time datetime     not null default (utc_timestamp()) comment '创建时间',

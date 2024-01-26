@@ -18,14 +18,5 @@ data class ToolBaseAddParam(
      */
     @Schema(description = "名称", required = true)
     @field: NotBlank(message = "Name can not be blank")
-    val name: String?,
-
-    /**
-     * Enable
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     */
-    @Schema(description = "启用", allowableValues = ["true", "false"], defaultValue = "true")
-    val enable: Boolean = true
+    val name: String?
 )

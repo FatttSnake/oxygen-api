@@ -57,15 +57,6 @@ class ToolBase {
     var compiled: Int? = null
 
     /**
-     * Enable
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     */
-    @TableField("enable")
-    var enable: Int? = null
-
-    /**
      * Create time
      *
      * @author FatttSnake, fatttsnake@gmail.com
@@ -123,7 +114,16 @@ class ToolBase {
     @TableField(exist = false)
     var dist: ToolData? = null
 
+    /**
+     * Dist data
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @TableField(exist = false)
+    var distData: String? = null
+
     override fun toString(): String {
-        return "ToolBase(id=$id, name=$name, sourceId=$sourceId, distId=$distId, compiled=$compiled, enable=$enable, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version, source=$source, dist=$dist)"
+        return "ToolBase(id=$id, name=$name, sourceId=$sourceId, distId=$distId, compiled=$compiled, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version, source=$source, dist=$dist, distData=$distData)"
     }
 }

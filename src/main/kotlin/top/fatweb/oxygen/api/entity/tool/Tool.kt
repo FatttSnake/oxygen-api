@@ -2,7 +2,8 @@ package top.fatweb.oxygen.api.entity.tool
 
 import com.baomidou.mybatisplus.annotation.*
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler
-import top.fatweb.oxygen.api.entity.permission.UserInfo
+import com.fasterxml.jackson.annotation.JsonValue
+import top.fatweb.oxygen.api.entity.permission.User
 import java.time.LocalDateTime
 
 /**
@@ -13,6 +14,16 @@ import java.time.LocalDateTime
  */
 @TableName("t_b_tool_main", autoResultMap = true)
 class Tool {
+    /**
+     * Tool review type enum
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    enum class ReviewType(@field:EnumValue @field:JsonValue val code: String) {
+        NONE("NONE"), PASS("PASS"), REJECT("REJECT")
+    }
+
     /**
      * ID
      *
@@ -113,6 +124,15 @@ class Tool {
     var distId: Long? = null
 
     /**
+     * Entry point
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @TableField("entry_point")
+    var entryPoint: String? = null
+
+    /**
      * Publish
      *
      * @author FatttSnake, fatttsnake@gmail.com
@@ -128,7 +148,7 @@ class Tool {
      * @since 1.0.0
      */
     @TableField("review")
-    var review: Int? = null
+    var review: ReviewType? = null
 
     /**
      * Create time
@@ -177,7 +197,16 @@ class Tool {
      * @since 1.0.0
      */
     @TableField(exist = false)
-    var author: UserInfo? = null
+    var author: User? = null
+
+    /**
+     * Base
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @TableField(exist = false)
+    var base: ToolBase? = null
 
     /**
      * Categories
@@ -207,6 +236,6 @@ class Tool {
     var dist: ToolData? = null
 
     override fun toString(): String {
-        return "Tool(id=$id, name=$name, toolId=$toolId, description=$description, baseId=$baseId, authorId=$authorId, ver=$ver, privately=$privately, keywords=$keywords, sourceId=$sourceId, distId=$distId, publish=$publish, review=$review, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version, author=$author, categories=$categories, source=$source, dist=$dist)"
+        return "Tool(id=$id, name=$name, toolId=$toolId, description=$description, baseId=$baseId, authorId=$authorId, ver=$ver, privately=$privately, keywords=$keywords, sourceId=$sourceId, distId=$distId, entryPoint=$entryPoint, publish=$publish, review=$review, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version, author=$author, categories=$categories, source=$source, dist=$dist)"
     }
 }

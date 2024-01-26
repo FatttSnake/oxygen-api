@@ -48,6 +48,15 @@ class ToolTemplate {
     var sourceId: Long? = null
 
     /**
+     * Entry point
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @TableField("entry_point")
+    var entryPoint: String? = null
+
+    /**
      * Enable
      *
      * @author FatttSnake, fatttsnake@gmail.com
@@ -115,6 +124,6 @@ class ToolTemplate {
     var base: ToolBase? = null
 
     override fun toString(): String {
-        return "ToolTemplate(id=$id, name=$name, baseId=$baseId, sourceId=$sourceId, enable=$enable, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version, source=$source, base=$base)"
+        return "ToolTemplate(id=$id, name=$name, baseId=$baseId, sourceId=$sourceId, entryPoint=$entryPoint, enable=$enable, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version, source=$source, base=$base)"
     }
 }

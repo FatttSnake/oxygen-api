@@ -50,6 +50,7 @@ class ToolTemplateServiceImpl(
             baseId = toolTemplateAddParam.baseId
             sourceId = newSource.id
             source = newSource
+            entryPoint = toolTemplateAddParam.entryPoint
             enable = if (toolTemplateAddParam.enable) 1 else 0
         }
 
@@ -72,6 +73,7 @@ class ToolTemplateServiceImpl(
             id = toolTemplateUpdateParam.id
             name = toolTemplateUpdateParam.name
             baseId = toolTemplateUpdateParam.baseId
+            entryPoint = toolTemplateUpdateParam.entryPoint
             enable = toolTemplateUpdateParam.enable?.let { if (it) 1 else 0 }
         })
 

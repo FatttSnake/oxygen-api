@@ -2,54 +2,80 @@ package top.fatweb.oxygen.api.controller.tool
 
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.validation.Valid
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import top.fatweb.oxygen.api.annotation.BaseController
 import top.fatweb.oxygen.api.entity.common.ResponseCode
 import top.fatweb.oxygen.api.entity.common.ResponseResult
-import top.fatweb.oxygen.api.param.tool.ToolAddParam
-import top.fatweb.oxygen.api.param.tool.ToolUpdateParam
-import top.fatweb.oxygen.api.service.tool.IToolService
+import top.fatweb.oxygen.api.param.tool.ToolCreateParam
+import top.fatweb.oxygen.api.service.tool.IEditService
+import top.fatweb.oxygen.api.vo.tool.ToolCategoryVo
+import top.fatweb.oxygen.api.vo.tool.ToolTemplateVo
 import top.fatweb.oxygen.api.vo.tool.ToolVo
 
 /**
- * Tool management controller
+ * Tool edit controller
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-@BaseController(path = ["/tool"], name = "工具管理", description = "工具管理相关接口")
+@BaseController(path = ["/tool"], name = "工具编辑", description = "工具编辑相关接口")
 class EditController(
-    private val toolService: IToolService
+    private val editService: IEditService
 ) {
-    @Operation(summary = "获取单个工具")
-    @GetMapping("/{id}")
-    fun getOne(@PathVariable id: Long): ResponseResult<ToolVo> =
-        ResponseResult.databaseSuccess(data = toolService.getOne(id))
+    /**
+     * Get tool template list
+     *
+     * @return Response object includes tool template list
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see ResponseResult
+     * @see ToolTemplateVo
+     */
+    @Operation(summary = "获取模板")
+    @GetMapping("/template")
+    fun getTemplate(): ResponseResult<List<ToolTemplateVo>> =
+        ResponseResult.databaseSuccess(data = editService.getTemplate())
 
-    @Operation(summary = "获取工具")
-    @GetMapping
-    fun get(): ResponseResult<List<ToolVo>> =
-        ResponseResult.databaseSuccess(data = toolService.get())
+    /**
+     * Get tool template by ID
+     *
+     * @param id ID
+     * @return Response object includes tool template information
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see ResponseResult
+     * @see ToolTemplateVo
+     */
+    @Operation(summary = "获取单个模板")
+    @GetMapping("/template/{id}")
+    fun getTemplate(@PathVariable id: Long): ResponseResult<ToolTemplateVo> =
+        ResponseResult.databaseSuccess(data = editService.getTemplate(id))
 
-    @Operation(summary = "新增工具")
+    /**
+     * Get tool category list
+     *
+     * @return Response object includes tool category list
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see ResponseResult
+     * @see ToolCategoryVo
+     */
+    @Operation(summary = "获取类别")
+    @GetMapping("/category")
+    fun getCategory(): ResponseResult<List<ToolCategoryVo>> =
+        ResponseResult.databaseSuccess(data = editService.getCategory())
+
+    /**
+     * Create tool
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @Operation(summary = "创建工具")
     @PostMapping
-    fun add(@RequestBody @Valid toolAddParam: ToolAddParam): ResponseResult<ToolVo> =
-        ResponseResult.databaseSuccess(
-            ResponseCode.DATABASE_INSERT_SUCCESS,
-            data = toolService.add(toolAddParam)
-        )
-
-    @Operation(summary = "更新工具")
-    @PutMapping
-    fun update(@RequestBody @Valid toolUpdateParam: ToolUpdateParam): ResponseResult<ToolVo> =
-        ResponseResult.databaseSuccess(
-            ResponseCode.DATABASE_UPDATE_SUCCESS,
-            data = toolService.update(toolUpdateParam)
-        )
-
-    @Operation(summary = "删除工具")
-    @DeleteMapping("/{id}")
-    fun delete(@PathVariable id: Long): ResponseResult<Nothing> =
-        if (toolService.delete(id)) ResponseResult.databaseSuccess(ResponseCode.DATABASE_DELETE_SUCCESS)
-        else ResponseResult.databaseFail(ResponseCode.DATABASE_DELETE_FAILED)
+    fun create(@RequestBody @Valid toolCreateParam: ToolCreateParam): ResponseResult<ToolVo> =
+        ResponseResult.databaseSuccess(ResponseCode.DATABASE_INSERT_SUCCESS, data = editService.create(toolCreateParam))
 }

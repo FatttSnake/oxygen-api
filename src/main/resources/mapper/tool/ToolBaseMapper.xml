@@ -7,7 +7,6 @@
                t_b_tool_base.source_id   as tool_base_source_id,
                t_b_tool_base.dist_id     as tool_base_dist_id,
                t_b_tool_base.compiled    as tool_base_compiled,
-               t_b_tool_base.enable      as tool_base_enable,
                t_b_tool_base.create_time as tool_base_create_time,
                t_b_tool_base.update_time as tool_base_update_time,
                t_b_tool_base.deleted     as tool_base_deleted,
@@ -36,7 +35,6 @@
         <result property="sourceId" column="tool_base_source_id"/>
         <result property="distId" column="tool_base_dist_id"/>
         <result property="compiled" column="tool_base_compiled"/>
-        <result property="enable" column="tool_base_enable"/>
         <result property="createTime" column="tool_base_create_time"/>
         <result property="updateTime" column="tool_base_update_time"/>
         <result property="deleted" column="tool_base_deleted"/>

@@ -1,6 +1,6 @@
 package top.fatweb.oxygen.api.converter.tool
 
-import top.fatweb.oxygen.api.converter.permission.UserInfoConverter
+import top.fatweb.oxygen.api.converter.permission.UserConverter
 import top.fatweb.oxygen.api.entity.tool.Tool
 import top.fatweb.oxygen.api.vo.tool.ToolVo
 
@@ -27,13 +27,14 @@ object ToolConverter {
         toolId = tool.toolId,
         description = tool.description,
         baseId = tool.baseId,
-        author = tool.author?.let(UserInfoConverter::userInfoToUserInfoVo),
+        author = tool.author?.let(UserConverter::userToUserWithInfoVo),
         ver = tool.ver,
         privately = tool.privately == 1,
         keywords = tool.keywords,
         categories = tool.categories?.map(ToolCategoryConverter::toolCategoryToToolCategoryVo),
         source = tool.source?.let(ToolDataConverter::toolDataToToolDataVo),
         dist = tool.dist?.let(ToolDataConverter::toolDataToToolDataVo),
+        entryPoint = tool.entryPoint,
         publish = tool.publish == 1,
         review = tool.review,
         createTime = tool.createTime,

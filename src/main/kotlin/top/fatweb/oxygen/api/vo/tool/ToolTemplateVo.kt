@@ -50,6 +50,15 @@ data class ToolTemplateVo(
     val source: ToolDataVo?,
 
     /**
+     * Entry point
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @Schema(description = "入口文件")
+    val entryPoint: String?,
+
+    /**
      * Enable
      *
      * @author FatttSnake, fatttsnake@gmail.com
