@@ -71,4 +71,20 @@ interface IEditService : IService<Tool> {
      * @since 1.0.0
      */
     fun update(toolUpdateParam: ToolUpdateParam): ToolVo
+
+    /**
+     * Get personal tools
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    fun get(): List<ToolVo>
+
+    /**
+     * Get tool detail
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    fun detail(username: String, toolId: String, ver: String): ToolVo
 }

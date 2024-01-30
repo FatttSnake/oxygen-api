@@ -79,6 +79,7 @@ class SecurityConfig(
                     "/forget",
                     "/retrieve"
                 ).anonymous()
+                .requestMatchers("/tool/detail/**").permitAll()
                 // Authentication required
                 .anyRequest().authenticated()
         }

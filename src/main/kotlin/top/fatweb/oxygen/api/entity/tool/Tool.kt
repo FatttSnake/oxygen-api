@@ -97,15 +97,6 @@ class Tool {
     var ver: String? = null
 
     /**
-     * Privately
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     */
-    @TableField("privately")
-    var privately: Int? = null
-
-    /**
      * Keywords
      *
      * @author FatttSnake, fatttsnake@gmail.com
@@ -148,7 +139,7 @@ class Tool {
      * @since 1.0.0
      */
     @TableField("publish")
-    var publish: Int? = null
+    var publish: Long? = null
 
     /**
      * Review
@@ -159,16 +150,6 @@ class Tool {
      */
     @TableField("review")
     var review: ReviewType? = null
-
-    /**
-     * Publish time
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see LocalDateTime
-     */
-    @TableField("publish_time")
-    var publishTime: LocalDateTime? = null
 
     /**
      * Create time
@@ -256,6 +237,6 @@ class Tool {
     var dist: ToolData? = null
 
     override fun toString(): String {
-        return "Tool(id=$id, name=$name, toolId=$toolId, icon=$icon, description=$description, baseId=$baseId, authorId=$authorId, ver=$ver, privately=$privately, keywords=$keywords, sourceId=$sourceId, distId=$distId, entryPoint=$entryPoint, publish=$publish, review=$review, publishTime=$publishTime, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version, author=$author, base=$base, categories=$categories, source=$source, dist=$dist)"
+        return "Tool(id=$id, name=$name, toolId=$toolId, icon=$icon, description=$description, baseId=$baseId, authorId=$authorId, ver=$ver, keywords=$keywords, sourceId=$sourceId, distId=$distId, entryPoint=$entryPoint, publish=$publish, review=$review, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version, author=$author, base=$base, categories=$categories, source=$source, dist=$dist)"
     }
 }

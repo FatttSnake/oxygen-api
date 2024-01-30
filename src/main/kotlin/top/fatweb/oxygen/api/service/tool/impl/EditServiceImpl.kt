@@ -67,7 +67,6 @@ class EditServiceImpl(
             baseId = template.base!!.id
             authorId = WebUtil.getLoginUserId() ?: throw UserNotFoundException()
             ver = toolCreateParam.ver!!.split(".").map(String::toLong).joinToString(".")
-            privately = if (toolCreateParam.privately) 1 else 0
             keywords = toolCreateParam.keywords
             sourceId = newSource.id
             distId = newDist.id
@@ -89,5 +88,18 @@ class EditServiceImpl(
     @Transactional
     override fun update(toolUpdateParam: ToolUpdateParam): ToolVo {
         TODO("Not yet implemented")
+    }
+
+    override fun get(): List<ToolVo> =
+        baseMapper.selectPersonal(WebUtil.getLoginUserId() ?: throw UserNotFoundException())
+            .map(ToolConverter::toolToToolVo)
+
+    override fun detail(username: String, toolId: String, ver: String): ToolVo {
+        if (username == "!" && WebUtil.getLoginUserId() == null) {
+            throw NoRecordFoundException()
+        }
+
+        return baseMapper.detail(username, toolId, ver, WebUtil.getLoginUsername())?.let(ToolConverter::toolToToolVo)
+            ?: throw NoRecordFoundException()
     }
 }

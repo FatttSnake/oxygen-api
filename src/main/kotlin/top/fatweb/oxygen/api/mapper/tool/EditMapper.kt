@@ -19,4 +19,13 @@ interface EditMapper : BaseMapper<Tool> {
     fun getTemplate(@Param("id") id: Long): ToolTemplate?
 
     fun selectOne(@Param("id") id: Long, @Param("userId") userId: Long): Tool?
+
+    fun selectPersonal(@Param("userId") userId: Long): List<Tool>
+
+    fun detail(
+        @Param("username") username: String,
+        @Param("toolId") toolId: String,
+        @Param("ver") ver: String,
+        @Param("operator") operator: String?
+    ): Tool?
 }

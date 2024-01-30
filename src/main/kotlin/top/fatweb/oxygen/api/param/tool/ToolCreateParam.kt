@@ -79,15 +79,6 @@ data class ToolCreateParam(
     val templateId: Long?,
 
     /**
-     * Privately
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     */
-    @Schema(description = "私有", allowableValues = ["true", "false"], defaultValue = "false")
-    val privately: Boolean = false,
-
-    /**
      * Keywords
      *
      * @author FatttSnake, fatttsnake@gmail.com

@@ -30,7 +30,7 @@
           and t_b_tool_template.id = #{id}
     </select>
 
-    <select id="selectOne" resultMap="toolMap">
+    <select id="selectOne" resultMap="toolWithDataMap">
         select t_b_tool_main.id           as tool_id,
                t_b_tool_main.name         as tool_name,
                t_b_tool_main.tool_id      as tool_tool_id,
@@ -39,14 +39,12 @@
                t_b_tool_main.base_id      as tool_base_id,
                t_b_tool_main.author_id    as tool_author_id,
                t_b_tool_main.ver          as tool_ver,
-               t_b_tool_main.privately    as tool_privately,
                t_b_tool_main.keywords     as tool_keywords,
                t_b_tool_main.source_id    as tool_source_id,
                t_b_tool_main.dist_id      as tool_dist_id,
                t_b_tool_main.entry_point  as tool_entry_point,
                t_b_tool_main.publish      as tool_publish,
                t_b_tool_main.review       as tool_review,
-               t_b_tool_main.publish_time as tool_publish_time,
                t_b_tool_main.create_time  as tool_create_time,
                t_b_tool_main.update_time  as tool_update_time,
                t_b_tool_main.deleted      as tool_deleted,
@@ -94,6 +92,124 @@
           and t_b_tool_main.id = #{id}
     </select>
 
+    <select id="selectPersonal" resultMap="toolMap">
+        select t_b_tool_main.id          as tool_id,
+               t_b_tool_main.name        as tool_name,
+               t_b_tool_main.tool_id     as tool_tool_id,
+               t_b_tool_main.icon        as tool_icon,
+               t_b_tool_main.description as tool_description,
+               t_b_tool_main.base_id     as tool_base_id,
+               t_b_tool_main.author_id   as tool_author_id,
+               t_b_tool_main.ver         as tool_ver,
+               t_b_tool_main.keywords    as tool_keywords,
+               t_b_tool_main.source_id   as tool_source_id,
+               t_b_tool_main.dist_id     as tool_dist_id,
+               t_b_tool_main.entry_point as tool_entry_point,
+               t_b_tool_main.publish     as tool_publish,
+               t_b_tool_main.review      as tool_review,
+               t_b_tool_main.create_time as tool_create_time,
+               t_b_tool_main.update_time as tool_update_time,
+               t_b_tool_main.deleted     as tool_deleted,
+               t_b_tool_main.version     as tool_version,
+               tbtc.id                   as tool_category_id,
+               tbtc.name                 as tool_category_name,
+               tbtc.enable               as tool_category_enable,
+               tbtc.create_time          as tool_category_create_time,
+               tbtc.update_time          as tool_category_update_time,
+               tbtc.deleted              as tool_category_deleted,
+               tbtc.version              as tool_category_version
+        from t_b_tool_main
+                 left join (select * from t_r_tool_main_category where deleted = 0) as trtmc
+                           on t_b_tool_main.id = trtmc.tool_id
+                 left join (select * from t_b_tool_category where deleted = 0 and enable = 1) as tbtc
+                           on tbtc.id = trtmc.category_id
+        where t_b_tool_main.deleted = 0
+          and t_b_tool_main.author_id = #{userId}
+        order by t_b_tool_main.tool_id desc
+    </select>
+
+    <select id="detail" resultMap="toolWithDataMap">
+        select t_b_tool_main.id as tool_id,
+        t_b_tool_main.name as tool_name,
+        t_b_tool_main.tool_id as tool_tool_id,
+        t_b_tool_main.icon as tool_icon,
+        t_b_tool_main.description as tool_description,
+        t_b_tool_main.base_id as tool_base_id,
+        t_b_tool_main.author_id as tool_author_id,
+        t_b_tool_main.ver as tool_ver,
+        t_b_tool_main.keywords as tool_keywords,
+        t_b_tool_main.source_id as tool_source_id,
+        t_b_tool_main.dist_id as tool_dist_id,
+        t_b_tool_main.entry_point as tool_entry_point,
+        t_b_tool_main.publish as tool_publish,
+        t_b_tool_main.review as tool_review,
+        t_b_tool_main.create_time as tool_create_time,
+        t_b_tool_main.update_time as tool_update_time,
+        t_b_tool_main.deleted as tool_deleted,
+        t_b_tool_main.version as tool_version,
+        tsu.id as user_id,
+        tsu.username as user_username,
+        tsui.id as user_info_id,
+        tsui.nickname as user_info_nickname,
+        tsui.avatar as user_info_avatar,
+        tsui.email as user_info_email,
+        tbtb.name as tool_base_name,
+        tbtb.dist_id as tool_base_dist_id,
+        tbtbd.data as tool_base_dist_data,
+        tbts.data as tool_source_data,
+        tbts.create_time as tool_source_create_time,
+        tbts.update_time as tool_source_update_time,
+        tbts.deleted as tool_source_deleted,
+        tbts.version as tool_source_version,
+        tbtd.data as tool_dist_data,
+        tbtd.create_time as tool_dist_create_time,
+        tbtd.update_time as tool_dist_update_time,
+        tbtd.deleted as tool_dist_deleted,
+        tbtd.version as tool_dist_version,
+        tbtc.id as tool_category_id,
+        tbtc.name as tool_category_name,
+        tbtc.enable as tool_category_enable,
+        tbtc.create_time as tool_category_create_time,
+        tbtc.update_time as tool_category_update_time,
+        tbtc.deleted as tool_category_deleted,
+        tbtc.version as tool_category_version
+        from t_b_tool_main
+        left join (select * from t_s_user where deleted = 0) as tsu on tsu.id = t_b_tool_main.author_id
+        left join (select * from t_s_user_info where deleted = 0) as tsui
+        on tsui.user_id = t_b_tool_main.author_id
+        left join (select * from t_b_tool_base where deleted = 0) as tbtb on tbtb.id = t_b_tool_main.base_id
+        left join (select * from t_b_tool_data where deleted = 0) as tbtbd on tbtbd.id = tbtb.dist_id
+        left join (select * from t_b_tool_data where deleted = 0) as tbts on tbts.id = t_b_tool_main.source_id
+        left join (select * from t_b_tool_data where deleted = 0) as tbtd on tbtd.id = t_b_tool_main.dist_id
+        left join (select * from t_r_tool_main_category where deleted = 0) as trtmc
+        on t_b_tool_main.id = trtmc.tool_id
+        left join (select * from t_b_tool_category where deleted = 0 and enable = 1) as tbtc
+        on tbtc.id = trtmc.category_id
+        <where>
+            and t_b_tool_main.deleted = 0
+            and t_b_tool_main.tool_id = #{toolId}
+            <choose>
+                <when test="operator == null">
+                    and tsu.username = #{username}
+                </when>
+                <otherwise>
+                    <choose>
+                        <when test="username = '!'">
+                            and tsu.username = #{operator}
+                            <if test="ver != 'latest'">
+                                and t_b_tool_main.ver = #{ver}
+                            </if>
+                        </when>
+                        <otherwise>
+                            and tsu.username = #{username}
+                        </otherwise>
+                    </choose>
+                </otherwise>
+            </choose>
+        </where>
+        order by t_b_tool_main.id desc
+    </select>
+
     <resultMap id="toolTemplateWithBaseDataMap" type="toolTemplate" extends="top.fatweb.oxygen.api.mapper.tool.ToolTemplateMapper.toolTemplateWithDataMap">
         <association property="base">
             <id property="id" column="tool_template_base_id"/>
@@ -111,18 +227,24 @@
         <result property="baseId" column="tool_base_id"/>
         <result property="authorId" column="tool_author_id"/>
         <result property="ver" column="tool_ver"/>
-        <result property="privately" column="tool_privately"/>
         <result property="sourceId" column="tool_source_id"/>
         <result property="distId" column="tool_dist_id"/>
         <result property="entryPoint" column="tool_entry_point"/>
         <result property="publish" column="tool_publish"/>
         <result property="review" column="tool_review"/>
-        <result property="publishTime" column="tool_publish_time"/>
         <result property="updateTime" column="tool_update_time"/>
         <result property="createTime" column="tool_create_time"/>
         <result property="deleted" column="tool_deleted"/>
         <result property="version" column="tool_version"/>
+        <collection property="keywords" ofType="string" column="tool_keywords"/>
+        <collection property="categories" resultMap="top.fatweb.oxygen.api.mapper.tool.ToolCategoryMapper.toolCategoryMap"/>
+    </resultMap>
+
+    <resultMap id="toolWithAuthor" type="tool" extends="toolMap">
         <association property="author" resultMap="top.fatweb.oxygen.api.mapper.permission.UserMapper.userWithInfoMap"/>
+    </resultMap>
+
+    <resultMap id="toolWithDataMap" type="tool" extends="toolWithAuthor">
         <association property="base" resultMap="top.fatweb.oxygen.api.mapper.tool.ToolBaseMapper.toolBaseWithDataMap"/>
         <association property="source">
             <id property="id" column="tool_source_id"/>
@@ -140,7 +262,5 @@
             <result property="deleted" column="tool_dist_deleted"/>
             <result property="version" column="tool_dist_version"/>
         </association>
-        <collection property="keywords" ofType="string" column="tool_keywords"/>
-        <collection property="categories" resultMap="top.fatweb.oxygen.api.mapper.tool.ToolCategoryMapper.toolCategoryMap"/>
     </resultMap>
 </mapper>

@@ -60,14 +60,13 @@ data class ToolVo(
     val description: String?,
 
     /**
-     * Base ID
+     * Base
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @JsonSerialize(using = ToStringSerializer::class)
-    @Schema(description = "基板 ID")
-    val baseId: Long?,
+    @Schema(description = "基板")
+    val base: ToolBaseVo?,
 
     /**
      * Author
@@ -87,15 +86,6 @@ data class ToolVo(
      */
     @Schema(description = "版本")
     val ver: String?,
-
-    /**
-     * Privately
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     */
-    @Schema(description = "私有")
-    val privately: Boolean?,
 
     /**
      * Keywords
@@ -151,8 +141,9 @@ data class ToolVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @JsonSerialize(using = ToStringSerializer::class)
     @Schema(description = "发布")
-    val publish: Boolean?,
+    val publish: Long?,
 
     /**
      * Review
@@ -163,16 +154,6 @@ data class ToolVo(
      */
     @Schema(description = "审核")
     val review: Tool.ReviewType?,
-
-    /**
-     * Publish time
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see LocalDateTime
-     */
-    @Schema(description = "发布时间", example = "1900-01-01T00:00:00.000Z")
-    val publishTime: LocalDateTime?,
 
     /**
      * Create time

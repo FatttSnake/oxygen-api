@@ -78,4 +78,29 @@ class EditController(
     @PostMapping
     fun create(@RequestBody @Valid toolCreateParam: ToolCreateParam): ResponseResult<ToolVo> =
         ResponseResult.databaseSuccess(ResponseCode.DATABASE_INSERT_SUCCESS, data = editService.create(toolCreateParam))
+
+    /**
+     * Get personal tool
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @Operation(summary = "获取个人工具")
+    @GetMapping
+    fun get(): ResponseResult<List<ToolVo>> =
+        ResponseResult.databaseSuccess(ResponseCode.DATABASE_SELECT_SUCCESS, data = editService.get())
+
+    /**
+     * Get tool detail
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @Operation(summary = "获取工具内容")
+    @GetMapping("/detail/{username}/{toolId}/{ver}")
+    fun detail(@PathVariable username: String, @PathVariable toolId: String, @PathVariable ver: String) =
+        ResponseResult.databaseSuccess(
+            ResponseCode.DATABASE_SELECT_SUCCESS,
+            data = editService.detail(username, toolId, ver)
+        )
 }
