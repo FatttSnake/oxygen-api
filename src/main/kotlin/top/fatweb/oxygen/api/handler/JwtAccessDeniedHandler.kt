@@ -18,7 +18,6 @@ class JwtAccessDeniedHandler : AccessDeniedHandler {
     override fun handle(
         request: HttpServletRequest?, response: HttpServletResponse?, accessDeniedException: AccessDeniedException?
     ) {
-        request?.setAttribute("filter.error", accessDeniedException)
-        request?.getRequestDispatcher("/error/thrown")?.forward(request, response)
+        throw accessDeniedException ?: AccessDeniedException("Access Denied")
     }
 }
