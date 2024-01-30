@@ -99,7 +99,7 @@ class AuthenticationServiceImpl(
 
     @Transactional
     override fun resend() {
-        val user = userService.getById(WebUtil.getLoginUserId()) ?: throw AccessDeniedException("Access Denied")
+        val user = userService.getById(WebUtil.getLoginUserId())
 
         user.verify ?: throw NoVerificationRequiredException()
 
@@ -124,7 +124,7 @@ class AuthenticationServiceImpl(
     @EventLogRecord(EventLog.Event.VERIFY)
     @Transactional
     override fun verify(verifyParam: VerifyParam) {
-        val user = userService.getById(WebUtil.getLoginUserId()) ?: throw AccessDeniedException("Access Denied")
+        val user = userService.getById(WebUtil.getLoginUserId())
         user.verify ?: throw NoVerificationRequiredException()
         if (LocalDateTime.ofInstant(Instant.ofEpochMilli(user.verify!!.split("-").first().toLong()), ZoneOffset.UTC)
                 .isBefore(LocalDateTime.now(ZoneOffset.UTC).minusHours(2)) || user.verify != verifyParam.code

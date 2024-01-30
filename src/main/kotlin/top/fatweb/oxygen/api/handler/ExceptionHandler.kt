@@ -211,6 +211,12 @@ class ExceptionHandler {
                 ResponseResult.fail(ResponseCode.DATABASE_EXECUTE_ERROR, e.localizedMessage, null)
             }
 
+            /* Tool */
+            is IllegalVersionException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.TOOL_ILLEGAL_VERSION, e.localizedMessage, null)
+            }
+
             /* Other */
             is MatchSensitiveWordException -> {
                 logger.debug(e.localizedMessage, e)

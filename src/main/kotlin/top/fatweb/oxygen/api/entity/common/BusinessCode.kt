@@ -32,6 +32,14 @@ enum class BusinessCode(val code: Int) {
     DATABASE(300),
 
     /**
+     * Tool
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    TOOL(400),
+
+    /**
      * Avatar API
      *
      * @author FatttSnake, fatttsnake@gmail.com

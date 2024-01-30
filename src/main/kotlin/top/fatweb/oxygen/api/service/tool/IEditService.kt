@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService
 import top.fatweb.oxygen.api.entity.tool.Tool
 import top.fatweb.oxygen.api.param.tool.ToolCreateParam
 import top.fatweb.oxygen.api.param.tool.ToolUpdateParam
+import top.fatweb.oxygen.api.param.tool.ToolUpgradeParam
 import top.fatweb.oxygen.api.vo.tool.ToolCategoryVo
 import top.fatweb.oxygen.api.vo.tool.ToolTemplateVo
 import top.fatweb.oxygen.api.vo.tool.ToolVo
@@ -51,6 +52,7 @@ interface IEditService : IService<Tool> {
     /**
      * Get tool by ID
      *
+     * @param
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
@@ -63,6 +65,16 @@ interface IEditService : IService<Tool> {
      * @since 1.0.0
      */
     fun create(toolCreateParam: ToolCreateParam): ToolVo
+
+    /**
+     * Upgrade tool
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see ToolUpgradeParam
+     * @see ToolVo
+     */
+    fun upgrade(toolUpgradeParam: ToolUpgradeParam): ToolVo
 
     /**
      * Update tool
@@ -87,4 +99,12 @@ interface IEditService : IService<Tool> {
      * @since 1.0.0
      */
     fun detail(username: String, toolId: String, ver: String): ToolVo
+
+    /**
+     * Delete tool
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    fun delete(id: Long): Boolean
 }

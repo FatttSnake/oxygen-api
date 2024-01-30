@@ -58,6 +58,8 @@ enum class ResponseCode(val code: Int) {
     DATABASE_DUPLICATE_KEY(BusinessCode.DATABASE, 51),
     DATABASE_NO_RECORD_FOUND(BusinessCode.DATABASE, 52),
 
+    TOOL_ILLEGAL_VERSION(BusinessCode.TOOL, 50),
+
     API_AVATAR_SUCCESS(BusinessCode.API_AVATAR, 0),
     API_AVATAR_ERROR(BusinessCode.API_AVATAR, 50);
 

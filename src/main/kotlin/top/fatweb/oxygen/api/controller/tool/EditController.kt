@@ -2,14 +2,12 @@ package top.fatweb.oxygen.api.controller.tool
 
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.validation.Valid
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.*
 import top.fatweb.oxygen.api.annotation.BaseController
 import top.fatweb.oxygen.api.entity.common.ResponseCode
 import top.fatweb.oxygen.api.entity.common.ResponseResult
 import top.fatweb.oxygen.api.param.tool.ToolCreateParam
+import top.fatweb.oxygen.api.param.tool.ToolUpgradeParam
 import top.fatweb.oxygen.api.service.tool.IEditService
 import top.fatweb.oxygen.api.vo.tool.ToolCategoryVo
 import top.fatweb.oxygen.api.vo.tool.ToolTemplateVo
@@ -80,6 +78,17 @@ class EditController(
         ResponseResult.databaseSuccess(ResponseCode.DATABASE_INSERT_SUCCESS, data = editService.create(toolCreateParam))
 
     /**
+     * Upgrade tool
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @Operation(summary = "更新工具")
+    @PatchMapping
+    fun upgrade(@RequestBody @Valid toolUpgradeParam: ToolUpgradeParam): ResponseResult<ToolVo> =
+        ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS, data = editService.upgrade(toolUpgradeParam))
+
+    /**
      * Get personal tool
      *
      * @author FatttSnake, fatttsnake@gmail.com
@@ -103,4 +112,16 @@ class EditController(
             ResponseCode.DATABASE_SELECT_SUCCESS,
             data = editService.detail(username, toolId, ver)
         )
+
+    /**
+     * Delete tool
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @Operation(summary = "删除工具")
+    @DeleteMapping("/{id}")
+    fun delete(@PathVariable id: Long): ResponseResult<Nothing> =
+        if (editService.delete(id)) ResponseResult.databaseSuccess(ResponseCode.DATABASE_DELETE_SUCCESS)
+        else ResponseResult.databaseFail(ResponseCode.DATABASE_DELETE_FAILED)
 }
