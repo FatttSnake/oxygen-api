@@ -21,7 +21,7 @@ class Tool {
      * @since 1.0.0
      */
     enum class ReviewType(@field:EnumValue @field:JsonValue val code: String) {
-        NONE("NONE"), PASS("PASS"), REJECT("REJECT")
+        NONE("NONE"), PROCESSING("PROCESSING"), PASS("PASS"), REJECT("REJECT")
     }
 
     /**
