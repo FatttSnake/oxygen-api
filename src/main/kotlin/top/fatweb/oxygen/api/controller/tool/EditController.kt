@@ -129,6 +129,30 @@ class EditController(
         ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS, data = editService.update(toolUpdateParam))
 
     /**
+     * Submit tool review
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @Operation(summary = "提交工具审核")
+    @PostMapping("/{id}")
+    fun submit(@PathVariable id: Long): ResponseResult<Nothing> =
+        if (editService.submit(id)) ResponseResult.success(ResponseCode.TOOL_SUBMIT_SUCCESS)
+        else ResponseResult.fail(ResponseCode.TOOL_SUBMIT_ERROR)
+
+    /**
+     * Cancel tool review
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @Operation(summary = "取消工具审核")
+    @PutMapping("/{id}")
+    fun cancel(@PathVariable id: Long): ResponseResult<Nothing> =
+        if (editService.cancel(id)) ResponseResult.success(ResponseCode.TOOL_CANCEL_SUCCESS)
+        else ResponseResult.fail(ResponseCode.TOOL_CANCEL_ERROR)
+
+    /**
      * Delete tool
      *
      * @author FatttSnake, fatttsnake@gmail.com

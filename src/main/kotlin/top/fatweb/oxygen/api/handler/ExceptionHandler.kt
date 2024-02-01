@@ -222,6 +222,11 @@ class ExceptionHandler {
                 ResponseResult.fail(ResponseCode.TOOL_UNDER_REVIEW, e.localizedMessage, null)
             }
 
+            is ToolNotUnderReviewException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.TOOL_NOT_UNDER_REVIEW, e.localizedMessage, null)
+            }
+
             is ToolHasUnpublishedVersionException -> {
                 logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.TOOL_HAS_UNPUBLISHED_VERSION, e.localizedMessage, null)

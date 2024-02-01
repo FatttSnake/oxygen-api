@@ -101,6 +101,22 @@ interface IEditService : IService<Tool> {
     fun detail(username: String, toolId: String, ver: String): ToolVo
 
     /**
+     * Submit tool review
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    fun submit(id: Long): Boolean
+
+    /**
+     * Cancel tool review
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    fun cancel(id: Long): Boolean
+
+    /**
      * Delete tool
      *
      * @author FatttSnake, fatttsnake@gmail.com

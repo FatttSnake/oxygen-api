@@ -1,6 +1,7 @@
 package top.fatweb.oxygen.api.service.tool.impl
 
 import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper
+import com.baomidou.mybatisplus.extension.kotlin.KtUpdateWrapper
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.stereotype.Service
@@ -213,6 +214,30 @@ class EditServiceImpl(
         }
 
         return toolList.first().let(ToolConverter::toolToToolVo)
+    }
+
+    override fun submit(id: Long): Boolean {
+        val tool = getById(id)
+        if (tool.review == Tool.ReviewType.PROCESSING) {
+            throw ToolUnderReviewException()
+        }
+        if (tool.review == Tool.ReviewType.PASS || tool.publish != 0L) {
+            throw ToolHasBeenPublishedException()
+        }
+
+        return update(KtUpdateWrapper(Tool()).eq(Tool::id, id).set(Tool::review, Tool.ReviewType.PROCESSING))
+    }
+
+    override fun cancel(id: Long): Boolean {
+        val tool = getById(id)
+        if (tool.review == Tool.ReviewType.PASS || tool.publish != 0L) {
+            throw ToolHasBeenPublishedException()
+        }
+        if (tool.review != Tool.ReviewType.PROCESSING) {
+            throw ToolNotUnderReviewException()
+        }
+
+        return update(KtUpdateWrapper(Tool()).eq(Tool::id, id).set(Tool::review, Tool.ReviewType.NONE))
     }
 
     @Transactional
