@@ -27,5 +27,5 @@ interface EditMapper : BaseMapper<Tool> {
         @Param("toolId") toolId: String,
         @Param("ver") ver: String,
         @Param("operator") operator: String?
-    ): Tool?
+    ): List<Tool>?
 }

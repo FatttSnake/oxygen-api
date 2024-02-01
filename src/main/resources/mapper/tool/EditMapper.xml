@@ -208,7 +208,6 @@
             </choose>
         </where>
         order by t_b_tool_main.id desc
-        limit 1
     </select>
 
     <resultMap id="toolTemplateWithBaseDataMap" type="toolTemplate"

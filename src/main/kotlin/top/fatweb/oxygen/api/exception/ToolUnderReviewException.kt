@@ -1,10 +1,10 @@
 package top.fatweb.oxygen.api.exception
 
 /**
- * Illegal version exception
+ * Tool under review exception
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  * @see RuntimeException
  */
-class IllegalVersionException : RuntimeException("Illegal Version")
+class ToolUnderReviewException : RuntimeException("Tool under review")

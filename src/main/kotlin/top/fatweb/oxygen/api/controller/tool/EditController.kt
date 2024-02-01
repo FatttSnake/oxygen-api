@@ -7,6 +7,7 @@ import top.fatweb.oxygen.api.annotation.BaseController
 import top.fatweb.oxygen.api.entity.common.ResponseCode
 import top.fatweb.oxygen.api.entity.common.ResponseResult
 import top.fatweb.oxygen.api.param.tool.ToolCreateParam
+import top.fatweb.oxygen.api.param.tool.ToolUpdateParam
 import top.fatweb.oxygen.api.param.tool.ToolUpgradeParam
 import top.fatweb.oxygen.api.service.tool.IEditService
 import top.fatweb.oxygen.api.vo.tool.ToolCategoryVo
@@ -83,10 +84,13 @@ class EditController(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Operation(summary = "更新工具")
+    @Operation(summary = "升级工具")
     @PatchMapping
     fun upgrade(@RequestBody @Valid toolUpgradeParam: ToolUpgradeParam): ResponseResult<ToolVo> =
-        ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS, data = editService.upgrade(toolUpgradeParam))
+        ResponseResult.databaseSuccess(
+            ResponseCode.DATABASE_UPDATE_SUCCESS,
+            data = editService.upgrade(toolUpgradeParam)
+        )
 
     /**
      * Get personal tool
@@ -112,6 +116,17 @@ class EditController(
             ResponseCode.DATABASE_SELECT_SUCCESS,
             data = editService.detail(username, toolId, ver)
         )
+
+    /**
+     * Update tool
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @Operation(summary = "更新工具")
+    @PutMapping
+    fun update(@RequestBody @Valid toolUpdateParam: ToolUpdateParam) =
+        ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS, data = editService.update(toolUpdateParam))
 
     /**
      * Delete tool

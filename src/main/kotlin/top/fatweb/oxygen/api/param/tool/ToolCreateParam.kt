@@ -86,7 +86,7 @@ data class ToolCreateParam(
      */
     @Schema(description = "关键词", required = true)
     @field: NotEmpty(message = "Keywords can not be empty")
-    val keywords: List<String>,
+    val keywords: List<String>?,
 
     /**
      * Categories
@@ -96,5 +96,5 @@ data class ToolCreateParam(
      */
     @Schema(description = "类别", required = true)
     @field: NotEmpty(message = "Categories can not be empty")
-    val categories: List<Long>
+    val categories: List<Long>?
 )

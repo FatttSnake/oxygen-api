@@ -151,7 +151,7 @@ class RoleServiceImpl(
     override fun delete(roleDeleteParam: RoleDeleteParam) {
         baseMapper.deleteBatchIds(roleDeleteParam.ids)
         rPowerRoleService.remove(KtQueryWrapper(RPowerRole()).`in`(RPowerRole::roleId, roleDeleteParam.ids))
-        offlineUser(*roleDeleteParam.ids.toLongArray())
+        offlineUser(*roleDeleteParam.ids!!.toLongArray())
     }
 
     private fun getFullPowerIds(powerIds: List<Long>): Set<Long> {

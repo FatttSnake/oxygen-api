@@ -1,6 +1,7 @@
 package top.fatweb.oxygen.api.param.permission.role
 
 import io.swagger.v3.oas.annotations.media.Schema
+import jakarta.validation.constraints.NotEmpty
 
 /**
  * Delete role parameters
@@ -17,5 +18,6 @@ data class RoleDeleteParam(
      * @since 1.0.0
      */
     @Schema(description = "角色 ID 列表", required = true)
-    val ids: List<Long>
+    @field: NotEmpty(message = "Ids can not be empty")
+    val ids: List<Long>?
 )

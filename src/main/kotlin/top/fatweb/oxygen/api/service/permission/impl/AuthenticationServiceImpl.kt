@@ -106,7 +106,7 @@ class AuthenticationServiceImpl(
         if (LocalDateTime.ofInstant(Instant.ofEpochMilli(user.verify!!.split("-").first().toLong()), ZoneOffset.UTC)
                 .isAfter(LocalDateTime.now(ZoneOffset.UTC).minusMinutes(5))
         ) {
-            throw RequestTooFrequent()
+            throw RequestTooFrequentException()
         }
 
         user.verify =
@@ -158,7 +158,7 @@ class AuthenticationServiceImpl(
             if (LocalDateTime.ofInstant(Instant.ofEpochMilli(it.split("-").first().toLong()), ZoneOffset.UTC)
                     .isAfter(LocalDateTime.now(ZoneOffset.UTC).minusMinutes(5))
             ) {
-                throw RequestTooFrequent()
+                throw RequestTooFrequentException()
             }
         }
 

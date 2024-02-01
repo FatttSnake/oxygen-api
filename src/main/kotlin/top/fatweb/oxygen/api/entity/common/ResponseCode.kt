@@ -59,6 +59,9 @@ enum class ResponseCode(val code: Int) {
     DATABASE_NO_RECORD_FOUND(BusinessCode.DATABASE, 52),
 
     TOOL_ILLEGAL_VERSION(BusinessCode.TOOL, 50),
+    TOOL_UNDER_REVIEW(BusinessCode.TOOL, 51),
+    TOOL_HAS_UNPUBLISHED_VERSION(BusinessCode.TOOL, 52),
+    TOOL_HAS_BEEN_PUBLISHED(BusinessCode.TOOL, 53),
 
     API_AVATAR_SUCCESS(BusinessCode.API_AVATAR, 0),
     API_AVATAR_ERROR(BusinessCode.API_AVATAR, 50);

@@ -2,7 +2,6 @@ package top.fatweb.oxygen.api.param.tool
 
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotNull
-import jakarta.validation.constraints.Pattern
 
 /**
  * Update tool parameters
@@ -10,6 +9,7 @@ import jakarta.validation.constraints.Pattern
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
+@Schema(description = "更新工具请求参数")
 data class ToolUpdateParam(
     /**
      * ID
@@ -31,17 +31,13 @@ data class ToolUpdateParam(
     val name: String?,
 
     /**
-     * Tool ID
+     * Icon
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "工具唯一 ID", example = "tool_a")
-    @field: Pattern(
-        regexp = "^[a-zA-Z-_][0-9a-zA-Z-_]{2,19}\$",
-        message = "Ver can only match '^[a-zA-Z-_][0-9a-zA-Z-_]{2,19}\$'"
-    )
-    val toolId: String?,
+    @Schema(description = "图标")
+    val icon: String?,
 
     /**
      * Description
@@ -53,41 +49,13 @@ data class ToolUpdateParam(
     val description: String?,
 
     /**
-     * Author ID
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     */
-    @Schema(description = "作者 ID")
-    val authorId: Long?,
-
-    /**
-     * Version
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     */
-    @Schema(description = "版本", example = "1.0.3")
-    @field: Pattern(regexp = "^\\d+\\.\\d+\\.\\d+\$", message = "Ver can only match '<number>.<number>.<number>'")
-    val ver: String?,
-
-    /**
-     * Privately
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     */
-    @Schema(description = "私有", allowableValues = ["true", "false"])
-    val privately: Boolean?,
-
-    /**
      * Keywords
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
     @Schema(description = "关键词")
-    val keywords: List<String>,
+    val keywords: List<String>?,
 
     /**
      * Categories
@@ -96,7 +64,7 @@ data class ToolUpdateParam(
      * @since 1.0.0
      */
     @Schema(description = "类别")
-    val categories: List<Long>,
+    val categories: List<Long>?,
 
     /**
      * Source
@@ -105,14 +73,5 @@ data class ToolUpdateParam(
      * @since 1.0.0
      */
     @Schema(description = "源码")
-    val source: String?,
-
-    /**
-     * Dist
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     */
-    @Schema(description = "产物")
-    val dist: String?
+    val source: String?
 )

@@ -9,8 +9,7 @@ import top.fatweb.oxygen.api.converter.tool.ToolCategoryConverter
 import top.fatweb.oxygen.api.converter.tool.ToolConverter
 import top.fatweb.oxygen.api.converter.tool.ToolTemplateConverter
 import top.fatweb.oxygen.api.entity.tool.*
-import top.fatweb.oxygen.api.exception.IllegalVersionException
-import top.fatweb.oxygen.api.exception.NoRecordFoundException
+import top.fatweb.oxygen.api.exception.*
 import top.fatweb.oxygen.api.mapper.tool.EditMapper
 import top.fatweb.oxygen.api.param.tool.ToolCreateParam
 import top.fatweb.oxygen.api.param.tool.ToolUpdateParam
@@ -81,7 +80,7 @@ class EditServiceImpl(
 
         this.save(tool)
 
-        toolCreateParam.categories.forEach {
+        toolCreateParam.categories!!.forEach {
             toolCategoryService.getById(it) ?: throw NoRecordFoundException()
             rToolCategoryService.save(RToolCategory().apply {
                 toolId = tool.id
@@ -95,6 +94,12 @@ class EditServiceImpl(
     @Transactional
     override fun upgrade(toolUpgradeParam: ToolUpgradeParam): ToolVo {
         val originalTool = this.detail("!", toolUpgradeParam.toolId!!, "latest")
+        if (originalTool.review == Tool.ReviewType.PROCESSING) {
+            throw ToolUnderReviewException()
+        }
+        if (originalTool.review != Tool.ReviewType.PASS || originalTool.publish == 0L) {
+            throw ToolHasUnpublishedVersionException()
+        }
 
         val originalVersion = originalTool.ver!!
         if (originalVersion.split(".").map(String::toLong).joinToString(".") == toolUpgradeParam.ver!!.split(".")
@@ -141,7 +146,57 @@ class EditServiceImpl(
 
     @Transactional
     override fun update(toolUpdateParam: ToolUpdateParam): ToolVo {
-        TODO("Not yet implemented")
+        val tool = getById(toolUpdateParam.id)
+        if (tool.review == Tool.ReviewType.PROCESSING) {
+            throw ToolUnderReviewException()
+        }
+        if (tool.review == Tool.ReviewType.PASS || tool.publish != 0L) {
+            throw ToolHasBeenPublishedException()
+        }
+
+        this.updateById(Tool().apply {
+            id = toolUpdateParam.id
+            name = toolUpdateParam.name
+            icon = toolUpdateParam.icon
+            description = toolUpdateParam.description
+            keywords = toolUpdateParam.keywords
+        })
+
+        if (!toolUpdateParam.categories.isNullOrEmpty()) {
+            val oldCategories = rToolCategoryService.list(
+                KtQueryWrapper(RToolCategory()).select(RToolCategory::categoryId).eq(RToolCategory::toolId, tool.id)
+            ).map(RToolCategory::categoryId)
+            val addCategories = HashSet<Long>()
+            val removeCategories = HashSet<Long>()
+            toolUpdateParam.categories.forEach(addCategories::add)
+            oldCategories.forEach {
+                it?.let(removeCategories::add)
+            }
+            removeCategories.removeAll(addCategories)
+            oldCategories.toSet().let(addCategories::removeAll)
+
+            removeCategories.forEach {
+                rToolCategoryService.remove(
+                    KtQueryWrapper(RToolCategory()).eq(
+                        RToolCategory::toolId, tool.id
+                    ).eq(RToolCategory::categoryId, it)
+                )
+            }
+
+            addCategories.forEach {
+                rToolCategoryService.save(RToolCategory().apply {
+                    toolId = tool.id
+                    categoryId = it
+                })
+            }
+
+            toolDataService.updateById(ToolData().apply {
+                id = tool.sourceId
+                data = toolUpdateParam.source
+            })
+        }
+
+        return this.getOne(tool.id!!)
     }
 
     override fun get(): List<ToolVo> =
@@ -152,9 +207,12 @@ class EditServiceImpl(
         if (username == "!" && WebUtil.getLoginUserId() == null) {
             throw NoRecordFoundException()
         }
+        val toolList = baseMapper.detail(username, toolId, ver, WebUtil.getLoginUsername())
+        if (toolList.isNullOrEmpty()) {
+            throw NoRecordFoundException()
+        }
 
-        return baseMapper.detail(username, toolId, ver, WebUtil.getLoginUsername())?.let(ToolConverter::toolToToolVo)
-            ?: throw NoRecordFoundException()
+        return toolList.first().let(ToolConverter::toolToToolVo)
     }
 
     @Transactional

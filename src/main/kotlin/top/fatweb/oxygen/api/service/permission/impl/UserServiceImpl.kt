@@ -276,7 +276,7 @@ class UserServiceImpl(
 
     @Transactional
     override fun delete(userDeleteParam: UserDeleteParam) {
-        val ids = userDeleteParam.ids.filter { it != 0L }
+        val ids = userDeleteParam.ids!!.filter { it != 0L }
         if (ids.isEmpty()) {
             return
         }

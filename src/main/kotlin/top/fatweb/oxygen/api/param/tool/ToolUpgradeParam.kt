@@ -10,7 +10,7 @@ import jakarta.validation.constraints.Pattern
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-@Schema(description = "更新工具请求参数")
+@Schema(description = "升级工具请求参数")
 data class ToolUpgradeParam(
     /**
      * Tool ID

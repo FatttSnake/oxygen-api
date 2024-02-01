@@ -61,7 +61,7 @@ class ExceptionHandler {
                 ResponseResult.fail(ResponseCode.SYSTEM_ARGUMENT_NOT_VALID, errorMessage, null)
             }
 
-            is RequestTooFrequent -> {
+            is RequestTooFrequentException -> {
                 logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.SYSTEM_REQUEST_TOO_FREQUENT, e.localizedMessage, null)
             }
@@ -215,6 +215,21 @@ class ExceptionHandler {
             is IllegalVersionException -> {
                 logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.TOOL_ILLEGAL_VERSION, e.localizedMessage, null)
+            }
+
+            is ToolUnderReviewException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.TOOL_UNDER_REVIEW, e.localizedMessage, null)
+            }
+
+            is ToolHasUnpublishedVersionException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.TOOL_HAS_UNPUBLISHED_VERSION, e.localizedMessage, null)
+            }
+
+            is ToolHasBeenPublishedException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.TOOL_HAS_BEEN_PUBLISHED, e.localizedMessage, null)
             }
 
             /* Other */

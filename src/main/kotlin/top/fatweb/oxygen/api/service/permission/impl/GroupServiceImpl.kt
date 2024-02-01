@@ -144,7 +144,7 @@ class GroupServiceImpl(
     override fun delete(groupDeleteParam: GroupDeleteParam) {
         baseMapper.deleteBatchIds(groupDeleteParam.ids)
         rRoleGroupService.remove(KtQueryWrapper(RRoleGroup()).`in`(RRoleGroup::groupId, groupDeleteParam.ids))
-        offlineUser(*groupDeleteParam.ids.toLongArray())
+        offlineUser(*groupDeleteParam.ids!!.toLongArray())
     }
 
     private fun offlineUser(vararg groupIds: Long) {
