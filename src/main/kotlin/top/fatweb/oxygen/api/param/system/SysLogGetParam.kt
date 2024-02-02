@@ -20,7 +20,11 @@ data class SysLogGetParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "类型过滤(多个使用逗号分隔)", allowableValues = ["INFO", "ERROR"], example = "INFO")
+    @Schema(
+        description = "类型过滤(多个使用逗号分隔)",
+        allowableValues = ["INFO", "LOGIN", "LOGOUT", "REGISTER", "STATISTICS", "API", "ERROR"],
+        example = "INFO"
+    )
     val logType: String?,
 
     /**
@@ -51,10 +55,10 @@ data class SysLogGetParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-/*
-    @Schema(description = "查询使用正则表达式", allowableValues = ["true", "false"], defaultValue = "false")
-    val searchRegex: Boolean = false,
-*/
+    /*
+        @Schema(description = "查询使用正则表达式", allowableValues = ["true", "false"], defaultValue = "false")
+        val searchRegex: Boolean = false,
+    */
 
     /**
      * Start time to search for

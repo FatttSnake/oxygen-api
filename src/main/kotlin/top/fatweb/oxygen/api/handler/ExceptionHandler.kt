@@ -232,6 +232,11 @@ class ExceptionHandler {
                 ResponseResult.fail(ResponseCode.TOOL_HAS_UNPUBLISHED_VERSION, e.localizedMessage, null)
             }
 
+            is ToolHasNotBeenPublishedException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.TOOL_HAS_NOT_BEEN_PUBLISHED, e.localizedMessage, null)
+            }
+
             is ToolHasBeenPublishedException -> {
                 logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.TOOL_HAS_BEEN_PUBLISHED, e.localizedMessage, null)

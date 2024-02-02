@@ -64,7 +64,8 @@ enum class ResponseCode(val code: Int) {
     TOOL_UNDER_REVIEW(BusinessCode.TOOL, 51),
     TOOL_NOT_UNDER_REVIEW(BusinessCode.TOOL, 52),
     TOOL_HAS_UNPUBLISHED_VERSION(BusinessCode.TOOL, 53),
-    TOOL_HAS_BEEN_PUBLISHED(BusinessCode.TOOL, 54),
+    TOOL_HAS_NOT_BEEN_PUBLISHED(BusinessCode.TOOL, 54),
+    TOOL_HAS_BEEN_PUBLISHED(BusinessCode.TOOL, 55),
     TOOL_SUBMIT_ERROR(BusinessCode.TOOL, 60),
     TOOL_CANCEL_ERROR(BusinessCode.TOOL, 61),
 

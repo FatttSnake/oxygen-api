@@ -55,6 +55,10 @@
                 #{item}
             </foreach>
         </where>
+        <foreach collection="roleIds" item="item" index="index" open="order by field(t_s_role.id," separator=","
+                 close=")" nullable="true">
+            #{item}
+        </foreach>
     </select>
 
     <select id="selectOneById" resultMap="roleWithPowerMap">

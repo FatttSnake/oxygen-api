@@ -1,7 +1,9 @@
 package top.fatweb.oxygen.api.converter.tool
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import top.fatweb.oxygen.api.converter.permission.UserConverter
 import top.fatweb.oxygen.api.entity.tool.Tool
+import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.tool.ToolVo
 
 /**
@@ -39,5 +41,13 @@ object ToolConverter {
         review = tool.review,
         createTime = tool.createTime,
         updateTime = tool.updateTime
+    )
+
+    fun toolPageToToolPageVo(toolPage: Page<Tool>): PageVo<ToolVo> = PageVo(
+        total = toolPage.total,
+        pages = toolPage.pages,
+        size = toolPage.size,
+        current = toolPage.current,
+        records = toolPage.records.map(this::toolToToolVo)
     )
 }

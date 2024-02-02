@@ -38,11 +38,16 @@
         left join (select * from t_r_role_group where deleted = 0) as trrg on t_s_group.id = trrg.group_id
         left join (select * from t_s_role where deleted = 0) as tsr on tsr.id = trrg.role_id
         <where>
-            <foreach collection="groupIds" item="item" index="index" open="and t_s_group.id in (" separator="," close=")"
+            <foreach collection="groupIds" item="item" index="index" open="and t_s_group.id in (" separator=","
+                     close=")"
                      nullable="true">
                 #{item}
             </foreach>
         </where>
+        <foreach collection="groupIds" item="item" index="index" open="order by field(t_s_group.id," separator=","
+                 close=")" nullable="true">
+            #{item}
+        </foreach>
     </select>
 
     <select id="selectOneById" resultMap="groupWithRoleMap">

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="top.fatweb.oxygen.api.mapper.tool.EditMapper">
-    <select id="getTemplate" resultMap="toolTemplateWithBaseDataMap">
+    <select id="getTemplate" resultMap="top.fatweb.oxygen.api.mapper.tool.ManagementMapper.toolTemplateWithBaseDataMap">
         select t_b_tool_template.id          as tool_template_id,
                t_b_tool_template.name        as tool_template_name,
                t_b_tool_template.base_id     as tool_template_base_id,
@@ -30,7 +30,7 @@
           and t_b_tool_template.id = #{id}
     </select>
 
-    <select id="selectOne" resultMap="toolWithDataMap">
+    <select id="selectOne" resultMap="top.fatweb.oxygen.api.mapper.tool.ManagementMapper.toolWithDataMap">
         select t_b_tool_main.id          as tool_id,
                t_b_tool_main.name        as tool_name,
                t_b_tool_main.tool_id     as tool_tool_id,
@@ -92,7 +92,7 @@
           and t_b_tool_main.id = #{id}
     </select>
 
-    <select id="selectPersonal" resultMap="toolMap">
+    <select id="selectPersonal" resultMap="top.fatweb.oxygen.api.mapper.tool.ManagementMapper.toolMap">
         select t_b_tool_main.id          as tool_id,
                t_b_tool_main.name        as tool_name,
                t_b_tool_main.tool_id     as tool_tool_id,
@@ -128,7 +128,7 @@
         order by t_b_tool_main.id desc
     </select>
 
-    <select id="detail" resultMap="toolWithDataMap">
+    <select id="detail" resultMap="top.fatweb.oxygen.api.mapper.tool.ManagementMapper.toolWithDataMap">
         select t_b_tool_main.id as tool_id,
         t_b_tool_main.name as tool_name,
         t_b_tool_main.tool_id as tool_tool_id,
@@ -209,60 +209,4 @@
         </where>
         order by t_b_tool_main.id desc
     </select>
-
-    <resultMap id="toolTemplateWithBaseDataMap" type="toolTemplate"
-               extends="top.fatweb.oxygen.api.mapper.tool.ToolTemplateMapper.toolTemplateWithDataMap">
-        <association property="base">
-            <id property="id" column="tool_template_base_id"/>
-            <result property="name" column="tool_template_base_name"/>
-            <result property="distData" column="tool_template_base_dist_data"/>
-        </association>
-    </resultMap>
-
-    <resultMap id="toolMap" type="tool">
-        <id property="id" column="tool_id"/>
-        <result property="name" column="tool_name"/>
-        <result property="toolId" column="tool_tool_id"/>
-        <result property="icon" column="tool_icon"/>
-        <result property="description" column="tool_description"/>
-        <result property="baseId" column="tool_base_id"/>
-        <result property="authorId" column="tool_author_id"/>
-        <result property="ver" column="tool_ver"/>
-        <result property="sourceId" column="tool_source_id"/>
-        <result property="distId" column="tool_dist_id"/>
-        <result property="entryPoint" column="tool_entry_point"/>
-        <result property="publish" column="tool_publish"/>
-        <result property="review" column="tool_review"/>
-        <result property="updateTime" column="tool_update_time"/>
-        <result property="createTime" column="tool_create_time"/>
-        <result property="deleted" column="tool_deleted"/>
-        <result property="version" column="tool_version"/>
-        <result property="keywords" column="tool_keywords" typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"/>
-        <collection property="categories"
-                    resultMap="top.fatweb.oxygen.api.mapper.tool.ToolCategoryMapper.toolCategoryMap"/>
-    </resultMap>
-
-    <resultMap id="toolWithAuthor" type="tool" extends="toolMap">
-        <association property="author" resultMap="top.fatweb.oxygen.api.mapper.permission.UserMapper.userWithInfoMap"/>
-    </resultMap>
-
-    <resultMap id="toolWithDataMap" type="tool" extends="toolWithAuthor">
-        <association property="base" resultMap="top.fatweb.oxygen.api.mapper.tool.ToolBaseMapper.toolBaseWithDataMap"/>
-        <association property="source">
-            <id property="id" column="tool_source_id"/>
-            <result property="data" column="tool_source_data"/>
-            <result property="createTime" column="tool_source_create_time"/>
-            <result property="updateTime" column="tool_source_update_time"/>
-            <result property="deleted" column="tool_source_deleted"/>
-            <result property="version" column="tool_source_version"/>
-        </association>
-        <association property="dist">
-            <id property="id" column="tool_dist_id"/>
-            <result property="data" column="tool_dist_data"/>
-            <result property="createTime" column="tool_dist_create_time"/>
-            <result property="updateTime" column="tool_dist_update_time"/>
-            <result property="deleted" column="tool_dist_deleted"/>
-            <result property="version" column="tool_dist_version"/>
-        </association>
-    </resultMap>
 </mapper>

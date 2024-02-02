@@ -190,7 +190,9 @@ class EditServiceImpl(
                     categoryId = it
                 })
             }
+        }
 
+        if (!toolUpdateParam.source.isNullOrBlank()) {
             toolDataService.updateById(ToolData().apply {
                 id = tool.sourceId
                 data = toolUpdateParam.source

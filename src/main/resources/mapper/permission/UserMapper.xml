@@ -175,6 +175,10 @@
                 #{item}
             </foreach>
         </where>
+        <foreach collection="userIds" item="item" index="index" open="order by field(t_s_user.id," separator=","
+                 close=")" nullable="true">
+            #{item}
+        </foreach>
     </select>
 
     <select id="selectOneWithRoleInfoById" resultMap="userWithRoleInfoMap">
