@@ -10,17 +10,17 @@ import org.springframework.transaction.annotation.Transactional
 import top.fatweb.oxygen.api.converter.tool.ToolConverter
 import top.fatweb.oxygen.api.entity.tool.RToolCategory
 import top.fatweb.oxygen.api.entity.tool.Tool
+import top.fatweb.oxygen.api.entity.tool.ToolData
 import top.fatweb.oxygen.api.exception.NoRecordFoundException
 import top.fatweb.oxygen.api.exception.ToolHasNotBeenPublishedException
 import top.fatweb.oxygen.api.exception.ToolNotUnderReviewException
 import top.fatweb.oxygen.api.mapper.tool.ManagementMapper
 import top.fatweb.oxygen.api.param.tool.ToolManagementGetParam
-import top.fatweb.oxygen.api.service.tool.IEditService
+import top.fatweb.oxygen.api.param.tool.ToolManagementPassParam
 import top.fatweb.oxygen.api.service.tool.IManagementService
 import top.fatweb.oxygen.api.service.tool.IRToolCategoryService
 import top.fatweb.oxygen.api.service.tool.IToolDataService
 import top.fatweb.oxygen.api.util.PageUtil
-import top.fatweb.oxygen.api.util.WebUtil
 import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.tool.ToolVo
 import java.time.LocalDateTime
@@ -44,6 +44,7 @@ class ManagementServiceImpl(
     override fun getOne(id: Long): ToolVo =
         baseMapper.selectOne(id)
             ?.let(ToolConverter::toolToToolVo) ?: throw NoRecordFoundException()
+
     override fun getPage(toolManagementGetParam: ToolManagementGetParam?): PageVo<ToolVo> {
         val toolIdsPage = Page<Long>(toolManagementGetParam?.currentPage ?: 1, toolManagementGetParam?.pageSize ?: 20)
 
@@ -65,11 +66,15 @@ class ManagementServiceImpl(
         return ToolConverter.toolPageToToolPageVo(toolPage)
     }
 
-    override fun pass(id: Long): ToolVo {
+    override fun pass(id: Long, toolManagementPassParam: ToolManagementPassParam): ToolVo {
         val tool = this.getById(id) ?: throw NoRecordFoundException()
         if (tool.review !== Tool.ReviewType.PROCESSING) {
             throw ToolNotUnderReviewException()
         }
+
+        toolDataService.update(
+            KtUpdateWrapper(ToolData()).eq(ToolData::id, tool.distId).set(ToolData::data, toolManagementPassParam.dist)
+        )
 
         this.update(
             KtUpdateWrapper(Tool())

@@ -44,7 +44,7 @@ class ToolCategoryServiceImpl : ServiceImpl<ToolCategoryMapper, ToolCategory>(),
     override fun update(toolCategoryUpdateParam: ToolCategoryUpdateParam): ToolCategoryVo {
         val toolCategory = ToolCategoryConverter.toolCategoryUpdateParamToToolCategory(toolCategoryUpdateParam)
 
-        if (this.updateById(toolCategory)) {
+        if (!this.updateById(toolCategory)) {
             throw DatabaseUpdateException()
         }
 
