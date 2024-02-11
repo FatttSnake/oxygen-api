@@ -65,12 +65,87 @@
     <select id="selectPage" resultType="long">
         select t_b_tool_main.id
         from t_b_tool_main
+        left join (select * from t_s_user where deleted = 0) as tsu on tsu.id = t_b_tool_main.author_id
+        left join (select * from t_s_user_info where deleted = 0) as tsui on tsui.user_id = t_b_tool_main.author_id
+        left join json_table(t_b_tool_main.keywords, '$[*]' columns (keyword varchar(50) path '$')) as tk on true
         <where>
             t_b_tool_main.deleted = 0
             <foreach collection="review" item="item" index="index" open="and t_b_tool_main.review in (" separator=","
                      close=")" nullable="true">
                 #{item}
             </foreach>
+            <if test="searchValue != null">
+                <choose>
+                    <when test="searchType == 'NAME'">
+                        <choose>
+                            <when test="searchRegex == true">
+                                and t_b_tool_main.name regexp #{searchValue}
+                            </when>
+                            <otherwise>
+                                and t_b_tool_main.name like concat('%', #{searchValue}, '%')
+                            </otherwise>
+                        </choose>
+                    </when>
+                    <when test="searchType == 'TOOL_ID'">
+                        <choose>
+                            <when test="searchRegex == true">
+                                and t_b_tool_main.tool_id regexp #{searchValue}
+                            </when>
+                            <otherwise>
+                                and t_b_tool_main.tool_id like concat('%', #{searchValue}, '%')
+                            </otherwise>
+                        </choose>
+                    </when>
+                    <when test="searchType == 'NICKNAME'">
+                        <choose>
+                            <when test="searchRegex == true">
+                                and tsui.nickname regexp #{searchValue}
+                            </when>
+                            <otherwise>
+                                and tsui.nickname like concat('%', #{searchValue}, '%')
+                            </otherwise>
+                        </choose>
+                    </when>
+                    <when test="searchType == 'USERNAME'">
+                        <choose>
+                            <when test="searchRegex == true">
+                                and tsu.username regexp #{searchValue}
+                            </when>
+                            <otherwise>
+                                and tsu.username like concat('%', #{searchValue}, '%')
+                            </otherwise>
+                        </choose>
+                    </when>
+                    <when test="searchType == 'KEYWORD'">
+                        <choose>
+                            <when test="searchRegex == true">
+                                and tk.keyword regexp #{searchValue}
+                            </when>
+                            <otherwise>
+                                and tk.keyword like concat('%', #{searchValue}, '%')
+                            </otherwise>
+                        </choose>
+                    </when>
+                    <otherwise>
+                        <choose>
+                            <when test="searchRegex == true">
+                                and ( t_b_tool_main.name regexp #{searchValue}
+                                or t_b_tool_main.tool_id regexp #{searchValue}
+                                or tsui.nickname regexp #{searchValue}
+                                or tsu.username regexp #{searchValue}
+                                or tk.keyword regexp #{searchValue} )
+                            </when>
+                            <otherwise>
+                                and ( t_b_tool_main.name like concat('%', #{searchValue}, '%')
+                                or t_b_tool_main.tool_id like concat('%', #{searchValue}, '%')
+                                or tsui.nickname like concat('%', #{searchValue}, '%')
+                                or tsu.username like concat('%', #{searchValue}, '%')
+                                or tk.keyword like concat('%', #{searchValue}, '%') )
+                            </otherwise>
+                        </choose>
+                    </otherwise>
+                </choose>
+            </if>
         </where>
     </select>
 
@@ -153,7 +228,8 @@
         <result property="createTime" column="tool_create_time"/>
         <result property="deleted" column="tool_deleted"/>
         <result property="version" column="tool_version"/>
-        <result property="keywords" column="tool_keywords" typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"/>
+        <result property="keywords" column="tool_keywords"
+                typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"/>
         <collection property="categories"
                     resultMap="top.fatweb.oxygen.api.mapper.tool.ToolCategoryMapper.toolCategoryMap"/>
     </resultMap>

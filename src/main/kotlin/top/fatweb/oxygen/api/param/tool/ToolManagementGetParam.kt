@@ -12,7 +12,7 @@ data class ToolManagementGetParam(
      */
     @Schema(
         description = "搜索类型",
-        allowableValues = ["ALL", "ID", "USERNAME", "NICKNAME", "EMAIL"],
+        allowableValues = ["ALL", "NAME", "TOOL_ID", "NICKNAME", "USERNAME", "KEYWORD"],
         defaultValue = "ALL",
         example = "ALL"
     )
@@ -47,8 +47,10 @@ data class ToolManagementGetParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "审核状态过滤(多个使用逗号分隔)",
+    @Schema(
+        description = "审核状态过滤(多个使用逗号分隔)",
         allowableValues = ["NONE", "PROCESSING", "REJECT", "PASS"],
-        example = "NONE,PASS")
+        example = "NONE,PASS"
+    )
     val review: String?
 ) : PageSortParam()
