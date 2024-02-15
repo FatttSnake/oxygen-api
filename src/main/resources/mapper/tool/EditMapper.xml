@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="top.fatweb.oxygen.api.mapper.tool.EditMapper">
-    <select id="getTemplate" resultMap="top.fatweb.oxygen.api.mapper.tool.ManagementMapper.toolTemplateWithBaseDataMap">
+    <select id="selectTemplate" resultMap="top.fatweb.oxygen.api.mapper.tool.ManagementMapper.toolTemplateWithBaseDataMap">
         select t_b_tool_template.id          as tool_template_id,
                t_b_tool_template.name        as tool_template_name,
                t_b_tool_template.base_id     as tool_template_base_id,
@@ -128,7 +128,7 @@
         order by t_b_tool_main.id desc
     </select>
 
-    <select id="detail" resultMap="top.fatweb.oxygen.api.mapper.tool.ManagementMapper.toolWithDataMap">
+    <select id="selectDetail" resultMap="top.fatweb.oxygen.api.mapper.tool.ManagementMapper.toolWithDataMap">
         select t_b_tool_main.id as tool_id,
         t_b_tool_main.name as tool_name,
         t_b_tool_main.tool_id as tool_tool_id,

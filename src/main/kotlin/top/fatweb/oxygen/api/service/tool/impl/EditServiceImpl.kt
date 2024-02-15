@@ -43,7 +43,7 @@ class EditServiceImpl(
             .map(ToolTemplateConverter::toolTemplateToToolTemplateVoByList)
 
     override fun getTemplate(id: Long): ToolTemplateVo =
-        baseMapper.getTemplate(id)?.let(ToolTemplateConverter::toolTemplateToToolTemplateVoWithBaseDist)
+        baseMapper.selectTemplate(id)?.let(ToolTemplateConverter::toolTemplateToToolTemplateVoWithBaseDist)
             ?: throw NoRecordFoundException()
 
     override fun getCategory(): List<ToolCategoryVo> =
@@ -210,7 +210,7 @@ class EditServiceImpl(
         if (username == "!" && WebUtil.getLoginUserId() == null) {
             throw NoRecordFoundException()
         }
-        val toolList = baseMapper.detail(username, toolId, ver, WebUtil.getLoginUsername())
+        val toolList = baseMapper.selectDetail(username, toolId, ver, WebUtil.getLoginUsername())
         if (toolList.isNullOrEmpty()) {
             throw NoRecordFoundException()
         }

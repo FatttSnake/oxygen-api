@@ -3,6 +3,13 @@ package top.fatweb.oxygen.api.param.tool
 import io.swagger.v3.oas.annotations.media.Schema
 import top.fatweb.oxygen.api.param.PageSortParam
 
+/**
+ * Get tool in management parameters
+ *
+ * @author FatttSnake, fatttsnake@gmail.com
+ * @since 1.0.0
+ * @see PageSortParam
+ */
 data class ToolManagementGetParam(
     /**
      * Type of search

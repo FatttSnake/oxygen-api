@@ -15,7 +15,24 @@ import top.fatweb.oxygen.api.entity.tool.ToolTemplate
  */
 @Mapper
 interface ToolTemplateMapper : BaseMapper<ToolTemplate> {
+    /**
+     * Select tool template by ID
+     *
+     * @param id Tool template ID
+     * @return ToolTemplate object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see ToolTemplate
+     */
     fun selectOne(@Param("id") id: Long): ToolTemplate?
 
+    /**
+     * Select tool template in list
+     *
+     * @return List of ToolTemplate object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see ToolTemplate
+     */
     fun selectList(): List<ToolTemplate>
 }

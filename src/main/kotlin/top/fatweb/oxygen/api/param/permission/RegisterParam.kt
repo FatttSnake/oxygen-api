@@ -11,6 +11,7 @@ import top.fatweb.oxygen.api.param.CaptchaCodeParam
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see CaptchaCodeParam
  */
 @Schema(description = "注册请求参数")
 data class RegisterParam(

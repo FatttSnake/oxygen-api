@@ -16,15 +16,72 @@ import top.fatweb.oxygen.api.vo.tool.ToolVo
  * @see Tool
  */
 interface IManagementService : IService<Tool> {
+    /**
+     * Get tool by ID
+     *
+     * @param id Tool ID
+     * @return ToolVo object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see ToolVo
+     */
     fun getOne(id: Long): ToolVo
 
+    /**
+     * Get tool as page
+     *
+     * @param toolManagementGetParam Get tool parameters in tool management
+     * @return PageVo<ToolVo> object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see ToolManagementGetParam
+     * @see PageVo
+     * @see ToolVo
+     */
     fun getPage(toolManagementGetParam: ToolManagementGetParam?): PageVo<ToolVo>
 
+    /**
+     * Pass tool review
+     *
+     * @param id Tool ID
+     * @param toolManagementPassParam Pass tool review parameters in tool management
+     * @return ToolVo object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see ToolManagementPassParam
+     * @see ToolVo
+     */
     fun pass(id: Long, toolManagementPassParam: ToolManagementPassParam): ToolVo
 
+    /**
+     * Reject tool review
+     *
+     * @param id Tool ID
+     * @return ToolVo object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see ToolVo
+     */
     fun reject(id: Long): ToolVo
 
+    /**
+     * Off shelve tool
+     *
+     * @param id Tool ID
+     * @return ToolVo object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see ToolVo
+     */
     fun offShelve(id: Long): ToolVo
 
+    /**
+     * Delete tool
+     *
+     * @param id Tool ID
+     * @return Result
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     fun delete(id: Long): Boolean
 }

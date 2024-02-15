@@ -12,6 +12,12 @@ import top.fatweb.oxygen.api.service.tool.IManagementService
 import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.tool.ToolVo
 
+/**
+ * Tool management controller
+ *
+ * @author FatttSnake, fatttsnake@gmail.com
+ * @since 1.0.0
+ */
 @BaseController(path = ["/system/tool"], name = "工具管理", description = "工具管理相关接口")
 class ManagementController(
     private val managementService: IManagementService

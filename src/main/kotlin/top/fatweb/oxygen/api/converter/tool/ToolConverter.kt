@@ -43,6 +43,18 @@ object ToolConverter {
         updateTime = tool.updateTime
     )
 
+    /**
+     * Convert Page<Tool> object into PageVo<ToolVo> object
+     *
+     * @param toolPage Page<Tool> object
+     * @return PageVo<ToolVo> object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see Page
+     * @see Tool
+     * @see PageVo
+     * @see ToolVo
+     */
     fun toolPageToToolPageVo(toolPage: Page<Tool>): PageVo<ToolVo> = PageVo(
         total = toolPage.total,
         pages = toolPage.pages,

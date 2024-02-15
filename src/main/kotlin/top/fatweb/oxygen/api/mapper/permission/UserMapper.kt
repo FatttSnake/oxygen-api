@@ -28,7 +28,7 @@ interface UserMapper : BaseMapper<User> {
     fun selectOneWithPowerInfoByAccount(@Param("account") account: String): User?
 
     /**
-     * Select user in page
+     * Select user ID in page
      *
      * @param page Pagination
      * @param searchType Type of search

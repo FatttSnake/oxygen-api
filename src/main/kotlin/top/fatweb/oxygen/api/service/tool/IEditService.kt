@@ -52,7 +52,8 @@ interface IEditService : IService<Tool> {
     /**
      * Get tool by ID
      *
-     * @param
+     * @param id Tool ID
+     * @return ToolVo object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
@@ -61,14 +62,20 @@ interface IEditService : IService<Tool> {
     /**
      * Create tool
      *
+     * @param toolCreateParam Create tool parameters
+     * @return ToolVo object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see ToolCreateParam
+     * @see ToolVo
      */
     fun create(toolCreateParam: ToolCreateParam): ToolVo
 
     /**
      * Upgrade tool
      *
+     * @param toolUpgradeParam Upgrade tool parameters
+     * @return ToolVo object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see ToolUpgradeParam
@@ -79,30 +86,43 @@ interface IEditService : IService<Tool> {
     /**
      * Update tool
      *
+     * @param toolUpdateParam Update tool parameters
+     * @return ToolVo object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see ToolUpdateParam
+     * @see ToolVo
      */
     fun update(toolUpdateParam: ToolUpdateParam): ToolVo
 
     /**
      * Get personal tools
      *
+     * @return List of ToolVo object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see ToolVo
      */
     fun get(): List<ToolVo>
 
     /**
      * Get tool detail
      *
+     * @param username Username
+     * @param toolId Tool ID
+     * @param ver Version
+     * @return ToolVo object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see ToolVo
      */
     fun detail(username: String, toolId: String, ver: String): ToolVo
 
     /**
      * Submit tool review
      *
+     * @param id Tool ID
+     * @return Result
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
@@ -111,6 +131,8 @@ interface IEditService : IService<Tool> {
     /**
      * Cancel tool review
      *
+     * @param id Tool ID
+     * @return Result
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
@@ -119,6 +141,8 @@ interface IEditService : IService<Tool> {
     /**
      * Delete tool
      *
+     * @param id Tool ID
+     * @return Result
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
