@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param
 import top.fatweb.oxygen.api.entity.tool.Tool
 
 /**
- * Tool management mapper
+ * Tool store mapper
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
@@ -15,38 +15,18 @@ import top.fatweb.oxygen.api.entity.tool.Tool
  * @see Tool
  */
 @Mapper
-interface ManagementMapper : BaseMapper<Tool> {
-    /**
-     * Select tool by ID
-     *
-     * @param id Tool ID
-     * @return Tool object
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see Tool
-     */
-    fun selectOne(@Param("id") id: Long): Tool?
-
+interface StoreMapper : BaseMapper<Tool> {
     /**
      * Select tool ID in page
      *
      * @param page Pagination
-     * @param review Review
-     * @param searchType Type of search
      * @param searchValue Value to search for
-     * @param searchRegex Use regex
      * @return Tool ID in page
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see IPage
      */
-    fun selectPage(
-        page: IPage<Long>,
-        @Param("review") review: List<String>?,
-        @Param("searchType") searchType: String,
-        @Param("searchValue") searchValue: String?,
-        @Param("searchRegex") searchRegex: Boolean
-    ): IPage<Long>
+    fun selectPage(page: IPage<Long>, @Param("searchValue") searchValue: String?): IPage<Long>
 
     /**
      * Select tool in list by tool IDs

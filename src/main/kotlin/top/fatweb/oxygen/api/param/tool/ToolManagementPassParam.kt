@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotBlank
 
 /**
- * Pass tool in management parameters
+ * Pass tool parameters in tool management
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0

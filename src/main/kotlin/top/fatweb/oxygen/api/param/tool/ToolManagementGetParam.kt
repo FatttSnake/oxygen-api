@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import top.fatweb.oxygen.api.param.PageSortParam
 
 /**
- * Get tool in management parameters
+ * Get tool parameters in tool management
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0

@@ -28,7 +28,7 @@ interface IManagementService : IService<Tool> {
     fun getOne(id: Long): ToolVo
 
     /**
-     * Get tool as page
+     * Get tool in page
      *
      * @param toolManagementGetParam Get tool parameters in tool management
      * @return PageVo<ToolVo> object

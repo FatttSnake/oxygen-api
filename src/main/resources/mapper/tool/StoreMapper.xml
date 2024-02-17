@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.fatweb.oxygen.api.mapper.tool.StoreMapper">
+    <select id="selectPage" resultType="long">
+        select distinct t_b_tool_main.id
+        from t_b_tool_main
+        left join json_table(t_b_tool_main.keywords, '$[*]' columns (keyword varchar(50) path '$')) as tk on true
+        <where>
+            and t_b_tool_main.deleted = 0 and t_b_tool_main.publish != 0
+            <if test="searchValue != null">
+                and (
+                t_b_tool_main.name like concat('%', #{searchValue}, '%')
+                or tk.keyword like concat('%', #{searchValue}, '%')
+                )
+            </if>
+        </where>
+        <choose>
+            <when test="searchValue != null">
+                order by instr(t_b_tool_main.name, #{searchValue}) = 0,
+                char_length(t_b_tool_main.name),
+                instr(t_b_tool_main.name, #{searchValue}),
+                instr(tk.keyword, #{searchValue}) = 0,
+                char_length(tk.keyword),
+                instr(tk.keyword, #{searchValue})
+            </when>
+            <otherwise>
+                order by t_b_tool_main.publish desc
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="selectListByIds" resultMap="top.fatweb.oxygen.api.mapper.tool.ManagementMapper.toolWithAuthor">
+        select t_b_tool_main.id as tool_id,
+        t_b_tool_main.name as tool_name,
+        t_b_tool_main.tool_id as tool_tool_id,
+        t_b_tool_main.icon as tool_icon,
+        t_b_tool_main.description as tool_description,
+        t_b_tool_main.base_id as tool_base_id,
+        t_b_tool_main.author_id as tool_author_id,
+        t_b_tool_main.ver as tool_ver,
+        t_b_tool_main.keywords as tool_keywords,
+        t_b_tool_main.source_id as tool_source_id,
+        t_b_tool_main.dist_id as tool_dist_id,
+        t_b_tool_main.entry_point as tool_entry_point,
+        t_b_tool_main.publish as tool_publish,
+        t_b_tool_main.review as tool_review,
+        t_b_tool_main.create_time as tool_create_time,
+        t_b_tool_main.update_time as tool_update_time,
+        t_b_tool_main.deleted as tool_deleted,
+        t_b_tool_main.version as tool_version,
+        tsu.id as user_id,
+        tsu.username as user_username,
+        tsui.id as user_info_id,
+        tsui.nickname as user_info_nickname,
+        tsui.avatar as user_info_avatar,
+        tsui.email as user_info_email,
+        tbtc.id as tool_category_id,
+        tbtc.name as tool_category_name,
+        tbtc.enable as tool_category_enable,
+        tbtc.create_time as tool_category_create_time,
+        tbtc.update_time as tool_category_update_time,
+        tbtc.deleted as tool_category_deleted,
+        tbtc.version as tool_category_version
+        from t_b_tool_main
+        left join (select * from t_s_user where deleted = 0) as tsu on tsu.id = t_b_tool_main.author_id
+        left join (select * from t_s_user_info where deleted = 0) as tsui
+        on tsui.user_id = t_b_tool_main.author_id
+        left join (select * from t_r_tool_main_category where deleted = 0) as trtmc
+        on t_b_tool_main.id = trtmc.tool_id
+        left join (select * from t_b_tool_category where deleted = 0 and enable = 1) as tbtc
+        on tbtc.id = trtmc.category_id
+        <where>
+            <foreach collection="ids" item="item" index="index" open="and t_b_tool_main.id in (" separator="," close=")"
+                     nullable="true">
+                #{item}
+            </foreach>
+        </where>
+        <foreach collection="ids" item="item" index="index" open="order by field(t_b_tool_main.id," separator=","
+                 close=")" nullable="true">
+            #{item}
+        </foreach>
+    </select>
+</mapper>
