@@ -111,7 +111,6 @@ class ManagementServiceImpl(
             KtUpdateWrapper(Tool())
                 .eq(Tool::id, id)
                 .set(Tool::review, Tool.ReviewType.REJECT)
-                .set(Tool::publish, 0)
         )
 
         return this.getOne(id)

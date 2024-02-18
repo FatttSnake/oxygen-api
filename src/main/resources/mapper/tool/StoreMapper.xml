@@ -2,31 +2,40 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="top.fatweb.oxygen.api.mapper.tool.StoreMapper">
     <select id="selectPage" resultType="long">
-        select distinct t_b_tool_main.id
-        from t_b_tool_main
-        left join json_table(t_b_tool_main.keywords, '$[*]' columns (keyword varchar(50) path '$')) as tk on true
+        select distinct tb.id from
+        (
+        select tbtm.id
+        from (select temp.*
+        from (select *,
+        row_number() over (partition by t_b_tool_main.tool_id, t_b_tool_main.author_id order by t_b_tool_main.id desc)
+        as rn
+        from t_b_tool_main where deleted = 0) temp
+        where temp.rn = 1) as tbtm
+        left join json_table(json_extract(tbtm.keywords, '$[*]'), '$[*]' columns (keyword varchar(50) path '$')) as tk
+        on true
         <where>
-            and t_b_tool_main.deleted = 0 and t_b_tool_main.publish != 0
+            and tbtm.publish != 0 and tbtm.review = 'PASS'
             <if test="searchValue != null">
                 and (
-                t_b_tool_main.name like concat('%', #{searchValue}, '%')
+                tbtm.name like concat('%', #{searchValue}, '%')
                 or tk.keyword like concat('%', #{searchValue}, '%')
                 )
             </if>
         </where>
         <choose>
             <when test="searchValue != null">
-                order by instr(t_b_tool_main.name, #{searchValue}) = 0,
-                char_length(t_b_tool_main.name),
-                instr(t_b_tool_main.name, #{searchValue}),
+                order by instr(tbtm.name, #{searchValue}) = 0,
+                char_length(tbtm.name),
+                instr(tbtm.name, #{searchValue}),
                 instr(tk.keyword, #{searchValue}) = 0,
                 char_length(tk.keyword),
                 instr(tk.keyword, #{searchValue})
             </when>
             <otherwise>
-                order by t_b_tool_main.publish desc
+                order by tbtm.publish desc
             </otherwise>
         </choose>
+        ) as tb
     </select>
 
     <select id="selectListByIds" resultMap="top.fatweb.oxygen.api.mapper.tool.ManagementMapper.toolWithAuthor">

@@ -223,7 +223,7 @@ class EditServiceImpl(
         if (tool.review == Tool.ReviewType.PROCESSING) {
             throw ToolUnderReviewException()
         }
-        if (tool.review == Tool.ReviewType.PASS || tool.publish != 0L) {
+        if (tool.review == Tool.ReviewType.PASS && tool.publish != 0L) {
             throw ToolHasBeenPublishedException()
         }
 
@@ -232,7 +232,7 @@ class EditServiceImpl(
 
     override fun cancel(id: Long): Boolean {
         val tool = getById(id)
-        if (tool.review == Tool.ReviewType.PASS || tool.publish != 0L) {
+        if (tool.review == Tool.ReviewType.PASS && tool.publish != 0L) {
             throw ToolHasBeenPublishedException()
         }
         if (tool.review != Tool.ReviewType.PROCESSING) {
