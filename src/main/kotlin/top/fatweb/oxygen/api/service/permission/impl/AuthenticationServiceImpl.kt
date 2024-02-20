@@ -152,7 +152,7 @@ class AuthenticationServiceImpl(
         verifyCaptcha(forgetParam.captchaCode!!)
 
         val user = userService.getUserWithPowerByAccount(forgetParam.email!!)
-        user ?: let { throw UserNotFoundException() }
+        user ?: throw UserNotFoundException()
 
         user.forget?.let {
             if (LocalDateTime.ofInstant(Instant.ofEpochMilli(it.split("-").first().toLong()), ZoneOffset.UTC)
@@ -210,21 +210,19 @@ class AuthenticationServiceImpl(
 
     @EventLogRecord(EventLog.Event.LOGOUT)
     override fun logout(token: String): Boolean {
-        val loginUser = WebUtil.getLoginUser() ?: let { throw TokenHasExpiredException() }
+        val loginUser = WebUtil.getLoginUser() ?: throw TokenHasExpiredException()
 
         return redisUtil.delObject("${SecurityProperties.jwtIssuer}_login_${loginUser.user.id}:" + token)
     }
 
     override fun renewToken(token: String): TokenVo {
-        val loginUser = WebUtil.getLoginUser() ?: let { throw TokenHasExpiredException() }
+        val loginUser = WebUtil.getLoginUser() ?: throw TokenHasExpiredException()
 
         val oldRedisKey = "${SecurityProperties.jwtIssuer}_login_${loginUser.user.id}:" + token
         redisUtil.delObject(oldRedisKey)
         val jwt = JwtUtil.createJwt(WebUtil.getLoginUserId().toString())
 
-        jwt ?: let {
-            throw RuntimeException("Login failed")
-        }
+        jwt ?: throw RuntimeException("Login failed")
 
         val redisKey = "${SecurityProperties.jwtIssuer}_login_${loginUser.user.id}:" + jwt
         redisUtil.setObject(
@@ -308,9 +306,7 @@ class AuthenticationServiceImpl(
         val usernamePasswordAuthenticationToken =
             UsernamePasswordAuthenticationToken(account, password)
         val authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken)
-        authentication ?: let {
-            throw RuntimeException("Login failed")
-        }
+        authentication ?: throw RuntimeException("Login failed")
 
         val loginUser = authentication.principal as LoginUser
         loginUser.user.password = ""
@@ -326,9 +322,7 @@ class AuthenticationServiceImpl(
         val userId = loginUser.user.id.toString()
         val jwt = JwtUtil.createJwt(userId)
 
-        jwt ?: let {
-            throw RuntimeException("Login failed")
-        }
+        jwt ?: throw RuntimeException("Login failed")
 
         val redisKey = "${SecurityProperties.jwtIssuer}_login_${userId}:" + jwt
         redisUtil.setObject(redisKey, loginUser, SecurityProperties.redisTtl, SecurityProperties.redisTtlUnit)

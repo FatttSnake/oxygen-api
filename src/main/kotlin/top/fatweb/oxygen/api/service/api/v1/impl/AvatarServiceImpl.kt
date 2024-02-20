@@ -59,12 +59,12 @@ class AvatarServiceImpl : IAvatarService {
             if (avatarBaseParam == null || avatarBaseParam.colors.isNullOrEmpty())
                 TriangleAvatar.newAvatarBuilder()
             else TriangleAvatar.newAvatarBuilder(
-                *avatarBaseParam.colors!!.map(this::decodeColor).toTypedArray()
+                *avatarBaseParam.colors!!.map(::decodeColor).toTypedArray()
             )
             ).apply {
-                avatarBaseParam?.size?.let(this::size)
-                avatarBaseParam?.margin?.let(this::margin)
-                avatarBaseParam?.padding?.let(this::padding)
+                avatarBaseParam?.size?.let(::size)
+                avatarBaseParam?.margin?.let(::margin)
+                avatarBaseParam?.padding?.let(::padding)
                 avatarBaseParam?.background?.let { layers(ColorPaintBackgroundLayer(decodeColor(it))) }
             }.build()
 
@@ -79,12 +79,12 @@ class AvatarServiceImpl : IAvatarService {
             if (avatarBaseParam == null || avatarBaseParam.colors.isNullOrEmpty())
                 SquareAvatar.newAvatarBuilder()
             else SquareAvatar.newAvatarBuilder(
-                *avatarBaseParam.colors!!.map(this::decodeColor).toTypedArray()
+                *avatarBaseParam.colors!!.map(::decodeColor).toTypedArray()
             )
             ).apply {
-                avatarBaseParam?.size?.let(this::size)
-                avatarBaseParam?.margin?.let(this::margin)
-                avatarBaseParam?.padding?.let(this::padding)
+                avatarBaseParam?.size?.let(::size)
+                avatarBaseParam?.margin?.let(::margin)
+                avatarBaseParam?.padding?.let(::padding)
                 avatarBaseParam?.background?.let { layers(ColorPaintBackgroundLayer(decodeColor(it))) }
             }.build()
 
@@ -96,9 +96,9 @@ class AvatarServiceImpl : IAvatarService {
 
     override fun identicon(avatarBaseParam: AvatarBaseParam?): ByteArray {
         val avatar = IdenticonAvatar.newAvatarBuilder().apply {
-            avatarBaseParam?.size?.let(this::size)
-            avatarBaseParam?.margin?.let(this::margin)
-            avatarBaseParam?.padding?.let(this::padding)
+            avatarBaseParam?.size?.let(::size)
+            avatarBaseParam?.margin?.let(::margin)
+            avatarBaseParam?.padding?.let(::padding)
             if (avatarBaseParam != null && !avatarBaseParam.colors.isNullOrEmpty()) {
                 color(decodeColor(avatarBaseParam.colors!!.random()))
             }
@@ -114,9 +114,9 @@ class AvatarServiceImpl : IAvatarService {
     override fun github(avatarGitHubParam: AvatarGitHubParam?): ByteArray {
         val avatar = (avatarGitHubParam?.let { GitHubAvatar.newAvatarBuilder(it.elementSize, it.precision) }
             ?: let { GitHubAvatar.newAvatarBuilder(400, 5) }).apply {
-            avatarGitHubParam?.size?.let(this::size)
-            avatarGitHubParam?.margin?.let(this::margin)
-            avatarGitHubParam?.padding?.let(this::padding)
+            avatarGitHubParam?.size?.let(::size)
+            avatarGitHubParam?.margin?.let(::margin)
+            avatarGitHubParam?.padding?.let(::padding)
             if (avatarGitHubParam != null && !avatarGitHubParam.colors.isNullOrEmpty()) {
                 color(decodeColor(avatarGitHubParam.colors!!.random()))
             }

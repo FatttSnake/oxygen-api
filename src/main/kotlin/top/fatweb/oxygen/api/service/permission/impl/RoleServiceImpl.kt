@@ -68,7 +68,7 @@ class RoleServiceImpl(
 
     @Transactional
     override fun add(roleAddParam: RoleAddParam): RoleVo {
-        val fullPowerIds = roleAddParam.powerIds?.let(this::getFullPowerIds)
+        val fullPowerIds = roleAddParam.powerIds?.let(::getFullPowerIds)
 
         val role = RoleConverter.roleAddParamToRole(roleAddParam)
         if (baseMapper.insert(role) != 1) {
@@ -90,7 +90,7 @@ class RoleServiceImpl(
 
     @Transactional
     override fun update(roleUpdateParam: RoleUpdateParam): RoleVo {
-        val fullPowerIds = roleUpdateParam.powerIds?.let(this::getFullPowerIds)
+        val fullPowerIds = roleUpdateParam.powerIds?.let(::getFullPowerIds)
 
         val role = RoleConverter.roleUpdateParamToRole(roleUpdateParam)
 

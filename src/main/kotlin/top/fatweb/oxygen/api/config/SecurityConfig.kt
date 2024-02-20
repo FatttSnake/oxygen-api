@@ -6,7 +6,6 @@ import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.annotation.web.configurers.*
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
@@ -56,15 +55,17 @@ class SecurityConfig(
     @Bean
     fun securityFilterChain(httpSecurity: HttpSecurity): SecurityFilterChain = httpSecurity
         //  Disable CSRF
-        .csrf { csrfConfigurer: CsrfConfigurer<HttpSecurity> -> csrfConfigurer.disable() }
+        .csrf {
+            it.disable()
+        }
         // Do not get SecurityContent by Session
-        .sessionManagement { sessionManagementConfigurer: SessionManagementConfigurer<HttpSecurity?> ->
-            sessionManagementConfigurer.sessionCreationPolicy(
+        .sessionManagement {
+            it.sessionCreationPolicy(
                 SessionCreationPolicy.STATELESS
             )
         }
-        .authorizeHttpRequests { authorizeHttpRequests: AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry ->
-            authorizeHttpRequests
+        .authorizeHttpRequests {
+            it
                 // Allow anonymous access
                 .requestMatchers(
                     "/error/thrown",
@@ -84,19 +85,21 @@ class SecurityConfig(
                 .anyRequest().authenticated()
         }
 
-        .logout { logoutConfigurer: LogoutConfigurer<HttpSecurity> -> logoutConfigurer.disable() }
+        .logout {
+            it.disable()
+        }
 
-        .exceptionHandling { exceptionHandlingConfigurer: ExceptionHandlingConfigurer<HttpSecurity?> ->
-            exceptionHandlingConfigurer.authenticationEntryPoint(
+        .exceptionHandling {
+            it.authenticationEntryPoint(
                 authenticationEntryPointHandler
             )
-            exceptionHandlingConfigurer.accessDeniedHandler(
+            it.accessDeniedHandler(
                 accessDeniedHandler
             )
         }
 
-        .cors { cors: CorsConfigurer<HttpSecurity?> ->
-            cors.configurationSource(
+        .cors {
+            it.configurationSource(
                 corsConfigurationSource()
             )
         }

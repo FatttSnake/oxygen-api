@@ -15,7 +15,7 @@ class ApiResponseMappingHandlerMapping : RequestMappingHandlerMapping() {
 
     private fun createCondition(clazz: Class<*>): RequestCondition<ApiVersionCondition>? {
         val apiController = clazz.getAnnotation(ApiController::class.java)
-        apiController ?: let { return null }
+        apiController ?: return null
 
         return ApiVersionCondition(apiController.version)
     }

@@ -51,7 +51,7 @@ object GroupConverter {
         enable = group.enable == 1,
         createTime = group.createTime,
         updateTime = group.updateTime,
-        roles = group.roles?.map { RoleConverter.roleToRoleVo(it) }
+        roles = group.roles?.map(RoleConverter::roleToRoleVo)
     )
 
     /**
@@ -71,9 +71,7 @@ object GroupConverter {
         pages = groupPage.pages,
         size = groupPage.size,
         current = groupPage.current,
-        records = groupPage.records.map {
-            groupToGroupWithRoleVo(it)
-        }
+        records = groupPage.records.map(::groupToGroupWithRoleVo)
     )
 
     /**

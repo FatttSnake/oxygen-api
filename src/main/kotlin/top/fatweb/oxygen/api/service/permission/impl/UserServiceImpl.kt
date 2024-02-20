@@ -68,7 +68,7 @@ class UserServiceImpl(
 ) : ServiceImpl<UserMapper, User>(), IUserService {
     override fun getUserWithPowerByAccount(account: String): User? {
         val user = baseMapper.selectOneWithPowerInfoByAccount(account)
-        user ?: let { return null }
+        user ?: return null
 
         if (user.id == 0L) {
             user.modules = moduleService.list()
@@ -81,7 +81,7 @@ class UserServiceImpl(
     }
 
     override fun getInfo(): UserWithPowerInfoVo =
-        WebUtil.getLoginUsername()?.let(this::getUserWithPowerByAccount)?.let(UserConverter::userToUserWithPowerInfoVo)
+        WebUtil.getLoginUsername()?.let(::getUserWithPowerByAccount)?.let(UserConverter::userToUserWithPowerInfoVo)
             ?: throw UserNotFoundException()
 
     override fun getOne(id: Long): UserWithRoleInfoVo =
@@ -260,9 +260,7 @@ class UserServiceImpl(
             }
 
             userUpdatePasswordParam.id?.let { WebUtil.offlineUser(redisUtil, it) }
-        } ?: let {
-            throw NoRecordFoundException()
-        }
+        } ?: throw NoRecordFoundException()
     }
 
     @Transactional

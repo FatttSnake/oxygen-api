@@ -19,7 +19,7 @@ object StrUtil {
      * @since 1.0.0
      */
     fun upperToUnderLetter(str: String?): String {
-        str ?: let { return "" }
+        str ?: return ""
 
         return Regex("[A-Z]").replace(str) { matchResult -> "_${matchResult.value.lowercase()}" }
     }
@@ -33,7 +33,7 @@ object StrUtil {
      * @since 1.0.0
      */
     fun underToUpperLetter(str: String?): String {
-        str ?: let { return "" }
+        str ?: return ""
 
         return Regex("_[a-z]").replace(str) { matchResult -> matchResult.value.removePrefix("_").uppercase() }
     }

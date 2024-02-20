@@ -45,21 +45,11 @@ object UserConverter {
         lastLoginIp = user.lastLoginIp,
         createTime = user.createTime,
         updateTime = user.updateTime,
-        userInfo = user.userInfo?.let {
-            UserInfoConverter.userInfoToUserInfoVo(it)
-        },
-        modules = user.modules?.map {
-            ModuleConverter.moduleToModuleVo(it)
-        },
-        menus = user.menus?.map {
-            MenuConverter.menuToMenuVo(it)
-        },
-        funcs = user.funcs?.map {
-            FuncConverter.funcToFuncVo(it)
-        },
-        operations = user.operations?.map {
-            OperationConverter.operationToOperationVo(it)
-        }
+        userInfo = user.userInfo?.let(UserInfoConverter::userInfoToUserInfoVo),
+        modules = user.modules?.map(ModuleConverter::moduleToModuleVo),
+        menus = user.menus?.map(MenuConverter::menuToMenuVo),
+        funcs = user.funcs?.map(FuncConverter::funcToFuncVo),
+        operations = user.operations?.map(OperationConverter::operationToOperationVo)
     )
 
     /**
@@ -86,15 +76,9 @@ object UserConverter {
         lastLoginIp = user.lastLoginIp,
         createTime = user.createTime,
         updateTime = user.updateTime,
-        userInfo = user.userInfo?.let {
-            UserInfoConverter.userInfoToUserInfoVo(it)
-        },
-        roles = user.roles?.map {
-            RoleConverter.roleToRoleVo(it)
-        },
-        groups = user.groups?.map {
-            GroupConverter.groupToGroupVo(it)
-        }
+        userInfo = user.userInfo?.let(UserInfoConverter::userInfoToUserInfoVo),
+        roles = user.roles?.map(RoleConverter::roleToRoleVo),
+        groups = user.groups?.map(GroupConverter::groupToGroupVo)
     )
 
     /**
@@ -121,9 +105,7 @@ object UserConverter {
         lastLoginIp = user.lastLoginIp,
         createTime = user.createTime,
         updateTime = user.updateTime,
-        userInfo = user.userInfo?.let {
-            UserInfoConverter.userInfoToUserInfoVo(it)
-        }
+        userInfo = user.userInfo?.let(UserInfoConverter::userInfoToUserInfoVo)
     )
 
     /**
@@ -151,15 +133,9 @@ object UserConverter {
         lastLoginIp = user.lastLoginIp,
         createTime = user.createTime,
         updateTime = user.updateTime,
-        userInfo = user.userInfo?.let {
-            UserInfoConverter.userInfoToUserInfoVo(it)
-        },
-        roles = user.roles?.map {
-            RoleConverter.roleToRoleVo(it)
-        },
-        groups = user.groups?.map {
-            GroupConverter.groupToGroupVo(it)
-        }
+        userInfo = user.userInfo?.let(UserInfoConverter::userInfoToUserInfoVo),
+        roles = user.roles?.map(RoleConverter::roleToRoleVo),
+        groups = user.groups?.map(GroupConverter::groupToGroupVo)
     )
 
     /**
@@ -232,8 +208,6 @@ object UserConverter {
         pages = userPage.pages,
         size = userPage.size,
         current = userPage.current,
-        records = userPage.records.map {
-            userToUserWithRoleInfoVo(it)
-        }
+        records = userPage.records.map(::userToUserWithRoleInfoVo)
     )
 }

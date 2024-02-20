@@ -18,7 +18,7 @@ import top.fatweb.oxygen.api.service.permission.IUserService
 class UserDetailsServiceImpl(val userService: IUserService) : UserDetailsService {
     override fun loadUserByUsername(account: String): UserDetails {
         val user = userService.getUserWithPowerByAccount(account)
-        user ?: let { throw Exception("Username not found") }
+        user ?: throw Exception("Username not found")
 
         return LoginUser(user)
     }

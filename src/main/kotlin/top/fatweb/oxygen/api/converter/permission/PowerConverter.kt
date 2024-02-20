@@ -21,9 +21,9 @@ object PowerConverter {
      * @see PowerSetVo
      */
     fun powerSetToPowerSetVo(powerSet: PowerSet) = PowerSetVo(
-        moduleList = powerSet.moduleList?.map { ModuleConverter.moduleToModuleVo(it) },
-        menuList = powerSet.menuList?.map { MenuConverter.menuToMenuVo(it) },
-        funcList = powerSet.funcList?.map { FuncConverter.funcToFuncVo(it) },
-        operationList = powerSet.operationList?.map { OperationConverter.operationToOperationVo(it) }
+        moduleList = powerSet.moduleList?.map(ModuleConverter::moduleToModuleVo),
+        menuList = powerSet.menuList?.map(MenuConverter::menuToMenuVo),
+        funcList = powerSet.funcList?.map(FuncConverter::funcToFuncVo),
+        operationList = powerSet.operationList?.map(OperationConverter::operationToOperationVo)
     )
 }

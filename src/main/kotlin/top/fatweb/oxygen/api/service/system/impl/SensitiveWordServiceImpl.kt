@@ -49,7 +49,7 @@ class SensitiveWordServiceImpl : ServiceImpl<SensitiveWordMapper, SensitiveWord>
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     override fun checkSensitiveWord(str: String) {
         this.list(KtQueryWrapper(SensitiveWord()).eq(SensitiveWord::enable, 1)).map(SensitiveWord::word).forEach {
-            it ?: let { return@forEach }
+            it ?: return@forEach
 
             try {
                 if (Regex(it, RegexOption.IGNORE_CASE).matches(str)) {

@@ -51,10 +51,10 @@ object RoleConverter {
         enable = role.enable == 1,
         createTime = role.createTime,
         updateTime = role.updateTime,
-        modules = role.modules?.map { ModuleConverter.moduleToModuleVo(it) },
-        menus = role.menus?.map { MenuConverter.menuToMenuVo(it) },
-        funcs = role.funcs?.map { FuncConverter.funcToFuncVo(it) },
-        operations = role.operations?.map { OperationConverter.operationToOperationVo(it) }
+        modules = role.modules?.map(ModuleConverter::moduleToModuleVo),
+        menus = role.menus?.map(MenuConverter::menuToMenuVo),
+        funcs = role.funcs?.map(FuncConverter::funcToFuncVo),
+        operations = role.operations?.map(OperationConverter::operationToOperationVo)
     )
 
     /**
@@ -74,9 +74,7 @@ object RoleConverter {
         pages = rolePage.pages,
         size = rolePage.size,
         current = rolePage.current,
-        records = rolePage.records.map {
-            roleToRoleWithPowerVo(it)
-        }
+        records = rolePage.records.map(::roleToRoleWithPowerVo)
     )
 
     /**

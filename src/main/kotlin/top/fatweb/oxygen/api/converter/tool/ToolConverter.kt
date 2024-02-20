@@ -60,6 +60,6 @@ object ToolConverter {
         pages = toolPage.pages,
         size = toolPage.size,
         current = toolPage.current,
-        records = toolPage.records.map(this::toolToToolVo)
+        records = toolPage.records.map(::toolToToolVo)
     )
 }
