@@ -47,8 +47,7 @@ class ManagementServiceImpl(
 
     override fun getPage(toolManagementGetParam: ToolManagementGetParam?): PageVo<ToolVo> {
         val toolIdsPage = Page<Long>(toolManagementGetParam?.currentPage ?: 1, toolManagementGetParam?.pageSize ?: 20)
-
-        PageUtil.setPageSort(toolManagementGetParam, toolIdsPage, OrderItem.desc("id"))
+        toolIdsPage.setOptimizeCountSql(false)
 
         val toolIdsIPage =
             baseMapper.selectPage(

@@ -147,6 +147,7 @@
                 </choose>
             </if>
         </where>
+        order by t_b_tool_main.id desc
     </select>
 
     <select id="selectListByIds" resultMap="toolWithAuthor">

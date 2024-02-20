@@ -25,6 +25,7 @@ import top.fatweb.oxygen.api.vo.tool.ToolVo
 class StoreServiceImpl : ServiceImpl<StoreMapper, Tool>(), IStoreService {
     override fun getPage(toolStoreGetParam: ToolStoreGetParam?): PageVo<ToolVo> {
         val toolIdsPage = Page<Long>(toolStoreGetParam?.currentPage ?: 1, 20)
+        toolIdsPage.setOptimizeCountSql(false)
 
         val toolIdsIPage = baseMapper.selectPage(toolIdsPage, toolStoreGetParam?.searchValue)
         val toolPage = Page<Tool>(toolIdsIPage.current, toolIdsIPage.size, toolIdsIPage.total)
