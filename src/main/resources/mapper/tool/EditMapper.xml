@@ -193,7 +193,7 @@
                 </when>
                 <otherwise>
                     <choose>
-                        <when test="username = '!'">
+                        <when test='username == "!"'>
                             and tsu.username = #{operator}
                             <if test="ver != 'latest'">
                                 and t_b_tool_main.ver = #{ver}
