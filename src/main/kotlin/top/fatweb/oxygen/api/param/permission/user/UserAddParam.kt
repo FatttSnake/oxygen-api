@@ -11,7 +11,7 @@ import java.time.LocalDateTime
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-@Schema(description = "用户添加请求参数")
+@Schema(description = "添加用户请求参数")
 data class UserAddParam(
     /**
      * Username

@@ -48,6 +48,14 @@ interface IUserService : IService<User> {
     fun updateInfo(userInfoUpdateParam: UserInfoUpdateParam): Boolean
 
     /**
+     * Change password
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    fun password(userChangePasswordParam: UserChangePasswordParam)
+
+    /**
      * Get one user by ID
      *
      * @param id ID

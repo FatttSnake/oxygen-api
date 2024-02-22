@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.kotlin.KtUpdateWrapper
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
 import org.springframework.security.access.AccessDeniedException
+import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -85,12 +86,32 @@ class UserServiceImpl(
             ?: throw UserNotFoundException()
 
     override fun updateInfo(userInfoUpdateParam: UserInfoUpdateParam): Boolean {
-        val userId = WebUtil.getLoginUserId() ?: throw UserNotFoundException()
+        val userId = WebUtil.getLoginUserId() ?: throw AccessDeniedException("Access denied")
         return userInfoService.update(
                 KtUpdateWrapper(UserInfo()).eq(UserInfo::userId, userId)
                     .set(UserInfo::avatar, userInfoUpdateParam.avatar)
                     .set(UserInfo::nickname, userInfoUpdateParam.nickname)
             )
+    }
+
+    override fun password(userChangePasswordParam: UserChangePasswordParam) {
+        val user = this.getById(WebUtil.getLoginUserId() ?: throw AccessDeniedException("Access denied"))
+        user?.let {
+            if (!passwordEncoder.matches(userChangePasswordParam.originalPassword, user.password)) {
+                throw BadCredentialsException("Passwords do not match")
+            }
+            val wrapper = KtUpdateWrapper(User())
+                .eq(User::id, user.id)
+                .set(User::password, passwordEncoder.encode(userChangePasswordParam.newPassword))
+                .set(User::credentialsExpiration, null)
+                .set(User::updateTime, LocalDateTime.now(ZoneOffset.UTC))
+
+            if (!this.update(wrapper)) {
+                throw DatabaseUpdateException()
+            }
+
+            WebUtil.offlineUser(redisUtil, user.id!!)
+        } ?: throw NoRecordFoundException()
     }
 
     override fun getOne(id: Long): UserWithRoleInfoVo =
@@ -256,7 +277,7 @@ class UserServiceImpl(
         val user = this.getById(userUpdatePasswordParam.id)
         user?.let {
             val wrapper = KtUpdateWrapper(User())
-            wrapper.eq(User::id, user.id)
+                .eq(User::id, user.id)
                 .set(User::password, passwordEncoder.encode(userUpdatePasswordParam.password))
                 .set(
                     User::credentialsExpiration,

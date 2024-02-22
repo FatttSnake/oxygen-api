@@ -11,7 +11,7 @@ import java.time.LocalDateTime
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-@Schema(description = "用户更改密码请求参数")
+@Schema(description = "更改用户密码请求参数")
 data class UserUpdatePasswordParam(
     /**
      * ID

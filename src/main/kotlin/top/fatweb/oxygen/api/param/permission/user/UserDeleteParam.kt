@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotEmpty
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-@Schema(description = "用户删除请求参数")
+@Schema(description = "删除用户请求参数")
 data class UserDeleteParam(
     /**
      * List of user IDs

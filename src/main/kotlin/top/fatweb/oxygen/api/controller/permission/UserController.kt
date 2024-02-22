@@ -52,6 +52,20 @@ class UserController(
         else ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_FAILED)
 
     /**
+     * Change password
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @Operation(summary = "更改密码")
+    @PostMapping("info")
+    fun password(@RequestBody @Valid userChangePasswordParam: UserChangePasswordParam): ResponseResult<Nothing> {
+        userService.password(userChangePasswordParam)
+
+        return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
+    }
+
+    /**
      * Get user by ID
      *
      * @param id User ID

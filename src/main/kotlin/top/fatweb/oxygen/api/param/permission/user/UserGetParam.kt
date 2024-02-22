@@ -10,7 +10,7 @@ import top.fatweb.oxygen.api.param.PageSortParam
  * @since 1.0.0
  * @see PageSortParam
  */
-@Schema(description = "用户查询请求参数")
+@Schema(description = "查询用户请求参数")
 data class UserGetParam(
     /**
      * Type of search

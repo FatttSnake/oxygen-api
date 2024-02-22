@@ -12,7 +12,7 @@ import java.time.LocalDateTime
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-@Schema(description = "用户更新请求参数")
+@Schema(description = "更新用户请求参数")
 data class UserUpdateParam(
     /**
      * ID
