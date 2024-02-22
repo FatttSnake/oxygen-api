@@ -62,7 +62,6 @@
         tsui.id as user_info_id,
         tsui.nickname as user_info_nickname,
         tsui.avatar as user_info_avatar,
-        tsui.email as user_info_email,
         tbtc.id as tool_category_id,
         tbtc.name as tool_category_name,
         tbtc.enable as tool_category_enable,

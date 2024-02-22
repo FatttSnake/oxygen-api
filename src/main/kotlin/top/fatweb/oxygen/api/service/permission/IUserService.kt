@@ -40,6 +40,14 @@ interface IUserService : IService<User> {
     fun getInfo(): UserWithPowerInfoVo
 
     /**
+     * Update user information
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    fun updateInfo(userInfoUpdateParam: UserInfoUpdateParam): Boolean
+
+    /**
      * Get one user by ID
      *
      * @param id ID

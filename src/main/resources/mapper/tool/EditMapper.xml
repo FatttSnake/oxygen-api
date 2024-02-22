@@ -152,7 +152,6 @@
         tsui.id as user_info_id,
         tsui.nickname as user_info_nickname,
         tsui.avatar as user_info_avatar,
-        tsui.email as user_info_email,
         tbtb.name as tool_base_name,
         tbtb.dist_id as tool_base_dist_id,
         tbtbd.data as tool_base_dist_data,

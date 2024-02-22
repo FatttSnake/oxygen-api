@@ -40,6 +40,18 @@ class UserController(
         ResponseResult.databaseSuccess(data = userService.getInfo())
 
     /**
+     * Update current user information
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @Operation(summary = "更新当前用户信息")
+    @PatchMapping("info")
+    fun updateInfo(@RequestBody @Valid userInfoUpdateParam: UserInfoUpdateParam): ResponseResult<Nothing> =
+        if (userService.updateInfo(userInfoUpdateParam)) ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
+        else ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_FAILED)
+
+    /**
      * Get user by ID
      *
      * @param id User ID

@@ -84,6 +84,15 @@ class UserServiceImpl(
         WebUtil.getLoginUsername()?.let(::getUserWithPowerByAccount)?.let(UserConverter::userToUserWithPowerInfoVo)
             ?: throw UserNotFoundException()
 
+    override fun updateInfo(userInfoUpdateParam: UserInfoUpdateParam): Boolean {
+        val userId = WebUtil.getLoginUserId() ?: throw UserNotFoundException()
+        return userInfoService.update(
+                KtUpdateWrapper(UserInfo()).eq(UserInfo::userId, userId)
+                    .set(UserInfo::avatar, userInfoUpdateParam.avatar)
+                    .set(UserInfo::nickname, userInfoUpdateParam.nickname)
+            )
+    }
+
     override fun getOne(id: Long): UserWithRoleInfoVo =
         baseMapper.selectOneWithRoleInfoById(id)?.let(UserConverter::userToUserWithRoleInfoVo)
             ?: throw UserNotFoundException()
