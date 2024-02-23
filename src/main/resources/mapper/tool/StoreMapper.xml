@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.fatweb.oxygen.api.mapper.tool.StoreMapper">
+    <select id="selectPage" resultType="long">
+        select distinct tb.id from
+        (
+        select tbtm.id
+        from (select temp.*
+        from (select *,
+        row_number() over (partition by t_b_tool_main.tool_id, t_b_tool_main.author_id order by t_b_tool_main.id desc)
+        as rn
+        from t_b_tool_main where deleted = 0) temp
+        where temp.rn = 1) as tbtm
+        left join json_table(json_extract(tbtm.keywords, '$[*]'), '$[*]' columns (keyword varchar(50) path '$')) as tk
+        on true
+        <where>
+            and tbtm.publish != 0 and tbtm.review = 'PASS'
+            <if test="searchValue != null">
+                and (
+                tbtm.name like concat('%', #{searchValue}, '%')
+                or tk.keyword like concat('%', #{searchValue}, '%')
+                )
+            </if>
+        </where>
+        <choose>
+            <when test="searchValue != null">
+                order by instr(tbtm.name, #{searchValue}) = 0,
+                char_length(tbtm.name),
+                instr(tbtm.name, #{searchValue}),
+                instr(tk.keyword, #{searchValue}) = 0,
+                char_length(tk.keyword),
+                instr(tk.keyword, #{searchValue})
+            </when>
+            <otherwise>
+                order by tbtm.publish desc
+            </otherwise>
+        </choose>
+        ) as tb
+    </select>
+
+    <select id="selectPageByUsername" resultType="long">
+        select distinct tb.id
+        from (select tbtm.id
+              from (select temp.id, temp.author_id, temp.review, temp.publish
+                    from (select *,
+                                 row_number() over (partition by t_b_tool_main.tool_id, t_b_tool_main.author_id order by t_b_tool_main.id desc)
+                                     as rn
+                          from t_b_tool_main
+                          where deleted = 0) temp
+                    where temp.rn = 1) as tbtm
+                       left join (select * from t_s_user where deleted = 0) as tsu on tsu.id = tbtm.author_id
+              where tbtm.publish != 0
+                and tbtm.review = 'PASS'
+                and tsu.username = #{username}
+              order by tbtm.publish desc) as tb
+    </select>
+
+    <select id="selectListByIds" resultMap="top.fatweb.oxygen.api.mapper.tool.ManagementMapper.toolWithAuthor">
+        select t_b_tool_main.id as tool_id,
+        t_b_tool_main.name as tool_name,
+        t_b_tool_main.tool_id as tool_tool_id,
+        t_b_tool_main.icon as tool_icon,
+        t_b_tool_main.description as tool_description,
+        t_b_tool_main.base_id as tool_base_id,
+        t_b_tool_main.author_id as tool_author_id,
+        t_b_tool_main.ver as tool_ver,
+        t_b_tool_main.keywords as tool_keywords,
+        t_b_tool_main.source_id as tool_source_id,
+        t_b_tool_main.dist_id as tool_dist_id,
+        t_b_tool_main.entry_point as tool_entry_point,
+        t_b_tool_main.publish as tool_publish,
+        t_b_tool_main.review as tool_review,
+        t_b_tool_main.create_time as tool_create_time,
+        t_b_tool_main.update_time as tool_update_time,
+        t_b_tool_main.deleted as tool_deleted,
+        t_b_tool_main.version as tool_version,
+        tsu.id as user_id,
+        tsu.username as user_username,
+        tsui.id as user_info_id,
+        tsui.nickname as user_info_nickname,
+        tsui.avatar as user_info_avatar,
+        tbtc.id as tool_category_id,
+        tbtc.name as tool_category_name,
+        tbtc.enable as tool_category_enable,
+        tbtc.create_time as tool_category_create_time,
+        tbtc.update_time as tool_category_update_time,
+        tbtc.deleted as tool_category_deleted,
+        tbtc.version as tool_category_version
+        from t_b_tool_main
+        left join (select * from t_s_user where deleted = 0) as tsu on tsu.id = t_b_tool_main.author_id
+        left join (select * from t_s_user_info where deleted = 0) as tsui
+        on tsui.user_id = t_b_tool_main.author_id
+        left join (select * from t_r_tool_main_category where deleted = 0) as trtmc
+        on t_b_tool_main.id = trtmc.tool_id
+        left join (select * from t_b_tool_category where deleted = 0 and enable = 1) as tbtc
+        on tbtc.id = trtmc.category_id
+        <where>
+            <foreach collection="ids" item="item" index="index" open="and t_b_tool_main.id in (" separator="," close=")"
+                     nullable="true">
+                #{item}
+            </foreach>
+        </where>
+        <foreach collection="ids" item="item" index="index" open="order by field(t_b_tool_main.id," separator=","
+                 close=")" nullable="true">
+            #{item}
+        </foreach>
+    </select>
+</mapper>

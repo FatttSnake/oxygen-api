@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.fatweb.oxygen.api.mapper.tool.ToolCategoryMapper">
+    <resultMap id="toolCategoryMap" type="toolCategory">
+        <id property="id" column="tool_category_id"/>
+        <result property="name" column="tool_category_name"/>
+        <result property="enable" column="tool_category_enable"/>
+        <result property="createTime" column="tool_category_create_time"/>
+        <result property="updateTime" column="tool_category_update_time"/>
+        <result property="deleted" column="tool_category_deleted"/>
+        <result property="version" column="tool_category_version"/>
+    </resultMap>
+</mapper>
