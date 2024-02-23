@@ -40,6 +40,17 @@ interface IUserService : IService<User> {
     fun getInfo(): UserWithPowerInfoVo
 
     /**
+     * Get user information by username
+     *
+     * @param username Username
+     * @return UserWithInfoVo object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see UserWithInfoVo
+     */
+    fun getBasicInfo(username: String): UserWithInfoVo
+
+    /**
      * Update user information
      *
      * @author FatttSnake, fatttsnake@gmail.com

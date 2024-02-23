@@ -10,6 +10,7 @@ import top.fatweb.oxygen.api.entity.common.ResponseResult
 import top.fatweb.oxygen.api.param.permission.user.*
 import top.fatweb.oxygen.api.service.permission.IUserService
 import top.fatweb.oxygen.api.vo.PageVo
+import top.fatweb.oxygen.api.vo.permission.UserWithInfoVo
 import top.fatweb.oxygen.api.vo.permission.UserWithPasswordRoleInfoVo
 import top.fatweb.oxygen.api.vo.permission.UserWithPowerInfoVo
 import top.fatweb.oxygen.api.vo.permission.UserWithRoleInfoVo
@@ -35,15 +36,34 @@ class UserController(
      * @see UserWithPowerInfoVo
      */
     @Operation(summary = "获取当前用户信息")
-    @GetMapping("info")
+    @GetMapping("/info")
     fun getInfo(): ResponseResult<UserWithPowerInfoVo> =
         ResponseResult.databaseSuccess(data = userService.getInfo())
+    
+    /**
+     * Get basic user information
+     *
+     * @param username Username
+     * @return Response object includes user basic information
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see ResponseResult
+     * @see UserWithPowerInfoVo
+     */
+    @Operation(summary = "获取指定用户基本信息")
+    @GetMapping("/info/{username}")
+    fun getBasicInfo(@PathVariable username: String): ResponseResult<UserWithInfoVo> =
+        ResponseResult.databaseSuccess(data = userService.getBasicInfo(username))
 
     /**
      * Update current user information
      *
+     * @param userInfoUpdateParam Update user information parameters
+     * @return Response object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see UserInfoUpdateParam
+     * @see ResponseResult
      */
     @Operation(summary = "更新当前用户信息")
     @PatchMapping("info")
@@ -54,8 +74,12 @@ class UserController(
     /**
      * Change password
      *
+     * @param userChangePasswordParam User change password parameters
+     * @return Response object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see UserChangePasswordParam
+     * @see ResponseResult
      */
     @Operation(summary = "更改密码")
     @PostMapping("info")

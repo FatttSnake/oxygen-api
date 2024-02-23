@@ -28,6 +28,17 @@ interface UserMapper : BaseMapper<User> {
     fun selectOneWithPowerInfoByAccount(@Param("account") account: String): User?
 
     /**
+     * Select one user with basic information by username
+     *
+     * @param username Username
+     * @return User object with basic information
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see User
+     */
+    fun selectOneWithBasicInfoByUsername(@Param("username") username: String): User?
+
+    /**
      * Select user ID in page
      *
      * @param page Pagination

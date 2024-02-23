@@ -80,7 +80,7 @@ class SecurityConfig(
                     "/forget",
                     "/retrieve"
                 ).anonymous()
-                .requestMatchers("/tool/detail/**", "/tool/store").permitAll()
+                .requestMatchers("/tool/detail/**", "/tool/store", "/tool/store/*", "/system/user/info/*").permitAll()
                 // Authentication required
                 .anyRequest().authenticated()
         }

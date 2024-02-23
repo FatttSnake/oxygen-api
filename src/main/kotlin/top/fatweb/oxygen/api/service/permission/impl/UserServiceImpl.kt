@@ -28,6 +28,7 @@ import top.fatweb.oxygen.api.util.RedisUtil
 import top.fatweb.oxygen.api.util.StrUtil
 import top.fatweb.oxygen.api.util.WebUtil
 import top.fatweb.oxygen.api.vo.PageVo
+import top.fatweb.oxygen.api.vo.permission.UserWithInfoVo
 import top.fatweb.oxygen.api.vo.permission.UserWithPasswordRoleInfoVo
 import top.fatweb.oxygen.api.vo.permission.UserWithPowerInfoVo
 import top.fatweb.oxygen.api.vo.permission.UserWithRoleInfoVo
@@ -85,13 +86,18 @@ class UserServiceImpl(
         WebUtil.getLoginUsername()?.let(::getUserWithPowerByAccount)?.let(UserConverter::userToUserWithPowerInfoVo)
             ?: throw UserNotFoundException()
 
+    override fun getBasicInfo(username: String): UserWithInfoVo =
+        baseMapper.selectOneWithBasicInfoByUsername(username)?.let(UserConverter::userToUserWithInfoVo)
+            ?: throw NoRecordFoundException()
+
+
     override fun updateInfo(userInfoUpdateParam: UserInfoUpdateParam): Boolean {
         val userId = WebUtil.getLoginUserId() ?: throw AccessDeniedException("Access denied")
         return userInfoService.update(
-                KtUpdateWrapper(UserInfo()).eq(UserInfo::userId, userId)
-                    .set(UserInfo::avatar, userInfoUpdateParam.avatar)
-                    .set(UserInfo::nickname, userInfoUpdateParam.nickname)
-            )
+            KtUpdateWrapper(UserInfo()).eq(UserInfo::userId, userId)
+                .set(UserInfo::avatar, userInfoUpdateParam.avatar)
+                .set(UserInfo::nickname, userInfoUpdateParam.nickname)
+        )
     }
 
     override fun password(userChangePasswordParam: UserChangePasswordParam) {

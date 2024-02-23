@@ -38,6 +38,23 @@
         ) as tb
     </select>
 
+    <select id="selectPageByUsername" resultType="long">
+        select distinct tb.id
+        from (select tbtm.id
+              from (select temp.id, temp.author_id, temp.review, temp.publish
+                    from (select *,
+                                 row_number() over (partition by t_b_tool_main.tool_id, t_b_tool_main.author_id order by t_b_tool_main.id desc)
+                                     as rn
+                          from t_b_tool_main
+                          where deleted = 0) temp
+                    where temp.rn = 1) as tbtm
+                       left join (select * from t_s_user where deleted = 0) as tsu on tsu.id = tbtm.author_id
+              where tbtm.publish != 0
+                and tbtm.review = 'PASS'
+                and tsu.username = #{username}
+              order by tbtm.publish desc) as tb
+    </select>
+
     <select id="selectListByIds" resultMap="top.fatweb.oxygen.api.mapper.tool.ManagementMapper.toolWithAuthor">
         select t_b_tool_main.id as tool_id,
         t_b_tool_main.name as tool_name,
