@@ -35,8 +35,11 @@ class SettingsController(
     /**
      * Get base settings
      *
+     * @return Response object includes base settings information
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see ResponseResult
+     * @see BaseSettingsVo
      */
     @Operation(summary = "获取基础设置")
     @GetMapping("/base")
@@ -46,8 +49,12 @@ class SettingsController(
     /**
      * Update base settings
      *
+     * @param baseSettingsParam Base settings parameters
+     * @return Response object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see BaseSettingsParam
+     * @see ResponseResult
      */
     @Operation(summary = "更新基础设置")
     @PutMapping("/base")
@@ -92,8 +99,12 @@ class SettingsController(
     /**
      * Send mail test
      *
+     * @param mailSendParam Mail send parameters
+     * @return Response object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see MailSendParam
+     * @see ResponseResult
      */
     @Operation(summary = "邮件发送测试")
     @PostMapping("/mail")
@@ -106,8 +117,11 @@ class SettingsController(
     /**
      * Get sensitive word settings
      *
+     * @return Response object includes sensitive word settings information
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see ResponseResult
+     * @see SensitiveWordVo
      */
     @Operation(summary = "获取敏感词配置")
     @GetMapping("/sensitive")
@@ -118,8 +132,12 @@ class SettingsController(
     /**
      * Add sensitive word
      *
+     * @param sensitiveWordAddParam Add sensitive word settings parameters
+     * @return Response object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see SensitiveWordAddParam
+     * @see ResponseResult
      */
     @Operation(summary = "添加敏感词")
     @PostMapping("/sensitive")
@@ -132,8 +150,12 @@ class SettingsController(
     /**
      * Update sensitive word
      *
+     * @param sensitiveWordUpdateParam Update sensitive word settings parameters
+     * @return Response object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see SensitiveWordUpdateParam
+     * @see ResponseResult
      */
     @Operation(summary = "修改敏感词")
     @PutMapping("/sensitive")
@@ -146,8 +168,11 @@ class SettingsController(
     /**
      * Delete sensitive word
      *
+     * @see id Sensitive word ID
+     * @return Response object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see ResponseResult
      */
     @Operation(summary = "删除敏感词")
     @DeleteMapping("/sensitive/{id}")

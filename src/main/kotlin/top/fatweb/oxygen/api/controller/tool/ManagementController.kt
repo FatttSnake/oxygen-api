@@ -18,6 +18,7 @@ import top.fatweb.oxygen.api.vo.tool.ToolVo
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see IManagementService
  */
 @BaseController(path = ["/system/tool"], name = "工具管理", description = "工具管理相关接口")
 class ManagementController(
@@ -26,8 +27,12 @@ class ManagementController(
     /**
      * Get tool by ID
      *
+     * @param id Tool ID
+     * @return Response object includes tool information
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see ResponseResult
+     * @see ToolVo
      */
     @Operation(summary = "获取单个工具")
     @GetMapping("/{id}")
@@ -38,8 +43,14 @@ class ManagementController(
     /**
      * Get tool paging information
      *
+     * @param toolManagementGetParam Get tool parameters in tool management
+     * @return Response object includes tool paging information
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see ToolManagementGetParam
+     * @see ResponseResult
+     * @see PageVo
+     * @see ToolVo
      */
     @Operation(summary = "获取工具")
     @GetMapping
@@ -50,8 +61,14 @@ class ManagementController(
     /**
      * Pass tool review
      *
+     * @param id Tool ID
+     * @param toolManagementPassParam Pass tool parameters in tool management
+     * @return Response object includes tool information
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see ToolManagementPassParam
+     * @see ResponseResult
+     * @see ToolVo
      */
     @Operation(summary = "通过审核")
     @PostMapping("/{id}")
@@ -68,8 +85,12 @@ class ManagementController(
     /**
      * Reject tool review
      *
+     * @param id Tool ID
+     * @return Response object includes tool information
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see ResponseResult
+     * @see ToolVo
      */
     @Operation(summary = "驳回审核")
     @PutMapping("/{id}")
@@ -80,8 +101,12 @@ class ManagementController(
     /**
      * Put off shelve
      *
+     * @param id Tool ID
+     * @return Response object includes tool information
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see ResponseResult
+     * @see ToolVo
      */
     @Operation(summary = "下架")
     @PatchMapping("/{id}")
@@ -92,8 +117,11 @@ class ManagementController(
     /**
      * Delete tool
      *
+     * @param id Tool ID
+     * @return Response object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see ResponseResult
      */
     @Operation(summary = "删除工具")
     @DeleteMapping("/{id}")

@@ -19,6 +19,7 @@ import top.fatweb.oxygen.api.vo.tool.ToolVo
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see IEditService
  */
 @BaseController(path = ["/tool"], name = "工具编辑", description = "工具编辑相关接口")
 class EditController(
@@ -70,8 +71,13 @@ class EditController(
     /**
      * Create tool
      *
+     * @param toolCreateParam Create tool parameters
+     * @return Response object includes tool information
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see ToolCreateParam
+     * @see ResponseResult
+     * @see ToolVo
      */
     @Operation(summary = "创建工具")
     @PostMapping
@@ -81,8 +87,13 @@ class EditController(
     /**
      * Upgrade tool
      *
+     * @param toolUpgradeParam Upgrade tool parameters
+     * @return Response object includes tool information
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see ToolUpgradeParam
+     * @see ResponseResult
+     * @see ToolVo
      */
     @Operation(summary = "升级工具")
     @PatchMapping
@@ -95,8 +106,11 @@ class EditController(
     /**
      * Get personal tool
      *
+     * @return Response object includes tool list
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see ResponseResult
+     * @see ToolVo
      */
     @Operation(summary = "获取个人工具")
     @GetMapping
@@ -106,12 +120,22 @@ class EditController(
     /**
      * Get tool detail
      *
+     * @param username Username
+     * @param toolId Tool ID
+     * @param ver Version
+     * @return Response object includes tool information
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see ResponseResult
+     * @see ToolVo
      */
     @Operation(summary = "获取工具内容")
     @GetMapping("/detail/{username}/{toolId}/{ver}")
-    fun detail(@PathVariable username: String, @PathVariable toolId: String, @PathVariable ver: String) =
+    fun detail(
+        @PathVariable username: String,
+        @PathVariable toolId: String,
+        @PathVariable ver: String
+    ): ResponseResult<ToolVo> =
         ResponseResult.databaseSuccess(
             ResponseCode.DATABASE_SELECT_SUCCESS,
             data = editService.detail(username, toolId, ver)
@@ -120,19 +144,27 @@ class EditController(
     /**
      * Update tool
      *
+     * @param toolUpdateParam Update tool parameters
+     * @return Response object includes tool information
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see ToolUpdateParam
+     * @see ResponseResult
+     * @see ToolVo
      */
     @Operation(summary = "更新工具")
     @PutMapping
-    fun update(@RequestBody @Valid toolUpdateParam: ToolUpdateParam) =
+    fun update(@RequestBody @Valid toolUpdateParam: ToolUpdateParam): ResponseResult<ToolVo> =
         ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS, data = editService.update(toolUpdateParam))
 
     /**
      * Submit tool review
      *
+     * @param id Tool ID
+     * @return Response object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see ResponseResult
      */
     @Operation(summary = "提交工具审核")
     @PostMapping("/{id}")
@@ -143,8 +175,11 @@ class EditController(
     /**
      * Cancel tool review
      *
+     * @param id Tool ID
+     * @return Response object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see ResponseResult
      */
     @Operation(summary = "取消工具审核")
     @PutMapping("/{id}")
@@ -155,8 +190,11 @@ class EditController(
     /**
      * Delete tool
      *
+     * @param id Tool ID
+     * @return Response object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see ResponseResult
      */
     @Operation(summary = "删除工具")
     @DeleteMapping("/{id}")

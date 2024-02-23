@@ -80,8 +80,13 @@ class StatisticsController(
     /**
      * Get the history of online users information
      *
+     * @param onlineInfoGetParam Get online information parameters
+     * @return Response object includes online user information
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see OnlineInfoGetParam
+     * @see ResponseResult
+     * @see OnlineInfoVo
      */
     @Operation(summary = "获取在线用户数量信息")
     @GetMapping("/online")
@@ -92,8 +97,13 @@ class StatisticsController(
     /**
      * Get the history of active information
      *
+     * @param activeInfoGetParam Get active information parameters
+     * @return Response object includes history of active information
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see ActiveInfoGetParam
+     * @see ResponseResult
+     * @see ActiveInfoVo
      */
     @Operation(summary = "获取用户活跃信息")
     @GetMapping("/active")

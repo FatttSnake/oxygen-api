@@ -22,6 +22,7 @@ class PowerController(
     /**
      * Get power list
      *
+     * @return Response object includes power list
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see ResponseResult

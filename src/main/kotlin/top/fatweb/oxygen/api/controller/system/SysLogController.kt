@@ -24,10 +24,10 @@ class SysLogController(
     private val sysLogService: ISysLogService
 ) {
     /**
-     * Get system log
+     * Get system log in page
      *
      * @param sysLogGetParam Get system log parameters
-     * @return Response object includes system log
+     * @return Response object includes system log in page
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see SysLogGetParam

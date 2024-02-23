@@ -17,6 +17,7 @@ import top.fatweb.oxygen.api.vo.tool.ToolCategoryVo
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see IToolCategoryService
  */
 @BaseController(path = ["/system/tool/category"], name = "工具类别管理", description = "工具列别管理相关接口")
 class CategoryController(
