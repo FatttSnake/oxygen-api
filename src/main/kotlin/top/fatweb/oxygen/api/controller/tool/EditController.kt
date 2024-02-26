@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.*
 import top.fatweb.oxygen.api.annotation.BaseController
+import top.fatweb.oxygen.api.annotation.Trim
 import top.fatweb.oxygen.api.entity.common.ResponseCode
 import top.fatweb.oxygen.api.entity.common.ResponseResult
 import top.fatweb.oxygen.api.param.tool.ToolCreateParam
@@ -79,6 +80,7 @@ class EditController(
      * @see ResponseResult
      * @see ToolVo
      */
+    @Trim
     @Operation(summary = "创建工具")
     @PostMapping
     fun create(@RequestBody @Valid toolCreateParam: ToolCreateParam): ResponseResult<ToolVo> =
@@ -95,6 +97,7 @@ class EditController(
      * @see ResponseResult
      * @see ToolVo
      */
+    @Trim
     @Operation(summary = "升级工具")
     @PatchMapping
     fun upgrade(@RequestBody @Valid toolUpgradeParam: ToolUpgradeParam): ResponseResult<ToolVo> =
@@ -138,7 +141,7 @@ class EditController(
     ): ResponseResult<ToolVo> =
         ResponseResult.databaseSuccess(
             ResponseCode.DATABASE_SELECT_SUCCESS,
-            data = editService.detail(username, toolId, ver)
+            data = editService.detail(username.trim(), toolId.trim(), ver.trim())
         )
 
     /**
@@ -152,6 +155,7 @@ class EditController(
      * @see ResponseResult
      * @see ToolVo
      */
+    @Trim
     @Operation(summary = "更新工具")
     @PutMapping
     fun update(@RequestBody @Valid toolUpdateParam: ToolUpdateParam): ResponseResult<ToolVo> =

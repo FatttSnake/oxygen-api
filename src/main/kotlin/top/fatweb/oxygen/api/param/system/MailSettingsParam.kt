@@ -1,6 +1,7 @@
 package top.fatweb.oxygen.api.param.system
 
 import io.swagger.v3.oas.annotations.media.Schema
+import top.fatweb.oxygen.api.annotation.Trim
 import top.fatweb.oxygen.api.settings.MailSecurityType
 
 /**
@@ -9,6 +10,7 @@ import top.fatweb.oxygen.api.settings.MailSecurityType
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
+@Trim
 @Schema(description = "邮件设置请求参数")
 data class MailSettingsParam(
     /**
@@ -17,8 +19,9 @@ data class MailSettingsParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Trim
     @Schema(description = "SMTP 服务器")
-    val host: String?,
+    var host: String?,
 
     /**
      * Port
@@ -26,8 +29,9 @@ data class MailSettingsParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Trim
     @Schema(description = "端口号")
-    val port: Int?,
+    var port: Int?,
 
     /**
      * Security type
@@ -44,8 +48,9 @@ data class MailSettingsParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Trim
     @Schema(description = "用户名")
-    val username: String?,
+    var username: String?,
 
     /**
      * Password
@@ -62,8 +67,9 @@ data class MailSettingsParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Trim
     @Schema(description = "发送者")
-    val from: String?,
+    var from: String?,
 
     /**
      * Sender name
@@ -71,6 +77,7 @@ data class MailSettingsParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Trim
     @Schema(description = "发送者名称")
-    val fromName: String?
+    var fromName: String?
 )

@@ -3,6 +3,7 @@ package top.fatweb.oxygen.api.param.permission.user
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
+import top.fatweb.oxygen.api.annotation.Trim
 import java.time.LocalDateTime
 
 /**
@@ -11,6 +12,7 @@ import java.time.LocalDateTime
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
+@Trim
 @Schema(description = "添加用户请求参数")
 data class UserAddParam(
     /**
@@ -19,9 +21,10 @@ data class UserAddParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Trim
     @Schema(description = "用户名", required = true, example = "User_1")
     @field:NotBlank(message = "Username can not be blank")
-    val username: String?,
+    var username: String?,
 
     /**
      * Password
@@ -85,9 +88,10 @@ data class UserAddParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Trim
     @Schema(description = "昵称", required = true, example = "Nickname_1")
     @field:NotBlank(message = "Nickname can not be blank")
-    val nickname: String?,
+    var nickname: String?,
 
     /**
      * Avatar base63
@@ -104,10 +108,11 @@ data class UserAddParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Trim
     @Schema(description = "邮箱", required = true, example = "user@email.com")
     @NotBlank(message = "Email can not be blank")
     @Pattern(regexp = "^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*\$", message = "Illegal email address")
-    val email: String?,
+    var email: String?,
 
     /**
      * List of role IDs

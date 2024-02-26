@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import top.fatweb.oxygen.api.annotation.BaseController
+import top.fatweb.oxygen.api.annotation.Trim
 import top.fatweb.oxygen.api.entity.common.ResponseCode
 import top.fatweb.oxygen.api.entity.common.ResponseResult
 import top.fatweb.oxygen.api.param.system.*
@@ -56,6 +57,7 @@ class SettingsController(
      * @see BaseSettingsParam
      * @see ResponseResult
      */
+    @Trim
     @Operation(summary = "更新基础设置")
     @PutMapping("/base")
     @PreAuthorize("hasAnyAuthority('system:settings:modify:base')")
@@ -88,6 +90,7 @@ class SettingsController(
      * @see MailSettingsParam
      * @see ResponseResult
      */
+    @Trim
     @Operation(summary = "更新邮件设置")
     @PutMapping("/mail")
     @PreAuthorize("hasAnyAuthority('system:settings:modify:mail')")
@@ -106,6 +109,7 @@ class SettingsController(
      * @see MailSendParam
      * @see ResponseResult
      */
+    @Trim
     @Operation(summary = "邮件发送测试")
     @PostMapping("/mail")
     @PreAuthorize("hasAnyAuthority('system:settings:modify:mail')")
@@ -139,6 +143,7 @@ class SettingsController(
      * @see SensitiveWordAddParam
      * @see ResponseResult
      */
+    @Trim
     @Operation(summary = "添加敏感词")
     @PostMapping("/sensitive")
     @PreAuthorize("hasAnyAuthority('system:settings:modify:sensitive')")

@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import top.fatweb.oxygen.api.annotation.BaseController
+import top.fatweb.oxygen.api.annotation.Trim
 import top.fatweb.oxygen.api.entity.common.ResponseCode
 import top.fatweb.oxygen.api.entity.common.ResponseResult
 import top.fatweb.oxygen.api.param.permission.*
@@ -38,6 +39,7 @@ class AuthenticationController(
      * @see ResponseResult
      * @see RegisterVo
      */
+    @Trim
     @Operation(summary = "注册")
     @PostMapping("/register")
     fun register(
@@ -75,6 +77,7 @@ class AuthenticationController(
      * @see VerifyParam
      * @see ResponseResult
      */
+    @Trim
     @Operation(summary = "验证邮箱")
     @PostMapping("/verify")
     fun verify(@Valid @RequestBody verifyParam: VerifyParam): ResponseResult<Nothing> {
@@ -95,6 +98,7 @@ class AuthenticationController(
      * @see ForgetParam
      * @see ResponseResult
      */
+    @Trim
     @Operation(summary = "忘记密码")
     @PostMapping("/forget")
     fun forget(request: HttpServletRequest, @Valid @RequestBody forgetParam: ForgetParam): ResponseResult<Nothing> {
@@ -139,6 +143,7 @@ class AuthenticationController(
      * @see ResponseResult
      * @see LoginVo
      */
+    @Trim
     @Operation(summary = "登录")
     @PostMapping("/login")
     fun login(request: HttpServletRequest, @Valid @RequestBody loginParam: LoginParam): ResponseResult<LoginVo> =

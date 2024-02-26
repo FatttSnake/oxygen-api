@@ -3,6 +3,7 @@ package top.fatweb.oxygen.api.param.permission.group
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
+import top.fatweb.oxygen.api.annotation.Trim
 
 /**
  * Update group parameters
@@ -10,6 +11,7 @@ import jakarta.validation.constraints.NotNull
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
+@Trim
 @Schema(description = "用户组更新请求参数")
 data class GroupUpdateParam(
     /**
@@ -28,9 +30,10 @@ data class GroupUpdateParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Trim
     @Schema(description = "用户组名称", required = true, example = "Group_1")
     @field:NotBlank(message = "Name can not be blank")
-    val name: String?,
+    var name: String?,
 
     /**
      * Enable

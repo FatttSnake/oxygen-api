@@ -1,6 +1,7 @@
 package top.fatweb.oxygen.api.param.system
 
 import io.swagger.v3.oas.annotations.media.Schema
+import top.fatweb.oxygen.api.annotation.Trim
 
 /**
  * Base settings parameters
@@ -8,6 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
+@Trim
 @Schema(description = "基础设置请求参数")
 data class BaseSettingsParam(
     /**
@@ -16,8 +18,9 @@ data class BaseSettingsParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Trim
     @Schema(description = "应用名称")
-    val appName: String?,
+    var appName: String?,
 
     /**
      * Application URL
@@ -25,8 +28,9 @@ data class BaseSettingsParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Trim
     @Schema(description = "应用 URL")
-    val appUrl: String?,
+    var appUrl: String?,
 
     /**
      * Verify URL
@@ -34,8 +38,9 @@ data class BaseSettingsParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Trim
     @Schema(description = "验证邮箱 URL")
-    val verifyUrl: String?,
+    var verifyUrl: String?,
 
     /**
      * Retrieve URL
@@ -43,6 +48,7 @@ data class BaseSettingsParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Trim
     @Schema(description = "找回密码 URL")
-    val retrieveUrl: String?
+    var retrieveUrl: String?
 )

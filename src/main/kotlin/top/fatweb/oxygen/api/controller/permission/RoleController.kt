@@ -5,6 +5,7 @@ import jakarta.validation.Valid
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import top.fatweb.oxygen.api.annotation.BaseController
+import top.fatweb.oxygen.api.annotation.Trim
 import top.fatweb.oxygen.api.entity.common.ResponseCode
 import top.fatweb.oxygen.api.entity.common.ResponseResult
 import top.fatweb.oxygen.api.param.permission.role.*
@@ -51,6 +52,7 @@ class RoleController(
      * @see ResponseResult
      * @see RoleWithPowerVo
      */
+    @Trim
     @Operation(summary = "获取角色")
     @GetMapping
     @PreAuthorize("hasAnyAuthority('system:role:query:all')")
@@ -88,6 +90,7 @@ class RoleController(
      * @see ResponseResult
      * @see RoleVo
      */
+    @Trim
     @Operation(summary = "添加角色")
     @PostMapping
     @PreAuthorize("hasAnyAuthority('system:role:add:one')")
@@ -107,6 +110,7 @@ class RoleController(
      * @see ResponseResult
      * @see RoleVo
      */
+    @Trim
     @Operation(summary = "修改角色")
     @PutMapping
     @PreAuthorize("hasAnyAuthority('system:role:modify:one')")

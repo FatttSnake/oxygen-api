@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotEmpty
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Pattern
+import top.fatweb.oxygen.api.annotation.Trim
 
 /**
  * Create tool parameters
@@ -12,6 +13,7 @@ import jakarta.validation.constraints.Pattern
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
+@Trim
 @Schema(description = "创建工具请求参数")
 data class ToolCreateParam(
     /**
@@ -20,9 +22,10 @@ data class ToolCreateParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Trim
     @Schema(description = "名称", required = true)
     @field: NotBlank(message = "Name can not be blank")
-    val name: String?,
+    var name: String?,
 
     /**
      * Tool ID
@@ -30,13 +33,14 @@ data class ToolCreateParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Trim
     @Schema(description = "工具唯一 ID", required = true, example = "tool_a")
     @field: NotBlank(message = "ToolId can not be blank")
     @field: Pattern(
         regexp = "^[a-zA-Z-_][0-9a-zA-Z-_]{2,19}\$",
         message = "Ver can only match '^[a-zA-Z-_][0-9a-zA-Z-_]{2,19}\$'"
     )
-    val toolId: String?,
+    var toolId: String?,
 
     /**
      * Icon
