@@ -21,7 +21,7 @@ import top.fatweb.oxygen.api.vo.permission.RegisterVo
  */
 @Aspect
 @Component
-class EventLogAspect(
+class EventLogInterceptor(
     private val eventLogService: IEventLogService
 ) {
     /**
