@@ -31,6 +31,8 @@ import java.util.concurrent.Executor
  * @since 1.0.0
  * @see Executor
  * @see ISysLogService
+ * @see HandlerInterceptor
+ * @see ResponseBodyAdvice
  */
 @ControllerAdvice
 class SysLogInterceptor(

@@ -13,7 +13,7 @@ import top.fatweb.oxygen.api.vo.permission.LoginVo
 import top.fatweb.oxygen.api.vo.permission.RegisterVo
 
 /**
- * Event log record aspect
+ * Event log record interceptor
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0

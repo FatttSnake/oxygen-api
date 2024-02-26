@@ -11,13 +11,35 @@ import kotlin.reflect.KMutableProperty
 import kotlin.reflect.full.*
 import kotlin.reflect.jvm.isAccessible
 
+/**
+ * Trim string interceptor
+ *
+ * @author FatttSnake, fatttsnake@gmail.com
+ * @since 1.0.0
+ * @see HandlerInterceptor
+ */
 @Component
 @Aspect
 class TrimInterceptor : HandlerInterceptor {
+    /**
+     * Trim pointcut
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
     @Pointcut("@annotation(top.fatweb.oxygen.api.annotation.Trim)")
     fun trimPointcut() {
     }
 
+    /**
+     * Do before trim pointcut
+     *
+     * @param joinPoint Join point
+     * @return Arguments
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see JoinPoint
+     */
     @Before("trimPointcut()")
     fun doBefore(joinPoint: JoinPoint): Any {
         val args = joinPoint.args
