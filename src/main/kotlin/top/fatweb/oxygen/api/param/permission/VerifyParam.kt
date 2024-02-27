@@ -3,6 +3,7 @@ package top.fatweb.oxygen.api.param.permission
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
+import top.fatweb.oxygen.api.annotation.Trim
 
 /**
  * Verify email parameters
@@ -10,6 +11,7 @@ import jakarta.validation.constraints.Pattern
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
+@Trim
 @Schema(description = "验证邮箱请求参数")
 data class VerifyParam(
     /**
@@ -28,9 +30,10 @@ data class VerifyParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Trim
     @Schema(description = "昵称", example = "QwQ")
     @field:Pattern(regexp = "^.{3,20}$", message = "Nickname must be 3-20 characters")
-    val nickname: String?,
+    var nickname: String?,
 
     /**
      * Avatar

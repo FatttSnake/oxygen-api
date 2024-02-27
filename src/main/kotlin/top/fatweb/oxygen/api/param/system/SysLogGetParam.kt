@@ -2,6 +2,7 @@ package top.fatweb.oxygen.api.param.system
 
 import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.format.annotation.DateTimeFormat
+import top.fatweb.oxygen.api.annotation.Trim
 import top.fatweb.oxygen.api.param.PageSortParam
 import java.time.LocalDateTime
 
@@ -12,6 +13,7 @@ import java.time.LocalDateTime
  * @since 1.0.0
  * @see PageSortParam
  */
+@Trim
 @Schema(description = "获取系统日志请求参数")
 data class SysLogGetParam(
     /**
@@ -46,8 +48,9 @@ data class SysLogGetParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Trim
     @Schema(description = "查询请求 Url")
-    val searchRequestUrl: String?,
+    var searchRequestUrl: String?,
 
     /**
      * Use regex

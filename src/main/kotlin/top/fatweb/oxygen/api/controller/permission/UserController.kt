@@ -5,6 +5,7 @@ import jakarta.validation.Valid
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import top.fatweb.oxygen.api.annotation.BaseController
+import top.fatweb.oxygen.api.annotation.Trim
 import top.fatweb.oxygen.api.entity.common.ResponseCode
 import top.fatweb.oxygen.api.entity.common.ResponseResult
 import top.fatweb.oxygen.api.param.permission.user.*
@@ -50,10 +51,11 @@ class UserController(
      * @see ResponseResult
      * @see UserWithPowerInfoVo
      */
+    @Trim
     @Operation(summary = "获取指定用户基本信息")
     @GetMapping("/info/{username}")
     fun getBasicInfo(@PathVariable username: String): ResponseResult<UserWithInfoVo> =
-        ResponseResult.databaseSuccess(data = userService.getBasicInfo(username))
+        ResponseResult.databaseSuccess(data = userService.getBasicInfo(username.trim()))
 
     /**
      * Update current user information
@@ -65,6 +67,7 @@ class UserController(
      * @see UserInfoUpdateParam
      * @see ResponseResult
      */
+    @Trim
     @Operation(summary = "更新当前用户信息")
     @PatchMapping("info")
     fun updateInfo(@RequestBody @Valid userInfoUpdateParam: UserInfoUpdateParam): ResponseResult<Nothing> =
@@ -116,6 +119,7 @@ class UserController(
      * @see ResponseResult
      * @see UserWithRoleInfoVo
      */
+    @Trim
     @Operation(summary = "获取用户")
     @GetMapping
     @PreAuthorize("hasAnyAuthority('system:user:query:all')")
@@ -135,6 +139,7 @@ class UserController(
      * @see ResponseResult
      * @see UserWithPasswordRoleInfoVo
      */
+    @Trim
     @Operation(summary = "添加用户")
     @PostMapping
     @PreAuthorize("hasAnyAuthority('system:user:add:one')")
@@ -154,6 +159,7 @@ class UserController(
      * @see ResponseResult
      * @see UserWithRoleInfoVo
      */
+    @Trim
     @Operation(summary = "修改用户")
     @PutMapping
     @PreAuthorize("hasAnyAuthority('system:user:modify:one')")

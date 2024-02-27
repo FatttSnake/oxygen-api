@@ -5,6 +5,7 @@ import jakarta.validation.Valid
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import top.fatweb.oxygen.api.annotation.BaseController
+import top.fatweb.oxygen.api.annotation.Trim
 import top.fatweb.oxygen.api.entity.common.ResponseCode
 import top.fatweb.oxygen.api.entity.common.ResponseResult
 import top.fatweb.oxygen.api.param.system.SysLogGetParam
@@ -34,6 +35,7 @@ class SysLogController(
      * @see ResponseResult
      * @see SysLogVo
      */
+    @Trim
     @Operation(summary = "获取")
     @GetMapping
     @PreAuthorize("hasAnyAuthority('system:log:query:all')")

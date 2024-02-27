@@ -3,6 +3,7 @@ package top.fatweb.oxygen.api.param.permission.role
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
+import top.fatweb.oxygen.api.annotation.Trim
 
 /**
  * Update role parameters
@@ -10,6 +11,7 @@ import jakarta.validation.constraints.NotNull
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
+@Trim
 @Schema(description = "角色更新请求参数")
 data class RoleUpdateParam(
     /**
@@ -28,9 +30,10 @@ data class RoleUpdateParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Trim
     @Schema(description = "角色名称", required = true, example = "Role_1")
     @field:NotBlank(message = "Name can not be blank")
-    val name: String?,
+    var name: String?,
 
     /**
      * Enable

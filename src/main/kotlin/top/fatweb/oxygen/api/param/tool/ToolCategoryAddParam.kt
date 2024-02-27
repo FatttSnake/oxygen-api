@@ -2,6 +2,7 @@ package top.fatweb.oxygen.api.param.tool
 
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotBlank
+import top.fatweb.oxygen.api.annotation.Trim
 
 /**
  * Add tool category parameters
@@ -9,6 +10,7 @@ import jakarta.validation.constraints.NotBlank
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
+@Trim
 data class ToolCategoryAddParam(
     /**
      * Name
@@ -16,9 +18,10 @@ data class ToolCategoryAddParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Trim
     @Schema(description = "名称", required = true)
     @field: NotBlank(message = "Name can not be blank")
-    val name: String?,
+    var name: String?,
 
     /**
      * Enable

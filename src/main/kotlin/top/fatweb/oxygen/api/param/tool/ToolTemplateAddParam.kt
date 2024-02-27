@@ -3,6 +3,7 @@ package top.fatweb.oxygen.api.param.tool
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
+import top.fatweb.oxygen.api.annotation.Trim
 
 /**
  * Add tool template parameters
@@ -10,6 +11,7 @@ import jakarta.validation.constraints.NotNull
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
+@Trim
 data class ToolTemplateAddParam(
     /**
      * Name
@@ -17,9 +19,10 @@ data class ToolTemplateAddParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Trim
     @Schema(description = "名称", required = true)
     @field: NotBlank(message = "Name can not be blank")
-    val name: String?,
+    var name: String?,
 
     /**
      * Base ID
@@ -37,9 +40,10 @@ data class ToolTemplateAddParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Trim
     @Schema(description = "入口文件", required = true)
     @field:NotBlank(message = "EntryPoint can not be null")
-    val entryPoint: String? = null,
+    var entryPoint: String? = null,
 
     /**
      * Enable

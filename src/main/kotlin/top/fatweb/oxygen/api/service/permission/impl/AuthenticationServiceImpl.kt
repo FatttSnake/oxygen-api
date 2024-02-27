@@ -92,7 +92,7 @@ class AuthenticationServiceImpl(
 
         sendVerifyMail(user.username!!, user.verify!!, registerParam.email!!)
 
-        val loginVo = this.login(request, registerParam.username, registerParam.password!!)
+        val loginVo = this.login(request, registerParam.username!!, registerParam.password!!)
 
         return RegisterVo(token = loginVo.token, userId = loginVo.userId)
     }
@@ -135,7 +135,7 @@ class AuthenticationServiceImpl(
         if (verifyParam.nickname.isNullOrBlank() || verifyParam.avatar.isNullOrBlank()) {
             throw AccountNeedInitException()
         }
-        sensitiveWordService.checkSensitiveWord(verifyParam.nickname)
+        sensitiveWordService.checkSensitiveWord(verifyParam.nickname!!)
 
         userService.update(
             KtUpdateWrapper(User()).eq(User::id, user.id).set(User::verify, null)
@@ -166,7 +166,7 @@ class AuthenticationServiceImpl(
             LocalDateTime.now(ZoneOffset.UTC).toInstant(ZoneOffset.UTC).toEpochMilli()
         }-${UUID.randomUUID()}-${UUID.randomUUID()}-${UUID.randomUUID()}"
         userService.update(KtUpdateWrapper(User()).eq(User::id, user.id).set(User::forget, code))
-        sendRetrieveMail(user.username!!, request.remoteAddr, code, forgetParam.email)
+        sendRetrieveMail(user.username!!, request.remoteAddr, code, forgetParam.email!!)
     }
 
     @Transactional

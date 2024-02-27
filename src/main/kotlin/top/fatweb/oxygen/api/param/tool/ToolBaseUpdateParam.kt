@@ -2,6 +2,7 @@ package top.fatweb.oxygen.api.param.tool
 
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotNull
+import top.fatweb.oxygen.api.annotation.Trim
 
 /**
  * Update tool base parameters
@@ -9,6 +10,7 @@ import jakarta.validation.constraints.NotNull
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
+@Trim
 data class ToolBaseUpdateParam(
     /**
      * ID
@@ -26,8 +28,9 @@ data class ToolBaseUpdateParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Trim
     @Schema(description = "名称")
-    val name: String?,
+    var name: String?,
 
     /**
      * Source

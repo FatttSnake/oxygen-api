@@ -1,6 +1,7 @@
 package top.fatweb.oxygen.api.param.tool
 
 import io.swagger.v3.oas.annotations.media.Schema
+import top.fatweb.oxygen.api.annotation.Trim
 import top.fatweb.oxygen.api.param.PageSortParam
 
 /**
@@ -10,6 +11,7 @@ import top.fatweb.oxygen.api.param.PageSortParam
  * @since 1.0.0
  * @see PageSortParam
  */
+@Trim
 data class ToolManagementGetParam(
     /**
      * Type of search
@@ -31,8 +33,9 @@ data class ToolManagementGetParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Trim
     @Schema(description = "查询内容", example = "ToolName")
-    val searchValue: String?,
+    var searchValue: String?,
 
     /**
      * Use regex

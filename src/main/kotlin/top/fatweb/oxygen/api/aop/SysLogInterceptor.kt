@@ -1,4 +1,4 @@
-package top.fatweb.oxygen.api.interceptor
+package top.fatweb.oxygen.api.aop
 
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -31,6 +31,8 @@ import java.util.concurrent.Executor
  * @since 1.0.0
  * @see Executor
  * @see ISysLogService
+ * @see HandlerInterceptor
+ * @see ResponseBodyAdvice
  */
 @ControllerAdvice
 class SysLogInterceptor(
