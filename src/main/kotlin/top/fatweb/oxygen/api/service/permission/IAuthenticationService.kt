@@ -6,6 +6,7 @@ import top.fatweb.oxygen.api.param.permission.*
 import top.fatweb.oxygen.api.vo.permission.LoginVo
 import top.fatweb.oxygen.api.vo.permission.RegisterVo
 import top.fatweb.oxygen.api.vo.permission.TokenVo
+import top.fatweb.oxygen.api.vo.permission.TwoFactorVo
 
 /**
  * Authentication service interface
@@ -81,6 +82,27 @@ interface IAuthenticationService {
      * @see LoginVo
      */
     fun login(request: HttpServletRequest, loginParam: LoginParam): LoginVo
+
+    /**
+     * Create two-factor
+     *
+     * @return Two-factor QR code
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see TwoFactorVo
+     */
+    fun createTwoFactor(): TwoFactorVo
+
+    /**
+     * Validate two-factor
+     *
+     * @param twoFactorValidateParam Validate two-factor parameters
+     * @return Result
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see TwoFactorValidateParam
+     */
+    fun validateTwoFactor(twoFactorValidateParam: TwoFactorValidateParam): Boolean
 
     /**
      * Logout

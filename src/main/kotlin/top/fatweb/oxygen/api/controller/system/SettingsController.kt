@@ -3,12 +3,7 @@ package top.fatweb.oxygen.api.controller.system
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.validation.Valid
 import org.springframework.security.access.prepost.PreAuthorize
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.*
 import top.fatweb.oxygen.api.annotation.BaseController
 import top.fatweb.oxygen.api.annotation.Trim
 import top.fatweb.oxygen.api.entity.common.ResponseCode
@@ -19,6 +14,7 @@ import top.fatweb.oxygen.api.service.system.ISettingsService
 import top.fatweb.oxygen.api.vo.system.BaseSettingsVo
 import top.fatweb.oxygen.api.vo.system.MailSettingsVo
 import top.fatweb.oxygen.api.vo.system.SensitiveWordVo
+import top.fatweb.oxygen.api.vo.system.TwoFactorSettingsVo
 
 /**
  * System settings management controller
@@ -45,7 +41,8 @@ class SettingsController(
     @Operation(summary = "获取基础设置")
     @GetMapping("/base")
     @PreAuthorize("hasAnyAuthority('system:settings:query:base')")
-    fun getApp(): ResponseResult<BaseSettingsVo> = ResponseResult.success(data = settingsService.getBase())
+    fun getApp(): ResponseResult<BaseSettingsVo> =
+        ResponseResult.success(data = settingsService.getBase())
 
     /**
      * Update base settings
@@ -78,7 +75,8 @@ class SettingsController(
     @Operation(summary = "获取邮件设置")
     @GetMapping("/mail")
     @PreAuthorize("hasAnyAuthority('system:settings:query:mail')")
-    fun getMail(): ResponseResult<MailSettingsVo> = ResponseResult.success(data = settingsService.getMail())
+    fun getMail(): ResponseResult<MailSettingsVo> =
+        ResponseResult.success(data = settingsService.getMail())
 
     /**
      * Update mail settings
@@ -185,5 +183,39 @@ class SettingsController(
     fun deleteSensitive(@PathVariable id: Long): ResponseResult<Nothing> {
         sensitiveWordService.delete(id)
         return ResponseResult.databaseSuccess(ResponseCode.DATABASE_DELETE_SUCCESS)
+    }
+
+    /**
+     * Get two-factor settings
+     *
+     * @return Response object includes two-factor settings information
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see ResponseResult
+     * @see TwoFactorSettingsVo
+     */
+    @Operation(summary = "获取二步验证设置")
+    @GetMapping("/two-factor")
+    @PreAuthorize("hasAnyAuthority('system:settings:query:two-factor')")
+    fun getTwoFactor(): ResponseResult<TwoFactorSettingsVo> =
+        ResponseResult.success(data = settingsService.getTwoFactor())
+
+    /**
+     * Update two-factor settings
+     *
+     * @param twoFactorSettingsParam Two-factor settings parameters
+     * @return Response object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see TwoFactorSettingsParam
+     * @see ResponseResult
+     */
+    @Trim
+    @Operation(summary = "更新二步验证设置")
+    @PutMapping("/two-factor")
+    @PreAuthorize("hasAnyAuthority('system:settings:modify:two-factor')")
+    fun updateTwoFactor(@RequestBody twoFactorSettingsParam: TwoFactorSettingsParam): ResponseResult<Nothing> {
+        settingsService.updateTwoFactor(twoFactorSettingsParam)
+        return ResponseResult.success()
     }
 }

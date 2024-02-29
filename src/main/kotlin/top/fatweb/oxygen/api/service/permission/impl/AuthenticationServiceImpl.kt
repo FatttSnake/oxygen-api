@@ -29,13 +29,12 @@ import top.fatweb.oxygen.api.service.permission.IUserService
 import top.fatweb.oxygen.api.service.system.ISensitiveWordService
 import top.fatweb.oxygen.api.settings.BaseSettings
 import top.fatweb.oxygen.api.settings.SettingsOperator
-import top.fatweb.oxygen.api.util.JwtUtil
-import top.fatweb.oxygen.api.util.MailUtil
-import top.fatweb.oxygen.api.util.RedisUtil
-import top.fatweb.oxygen.api.util.WebUtil
+import top.fatweb.oxygen.api.settings.TwoFactorSettings
+import top.fatweb.oxygen.api.util.*
 import top.fatweb.oxygen.api.vo.permission.LoginVo
 import top.fatweb.oxygen.api.vo.permission.RegisterVo
 import top.fatweb.oxygen.api.vo.permission.TokenVo
+import top.fatweb.oxygen.api.vo.permission.TwoFactorVo
 import java.io.StringWriter
 import java.time.Instant
 import java.time.LocalDateTime
@@ -205,7 +204,39 @@ class AuthenticationServiceImpl(
     override fun login(request: HttpServletRequest, loginParam: LoginParam): LoginVo {
         verifyCaptcha(loginParam.captchaCode!!)
 
-        return this.login(request, loginParam.account!!, loginParam.password!!)
+        return this.login(request, loginParam.account!!, loginParam.password!!, loginParam.twoFactorCode)
+    }
+
+    override fun createTwoFactor(): TwoFactorVo {
+        val user = userService.getById(WebUtil.getLoginUserId()) ?: throw UserNotFoundException()
+
+        if (!user.twoFactor.isNullOrBlank() && !user.twoFactor!!.endsWith("?")) {
+            throw AlreadyHasTwoFactorException()
+        }
+
+        val secretKey = TOTPUtil.generateSecretKey(SettingsOperator.getTwoFactorValue(TwoFactorSettings::secretKeyLength, 16))
+        val qrCodeSVGBase64 = TOTPUtil.generateQRCodeSVGBase64(
+            SettingsOperator.getTwoFactorValue(TwoFactorSettings::issuer, "OxygenToolbox"),
+            user.username!!,
+            secretKey
+        )
+
+        userService.update(KtUpdateWrapper(User()).eq(User::id, user.id).set(User::twoFactor, "${secretKey}?"))
+
+        return TwoFactorVo(qrCodeSVGBase64)
+    }
+
+    override fun validateTwoFactor(twoFactorValidateParam: TwoFactorValidateParam): Boolean {
+        val user = userService.getById(WebUtil.getLoginUserId()) ?: throw UserNotFoundException()
+        if (user.twoFactor.isNullOrBlank()) {
+            throw NoTwoFactorFoundException()
+        }
+        if (!user.twoFactor!!.endsWith("?")) {
+            throw AlreadyHasTwoFactorException()
+        }
+        val secretKey = user.twoFactor!!.substring(0, user.twoFactor!!.length - 1)
+
+        return TOTPUtil.validateCode(secretKey, twoFactorValidateParam.code!!)
     }
 
     @EventLogRecord(EventLog.Event.LOGOUT)
@@ -302,7 +333,20 @@ class AuthenticationServiceImpl(
         )
     }
 
-    private fun login(request: HttpServletRequest, account: String, password: String): LoginVo {
+    private fun login(
+        request: HttpServletRequest,
+        account: String,
+        password: String,
+        twoFactorCode: String? = null
+    ): LoginVo {
+        val userWithPowerByAccount = userService.getUserWithPowerByAccount(account) ?: throw UserNotFoundException()
+        if (!userWithPowerByAccount.twoFactor.isNullOrBlank()
+            && !userWithPowerByAccount.twoFactor!!.endsWith("?")
+            && twoFactorCode.isNullOrBlank()
+        ) {
+            throw NeedTwoFactorException()
+        }
+
         val usernamePasswordAuthenticationToken =
             UsernamePasswordAuthenticationToken(account, password)
         val authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken)

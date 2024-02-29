@@ -16,6 +16,7 @@ import top.fatweb.oxygen.api.util.WebUtil
 import top.fatweb.oxygen.api.vo.permission.LoginVo
 import top.fatweb.oxygen.api.vo.permission.RegisterVo
 import top.fatweb.oxygen.api.vo.permission.TokenVo
+import top.fatweb.oxygen.api.vo.permission.TwoFactorVo
 
 /**
  * Authentication controller
@@ -152,6 +153,33 @@ class AuthenticationController(
             "Login success",
             authenticationService.login(request, loginParam)
         )
+
+    /**
+     * Create two-factor
+     *
+     * @return Response object includes two-factor QR code
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see ResponseResult
+     * @see TwoFactorVo
+     */
+    @Operation(summary = "创建二步验证")
+    @GetMapping("/two-factor")
+    fun createTwoFactor(): ResponseResult<TwoFactorVo> =
+        ResponseResult.success(data = authenticationService.createTwoFactor())
+
+    /**
+     * Validate two-factor
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @Operation(summary = "验证二步验证")
+    @PostMapping("/two-factor")
+    fun validateTwoFactor(@RequestBody @Valid twoFactorValidateParam: TwoFactorValidateParam): ResponseResult<Nothing> =
+        if (authenticationService.validateTwoFactor(twoFactorValidateParam)) ResponseResult.success()
+        else ResponseResult.fail()
+
 
     /**
      * Logout

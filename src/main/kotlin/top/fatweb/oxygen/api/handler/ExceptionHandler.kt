@@ -165,6 +165,21 @@ class ExceptionHandler {
                 ResponseResult.fail(ResponseCode.SYSTEM_INVALID_CAPTCHA_CODE, e.localizedMessage, null)
             }
 
+            is NeedTwoFactorException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.PERMISSION_NEED_TWO_FACTOR, e.localizedMessage, null)
+            }
+
+            is AlreadyHasTwoFactorException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.PERMISSION_ALREADY_HAS_TWO_FACTOR, e.localizedMessage, null)
+            }
+
+            is NoTwoFactorFoundException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.PERMISSION_NO_TWO_FACTOR_FOUND, e.localizedMessage, null)
+            }
+
             /* SQL */
             is DatabaseSelectException -> {
                 logger.debug(e.localizedMessage, e)

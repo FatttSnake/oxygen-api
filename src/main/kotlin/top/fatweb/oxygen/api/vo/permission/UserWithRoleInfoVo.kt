@@ -35,6 +35,15 @@ data class UserWithRoleInfoVo(
     val username: String?,
 
     /**
+     * Two-factor enable
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @Schema(description = "启用二步验证", example = "true")
+    val twoFactor: Boolean?,
+
+    /**
      * Verify
      *
      * @author FatttSnake, fatttsnake@gmail.com

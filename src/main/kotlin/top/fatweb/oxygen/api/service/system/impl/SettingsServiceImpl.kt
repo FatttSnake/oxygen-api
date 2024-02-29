@@ -4,15 +4,18 @@ import org.springframework.stereotype.Service
 import top.fatweb.oxygen.api.param.system.BaseSettingsParam
 import top.fatweb.oxygen.api.param.system.MailSendParam
 import top.fatweb.oxygen.api.param.system.MailSettingsParam
+import top.fatweb.oxygen.api.param.system.TwoFactorSettingsParam
 import top.fatweb.oxygen.api.properties.ServerProperties
 import top.fatweb.oxygen.api.service.system.ISettingsService
 import top.fatweb.oxygen.api.settings.BaseSettings
 import top.fatweb.oxygen.api.settings.MailSettings
 import top.fatweb.oxygen.api.settings.SettingsOperator
+import top.fatweb.oxygen.api.settings.TwoFactorSettings
 import top.fatweb.oxygen.api.util.MailUtil
 import top.fatweb.oxygen.api.util.StrUtil
 import top.fatweb.oxygen.api.vo.system.BaseSettingsVo
 import top.fatweb.oxygen.api.vo.system.MailSettingsVo
+import top.fatweb.oxygen.api.vo.system.TwoFactorSettingsVo
 
 /**
  * Settings service implement
@@ -77,6 +80,18 @@ class SettingsServiceImpl : ISettingsService {
                 false,
                 it
             )
+        }
+    }
+
+    override fun getTwoFactor()= TwoFactorSettingsVo(
+        issuer = SettingsOperator.getTwoFactorValue(TwoFactorSettings::issuer, "OxygenToolbox"),
+        secretKeyLength = SettingsOperator.getTwoFactorValue(TwoFactorSettings::secretKeyLength, 16)
+    )
+
+    override fun updateTwoFactor(twoFactorSettingsParam: TwoFactorSettingsParam) {
+        twoFactorSettingsParam.run {
+            SettingsOperator.setTwoFactorValue(TwoFactorSettings::issuer, issuer)
+            SettingsOperator.setTwoFactorValue(TwoFactorSettings::secretKeyLength, secretKeyLength)
         }
     }
 }

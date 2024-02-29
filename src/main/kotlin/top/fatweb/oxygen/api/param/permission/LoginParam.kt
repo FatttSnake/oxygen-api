@@ -34,5 +34,14 @@ data class LoginParam(
      */
     @Schema(description = "密码", required = true)
     @field:NotBlank(message = "Password can not be blank")
-    val password: String?
+    val password: String?,
+
+    /**
+     * Two-factor code
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @Schema(description = "二步验证码")
+    val twoFactorCode: String?
 ) : CaptchaCodeParam()

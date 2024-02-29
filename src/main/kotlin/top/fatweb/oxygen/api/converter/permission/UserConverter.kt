@@ -34,6 +34,7 @@ object UserConverter {
     fun userToUserWithPowerInfoVo(user: User) = UserWithPowerInfoVo(
         id = user.id,
         username = user.username,
+        twoFactor = !user.twoFactor.isNullOrBlank() && !user.twoFactor!!.endsWith("?"),
         verified = user.verify.isNullOrBlank(),
         locking = user.locking?.let { it == 1 },
         expiration = user.expiration,
@@ -65,6 +66,7 @@ object UserConverter {
     fun userToUserWithRoleInfoVo(user: User) = UserWithRoleInfoVo(
         id = user.id,
         username = user.username,
+        twoFactor = !user.twoFactor.isNullOrBlank() && !user.twoFactor!!.endsWith("?"),
         verify = user.verify,
         locking = user.locking?.let { it == 1 },
         expiration = user.expiration,
@@ -94,6 +96,7 @@ object UserConverter {
     fun userToUserWithInfoVo(user: User) = UserWithInfoVo(
         id = user.id,
         username = user.username,
+        twoFactor = !user.twoFactor.isNullOrBlank() && !user.twoFactor!!.endsWith("?"),
         verified = user.verify.isNullOrBlank(),
         locking = user.locking?.let { it == 1 },
         expiration = user.expiration,
@@ -122,6 +125,7 @@ object UserConverter {
         id = user.id,
         username = user.username,
         password = user.password,
+        twoFactor = !user.twoFactor.isNullOrBlank() && !user.twoFactor!!.endsWith("?"),
         verify = user.verify,
         locking = user.locking?.let { it == 1 },
         expiration = user.expiration,

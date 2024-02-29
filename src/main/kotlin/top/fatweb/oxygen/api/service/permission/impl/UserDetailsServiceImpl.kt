@@ -4,6 +4,7 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Service
 import top.fatweb.oxygen.api.entity.permission.LoginUser
+import top.fatweb.oxygen.api.exception.UserNotFoundException
 import top.fatweb.oxygen.api.service.permission.IUserService
 
 /**
@@ -18,7 +19,7 @@ import top.fatweb.oxygen.api.service.permission.IUserService
 class UserDetailsServiceImpl(val userService: IUserService) : UserDetailsService {
     override fun loadUserByUsername(account: String): UserDetails {
         val user = userService.getUserWithPowerByAccount(account)
-        user ?: throw Exception("Username not found")
+        user ?: throw UserNotFoundException()
 
         return LoginUser(user)
     }
