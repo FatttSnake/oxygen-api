@@ -3,34 +3,26 @@ package top.fatweb.oxygen.api.settings
 import com.fasterxml.jackson.annotation.JsonInclude
 
 /**
- * System setting entity
+ * Two-factor settings entity
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-data class SystemSettings(
+data class TwoFactorSettings(
     /**
-     * Base setting
+     * Issuer
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    var base: BaseSettings? = null,
+    var issuer: String? = null,
 
     /**
-     * Mail setting
+     * Length of secret key
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    var mail: MailSettings? = null,
-
-    /**
-     * Two-factor setting
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     */
-    var twoFactor: TwoFactorSettings? = null
+    var secretKeyLength: Int? = 16
 )

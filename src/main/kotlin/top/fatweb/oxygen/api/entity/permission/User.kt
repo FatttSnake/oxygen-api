@@ -47,6 +47,15 @@ class User() : Serializable {
     var password: String? = null
 
     /**
+     * Two-factor
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @TableField("two_factor")
+    var twoFactor: String? = null
+
+    /**
      * Verify email
      *
      * @author FatttSnake, fatttsnake@gmail.com
@@ -251,6 +260,6 @@ class User() : Serializable {
     var operations: List<Operation>? = null
 
     override fun toString(): String {
-        return "User(id=$id, username=$username, password=$password, verify=$verify, forget=$forget, locking=$locking, expiration=$expiration, credentialsExpiration=$credentialsExpiration, enable=$enable, currentLoginTime=$currentLoginTime, currentLoginIp=$currentLoginIp, lastLoginTime=$lastLoginTime, lastLoginIp=$lastLoginIp, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version, userInfo=$userInfo, roles=$roles, groups=$groups, modules=$modules, menus=$menus, funcs=$funcs, operations=$operations)"
+        return "User(id=$id, username=$username, password=$password, twoFactor=$twoFactor, verify=$verify, forget=$forget, locking=$locking, expiration=$expiration, credentialsExpiration=$credentialsExpiration, enable=$enable, currentLoginTime=$currentLoginTime, currentLoginIp=$currentLoginIp, lastLoginTime=$lastLoginTime, lastLoginIp=$lastLoginIp, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version, userInfo=$userInfo, roles=$roles, groups=$groups, modules=$modules, menus=$menus, funcs=$funcs, operations=$operations)"
     }
 }

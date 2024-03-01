@@ -101,7 +101,8 @@ object SettingsOperator {
      * @see KMutableProperty1
      * @see BaseSettings
      */
-    fun <V> getAppValue(field: KMutableProperty1<BaseSettings, V?>): V? = this.getAppValue(field, null)
+    fun <V> getAppValue(field: KMutableProperty1<BaseSettings, V?>): V? =
+        this.getAppValue(field, null)
 
     /**
      * Get base settings value with default value
@@ -154,7 +155,8 @@ object SettingsOperator {
      * @see KMutableProperty1
      * @see MailSettings
      */
-    fun <V> getMailValue(field: KMutableProperty1<MailSettings, V?>): V? = this.getMailValue(field, null)
+    fun <V> getMailValue(field: KMutableProperty1<MailSettings, V?>): V? =
+        this.getMailValue(field, null)
 
     /**
      * Get value from mail settings with default value
@@ -169,4 +171,51 @@ object SettingsOperator {
      */
     fun <V> getMailValue(field: KMutableProperty1<MailSettings, V?>, default: V): V =
         systemSettings.mail?.let(field) ?: default
+
+    /**
+     * Set two-factor settings value
+     *
+     * @param field Field to set value. e.g. TwoFactorSettings::type
+     * @param value Value to set
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see KMutableProperty1
+     * @see TwoFactorSettings
+     */
+    fun <V> setTwoFactorValue(field: KMutableProperty1<TwoFactorSettings, V?>, value: V?) {
+        systemSettings.twoFactor?.let {
+            field.set(it, value)
+        } ?: let {
+            systemSettings.twoFactor = TwoFactorSettings().also { field.set(it, value) }
+        }
+
+        saveSettingsToFile()
+    }
+
+    /**
+     * Get value from two-factor settings
+     *
+     * @param field Field to get value from. e.g. TwoFactorSettings::type
+     * @return Value
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see KMutableProperty1
+     * @see TwoFactorSettings
+     */
+    fun <V> getTwoFactorValue(field: KMutableProperty1<TwoFactorSettings, V?>): V? =
+        this.getTwoFactorValue(field, null)
+
+    /**
+     * Get value from two-factor settings with default value
+     *
+     * @param field Field to get value from. e.g. TwoFactorSettings::type
+     * @param default Return default value when setting not found
+     * @return Value
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see KMutableProperty1
+     * @see TwoFactorSettings
+     */
+    fun <V> getTwoFactorValue(field: KMutableProperty1<TwoFactorSettings, V?>, default: V): V =
+        systemSettings.twoFactor?.let(field) ?: default
 }

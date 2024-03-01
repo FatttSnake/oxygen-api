@@ -5,6 +5,7 @@
         select t_s_user.id                     as user_id,
                t_s_user.username               as user_username,
                t_s_user.password               as user_password,
+               t_s_user.two_factor             as user_two_factor,
                t_s_user.verify                 as user_verify,
                t_s_user.forget                 as user_forget,
                t_s_user.locking                as user_locking,
@@ -61,11 +62,11 @@
     </select>
 
     <select id="selectOneWithBasicInfoByUsername" resultMap="userWithInfoMap">
-        select t_s_user.id                     as user_id,
-               t_s_user.username               as user_username,
-               tsui.id                         as user_info_id,
-               tsui.nickname                   as user_info_nickname,
-               tsui.avatar                     as user_info_avatar
+        select t_s_user.id       as user_id,
+               t_s_user.username as user_username,
+               tsui.id           as user_info_id,
+               tsui.nickname     as user_info_nickname,
+               tsui.avatar       as user_info_avatar
         from t_s_user
                  left join (select * from t_s_user_info where deleted = 0) as tsui on t_s_user.id = tsui.user_id
         where t_s_user.deleted = 0
@@ -140,6 +141,7 @@
     <select id="selectListWithRoleInfoByIds" resultMap="userWithRoleInfoMap">
         select t_s_user.id as user_id,
         t_s_user.username as user_username,
+        t_s_user.two_factor as user_two_factor,
         t_s_user.verify as user_verify,
         t_s_user.forget as user_forget,
         t_s_user.locking as user_locking,
@@ -196,6 +198,7 @@
     <select id="selectOneWithRoleInfoById" resultMap="userWithRoleInfoMap">
         select t_s_user.id                     as user_id,
                t_s_user.username               as user_username,
+               t_s_user.two_factor             as user_two_factor,
                t_s_user.verify                 as user_verify,
                t_s_user.forget                 as user_forget,
                t_s_user.locking                as user_locking,
@@ -303,6 +306,7 @@
     <resultMap id="userBaseMap" type="user">
         <id property="id" column="user_id"/>
         <result property="username" column="user_username"/>
+        <result property="twoFactor" column="user_two_factor"/>
         <result property="verify" column="user_verify"/>
         <result property="forget" column="user_forget"/>
         <result property="locking" column="user_locking"/>
