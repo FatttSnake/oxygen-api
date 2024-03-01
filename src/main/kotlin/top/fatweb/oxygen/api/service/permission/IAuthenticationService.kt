@@ -105,6 +105,17 @@ interface IAuthenticationService {
     fun validateTwoFactor(twoFactorValidateParam: TwoFactorValidateParam): Boolean
 
     /**
+     * Remove two-factor
+     *
+     * @param twoFactorRemoveParam Remove two-factor parameters
+     * @return Result
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see TwoFactorRemoveParam
+     */
+    fun removeTwoFactor(twoFactorRemoveParam: TwoFactorRemoveParam): Boolean
+
+    /**
      * Logout
      *
      * @param token Token

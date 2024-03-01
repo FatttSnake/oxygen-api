@@ -38,7 +38,7 @@ data class UserWithPowerInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "启用二步验证", example = "true")
+    @Schema(description = "启用双因素验证", example = "true")
     val twoFactor: Boolean?,
 
     /**

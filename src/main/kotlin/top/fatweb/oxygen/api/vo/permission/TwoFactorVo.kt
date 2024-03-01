@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-@Schema(description = "二步验证返回参数")
+@Schema(description = "双因素返回参数")
 data class TwoFactorVo (
     /**
      * QR code SVG as base64

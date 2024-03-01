@@ -202,7 +202,9 @@ class AuthenticationServiceImpl(
 
     @EventLogRecord(EventLog.Event.LOGIN)
     override fun login(request: HttpServletRequest, loginParam: LoginParam): LoginVo {
-        verifyCaptcha(loginParam.captchaCode!!)
+        if (loginParam.twoFactorCode.isNullOrBlank()) {
+            verifyCaptcha(loginParam.captchaCode!!)
+        }
 
         return this.login(request, loginParam.account!!, loginParam.password!!, loginParam.twoFactorCode)
     }
@@ -236,7 +238,26 @@ class AuthenticationServiceImpl(
         }
         val secretKey = user.twoFactor!!.substring(0, user.twoFactor!!.length - 1)
 
-        return TOTPUtil.validateCode(secretKey, twoFactorValidateParam.code!!)
+        if (TOTPUtil.validateCode(secretKey, twoFactorValidateParam.code!!)) {
+            userService.update(KtUpdateWrapper(User()).eq(User::id, user.id).set(User::twoFactor, secretKey))
+            return true
+        }
+
+        return false
+    }
+
+    override fun removeTwoFactor(twoFactorRemoveParam: TwoFactorRemoveParam): Boolean {
+        val user = userService.getById(WebUtil.getLoginUserId()) ?: throw UserNotFoundException()
+        if (user.twoFactor.isNullOrBlank() || user.twoFactor!!.endsWith("?")) {
+            throw NoTwoFactorFoundException()
+        }
+
+        if (TOTPUtil.validateCode(user.twoFactor!!, twoFactorRemoveParam.code!!)) {
+            userService.update(KtUpdateWrapper(User()).eq(User::id, user.id).set(User::twoFactor, null))
+            return true
+        }
+
+        return false
     }
 
     @EventLogRecord(EventLog.Event.LOGOUT)
@@ -342,9 +363,13 @@ class AuthenticationServiceImpl(
         val userWithPowerByAccount = userService.getUserWithPowerByAccount(account) ?: throw UserNotFoundException()
         if (!userWithPowerByAccount.twoFactor.isNullOrBlank()
             && !userWithPowerByAccount.twoFactor!!.endsWith("?")
-            && twoFactorCode.isNullOrBlank()
         ) {
-            throw NeedTwoFactorException()
+            if (twoFactorCode.isNullOrBlank()) {
+                throw NeedTwoFactorException()
+            }
+            if (!TOTPUtil.validateCode(userWithPowerByAccount.twoFactor!!, twoFactorCode)) {
+                throw TwoFactorVerificationCodeErrorException()
+            }
         }
 
         val usernamePasswordAuthenticationToken =

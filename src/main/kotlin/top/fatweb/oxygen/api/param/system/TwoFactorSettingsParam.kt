@@ -12,7 +12,7 @@ import top.fatweb.oxygen.api.annotation.Trim
  * @since 1.0.0
  */
 @Trim
-@Schema(description = "二步验证设置请求参数")
+@Schema(description = "双因素设置请求参数")
 data class TwoFactorSettingsParam(
     /**
      * Issuer

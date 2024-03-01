@@ -194,7 +194,7 @@ class SettingsController(
      * @see ResponseResult
      * @see TwoFactorSettingsVo
      */
-    @Operation(summary = "获取二步验证设置")
+    @Operation(summary = "获取双因素设置")
     @GetMapping("/two-factor")
     @PreAuthorize("hasAnyAuthority('system:settings:query:two-factor')")
     fun getTwoFactor(): ResponseResult<TwoFactorSettingsVo> =
@@ -211,7 +211,7 @@ class SettingsController(
      * @see ResponseResult
      */
     @Trim
-    @Operation(summary = "更新二步验证设置")
+    @Operation(summary = "更新双因素设置")
     @PutMapping("/two-factor")
     @PreAuthorize("hasAnyAuthority('system:settings:modify:two-factor')")
     fun updateTwoFactor(@RequestBody twoFactorSettingsParam: TwoFactorSettingsParam): ResponseResult<Nothing> {

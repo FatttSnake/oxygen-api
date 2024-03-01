@@ -42,6 +42,6 @@ data class LoginParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "二步验证码")
+    @Schema(description = "双因素验证码")
     val twoFactorCode: String?
 ) : CaptchaCodeParam()

@@ -120,7 +120,7 @@ object TOTPUtil {
             secretKey.append(allChars[Random.nextInt(allChars.length)])
         }
 
-        return secretKey.toString().toList().shuffled().joinToString()
+        return secretKey.toString().toList().shuffled().joinToString("")
     }
 
     /**

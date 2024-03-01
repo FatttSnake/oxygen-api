@@ -3,6 +3,7 @@ package top.fatweb.oxygen.api.controller.permission
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.validation.Valid
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -163,7 +164,7 @@ class AuthenticationController(
      * @see ResponseResult
      * @see TwoFactorVo
      */
-    @Operation(summary = "创建二步验证")
+    @Operation(summary = "创建双因素验证码")
     @GetMapping("/two-factor")
     fun createTwoFactor(): ResponseResult<TwoFactorVo> =
         ResponseResult.success(data = authenticationService.createTwoFactor())
@@ -174,10 +175,22 @@ class AuthenticationController(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Operation(summary = "验证二步验证")
+    @Operation(summary = "验证双因素")
     @PostMapping("/two-factor")
     fun validateTwoFactor(@RequestBody @Valid twoFactorValidateParam: TwoFactorValidateParam): ResponseResult<Nothing> =
         if (authenticationService.validateTwoFactor(twoFactorValidateParam)) ResponseResult.success()
+        else ResponseResult.fail()
+
+    /**
+     * Remove two-factor
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @Operation(summary = "移除双因素")
+    @DeleteMapping("/two-factor")
+    fun removeTwoFactor(@RequestBody @Valid twoFactorRemoveParam: TwoFactorRemoveParam): ResponseResult<Nothing> =
+        if (authenticationService.removeTwoFactor(twoFactorRemoveParam)) ResponseResult.success()
         else ResponseResult.fail()
 
 

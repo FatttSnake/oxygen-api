@@ -8,7 +8,7 @@ import io.swagger.v3.oas.annotations.media.Schema
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-@Schema(description = "二步验证设置返回参数")
+@Schema(description = "双因素设置返回参数")
 data class TwoFactorSettingsVo(
     /**
      * Issuer

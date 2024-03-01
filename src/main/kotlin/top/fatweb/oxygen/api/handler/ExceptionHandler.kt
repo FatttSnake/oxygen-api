@@ -180,6 +180,11 @@ class ExceptionHandler {
                 ResponseResult.fail(ResponseCode.PERMISSION_NO_TWO_FACTOR_FOUND, e.localizedMessage, null)
             }
 
+            is TwoFactorVerificationCodeErrorException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.PERMISSION_TWO_FACTOR_VERIFICATION_CODE_ERROR, e.localizedMessage, null)
+            }
+
             /* SQL */
             is DatabaseSelectException -> {
                 logger.debug(e.localizedMessage, e)

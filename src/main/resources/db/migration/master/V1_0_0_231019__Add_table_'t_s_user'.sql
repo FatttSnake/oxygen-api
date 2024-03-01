@@ -5,7 +5,7 @@ create table if not exists t_s_user
     id                     bigint       not null primary key,
     username               varchar(20)  not null comment '用户名',
     password               char(70)     not null comment '密码',
-    two_factor             varchar(40)  null comment '二步验证',
+    two_factor             varchar(40)  null comment '双因素',
     verify                 varchar(144) null comment '验证邮箱',
     forget                 varchar(144) null comment '忘记密码',
     locking                int          not null comment '锁定',
