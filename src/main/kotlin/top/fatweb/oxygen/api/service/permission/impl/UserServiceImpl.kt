@@ -223,12 +223,12 @@ class UserServiceImpl(
             KtUpdateWrapper(User()).eq(User::id, user.id)
                 .set(
                     User::verify,
-                    if (userUpdateParam.verified) null else "${
+                    if (userUpdateParam.verified || userUpdateParam.id == 0L) null else "${
                         LocalDateTime.now(ZoneOffset.UTC).toInstant(ZoneOffset.UTC).toEpochMilli()
                     }-${UUID.randomUUID()}-${UUID.randomUUID()}-${UUID.randomUUID()}"
                 )
-                .set(User::expiration, user.expiration)
-                .set(User::credentialsExpiration, user.credentialsExpiration)
+                .set(User::expiration, if (userUpdateParam.id == 0L) null else user.expiration)
+                .set(User::credentialsExpiration, if (userUpdateParam.id == 0L) null else user.credentialsExpiration)
         )
 
         user.userInfo?.let { userInfo ->
