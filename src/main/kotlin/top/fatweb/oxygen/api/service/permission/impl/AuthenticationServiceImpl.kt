@@ -360,18 +360,6 @@ class AuthenticationServiceImpl(
         password: String,
         twoFactorCode: String? = null
     ): LoginVo {
-        val userWithPowerByAccount = userService.getUserWithPowerByAccount(account) ?: throw UserNotFoundException()
-        if (!userWithPowerByAccount.twoFactor.isNullOrBlank()
-            && !userWithPowerByAccount.twoFactor!!.endsWith("?")
-        ) {
-            if (twoFactorCode.isNullOrBlank()) {
-                throw NeedTwoFactorException()
-            }
-            if (!TOTPUtil.validateCode(userWithPowerByAccount.twoFactor!!, twoFactorCode)) {
-                throw TwoFactorVerificationCodeErrorException()
-            }
-        }
-
         val usernamePasswordAuthenticationToken =
             UsernamePasswordAuthenticationToken(account, password)
         val authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken)
@@ -379,6 +367,15 @@ class AuthenticationServiceImpl(
 
         val loginUser = authentication.principal as LoginUser
         loginUser.user.password = ""
+
+        if (!loginUser.user.twoFactor.isNullOrBlank() && !loginUser.user.twoFactor!!.endsWith("?")) {
+            if (twoFactorCode.isNullOrBlank()) {
+                throw NeedTwoFactorException()
+            }
+            if (!TOTPUtil.validateCode(loginUser.user.twoFactor!!, twoFactorCode)) {
+                throw TwoFactorVerificationCodeErrorException()
+            }
+        }
 
         logger.info("用户登录 [用户名: '{}', IP: '{}']", loginUser.username, request.remoteAddr)
         userService.update(User().apply {
