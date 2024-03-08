@@ -38,7 +38,7 @@ class JwtAuthenticationTokenFilter(private val redisUtil: RedisUtil) : OncePerRe
         val token = WebUtil.getToken(tokenWithPrefix)
         JwtUtil.parseJwt(token)
 
-        val redisKeyPattern = "${SecurityProperties.jwtIssuer}_login_*:" + token
+        val redisKeyPattern = "${SecurityProperties.jwtIssuer}_login_*:${token}"
         val redisKeys = redisUtil.keys(redisKeyPattern)
         if (redisKeys.isEmpty()) {
             throw TokenHasExpiredException()
