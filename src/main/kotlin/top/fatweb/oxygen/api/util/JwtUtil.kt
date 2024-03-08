@@ -25,7 +25,7 @@ object JwtUtil {
      * @since 1.0.0
      */
     private fun generalKey(): SecretKeySpec {
-        val encodeKey = Base64.getDecoder().decode(SecurityProperties.jwtKey)
+        val encodeKey = Base64.getEncoder().encode(SecurityProperties.jwtKey.toByteArray())
         return SecretKeySpec(encodeKey, 0, encodeKey.size, "AES")
     }
 

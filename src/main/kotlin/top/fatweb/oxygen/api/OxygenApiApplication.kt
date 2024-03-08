@@ -59,7 +59,7 @@ fun main(args: Array<String>) {
         OxygenApiApplication::class.java.getResource("/application-config-template.yml")?.readText()?.let {
             File("data/application-config.example.yml").writeText(
                 it.replace(
-                    "\$uuid\$", UUID.randomUUID().toString().replace("-", "")
+                    "\$uuid\$", UUID.randomUUID().toString()
                 )
             )
         }
