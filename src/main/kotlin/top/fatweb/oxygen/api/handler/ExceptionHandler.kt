@@ -93,10 +93,10 @@ class ExceptionHandler {
 
             is DisabledException -> {
                 logger.debug(e.localizedMessage, e)
-                ResponseResult.fail(ResponseCode.PERMISSION_USER_CREDENTIALS_EXPIRED, "User has been disabled", null)
+                ResponseResult.fail(ResponseCode.PERMISSION_USER_DISABLE, "User has been disabled", null)
             }
 
-            is TokenExpiredException -> {
+            is TokenExpiredException, is TokenHasExpiredException -> {
                 logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.PERMISSION_TOKEN_HAS_EXPIRED, e.localizedMessage, null)
             }
@@ -118,11 +118,6 @@ class ExceptionHandler {
             is SignatureVerificationException, is JWTDecodeException -> {
                 logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.PERMISSION_TOKEN_ILLEGAL, "Token illegal", null)
-            }
-
-            is TokenHasExpiredException -> {
-                logger.debug(e.localizedMessage, e)
-                ResponseResult.fail(ResponseCode.PERMISSION_TOKEN_HAS_EXPIRED, e.localizedMessage, null)
             }
 
             is AccessDeniedException -> {

@@ -1,6 +1,5 @@
 package top.fatweb.oxygen.api.service.tool.impl
 
-import com.baomidou.mybatisplus.core.metadata.OrderItem
 import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper
 import com.baomidou.mybatisplus.extension.kotlin.KtUpdateWrapper
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page
@@ -20,7 +19,6 @@ import top.fatweb.oxygen.api.param.tool.ToolManagementPassParam
 import top.fatweb.oxygen.api.service.tool.IManagementService
 import top.fatweb.oxygen.api.service.tool.IRToolCategoryService
 import top.fatweb.oxygen.api.service.tool.IToolDataService
-import top.fatweb.oxygen.api.util.PageUtil
 import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.tool.ToolVo
 import java.time.LocalDateTime
@@ -53,6 +51,7 @@ class ManagementServiceImpl(
             baseMapper.selectPage(
                 toolIdsPage,
                 toolManagementGetParam?.review?.split(","),
+                toolManagementGetParam?.platform?.split(","),
                 toolManagementGetParam?.searchType ?: "ALL",
                 toolManagementGetParam?.searchValue,
                 toolManagementGetParam?.searchRegex ?: false

@@ -8,9 +8,12 @@ import top.fatweb.oxygen.api.annotation.BaseController
 import top.fatweb.oxygen.api.annotation.Trim
 import top.fatweb.oxygen.api.entity.common.ResponseCode
 import top.fatweb.oxygen.api.entity.common.ResponseResult
+import top.fatweb.oxygen.api.param.PageSortParam
 import top.fatweb.oxygen.api.param.tool.ToolBaseAddParam
+import top.fatweb.oxygen.api.param.tool.ToolBaseGetParam
 import top.fatweb.oxygen.api.param.tool.ToolBaseUpdateParam
 import top.fatweb.oxygen.api.service.tool.IToolBaseService
+import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.tool.ToolBaseVo
 
 /**
@@ -41,6 +44,24 @@ class BaseController(
         ResponseResult.databaseSuccess(data = toolBaseService.getOne(id))
 
     /**
+     * Get tool base paging information
+     *
+     * @param toolBaseGetParam Get tool base parameters
+     * @return Response object includes tool base paging information
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see ToolBaseGetParam
+     * @see ResponseResult
+     * @see PageVo
+     * @see ToolBaseVo
+     */
+    @Operation(summary = "获取基板")
+    @GetMapping
+    @PreAuthorize("hasAnyAuthority('system:tool:query:base')")
+    fun get(toolBaseGetParam: ToolBaseGetParam?): ResponseResult<PageVo<ToolBaseVo>> =
+        ResponseResult.databaseSuccess(data = toolBaseService.get(toolBaseGetParam))
+
+    /**
      * Get tool base list
      *
      * @return Response object includes tool base list
@@ -49,11 +70,12 @@ class BaseController(
      * @see ResponseResult
      * @see ToolBaseVo
      */
-    @Operation(summary = "获取基板")
-    @GetMapping
-    @PreAuthorize("hasAnyAuthority('system:tool:query:base', 'system:tool:add:template', 'system:tool:modify:template')")
-    fun get(): ResponseResult<List<ToolBaseVo>> =
-        ResponseResult.databaseSuccess(data = toolBaseService.get())
+    @Operation(summary = "获取基板列表")
+    @GetMapping("/list")
+    @PreAuthorize("hasAnyAuthority('system:tool:add:template', 'system:tool:modify:template')")
+    fun list(): ResponseResult<List<ToolBaseVo>> =
+        ResponseResult.databaseSuccess(data = toolBaseService.getList())
+
 
     /**
      * Add tool base

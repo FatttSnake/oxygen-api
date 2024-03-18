@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper
 import org.apache.ibatis.annotations.Mapper
 import org.apache.ibatis.annotations.Param
 import top.fatweb.oxygen.api.entity.tool.Tool
+import top.fatweb.oxygen.api.entity.tool.ToolBase
 import top.fatweb.oxygen.api.entity.tool.ToolTemplate
 
 /**
@@ -66,6 +67,7 @@ interface EditMapper : BaseMapper<Tool> {
         @Param("username") username: String,
         @Param("toolId") toolId: String,
         @Param("ver") ver: String,
+        @Param("platform") platform: ToolBase.Platform,
         @Param("operator") operator: String?
     ): List<Tool>?
 }

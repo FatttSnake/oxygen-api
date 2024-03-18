@@ -60,6 +60,7 @@
         t_b_tool_main.name as tool_name,
         t_b_tool_main.tool_id as tool_tool_id,
         t_b_tool_main.icon as tool_icon,
+        t_b_tool_main.platform as tool_platform,
         t_b_tool_main.description as tool_description,
         t_b_tool_main.base_id as tool_base_id,
         t_b_tool_main.author_id as tool_author_id,

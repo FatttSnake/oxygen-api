@@ -1,5 +1,7 @@
 package top.fatweb.oxygen.api.service.tool.impl
 
+import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -9,9 +11,12 @@ import top.fatweb.oxygen.api.entity.tool.ToolData
 import top.fatweb.oxygen.api.exception.NoRecordFoundException
 import top.fatweb.oxygen.api.mapper.tool.ToolBaseMapper
 import top.fatweb.oxygen.api.param.tool.ToolBaseAddParam
+import top.fatweb.oxygen.api.param.tool.ToolBaseGetParam
 import top.fatweb.oxygen.api.param.tool.ToolBaseUpdateParam
 import top.fatweb.oxygen.api.service.tool.IToolBaseService
 import top.fatweb.oxygen.api.service.tool.IToolDataService
+import top.fatweb.oxygen.api.util.PageUtil
+import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.tool.ToolBaseVo
 
 /**
@@ -31,7 +36,24 @@ class ToolBaseServiceImpl(
     override fun getOne(id: Long): ToolBaseVo =
         baseMapper.selectOne(id)?.let(ToolBaseConverter::toolBaseToToolBaseVo) ?: throw NoRecordFoundException()
 
-    override fun get(): List<ToolBaseVo> = this.list().map(ToolBaseConverter::toolBaseToToolBaseVoByGetList)
+    override fun get(toolBaseGetParam: ToolBaseGetParam?): PageVo<ToolBaseVo> {
+        val basePage = Page<ToolBase>(toolBaseGetParam?.currentPage ?: 1, toolBaseGetParam?.pageSize ?: 20)
+
+        PageUtil.setPageSort(toolBaseGetParam, basePage)
+
+        return ToolBaseConverter.toolBasePageToToolBasePageVo(
+            this.page(
+                basePage,
+                KtQueryWrapper(ToolBase()).`in`(
+                    !toolBaseGetParam?.platform.isNullOrBlank(),
+                    ToolBase::platform,
+                    toolBaseGetParam?.platform?.split(",")
+                )
+            )
+        )
+    }
+
+    override fun getList(): List<ToolBaseVo> = this.list().map(ToolBaseConverter::toolBaseToToolBaseVoByGetList)
 
     @Transactional
     override fun add(toolBaseAddParam: ToolBaseAddParam): ToolBaseVo {
@@ -46,6 +68,7 @@ class ToolBaseServiceImpl(
             distId = newDist.id
             source = newSource
             dist = newDist
+            platform = toolBaseAddParam.platform
         }
 
         this.save(toolBase)

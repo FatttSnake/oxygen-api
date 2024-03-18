@@ -264,19 +264,19 @@ class AuthenticationServiceImpl(
     override fun logout(token: String): Boolean {
         val loginUser = WebUtil.getLoginUser() ?: throw TokenHasExpiredException()
 
-        return redisUtil.delObject("${SecurityProperties.jwtIssuer}_login_${loginUser.user.id}:" + token)
+        return redisUtil.delObject("${SecurityProperties.jwtIssuer}_login_${loginUser.user.id}:${token}")
     }
 
     override fun renewToken(token: String): TokenVo {
         val loginUser = WebUtil.getLoginUser() ?: throw TokenHasExpiredException()
 
-        val oldRedisKey = "${SecurityProperties.jwtIssuer}_login_${loginUser.user.id}:" + token
+        val oldRedisKey = "${SecurityProperties.jwtIssuer}_login_${loginUser.user.id}:${token}"
         redisUtil.delObject(oldRedisKey)
         val jwt = JwtUtil.createJwt(WebUtil.getLoginUserId().toString())
 
         jwt ?: throw RuntimeException("Login failed")
 
-        val redisKey = "${SecurityProperties.jwtIssuer}_login_${loginUser.user.id}:" + jwt
+        val redisKey = "${SecurityProperties.jwtIssuer}_login_${loginUser.user.id}:${jwt}"
         redisUtil.setObject(
             redisKey, loginUser, SecurityProperties.redisTtl, SecurityProperties.redisTtlUnit
         )
@@ -390,7 +390,7 @@ class AuthenticationServiceImpl(
 
         jwt ?: throw RuntimeException("Login failed")
 
-        val redisKey = "${SecurityProperties.jwtIssuer}_login_${userId}:" + jwt
+        val redisKey = "${SecurityProperties.jwtIssuer}_login_${userId}:${jwt}"
         redisUtil.setObject(redisKey, loginUser, SecurityProperties.redisTtl, SecurityProperties.redisTtlUnit)
 
         return LoginVo(jwt, loginUser.user.id, loginUser.user.currentLoginTime, loginUser.user.currentLoginIp)

@@ -3,6 +3,7 @@ package top.fatweb.oxygen.api.vo.tool
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
 import io.swagger.v3.oas.annotations.media.Schema
+import top.fatweb.oxygen.api.entity.tool.ToolBase
 import java.time.LocalDateTime
 
 /**
@@ -48,6 +49,16 @@ data class ToolTemplateVo(
      */
     @Schema(description = "源码")
     val source: ToolDataVo?,
+
+    /**
+     * Platform
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see ToolBase.Platform
+     */
+    @Schema(description = "平台")
+    val platform: ToolBase.Platform?,
 
     /**
      * Entry point

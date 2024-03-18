@@ -2,11 +2,13 @@ package top.fatweb.oxygen.api.controller.tool
 
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.validation.Valid
+import jakarta.validation.constraints.NotNull
 import org.springframework.web.bind.annotation.*
 import top.fatweb.oxygen.api.annotation.BaseController
 import top.fatweb.oxygen.api.annotation.Trim
 import top.fatweb.oxygen.api.entity.common.ResponseCode
 import top.fatweb.oxygen.api.entity.common.ResponseResult
+import top.fatweb.oxygen.api.entity.tool.ToolBase
 import top.fatweb.oxygen.api.param.tool.ToolCreateParam
 import top.fatweb.oxygen.api.param.tool.ToolUpdateParam
 import top.fatweb.oxygen.api.param.tool.ToolUpgradeParam
@@ -37,8 +39,8 @@ class EditController(
      */
     @Operation(summary = "获取模板")
     @GetMapping("/template")
-    fun getTemplate(): ResponseResult<List<ToolTemplateVo>> =
-        ResponseResult.databaseSuccess(data = editService.getTemplate())
+    fun getTemplate(platform: ToolBase.Platform): ResponseResult<List<ToolTemplateVo>> =
+        ResponseResult.databaseSuccess(data = editService.getTemplate(platform))
 
     /**
      * Get tool template by ID
@@ -137,11 +139,12 @@ class EditController(
     fun detail(
         @PathVariable username: String,
         @PathVariable toolId: String,
-        @PathVariable ver: String
+        @PathVariable ver: String,
+        platform: ToolBase.Platform
     ): ResponseResult<ToolVo> =
         ResponseResult.databaseSuccess(
             ResponseCode.DATABASE_SELECT_SUCCESS,
-            data = editService.detail(username.trim(), toolId.trim(), ver.trim())
+            data = editService.detail(username.trim(), toolId.trim(), ver.trim(), platform)
         )
 
     /**
