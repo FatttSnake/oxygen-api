@@ -33,15 +33,6 @@ data class ToolTemplateUpdateParam(
     var name: String?,
 
     /**
-     * Base ID
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     */
-    @Schema(description = "Base ID")
-    val baseId: Long?,
-
-    /**
      * Source
      *
      * @author FatttSnake, fatttsnake@gmail.com

@@ -38,9 +38,12 @@ class EditServiceImpl(
     private val toolDataService: IToolDataService,
     private val rToolCategoryService: IRToolCategoryService
 ) : ServiceImpl<EditMapper, Tool>(), IEditService {
-    override fun getTemplate(): List<ToolTemplateVo> =
-        toolTemplateService.list(KtQueryWrapper(ToolTemplate()).eq(ToolTemplate::enable, 1))
-            .map(ToolTemplateConverter::toolTemplateToToolTemplateVoByList)
+    override fun getTemplate(platform: ToolBase.Platform): List<ToolTemplateVo> =
+        toolTemplateService.list(
+            KtQueryWrapper(ToolTemplate())
+                .eq(ToolTemplate::platform, platform)
+                .eq(ToolTemplate::enable, 1)
+        ).map(ToolTemplateConverter::toolTemplateToToolTemplateVoByList)
 
     override fun getTemplate(id: Long): ToolTemplateVo =
         baseMapper.selectTemplate(id)?.let(ToolTemplateConverter::toolTemplateToToolTemplateVoWithBaseDist)
@@ -56,11 +59,15 @@ class EditServiceImpl(
 
     @Transactional
     override fun create(toolCreateParam: ToolCreateParam): ToolVo {
-        baseMapper.selectOne(
-            KtQueryWrapper(Tool()).eq(Tool::toolId, toolCreateParam.toolId!!)
-                .eq(Tool::authorId, WebUtil.getLoginUserId()!!)
-        )?.let { throw DuplicateKeyException("Duplicate Key") }
         val template = this.getTemplate(toolCreateParam.templateId!!)
+        baseMapper.selectOne(
+            KtQueryWrapper(Tool())
+                .eq(Tool::toolId, toolCreateParam.toolId!!)
+                .eq(Tool::authorId, WebUtil.getLoginUserId()!!)
+                .eq(Tool::platform, template.platform)
+        )?.let {
+            throw DuplicateKeyException("Duplicate Key")
+        }
         val newSource = ToolData().apply { data = template.source!!.data }
         val newDist = ToolData().apply { data = "" }
         toolDataService.saveBatch(listOf(newSource, newDist))
@@ -69,6 +76,7 @@ class EditServiceImpl(
             name = toolCreateParam.name!!.trim()
             toolId = toolCreateParam.toolId
             icon = toolCreateParam.icon
+            platform = template.platform
             description = toolCreateParam.description
             baseId = template.base!!.id
             authorId = WebUtil.getLoginUserId()!!
@@ -94,7 +102,7 @@ class EditServiceImpl(
 
     @Transactional
     override fun upgrade(toolUpgradeParam: ToolUpgradeParam): ToolVo {
-        val originalTool = this.detail("!", toolUpgradeParam.toolId!!, "latest")
+        val originalTool = this.detail("!", toolUpgradeParam.toolId!!, "latest", toolUpgradeParam.platform!!)
         if (originalTool.review == Tool.ReviewType.PROCESSING) {
             throw ToolUnderReviewException()
         }
@@ -206,11 +214,11 @@ class EditServiceImpl(
         baseMapper.selectPersonal(WebUtil.getLoginUserId()!!)
             .map(ToolConverter::toolToToolVo)
 
-    override fun detail(username: String, toolId: String, ver: String): ToolVo {
+    override fun detail(username: String, toolId: String, ver: String, platform: ToolBase.Platform): ToolVo {
         if (username == "!" && WebUtil.getLoginUserId() == null) {
             throw NoRecordFoundException()
         }
-        val toolList = baseMapper.selectDetail(username, toolId, ver, WebUtil.getLoginUsername())
+        val toolList = baseMapper.selectDetail(username, toolId, ver, platform, WebUtil.getLoginUsername())
         if (toolList.isNullOrEmpty()) {
             throw NoRecordFoundException()
         }

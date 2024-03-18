@@ -6,6 +6,7 @@
                t_b_tool_template.name        as tool_template_name,
                t_b_tool_template.base_id     as tool_template_base_id,
                t_b_tool_template.source_id   as tool_template_source_id,
+               t_b_tool_template.platform    as tool_template_platform,
                t_b_tool_template.entry_point as tool_template_entry_point,
                t_b_tool_template.enable      as tool_template_enable,
                t_b_tool_template.create_time as tool_template_create_time,
@@ -27,22 +28,29 @@
           and t_b_tool_template.id = #{id}
     </select>
 
-    <select id="selectList" resultMap="toolTemplateMap">
-        select t_b_tool_template.id          as tool_template_id,
-               t_b_tool_template.name        as tool_template_name,
-               t_b_tool_template.base_id     as tool_template_base_id,
-               t_b_tool_template.source_id   as tool_template_source_id,
-               t_b_tool_template.entry_point as tool_template_entry_point,
-               t_b_tool_template.enable      as tool_template_enable,
-               t_b_tool_template.create_time as tool_template_create_time,
-               t_b_tool_template.update_time as tool_template_update_time,
-               t_b_tool_template.deleted     as tool_template_deleted,
-               t_b_tool_template.version     as tool_template_version,
-               tbtb.name                     as tool_template_base_name
+    <select id="selectListWithBaseName" resultMap="toolTemplateMap">
+        select t_b_tool_template.id as tool_template_id,
+        t_b_tool_template.name as tool_template_name,
+        t_b_tool_template.base_id as tool_template_base_id,
+        t_b_tool_template.source_id as tool_template_source_id,
+        t_b_tool_template.platform as tool_template_platform,
+        t_b_tool_template.entry_point as tool_template_entry_point,
+        t_b_tool_template.enable as tool_template_enable,
+        t_b_tool_template.create_time as tool_template_create_time,
+        t_b_tool_template.update_time as tool_template_update_time,
+        t_b_tool_template.deleted as tool_template_deleted,
+        t_b_tool_template.version as tool_template_version,
+        tbtb.name as tool_template_base_name
         from t_b_tool_template
-                 left join (select * from t_b_tool_base where deleted = 0) as tbtb
-                           on tbtb.id = t_b_tool_template.base_id
-        where t_b_tool_template.deleted = 0
+        left join (select * from t_b_tool_base where deleted = 0) as tbtb
+        on tbtb.id = t_b_tool_template.base_id
+        <where>
+            and t_b_tool_template.deleted = 0
+            <foreach collection="platform" item="item" index="index" open="and t_b_tool_template.platform in ("
+                     separator="," close=")" nullable="true">
+                #{item}
+            </foreach>
+        </where>
     </select>
 
     <resultMap id="toolTemplateMap" type="toolTemplate">
@@ -50,6 +58,7 @@
         <result property="name" column="tool_template_name"/>
         <result property="baseId" column="tool_template_base_id"/>
         <result property="sourceId" column="tool_template_source_id"/>
+        <result property="platform" column="tool_template_platform"/>
         <result property="entryPoint" column="tool_template_entry_point"/>
         <result property="enable" column="tool_template_enable"/>
         <result property="createTime" column="tool_template_create_time"/>

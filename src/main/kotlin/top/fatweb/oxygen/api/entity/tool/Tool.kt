@@ -61,6 +61,16 @@ class Tool {
     var icon: String? = null
 
     /**
+     * Platform
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see ToolBase.Platform
+     */
+    @TableField("platform")
+    var platform: ToolBase.Platform? = null
+
+    /**
      * Description
      *
      * @author FatttSnake, fatttsnake@gmail.com
@@ -237,6 +247,6 @@ class Tool {
     var dist: ToolData? = null
 
     override fun toString(): String {
-        return "Tool(id=$id, name=$name, toolId=$toolId, icon=$icon, description=$description, baseId=$baseId, authorId=$authorId, ver=$ver, keywords=$keywords, sourceId=$sourceId, distId=$distId, entryPoint=$entryPoint, publish=$publish, review=$review, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version, author=$author, base=$base, categories=$categories, source=$source, dist=$dist)"
+        return "Tool(id=$id, name=$name, toolId=$toolId, icon=$icon, platform=$platform, description=$description, baseId=$baseId, authorId=$authorId, ver=$ver, keywords=$keywords, sourceId=$sourceId, distId=$distId, entryPoint=$entryPoint, publish=$publish, review=$review, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version, author=$author, base=$base, categories=$categories, source=$source, dist=$dist)"
     }
 }

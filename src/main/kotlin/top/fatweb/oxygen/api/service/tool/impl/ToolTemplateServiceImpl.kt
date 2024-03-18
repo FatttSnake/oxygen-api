@@ -1,5 +1,6 @@
 package top.fatweb.oxygen.api.service.tool.impl
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -9,10 +10,13 @@ import top.fatweb.oxygen.api.entity.tool.ToolTemplate
 import top.fatweb.oxygen.api.exception.NoRecordFoundException
 import top.fatweb.oxygen.api.mapper.tool.ToolTemplateMapper
 import top.fatweb.oxygen.api.param.tool.ToolTemplateAddParam
+import top.fatweb.oxygen.api.param.tool.ToolTemplateGetParam
 import top.fatweb.oxygen.api.param.tool.ToolTemplateUpdateParam
 import top.fatweb.oxygen.api.service.tool.IToolBaseService
 import top.fatweb.oxygen.api.service.tool.IToolDataService
 import top.fatweb.oxygen.api.service.tool.IToolTemplateService
+import top.fatweb.oxygen.api.util.PageUtil
+import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.tool.ToolTemplateVo
 
 /**
@@ -34,12 +38,20 @@ class ToolTemplateServiceImpl(
         baseMapper.selectOne(id)?.let(ToolTemplateConverter::toolTemplateToToolTemplateVo)
             ?: throw NoRecordFoundException()
 
-    override fun get(): List<ToolTemplateVo> =
-        baseMapper.selectList().map(ToolTemplateConverter::toolTemplateToToolTemplateVo)
+    override fun get(toolTemplateGetParam: ToolTemplateGetParam?): PageVo<ToolTemplateVo> {
+        val templatePage =
+            Page<ToolTemplate>(toolTemplateGetParam?.currentPage ?: 1, toolTemplateGetParam?.pageSize ?: 20)
+
+        PageUtil.setPageSort(toolTemplateGetParam, templatePage)
+
+        return ToolTemplateConverter.toolTemplatePageToToolTemplatePageVo(
+            baseMapper.selectListWithBaseName(templatePage, toolTemplateGetParam?.platform?.split(","))
+        )
+    }
 
     @Transactional
     override fun add(toolTemplateAddParam: ToolTemplateAddParam): ToolTemplateVo {
-        toolBaseService.getOne(toolTemplateAddParam.baseId!!)
+        val toolBase = toolBaseService.getOne(toolTemplateAddParam.baseId!!)
 
         val newSource = ToolData().apply { data = "" }
 
@@ -50,6 +62,7 @@ class ToolTemplateServiceImpl(
             baseId = toolTemplateAddParam.baseId
             sourceId = newSource.id
             source = newSource
+            platform = toolBase.platform
             entryPoint = toolTemplateAddParam.entryPoint
             enable = if (toolTemplateAddParam.enable) 1 else 0
         }
@@ -62,7 +75,6 @@ class ToolTemplateServiceImpl(
     @Transactional
     override fun update(toolTemplateUpdateParam: ToolTemplateUpdateParam): ToolTemplateVo {
         val toolTemplate = baseMapper.selectOne(toolTemplateUpdateParam.id!!) ?: throw NoRecordFoundException()
-        toolTemplateUpdateParam.baseId?.let(toolBaseService::getOne)
 
         toolDataService.updateById(ToolData().apply {
             id = toolTemplate.sourceId
@@ -72,7 +84,6 @@ class ToolTemplateServiceImpl(
         this.updateById(ToolTemplate().apply {
             id = toolTemplateUpdateParam.id
             name = toolTemplateUpdateParam.name
-            baseId = toolTemplateUpdateParam.baseId
             entryPoint = toolTemplateUpdateParam.entryPoint
             enable = toolTemplateUpdateParam.enable?.let { if (it) 1 else 0 }
         })

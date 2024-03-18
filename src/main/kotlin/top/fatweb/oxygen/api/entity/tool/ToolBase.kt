@@ -1,6 +1,7 @@
 package top.fatweb.oxygen.api.entity.tool
 
 import com.baomidou.mybatisplus.annotation.*
+import com.fasterxml.jackson.annotation.JsonValue
 import java.time.LocalDateTime
 
 /**
@@ -11,6 +12,16 @@ import java.time.LocalDateTime
  */
 @TableName("t_b_tool_base")
 class ToolBase {
+    /**
+     * Platform enum
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    enum class Platform(@field:EnumValue @field:JsonValue val code: String) {
+        WEB("WEB"), DESKTOP("DESKTOP"), ANDROID("ANDROID")
+    }
+
     /**
      * ID
      *
@@ -46,6 +57,16 @@ class ToolBase {
      */
     @TableField("dist_id")
     var distId: Long? = null
+
+    /**
+     * Platform
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see Platform
+     */
+    @TableField("platform")
+    var platform: Platform? = null
 
     /**
      * Has compiled
@@ -124,6 +145,6 @@ class ToolBase {
     var distData: String? = null
 
     override fun toString(): String {
-        return "ToolBase(id=$id, name=$name, sourceId=$sourceId, distId=$distId, compiled=$compiled, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version, source=$source, dist=$dist, distData=$distData)"
+        return "ToolBase(id=$id, name=$name, sourceId=$sourceId, distId=$distId, platform=$platform, compiled=$compiled, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version, source=$source, dist=$dist, distData=$distData)"
     }
 }

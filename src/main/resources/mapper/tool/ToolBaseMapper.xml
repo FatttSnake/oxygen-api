@@ -6,6 +6,7 @@
                t_b_tool_base.name        as tool_base_name,
                t_b_tool_base.source_id   as tool_base_source_id,
                t_b_tool_base.dist_id     as tool_base_dist_id,
+               t_b_tool_base.platform    as tool_base_platform,
                t_b_tool_base.compiled    as tool_base_compiled,
                t_b_tool_base.create_time as tool_base_create_time,
                t_b_tool_base.update_time as tool_base_update_time,
@@ -34,6 +35,7 @@
         <result property="name" column="tool_base_name"/>
         <result property="sourceId" column="tool_base_source_id"/>
         <result property="distId" column="tool_base_dist_id"/>
+        <result property="platform" column="tool_base_platform"/>
         <result property="compiled" column="tool_base_compiled"/>
         <result property="createTime" column="tool_base_create_time"/>
         <result property="updateTime" column="tool_base_update_time"/>

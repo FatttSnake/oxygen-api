@@ -43,6 +43,7 @@ interface ManagementMapper : BaseMapper<Tool> {
     fun selectPage(
         page: IPage<Long>,
         @Param("review") review: List<String>?,
+        @Param("platform") platform: List<String>?,
         @Param("searchType") searchType: String,
         @Param("searchValue") searchValue: String?,
         @Param("searchRegex") searchRegex: Boolean

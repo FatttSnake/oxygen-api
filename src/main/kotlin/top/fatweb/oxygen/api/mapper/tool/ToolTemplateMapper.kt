@@ -1,6 +1,7 @@
 package top.fatweb.oxygen.api.mapper.tool
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper
+import com.baomidou.mybatisplus.core.metadata.IPage
 import org.apache.ibatis.annotations.Mapper
 import org.apache.ibatis.annotations.Param
 import top.fatweb.oxygen.api.entity.tool.ToolTemplate
@@ -34,5 +35,8 @@ interface ToolTemplateMapper : BaseMapper<ToolTemplate> {
      * @since 1.0.0
      * @see ToolTemplate
      */
-    fun selectList(): List<ToolTemplate>
+    fun selectListWithBaseName(
+        page: IPage<ToolTemplate>,
+        @Param("platform") platform: List<String>?
+    ): IPage<ToolTemplate>
 }

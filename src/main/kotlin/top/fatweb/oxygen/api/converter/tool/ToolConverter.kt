@@ -28,6 +28,7 @@ object ToolConverter {
         name = tool.name,
         toolId = tool.toolId,
         icon = tool.icon,
+        platform = tool.platform,
         description = tool.description,
         base = tool.base?.let(ToolBaseConverter::toolBaseToToolBaseVo),
         author = tool.author?.let(UserConverter::userToUserWithInfoVo),

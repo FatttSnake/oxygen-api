@@ -112,8 +112,8 @@ data class UserUpdateParam(
      */
     @Trim
     @Schema(description = "邮箱", required = true, example = "user@email.com")
-    @NotBlank(message = "Email can not be blank")
-    @Pattern(regexp = "^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*\$", message = "Illegal email address")
+    @field:NotBlank(message = "Email can not be blank")
+    @field:Pattern(regexp = "^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*\$", message = "Illegal email address")
     var email: String?,
 
     /**

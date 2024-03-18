@@ -62,5 +62,18 @@ data class ToolManagementGetParam(
         allowableValues = ["NONE", "PROCESSING", "REJECT", "PASS"],
         example = "NONE,PASS"
     )
-    val review: String?
+    val review: String?,
+
+    /**
+     * Platform
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @Schema(
+        description = "平台过滤(多个使用逗号分隔)",
+        allowableValues = ["WEB", "DESKTOP", "ANDROID"],
+        example = "WEB"
+    )
+    val platform: String?
 ) : PageSortParam()

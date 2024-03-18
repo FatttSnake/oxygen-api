@@ -9,8 +9,10 @@ import top.fatweb.oxygen.api.annotation.Trim
 import top.fatweb.oxygen.api.entity.common.ResponseCode
 import top.fatweb.oxygen.api.entity.common.ResponseResult
 import top.fatweb.oxygen.api.param.tool.ToolTemplateAddParam
+import top.fatweb.oxygen.api.param.tool.ToolTemplateGetParam
 import top.fatweb.oxygen.api.param.tool.ToolTemplateUpdateParam
 import top.fatweb.oxygen.api.service.tool.IToolTemplateService
+import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.tool.ToolTemplateVo
 
 /**
@@ -41,19 +43,22 @@ class TemplateController(
         ResponseResult.databaseSuccess(data = toolTemplateService.getOne(id))
 
     /**
-     * Get tool template list
+     * Get tool template paging information
      *
-     * @return Response object includes tool template list
+     * @param toolTemplateGetParam Get tool template parameters
+     * @return Response object includes tool template paging information
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see ToolTemplateGetParam
      * @see ResponseResult
+     * @see PageVo
      * @see ToolTemplateVo
      */
     @Operation(summary = "获取模板")
     @GetMapping
     @PreAuthorize("hasAnyAuthority('system:tool:query:template')")
-    fun get(): ResponseResult<List<ToolTemplateVo>> =
-        ResponseResult.databaseSuccess(data = toolTemplateService.get())
+    fun get(toolTemplateGetParam: ToolTemplateGetParam?): ResponseResult<PageVo<ToolTemplateVo>> =
+        ResponseResult.databaseSuccess(data = toolTemplateService.get(toolTemplateGetParam))
 
     /**
      * Add tool template

@@ -3,7 +3,9 @@ package top.fatweb.oxygen.api.service.tool
 import com.baomidou.mybatisplus.extension.service.IService
 import top.fatweb.oxygen.api.entity.tool.ToolTemplate
 import top.fatweb.oxygen.api.param.tool.ToolTemplateAddParam
+import top.fatweb.oxygen.api.param.tool.ToolTemplateGetParam
 import top.fatweb.oxygen.api.param.tool.ToolTemplateUpdateParam
+import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.tool.ToolTemplateVo
 
 /**
@@ -27,14 +29,16 @@ interface IToolTemplateService : IService<ToolTemplate> {
     fun getOne(id: Long): ToolTemplateVo
 
     /**
-     * Get tool template in list
+     * Get tool template in page
      *
-     * @return List of ToolTemplateVo object
+     * @return Page of ToolTemplateVo object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see ToolTemplateGetParam
+     * @see PageVo
      * @see ToolTemplateVo
      */
-    fun get(): List<ToolTemplateVo>
+    fun get(toolTemplateGetParam: ToolTemplateGetParam?): PageVo<ToolTemplateVo>
 
     /**
      * Add tool template

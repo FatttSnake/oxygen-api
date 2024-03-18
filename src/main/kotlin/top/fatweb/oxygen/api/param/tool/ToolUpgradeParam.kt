@@ -2,8 +2,10 @@ package top.fatweb.oxygen.api.param.tool
 
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotBlank
+import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Pattern
 import top.fatweb.oxygen.api.annotation.Trim
+import top.fatweb.oxygen.api.entity.tool.ToolBase
 
 /**
  * Upgrade tool parameters
@@ -28,6 +30,18 @@ data class ToolUpgradeParam(
         message = "Ver can only match '^[a-zA-Z-_][0-9a-zA-Z-_]{2,19}\$'"
     )
     var toolId: String?,
+
+    /**
+     * Platform
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see ToolBase.Platform
+     */
+    @Schema(description = "平台")
+    @field:NotNull(message = "Platform can not be null")
+    val platform: ToolBase.Platform?,
+
 
     /**
      * Version
