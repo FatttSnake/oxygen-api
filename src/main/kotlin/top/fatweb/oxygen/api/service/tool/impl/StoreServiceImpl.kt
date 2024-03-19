@@ -28,10 +28,10 @@ class StoreServiceImpl : ServiceImpl<StoreMapper, Tool>(), IStoreService {
         val toolIdsPage = Page<Long>(toolStoreGetParam?.currentPage ?: 1, 20)
         toolIdsPage.setOptimizeCountSql(false)
 
-        val toolIdsIPage = baseMapper.selectPage(toolIdsPage, toolStoreGetParam?.searchValue)
+        val toolIdsIPage = baseMapper.selectAuthorToolIdPage(toolIdsPage, toolStoreGetParam?.searchValue)
         val toolPage = Page<Tool>(toolIdsIPage.current, toolIdsIPage.size, toolIdsIPage.total)
         if (toolIdsIPage.total > 0) {
-            toolPage.setRecords(baseMapper.selectListByIds(toolIdsIPage.records))
+            toolPage.setRecords(baseMapper.selectListByAuthorToolIds(toolIdsIPage.records))
         }
 
         return ToolConverter.toolPageToToolPageVo(toolPage)
@@ -41,10 +41,10 @@ class StoreServiceImpl : ServiceImpl<StoreMapper, Tool>(), IStoreService {
         val toolIdsPage = Page<Long>(pageSortParam.currentPage, 20)
         toolIdsPage.setOptimizeCountSql(false)
 
-        val toolIdsIPage = baseMapper.selectPageByUsername(toolIdsPage, username)
+        val toolIdsIPage = baseMapper.selectAuthorToolIdPageByUsername(toolIdsPage, username)
         val toolPage = Page<Tool>(toolIdsIPage.current, toolIdsIPage.size, toolIdsIPage.total)
         if (toolIdsIPage.total > 0) {
-            toolPage.setRecords(baseMapper.selectListByIds(toolIdsIPage.records))
+            toolPage.setRecords(baseMapper.selectListByAuthorToolIds(toolIdsIPage.records))
         }
 
         return ToolConverter.toolPageToToolPageVo(toolPage)

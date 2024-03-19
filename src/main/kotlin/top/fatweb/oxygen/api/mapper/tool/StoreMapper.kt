@@ -17,16 +17,16 @@ import top.fatweb.oxygen.api.entity.tool.Tool
 @Mapper
 interface StoreMapper : BaseMapper<Tool> {
     /**
-     * Select tool ID in page
+     * Select author and tool ID in page
      *
      * @param page Pagination
      * @param searchValue Value to search for
-     * @return Tool ID in page
+     * @return Author:Tool_ID in page
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see IPage
      */
-    fun selectPage(page: IPage<Long>, @Param("searchValue") searchValue: String?): IPage<Long>
+    fun selectAuthorToolIdPage(page: IPage<Long>, @Param("searchValue") searchValue: String?): IPage<String>
 
     /**
      * Select tool ID by username in page
@@ -38,7 +38,7 @@ interface StoreMapper : BaseMapper<Tool> {
      * @since 1.0.0
      * @see IPage
      */
-    fun selectPageByUsername(page: IPage<Long>, @Param("username") username: String): IPage<Long>
+    fun selectAuthorToolIdPageByUsername(page: IPage<Long>, @Param("username") username: String): IPage<String>
 
     /**
      * Select tool in list by tool IDs
@@ -50,4 +50,15 @@ interface StoreMapper : BaseMapper<Tool> {
      * @see Tool
      */
     fun selectListByIds(@Param("ids") ids: List<Long>): List<Tool>
+
+    /**
+     * Select tool in list by Author:Tool_ID
+     *
+     * @param ids List of Author:Tool_ID
+     * @return List of tool object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see Tool
+     */
+    fun selectListByAuthorToolIds(@Param("ids") ids: List<String>): List<Tool>
 }
