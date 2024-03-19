@@ -1,58 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="top.fatweb.oxygen.api.mapper.tool.StoreMapper">
-    <select id="selectPage" resultType="long">
-        select distinct tb.id from
-        (
-        select tbtm.id
-        from (select temp.*
-        from (select *,
-        row_number() over (partition by t_b_tool_main.tool_id, t_b_tool_main.author_id order by t_b_tool_main.id desc)
-        as rn
-        from t_b_tool_main where deleted = 0) temp
-        where temp.rn = 1) as tbtm
-        left join json_table(json_extract(tbtm.keywords, '$[*]'), '$[*]' columns (keyword varchar(50) path '$')) as tk
-        on true
-        <where>
-            and tbtm.publish != 0 and tbtm.review = 'PASS'
-            <if test="searchValue != null">
-                and (
-                tbtm.name like concat('%', #{searchValue}, '%')
-                or tk.keyword like concat('%', #{searchValue}, '%')
-                )
-            </if>
-        </where>
-        <choose>
-            <when test="searchValue != null">
-                order by instr(tbtm.name, #{searchValue}) = 0,
-                char_length(tbtm.name),
-                instr(tbtm.name, #{searchValue}),
-                instr(tk.keyword, #{searchValue}) = 0,
-                char_length(tk.keyword),
-                instr(tk.keyword, #{searchValue})
-            </when>
-            <otherwise>
-                order by tbtm.publish desc
-            </otherwise>
-        </choose>
-        ) as tb
+    <select id="selectAuthorToolIdPage" resultType="string">
+        select concat(temp2.author_id, ':', temp2.tool_id)
+        from (select temp1.tool_id, temp1.author_id, row_number() over (partition by temp1.tool_id, temp1.author_id) as rn2
+            from (select temp0.*
+                from (select *, row_number() over (partition by t_b_tool_main.tool_id, t_b_tool_main.author_id order by t_b_tool_main.id desc) as rn1
+                    from t_b_tool_main
+                    where t_b_tool_main.deleted = 0
+                    ) as temp0
+                where temp0.rn1 = 1
+            ) as temp1
+            left join json_table(json_extract(temp1.keywords, '$[*]'), '$[*]' columns (keyword varchar(50) path '$')) as tk on true
+            <where>
+                and temp1.publish != 0 and temp1.review = 'PASS'
+                <if test="searchValue != null">
+                    and (
+                    temp1.name like concat('%', #{searchValue}, '%')
+                    or tk.keyword like concat('%', #{searchValue}, '%')
+                    )
+                </if>
+            </where>
+            <choose>
+                <when test="searchValue != null">
+                    order by instr(temp1.name, #{searchValue}) = 0,
+                    char_length(temp1.name),
+                    instr(temp1.name, #{searchValue}),
+                    instr(tk.keyword, #{searchValue}) = 0,
+                    char_length(tk.keyword),
+                    instr(tk.keyword, #{searchValue})
+                </when>
+                <otherwise>
+                    order by temp1.publish desc
+                </otherwise>
+            </choose>
+            ) as temp2
+        where temp2.rn2 = 1
     </select>
 
-    <select id="selectPageByUsername" resultType="long">
-        select distinct tb.id
-        from (select tbtm.id
-              from (select temp.id, temp.author_id, temp.review, temp.publish
-                    from (select *,
-                                 row_number() over (partition by t_b_tool_main.tool_id, t_b_tool_main.author_id order by t_b_tool_main.id desc)
-                                     as rn
-                          from t_b_tool_main
-                          where deleted = 0) temp
-                    where temp.rn = 1) as tbtm
-                       left join (select * from t_s_user where deleted = 0) as tsu on tsu.id = tbtm.author_id
-              where tbtm.publish != 0
-                and tbtm.review = 'PASS'
-                and tsu.username = #{username}
-              order by tbtm.publish desc) as tb
+    <select id="selectAuthorToolIdPageByUsername" resultType="string">
+        select concat(temp2.author_id, ':', temp2.tool_id)
+        from (select temp1.tool_id, temp1.author_id, row_number() over (partition by temp1.tool_id, temp1.author_id) as rn2
+            from (select temp0.*
+                from (select *, row_number() over (partition by t_b_tool_main.tool_id, t_b_tool_main.author_id order by t_b_tool_main.id desc) as rn1
+                    from t_b_tool_main
+                    where t_b_tool_main.deleted = 0
+                    ) as temp0
+                where temp0.rn1 = 1
+                ) as temp1
+            left join (select * from t_s_user where deleted = 0) as tsu on tsu.id = temp1.author_id
+            where temp1.publish != 0
+              and temp1.review = 'PASS'
+              and tsu.username = #{username}
+            order by temp1.publish desc
+        ) as temp2
+        where temp2.rn2 = 1
     </select>
 
     <select id="selectListByIds" resultMap="top.fatweb.oxygen.api.mapper.tool.ManagementMapper.toolWithAuthor">
@@ -102,6 +104,64 @@
             </foreach>
         </where>
         <foreach collection="ids" item="item" index="index" open="order by field(t_b_tool_main.id," separator=","
+                 close=")" nullable="true">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="selectListByAuthorToolIds" resultMap="top.fatweb.oxygen.api.mapper.tool.ManagementMapper.toolWithAuthor">
+        select tbtm.id as tool_id,
+        tbtm.name as tool_name,
+        tbtm.tool_id as tool_tool_id,
+        tbtm.icon as tool_icon,
+        tbtm.platform as tool_platform,
+        tbtm.description as tool_description,
+        tbtm.base_id as tool_base_id,
+        tbtm.author_id as tool_author_id,
+        tbtm.ver as tool_ver,
+        tbtm.keywords as tool_keywords,
+        tbtm.source_id as tool_source_id,
+        tbtm.dist_id as tool_dist_id,
+        tbtm.entry_point as tool_entry_point,
+        tbtm.publish as tool_publish,
+        tbtm.review as tool_review,
+        tbtm.create_time as tool_create_time,
+        tbtm.update_time as tool_update_time,
+        tbtm.deleted as tool_deleted,
+        tbtm.version as tool_version,
+        tsu.id as user_id,
+        tsu.username as user_username,
+        tsui.id as user_info_id,
+        tsui.nickname as user_info_nickname,
+        tsui.avatar as user_info_avatar,
+        tbtc.id as tool_category_id,
+        tbtc.name as tool_category_name,
+        tbtc.enable as tool_category_enable,
+        tbtc.create_time as tool_category_create_time,
+        tbtc.update_time as tool_category_update_time,
+        tbtc.deleted as tool_category_deleted,
+        tbtc.version as tool_category_version
+        from (select *, row_number() over (partition by t_b_tool_main.tool_id, t_b_tool_main.author_id, t_b_tool_main.platform order by t_b_tool_main.publish desc) as rn
+              from t_b_tool_main
+              where deleted = 0
+                and t_b_tool_main.publish != 0
+                and t_b_tool_main.review = 'PASS'
+              ) as tbtm
+        left join (select * from t_s_user where deleted = 0) as tsu on tsu.id = tbtm.author_id
+        left join (select * from t_s_user_info where deleted = 0) as tsui
+        on tsui.user_id = tbtm.author_id
+        left join (select * from t_r_tool_main_category where deleted = 0) as trtmc
+        on tbtm.id = trtmc.tool_id
+        left join (select * from t_b_tool_category where deleted = 0 and enable = 1) as tbtc
+        on tbtc.id = trtmc.category_id
+        <where>
+            and tbtm.rn = 1
+            <foreach collection="ids" item="item" index="index" open="and concat(tbtm.author_id, ':', tbtm.tool_id) in (" separator="," close=")"
+                     nullable="true">
+                #{item}
+            </foreach>
+        </where>
+        <foreach collection="ids" item="item" index="index" open="order by field(concat(tbtm.author_id, ':', tbtm.tool_id)," separator=","
                  close=")" nullable="true">
             #{item}
         </foreach>
