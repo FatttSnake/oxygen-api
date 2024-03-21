@@ -130,6 +130,7 @@ class EditServiceImpl(
             name = originalTool.name!!
             toolId = originalTool.toolId
             icon = originalTool.icon
+            platform = originalTool.platform
             description = originalTool.description
             baseId = originalTool.base!!.id
             authorId = WebUtil.getLoginUserId()!!
