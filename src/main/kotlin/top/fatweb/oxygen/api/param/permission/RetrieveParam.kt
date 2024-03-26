@@ -32,6 +32,6 @@ data class RetrieveParam(
      */
     @Schema(description = "新密码")
     @field:NotBlank(message = "New password can not be blank")
-    @field:Size(min = 10, max = 30)
+    @field:Size(min = 10, max = 30, message = "New password must be 10-30 characters")
     val password: String?
 ) : CaptchaCodeParam()

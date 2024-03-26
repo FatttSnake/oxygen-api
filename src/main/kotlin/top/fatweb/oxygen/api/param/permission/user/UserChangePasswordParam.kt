@@ -30,6 +30,6 @@ data class UserChangePasswordParam(
      */
     @Schema(description = "原密码", required = true)
     @field:NotBlank(message = "New password can not be blank")
-    @field:Size(min = 10, max = 30, message = "New password must be 10-20 characters")
+    @field:Size(min = 10, max = 30, message = "New password must be 10-30 characters")
     val newPassword: String?
 )

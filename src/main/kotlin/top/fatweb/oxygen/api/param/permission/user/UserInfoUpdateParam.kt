@@ -32,6 +32,6 @@ data class UserInfoUpdateParam(
     @Trim
     @Schema(description = "昵称", example = "QwQ")
     @field:NotBlank(message = "Nickname can not be blank")
-    @field:Size(min = 3, max = 30, message = "Nickname must be 3-20 characters")
+    @field:Size(min = 3, max = 20, message = "Nickname must be 3-20 characters")
     var nickname: String?
 )

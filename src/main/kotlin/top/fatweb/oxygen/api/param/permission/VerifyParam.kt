@@ -2,7 +2,7 @@ package top.fatweb.oxygen.api.param.permission
 
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotBlank
-import jakarta.validation.constraints.Pattern
+import jakarta.validation.constraints.Size
 import top.fatweb.oxygen.api.annotation.Trim
 
 /**
@@ -32,7 +32,7 @@ data class VerifyParam(
      */
     @Trim
     @Schema(description = "昵称", example = "QwQ")
-    @field:Pattern(regexp = "^.{3,20}$", message = "Nickname must be 3-20 characters")
+    @field:Size(min = 3, max = 20, message = "Nickname must be 3-20 characters")
     var nickname: String?,
 
     /**

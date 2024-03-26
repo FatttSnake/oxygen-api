@@ -49,6 +49,6 @@ data class RegisterParam(
      */
     @Schema(description = "密码", required = true)
     @field:NotBlank(message = "Password can not be blank")
-    @field:Size(min = 10, max = 30, message = "Password must be 10-20 characters")
+    @field:Size(min = 10, max = 30, message = "Password must be 10-30 characters")
     val password: String?
 ) : CaptchaCodeParam()
