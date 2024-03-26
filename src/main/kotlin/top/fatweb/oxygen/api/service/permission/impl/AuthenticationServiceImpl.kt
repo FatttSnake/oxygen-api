@@ -165,7 +165,7 @@ class AuthenticationServiceImpl(
             LocalDateTime.now(ZoneOffset.UTC).toInstant(ZoneOffset.UTC).toEpochMilli()
         }-${UUID.randomUUID()}-${UUID.randomUUID()}-${UUID.randomUUID()}"
         userService.update(KtUpdateWrapper(User()).eq(User::id, user.id).set(User::forget, code))
-        sendRetrieveMail(user.username!!, request.remoteAddr, code, forgetParam.email!!)
+        sendRetrieveMail(user.username!!, WebUtil.getRequestIp(request), code, forgetParam.email!!)
     }
 
     @Transactional
@@ -197,7 +197,7 @@ class AuthenticationServiceImpl(
 
         WebUtil.offlineUser(redisUtil, user.id!!)
 
-        sendPasswordChangedMail(user.username!!, request.remoteAddr, userInfo!!.email!!)
+        sendPasswordChangedMail(user.username!!, WebUtil.getRequestIp(request), userInfo!!.email!!)
     }
 
     @EventLogRecord(EventLog.Event.LOGIN)
@@ -377,9 +377,9 @@ class AuthenticationServiceImpl(
             }
         }
 
-        logger.info("用户登录 [用户名: '{}', IP: '{}']", loginUser.username, request.remoteAddr)
+        logger.info("用户登录 [用户名: '{}', IP: '{}']", loginUser.username, WebUtil.getRequestIp(request))
         userService.update(User().apply {
-            currentLoginIp = request.remoteAddr
+            currentLoginIp = WebUtil.getRequestIp(request)
             currentLoginTime = LocalDateTime.now(ZoneOffset.UTC)
             lastLoginIp = loginUser.user.currentLoginIp
             lastLoginTime = loginUser.user.currentLoginTime

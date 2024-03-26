@@ -49,7 +49,7 @@ class SysLogInterceptor(
             requestUri = URI(request.requestURI).path
             requestParams = formatParams(request.parameterMap)
             requestMethod = request.method
-            requestIp = request.remoteAddr
+            requestIp = WebUtil.getRequestIp(request)
             requestServerAddress = "${request.scheme}://${request.serverName}:${request.serverPort}"
             userAgent = request.getHeader("User-Agent")
         }
