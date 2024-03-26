@@ -62,8 +62,5 @@ logging:
 #      max-file-size: 10MB # Maximum log file size
 #      max-history: 7 # Maximum number of archive log files to keep
 
-mybatis-plus:
-  type-aliases-package: top.fatweb.oxygen.api.entity
-
 knife4j:
   production: true # Production environment mode will block doc

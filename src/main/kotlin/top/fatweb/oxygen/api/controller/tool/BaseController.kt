@@ -8,7 +8,6 @@ import top.fatweb.oxygen.api.annotation.BaseController
 import top.fatweb.oxygen.api.annotation.Trim
 import top.fatweb.oxygen.api.entity.common.ResponseCode
 import top.fatweb.oxygen.api.entity.common.ResponseResult
-import top.fatweb.oxygen.api.param.PageSortParam
 import top.fatweb.oxygen.api.param.tool.ToolBaseAddParam
 import top.fatweb.oxygen.api.param.tool.ToolBaseGetParam
 import top.fatweb.oxygen.api.param.tool.ToolBaseUpdateParam
