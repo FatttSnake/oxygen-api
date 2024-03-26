@@ -76,4 +76,31 @@ object WebUtil {
 
         redisUtil.delObject(keys)
     }
+
+    /**
+     * Get real request IP
+     *
+     * @param request HttpServletRequest object
+     * @return IP address
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see HttpServletRequest
+     */
+    fun getRequestIp(request: HttpServletRequest): String {
+        var ip = request.getHeader("X-Real-IP")
+        if (!ip.isNullOrBlank() && !"unknown".equals(ip, true)) {
+            return ip
+        }
+        ip = request.getHeader("X-Forwarded-For")
+        return if (!ip.isNullOrBlank() && !"unknown".equals(ip, true)) {
+            val index = ip.indexOf(",")
+            if (index != -1) {
+                ip.substring(0, index)
+            } else {
+                ip
+            }
+        } else {
+            request.remoteAddr
+        }
+    }
 }
