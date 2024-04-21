@@ -148,7 +148,7 @@ class GroupServiceImpl(
     }
 
     private fun offlineUser(vararg groupIds: Long) {
-        val userIds = userService.getIdsWithGroupIds(groupIds.toList())
+        val userIds = userService.getIdsByGroupIds(groupIds.toList())
         WebUtil.offlineUser(redisUtil, *userIds.toLongArray())
     }
 }
