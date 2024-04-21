@@ -16,13 +16,12 @@ import retrofit2.converter.jackson.JacksonConverterFactory
 @Configuration
 class JacksonConfig {
     @Bean
-    fun jacksonConverterFactory(): JacksonConverterFactory {
-        val mapper = JsonMapper.builder()
-            .findAndAddModules()
-            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-            .serializationInclusion(JsonInclude.Include.NON_NULL)
-            .build()
-
-        return JacksonConverterFactory.create(mapper)
-    }
+    fun jacksonConverterFactory(): JacksonConverterFactory =
+        JacksonConverterFactory.create(
+            JsonMapper.builder()
+                .findAndAddModules()
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+                .serializationInclusion(JsonInclude.Include.NON_NULL)
+                .build()
+        )
 }

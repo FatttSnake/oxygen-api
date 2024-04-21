@@ -14,11 +14,9 @@ import top.fatweb.oxygen.api.filter.ExceptionFilter
 @Configuration
 class FilterConfig {
     @Bean
-    fun exceptionFilterRegistrationBean(exceptionFilter: ExceptionFilter): FilterRegistrationBean<ExceptionFilter> {
-        val registrationBean = FilterRegistrationBean(exceptionFilter)
-        registrationBean.setBeanName("exceptionFilter")
-        registrationBean.order = -100
-
-        return registrationBean
-    }
+    fun exceptionFilterRegistrationBean(exceptionFilter: ExceptionFilter): FilterRegistrationBean<ExceptionFilter> =
+        FilterRegistrationBean(exceptionFilter).apply {
+            setBeanName("exceptionFilter")
+            order = -100
+        }
 }

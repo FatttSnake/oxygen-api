@@ -13,12 +13,8 @@ import java.lang.reflect.Method
  */
 class ApiResponseMappingHandlerMapping : RequestMappingHandlerMapping() {
 
-    private fun createCondition(clazz: Class<*>): RequestCondition<ApiVersionCondition>? {
-        val apiController = clazz.getAnnotation(ApiController::class.java)
-        apiController ?: return null
-
-        return ApiVersionCondition(apiController.version)
-    }
+    private fun createCondition(clazz: Class<*>): RequestCondition<ApiVersionCondition>? =
+        clazz.getAnnotation(ApiController::class.java)?.version?.let { ApiVersionCondition(it) }
 
     override fun getCustomMethodCondition(method: Method): RequestCondition<*>? = createCondition(method.javaClass)
 
