@@ -2,6 +2,7 @@ package top.fatweb.oxygen.api.param.tool
 
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotNull
+import jakarta.validation.constraints.Pattern
 import top.fatweb.oxygen.api.annotation.Trim
 
 /**
@@ -30,6 +31,7 @@ data class ToolCategoryUpdateParam(
      */
     @Trim
     @Schema(description = "名称")
+    @field: Pattern(regexp = "^.*\\S.*$", message = "Name can not be blank")
     var name: String?,
 
     /**

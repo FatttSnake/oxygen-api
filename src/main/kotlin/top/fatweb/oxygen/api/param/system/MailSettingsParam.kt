@@ -40,7 +40,7 @@ data class MailSettingsParam(
      * @since 1.0.0
      */
     @Schema(description = "安全类型", allowableValues = ["None", "SSL/TLS", "StartTls"], defaultValue = "None")
-    val securityType: MailSecurityType? = MailSecurityType.NONE,
+    val securityType: MailSecurityType = MailSecurityType.NONE,
 
     /**
      * Username
