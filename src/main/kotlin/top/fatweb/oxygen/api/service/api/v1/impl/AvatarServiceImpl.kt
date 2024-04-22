@@ -56,12 +56,12 @@ class AvatarServiceImpl : IAvatarService {
 
     override fun triangle(avatarBaseParam: AvatarBaseParam?): ByteArray {
         val avatar = (
-            if (avatarBaseParam == null || avatarBaseParam.colors.isNullOrEmpty())
-                TriangleAvatar.newAvatarBuilder()
-            else TriangleAvatar.newAvatarBuilder(
-                *avatarBaseParam.colors!!.map(::decodeColor).toTypedArray()
-            )
-            ).apply {
+                if (avatarBaseParam == null || avatarBaseParam.colors.isNullOrEmpty())
+                    TriangleAvatar.newAvatarBuilder()
+                else TriangleAvatar.newAvatarBuilder(
+                    *avatarBaseParam.colors!!.map(::decodeColor).toTypedArray()
+                )
+                ).apply {
                 avatarBaseParam?.size?.let(::size)
                 avatarBaseParam?.margin?.let(::margin)
                 avatarBaseParam?.padding?.let(::padding)
@@ -76,12 +76,12 @@ class AvatarServiceImpl : IAvatarService {
 
     override fun square(avatarBaseParam: AvatarBaseParam?): ByteArray {
         val avatar = (
-            if (avatarBaseParam == null || avatarBaseParam.colors.isNullOrEmpty())
-                SquareAvatar.newAvatarBuilder()
-            else SquareAvatar.newAvatarBuilder(
-                *avatarBaseParam.colors!!.map(::decodeColor).toTypedArray()
-            )
-            ).apply {
+                if (avatarBaseParam == null || avatarBaseParam.colors.isNullOrEmpty())
+                    SquareAvatar.newAvatarBuilder()
+                else SquareAvatar.newAvatarBuilder(
+                    *avatarBaseParam.colors!!.map(::decodeColor).toTypedArray()
+                )
+                ).apply {
                 avatarBaseParam?.size?.let(::size)
                 avatarBaseParam?.margin?.let(::margin)
                 avatarBaseParam?.padding?.let(::padding)

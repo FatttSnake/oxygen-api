@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer
 import org.springframework.boot.jackson.JsonComponent
 import org.springframework.context.annotation.Bean
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -41,11 +40,10 @@ class DateFormatConfig {
 
     @Bean
     fun jackson2ObjectMapperBuilder() = Jackson2ObjectMapperBuilderCustomizer {
-        val tz = timeZone
-        val df: DateFormat = SimpleDateFormat(dateFormat)
-        df.timeZone = tz
+        val dateFormat = SimpleDateFormat(dateFormat)
+        dateFormat.timeZone = timeZone
         it.failOnEmptyBeans(false).failOnUnknownProperties(false)
-            .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS).dateFormat(df)
+            .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS).dateFormat(dateFormat)
     }
 
     @Bean
@@ -55,5 +53,4 @@ class DateFormatConfig {
                 LocalDateTime::class.java, LocalDateTimeSerializer(DateTimeFormatter.ofPattern(dateFormat))
             )
         }
-
 }

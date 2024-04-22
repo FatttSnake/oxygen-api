@@ -35,7 +35,7 @@ class SettingsServiceImpl : ISettingsService {
         ),
         retrieveUrl = SettingsOperator.getAppValue(
             BaseSettings::retrieveUrl,
-            "http://localhost/retrieve?code=\${retrieveCode}"
+            "http://localhost/forget?code=\${retrieveCode}"
         )
     )
 

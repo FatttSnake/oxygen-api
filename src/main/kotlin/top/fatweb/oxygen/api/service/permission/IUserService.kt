@@ -161,7 +161,7 @@ interface IUserService : IService<User> {
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    fun getIdsWithRoleIds(roleIds: List<Long>): List<Long>
+    fun getIdsByRoleIds(roleIds: List<Long>): List<Long>
 
     /**
      * Get user IDs list by list of group IDs
@@ -171,5 +171,5 @@ interface IUserService : IService<User> {
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    fun getIdsWithGroupIds(groupIds: List<Long>): List<Long>
+    fun getIdsByGroupIds(groupIds: List<Long>): List<Long>
 }

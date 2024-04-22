@@ -181,7 +181,7 @@ class RoleServiceImpl(
     }
 
     private fun offlineUser(vararg roleIds: Long) {
-        val userIds = userService.getIdsWithRoleIds(roleIds.toList())
+        val userIds = userService.getIdsByRoleIds(roleIds.toList())
         WebUtil.offlineUser(redisUtil, *userIds.toLongArray())
     }
 }

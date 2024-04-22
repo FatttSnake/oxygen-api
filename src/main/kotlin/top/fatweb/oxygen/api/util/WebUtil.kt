@@ -20,8 +20,9 @@ object WebUtil {
      * @since 1.0.0
      * @see LoginUser
      */
-    fun getLoginUser(): LoginUser? = if (SecurityContextHolder.getContext().authentication.principal is String) null
-    else SecurityContextHolder.getContext().authentication.principal as LoginUser
+    fun getLoginUser(): LoginUser? =
+        if (SecurityContextHolder.getContext().authentication.principal is String) null
+        else SecurityContextHolder.getContext().authentication.principal as LoginUser
 
     /**
      * Get ID of the user currently calling api

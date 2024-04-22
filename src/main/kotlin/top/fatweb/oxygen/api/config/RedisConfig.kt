@@ -33,11 +33,11 @@ class RedisConfig {
         }
         val anyJackson2JsonRedisSerializer = Jackson2JsonRedisSerializer(objectMapper, Any::class.java)
 
-        // 使用StringRedisSerializer来序列化和反序列化redis的key值
+        // Use String Redis Serializer to serialize and deserialize redis key values
         redisTemplate.keySerializer = stringRedisSerializer
         redisTemplate.valueSerializer = anyJackson2JsonRedisSerializer
 
-        // Hash的key也采用StringRedisSerializer的序列化方式
+        // The Hash key also uses the String Redis Serializer serialization method.
         redisTemplate.hashKeySerializer = stringRedisSerializer
         redisTemplate.hashValueSerializer = anyJackson2JsonRedisSerializer
 

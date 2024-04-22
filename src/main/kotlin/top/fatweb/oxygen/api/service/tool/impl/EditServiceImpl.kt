@@ -111,15 +111,15 @@ class EditServiceImpl(
         }
 
         val originalVersion = originalTool.ver!!
-        if (originalVersion.split(".").map(String::toLong).joinToString(".") == toolUpgradeParam.ver!!.split(".")
-                .map(String::toLong).joinToString(".")
-        ) {
+        val originalVersionNumberList = originalVersion.split(".").map(String::toLong)
+        val newVersionNumberList = toolUpgradeParam.ver!!.split(".").map(String::toLong)
+        if (!newVersionNumberList.foldIndexed(false) { index: Int, acc: Boolean, version: Long ->
+                if (!acc && originalVersionNumberList[index] > version) {
+                    throw IllegalVersionException()
+                }
+                if (originalVersionNumberList[index] < version) true else acc
+            }) {
             throw IllegalVersionException()
-        }
-        originalVersion.split(".").forEachIndexed { index, s ->
-            if ((toolUpgradeParam.ver.split(".")[index].toLong() < s.toLong())) {
-                throw IllegalVersionException()
-            }
         }
 
         val newSource = ToolData().apply { data = originalTool.source!!.data }
@@ -134,7 +134,7 @@ class EditServiceImpl(
             description = originalTool.description
             baseId = originalTool.base!!.id
             authorId = WebUtil.getLoginUserId()!!
-            ver = toolUpgradeParam.ver.split(".").map(String::toLong).joinToString(".")
+            ver = newVersionNumberList.joinToString(".")
             keywords = originalTool.keywords
             sourceId = newSource.id
             distId = newDist.id
