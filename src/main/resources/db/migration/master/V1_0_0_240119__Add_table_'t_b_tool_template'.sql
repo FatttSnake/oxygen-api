@@ -14,4 +14,4 @@ create table if not exists t_b_tool_template
     deleted     bigint      not null default 0,
     version     int         not null default 0,
     constraint t_b_tool_template_unique_name_platform unique (name, platform, deleted)
-) comment '工具-模板表'
+) comment '工具-模板表';

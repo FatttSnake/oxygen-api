@@ -6,4 +6,4 @@ create table if not exists t_l_statistics_log -- 本地-统计日志表
     key         text    not null,                                               -- 记录键
     value       text    not null,                                               -- 记录值
     record_time text    not null default (strftime('%Y-%m-%d %H:%M:%f', 'now')) -- 记录时间
-)
+);
