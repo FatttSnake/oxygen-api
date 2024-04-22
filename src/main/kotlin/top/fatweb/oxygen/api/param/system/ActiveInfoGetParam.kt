@@ -20,14 +20,14 @@ data class ActiveInfoGetParam(
      */
     @Schema(
         description = "范围",
-        allowableValues = ["WEAK", "MONTH", "QUARTER", "YEAR", "TWO_YEARS", "THREE_YEARS", "FIVE_YEARS", "ALL"],
-        defaultValue = "WEAK",
-        example = "WEAK"
+        allowableValues = ["WEEK", "MONTH", "QUARTER", "YEAR", "TWO_YEARS", "THREE_YEARS", "FIVE_YEARS", "ALL"],
+        defaultValue = "WEEK",
+        example = "WEEK"
     )
-    val scope: Scope = Scope.WEAK
+    val scope: Scope = Scope.WEEK
 ) {
     enum class Scope(@field:EnumValue @field:JsonValue val code: String) {
-        WEAK("WEAK"),
+        WEEK("WEEK"),
 
         MONTH("MONTH"),
 
