@@ -69,5 +69,5 @@ interface EditMapper : BaseMapper<Tool> {
         @Param("ver") ver: String,
         @Param("platform") platform: ToolBase.Platform,
         @Param("operator") operator: String?
-    ): List<Tool>?
+    ): Tool?
 }

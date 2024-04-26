@@ -219,12 +219,9 @@ class EditServiceImpl(
         if (username == "!" && WebUtil.getLoginUserId() == null) {
             throw NoRecordFoundException()
         }
-        val toolList = baseMapper.selectDetail(username, toolId, ver, platform, WebUtil.getLoginUsername())
-        if (toolList.isNullOrEmpty()) {
-            throw NoRecordFoundException()
-        }
 
-        return toolList.first().let(ToolConverter::toolToToolVo)
+        return baseMapper.selectDetail(username, toolId, ver, platform, WebUtil.getLoginUsername())
+            ?.let(ToolConverter::toolToToolVo) ?: throw NoRecordFoundException()
     }
 
     override fun submit(id: Long): Boolean {
