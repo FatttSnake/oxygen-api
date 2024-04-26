@@ -8,12 +8,12 @@
                 from (select *, row_number() over (partition by t_b_tool_main.tool_id, t_b_tool_main.author_id order by t_b_tool_main.id desc) as rn1
                     from t_b_tool_main
                     where t_b_tool_main.deleted = 0
+                        and t_b_tool_main.publish != 0 and t_b_tool_main.review = 'PASS'
                     ) as temp0
                 where temp0.rn1 = 1
             ) as temp1
             left join json_table(json_extract(temp1.keywords, '$[*]'), '$[*]' columns (keyword varchar(50) path '$')) as tk on true
             <where>
-                and temp1.publish != 0 and temp1.review = 'PASS'
                 <if test="searchValue != null">
                     and (
                     temp1.name like concat('%', #{searchValue}, '%')
@@ -45,13 +45,13 @@
                 from (select *, row_number() over (partition by t_b_tool_main.tool_id, t_b_tool_main.author_id order by t_b_tool_main.id desc) as rn1
                     from t_b_tool_main
                     where t_b_tool_main.deleted = 0
+                        and t_b_tool_main.publish != 0
+                        and t_b_tool_main.review = 'PASS'
                     ) as temp0
                 where temp0.rn1 = 1
                 ) as temp1
             left join (select * from t_s_user where deleted = 0) as tsu on tsu.id = temp1.author_id
-            where temp1.publish != 0
-              and temp1.review = 'PASS'
-              and tsu.username = #{username}
+            where tsu.username = #{username}
             order by temp1.publish desc
         ) as temp2
         where temp2.rn2 = 1
