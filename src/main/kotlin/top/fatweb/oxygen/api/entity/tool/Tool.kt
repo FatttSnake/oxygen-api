@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.*
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler
 import com.fasterxml.jackson.annotation.JsonValue
 import top.fatweb.oxygen.api.entity.permission.User
+import java.io.Serializable
 import java.time.LocalDateTime
 
 /**
@@ -13,7 +14,7 @@ import java.time.LocalDateTime
  * @since 1.0.0
  */
 @TableName("t_b_tool_main", autoResultMap = true)
-class Tool {
+class Tool : Serializable {
     /**
      * Tool review type enum
      *
