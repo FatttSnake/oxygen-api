@@ -38,7 +38,7 @@ data class ToolCreateParam(
     @field: NotBlank(message = "ToolId can not be blank")
     @field: Pattern(
         regexp = "^[a-zA-Z-_][0-9a-zA-Z-_]{2,19}\$",
-        message = "Ver can only match '^[a-zA-Z-_][0-9a-zA-Z-_]{2,19}\$'"
+        message = "ToolId can only match '^[a-zA-Z-_][0-9a-zA-Z-_]{2,19}\$'"
     )
     var toolId: String?,
 
