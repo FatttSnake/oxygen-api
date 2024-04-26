@@ -60,5 +60,5 @@ interface StoreMapper : BaseMapper<Tool> {
      * @since 1.0.0
      * @see Tool
      */
-    fun selectListByAuthorToolIds(@Param("ids") ids: List<String>): List<Tool>
+    fun selectListByAuthorToolIds(@Param("ids") ids: List<String>, @Param("operator") operator: Long?): List<Tool>
 }

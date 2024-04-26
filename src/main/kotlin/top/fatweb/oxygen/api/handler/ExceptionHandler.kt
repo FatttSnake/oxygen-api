@@ -177,7 +177,11 @@ class ExceptionHandler {
 
             is TwoFactorVerificationCodeErrorException -> {
                 logger.debug(e.localizedMessage, e)
-                ResponseResult.fail(ResponseCode.PERMISSION_TWO_FACTOR_VERIFICATION_CODE_ERROR, e.localizedMessage, null)
+                ResponseResult.fail(
+                    ResponseCode.PERMISSION_TWO_FACTOR_VERIFICATION_CODE_ERROR,
+                    e.localizedMessage,
+                    null
+                )
             }
 
             /* SQL */
@@ -224,6 +228,11 @@ class ExceptionHandler {
 
                 logger.error(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.DATABASE_EXECUTE_ERROR, e.localizedMessage, null)
+            }
+
+            is RecordAlreadyExists -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.DATABASE_RECORD_ALREADY_EXISTS, e.localizedMessage, null)
             }
 
             /* Tool */

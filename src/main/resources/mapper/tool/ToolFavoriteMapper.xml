@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.fatweb.oxygen.api.mapper.tool.ToolFavoriteMapper">
+    <resultMap id="toolFavoriteMap" type="toolFavorite">
+        <id property="id" column="tool_favorite_id"/>
+        <result property="userId" column="tool_favorite_user_id"/>
+        <result property="username" column="tool_favorite_username"/>
+        <result property="toolId" column="tool_favorite_tool_id"/>
+    </resultMap>
+</mapper>

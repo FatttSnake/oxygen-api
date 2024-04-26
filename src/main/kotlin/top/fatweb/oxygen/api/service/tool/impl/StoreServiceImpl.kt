@@ -9,6 +9,7 @@ import top.fatweb.oxygen.api.mapper.tool.StoreMapper
 import top.fatweb.oxygen.api.param.PageSortParam
 import top.fatweb.oxygen.api.param.tool.ToolStoreGetParam
 import top.fatweb.oxygen.api.service.tool.IStoreService
+import top.fatweb.oxygen.api.util.WebUtil
 import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.tool.ToolVo
 
@@ -31,7 +32,7 @@ class StoreServiceImpl : ServiceImpl<StoreMapper, Tool>(), IStoreService {
         val toolIdsIPage = baseMapper.selectAuthorToolIdPage(toolIdsPage, toolStoreGetParam?.searchValue)
         val toolPage = Page<Tool>(toolIdsIPage.current, toolIdsIPage.size, toolIdsIPage.total)
         if (toolIdsIPage.total > 0) {
-            toolPage.setRecords(baseMapper.selectListByAuthorToolIds(toolIdsIPage.records))
+            toolPage.setRecords(baseMapper.selectListByAuthorToolIds(toolIdsIPage.records, WebUtil.getLoginUserId()))
         }
 
         return ToolConverter.toolPageToToolPageVo(toolPage)
@@ -44,7 +45,7 @@ class StoreServiceImpl : ServiceImpl<StoreMapper, Tool>(), IStoreService {
         val toolIdsIPage = baseMapper.selectAuthorToolIdPageByUsername(toolIdsPage, username)
         val toolPage = Page<Tool>(toolIdsIPage.current, toolIdsIPage.size, toolIdsIPage.total)
         if (toolIdsIPage.total > 0) {
-            toolPage.setRecords(baseMapper.selectListByAuthorToolIds(toolIdsIPage.records))
+            toolPage.setRecords(baseMapper.selectListByAuthorToolIds(toolIdsIPage.records, WebUtil.getLoginUserId()))
         }
 
         return ToolConverter.toolPageToToolPageVo(toolPage)

@@ -247,7 +247,16 @@ class Tool : Serializable {
     @TableField(exist = false)
     var dist: ToolData? = null
 
+    /**
+     * Favorite
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @TableField(exist = false)
+    var favorite: Int? = null
+
     override fun toString(): String {
-        return "Tool(id=$id, name=$name, toolId=$toolId, icon=$icon, platform=$platform, description=$description, baseId=$baseId, authorId=$authorId, ver=$ver, keywords=$keywords, sourceId=$sourceId, distId=$distId, entryPoint=$entryPoint, publish=$publish, review=$review, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version, author=$author, base=$base, categories=$categories, source=$source, dist=$dist)"
+        return "Tool(id=$id, name=$name, toolId=$toolId, icon=$icon, platform=$platform, description=$description, baseId=$baseId, authorId=$authorId, ver=$ver, keywords=$keywords, sourceId=$sourceId, distId=$distId, entryPoint=$entryPoint, publish=$publish, review=$review, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version, author=$author, base=$base, categories=$categories, source=$source, dist=$dist, favorite=$favorite)"
     }
 }

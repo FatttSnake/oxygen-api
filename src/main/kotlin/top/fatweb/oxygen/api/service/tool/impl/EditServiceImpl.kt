@@ -12,9 +12,7 @@ import top.fatweb.oxygen.api.converter.tool.ToolTemplateConverter
 import top.fatweb.oxygen.api.entity.tool.*
 import top.fatweb.oxygen.api.exception.*
 import top.fatweb.oxygen.api.mapper.tool.EditMapper
-import top.fatweb.oxygen.api.param.tool.ToolCreateParam
-import top.fatweb.oxygen.api.param.tool.ToolUpdateParam
-import top.fatweb.oxygen.api.param.tool.ToolUpgradeParam
+import top.fatweb.oxygen.api.param.tool.*
 import top.fatweb.oxygen.api.service.tool.*
 import top.fatweb.oxygen.api.util.WebUtil
 import top.fatweb.oxygen.api.vo.tool.ToolCategoryVo
@@ -36,7 +34,8 @@ class EditServiceImpl(
     private val toolTemplateService: IToolTemplateService,
     private val toolCategoryService: IToolCategoryService,
     private val toolDataService: IToolDataService,
-    private val rToolCategoryService: IRToolCategoryService
+    private val rToolCategoryService: IRToolCategoryService,
+    private val toolFavoriteService: IToolFavoriteService
 ) : ServiceImpl<EditMapper, Tool>(), IEditService {
     override fun getTemplate(platform: ToolBase.Platform): List<ToolTemplateVo> =
         toolTemplateService.list(
@@ -258,5 +257,44 @@ class EditServiceImpl(
         toolDataService.removeBatchByIds(listOf(tool.sourceId, tool.distId))
         rToolCategoryService.remove(KtQueryWrapper(RToolCategory()).eq(RToolCategory::toolId, tool.id))
         return this.removeById(id)
+    }
+
+    @Transactional
+    override fun addFavorite(toolFavoriteAddParam: ToolFavoriteAddParam) {
+        if (toolFavoriteService.exists(
+                KtQueryWrapper(ToolFavorite())
+                    .eq(ToolFavorite::userId, WebUtil.getLoginUserId())
+                    .eq(ToolFavorite::username, toolFavoriteAddParam.username)
+                    .eq(ToolFavorite::toolId, toolFavoriteAddParam.toolId)
+                    .eq(ToolFavorite::platform, toolFavoriteAddParam.platform)
+            )
+        ) {
+            throw RecordAlreadyExists()
+        }
+
+        this.detail(toolFavoriteAddParam.username!!, toolFavoriteAddParam.toolId!!, "latest", toolFavoriteAddParam.platform!!)
+
+        toolFavoriteService.save(
+            ToolFavorite().apply {
+                userId = WebUtil.getLoginUserId()
+                username = toolFavoriteAddParam.username
+                toolId = toolFavoriteAddParam.toolId
+                platform = toolFavoriteAddParam.platform
+            }
+        )
+    }
+
+    @Transactional
+    override fun removeFavorite(toolFavoriteRemoveParam: ToolFavoriteRemoveParam) {
+        if (!toolFavoriteService.remove(
+                KtQueryWrapper(ToolFavorite())
+                    .eq(ToolFavorite::userId, WebUtil.getLoginUserId())
+                    .eq(ToolFavorite::username, toolFavoriteRemoveParam.username)
+                    .eq(ToolFavorite::toolId, toolFavoriteRemoveParam.toolId)
+                    .eq(ToolFavorite::platform, toolFavoriteRemoveParam.platform)
+            )
+        ) {
+            throw NoRecordFoundException()
+        }
     }
 }

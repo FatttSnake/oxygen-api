@@ -8,9 +8,7 @@ import top.fatweb.oxygen.api.annotation.Trim
 import top.fatweb.oxygen.api.entity.common.ResponseCode
 import top.fatweb.oxygen.api.entity.common.ResponseResult
 import top.fatweb.oxygen.api.entity.tool.ToolBase
-import top.fatweb.oxygen.api.param.tool.ToolCreateParam
-import top.fatweb.oxygen.api.param.tool.ToolUpdateParam
-import top.fatweb.oxygen.api.param.tool.ToolUpgradeParam
+import top.fatweb.oxygen.api.param.tool.*
 import top.fatweb.oxygen.api.service.tool.IEditService
 import top.fatweb.oxygen.api.vo.tool.ToolCategoryVo
 import top.fatweb.oxygen.api.vo.tool.ToolTemplateVo
@@ -207,4 +205,40 @@ class EditController(
     fun delete(@PathVariable id: Long): ResponseResult<Nothing> =
         if (editService.delete(id)) ResponseResult.databaseSuccess(ResponseCode.DATABASE_DELETE_SUCCESS)
         else ResponseResult.databaseFail(ResponseCode.DATABASE_DELETE_FAILED)
+
+    /**
+     * Add favorite tool
+     *
+     * @param toolFavoriteAddParam Add favorite tool parameters
+     * @return Response object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see ToolFavoriteAddParam
+     * @see ResponseResult
+     */
+    @Operation(summary = "收藏工具")
+    @PostMapping("/favorite")
+    fun addFavorite(@RequestBody toolFavoriteAddParam: ToolFavoriteAddParam): ResponseResult<Nothing> {
+        editService.addFavorite(toolFavoriteAddParam)
+
+        return ResponseResult.databaseSuccess(ResponseCode.DATABASE_INSERT_SUCCESS)
+    }
+
+    /**
+     * Remove favorite tool
+     *
+     * @param toolFavoriteRemoveParam Remove favorite tool parameters
+     * @return Response object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see ToolFavoriteRemoveParam
+     * @see ResponseResult
+     */
+    @Operation(summary = "收藏工具")
+    @DeleteMapping("/favorite")
+    fun addFavorite(@RequestBody toolFavoriteRemoveParam: ToolFavoriteRemoveParam): ResponseResult<Nothing> {
+        editService.removeFavorite(toolFavoriteRemoveParam)
+
+        return ResponseResult.databaseSuccess(ResponseCode.DATABASE_DELETE_SUCCESS)
+    }
 }
