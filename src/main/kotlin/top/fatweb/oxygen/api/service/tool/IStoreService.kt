@@ -19,16 +19,27 @@ interface IStoreService : IService<Tool> {
     /**
      * Get tool in page
      *
+     * @param toolStoreGetParam Get tool parameters in tool store
+     * @return PageVo<ToolVo> object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see ToolStoreGetParam
+     * @see PageVo
+     * @see ToolVo
      */
-    fun getPage(toolStoreGetParam: ToolStoreGetParam?): PageVo<ToolVo>
+    fun getPage(toolStoreGetParam: ToolStoreGetParam): PageVo<ToolVo>
 
     /**
      * Get tool by username in page
      *
+     * @param pageSortParam Page sort parameters
+     * @param username Username
+     * @return PageVo<ToolVo< object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see PageSortParam
+     * @see PageVo
+     * @see ToolVo
      */
     fun getPage(pageSortParam: PageSortParam, username: String): PageVo<ToolVo>
 }

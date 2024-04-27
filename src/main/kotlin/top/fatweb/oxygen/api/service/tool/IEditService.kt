@@ -3,7 +3,9 @@ package top.fatweb.oxygen.api.service.tool
 import com.baomidou.mybatisplus.extension.service.IService
 import top.fatweb.oxygen.api.entity.tool.Tool
 import top.fatweb.oxygen.api.entity.tool.ToolBase
+import top.fatweb.oxygen.api.param.PageSortParam
 import top.fatweb.oxygen.api.param.tool.*
+import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.tool.ToolCategoryVo
 import top.fatweb.oxygen.api.vo.tool.ToolTemplateVo
 import top.fatweb.oxygen.api.vo.tool.ToolVo
@@ -98,12 +100,15 @@ interface IEditService : IService<Tool> {
     /**
      * Get personal tools
      *
-     * @return List of ToolVo object
+     * @param pageSortParam Page sort parameters
+     * @return PageVo<ToolVo> object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see PageSortParam
+     * @see PageVo
      * @see ToolVo
      */
-    fun get(): List<ToolVo>
+    fun getPage(pageSortParam: PageSortParam): PageVo<ToolVo>
 
     /**
      * Get tool detail

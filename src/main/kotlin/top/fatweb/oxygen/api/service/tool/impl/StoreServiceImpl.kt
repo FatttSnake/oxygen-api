@@ -25,11 +25,11 @@ import top.fatweb.oxygen.api.vo.tool.ToolVo
  */
 @Service
 class StoreServiceImpl : ServiceImpl<StoreMapper, Tool>(), IStoreService {
-    override fun getPage(toolStoreGetParam: ToolStoreGetParam?): PageVo<ToolVo> {
-        val toolIdsPage = Page<Long>(toolStoreGetParam?.currentPage ?: 1, 20)
+    override fun getPage(toolStoreGetParam: ToolStoreGetParam): PageVo<ToolVo> {
+        val toolIdsPage = Page<Long>(toolStoreGetParam.currentPage, 20)
         toolIdsPage.setOptimizeCountSql(false)
 
-        val toolIdsIPage = baseMapper.selectAuthorToolIdPage(toolIdsPage, toolStoreGetParam?.searchValue)
+        val toolIdsIPage = baseMapper.selectAuthorToolIdPage(toolIdsPage, toolStoreGetParam.searchValue)
         val toolPage = Page<Tool>(toolIdsIPage.current, toolIdsIPage.size, toolIdsIPage.total)
         if (toolIdsIPage.total > 0) {
             toolPage.setRecords(baseMapper.selectListByAuthorToolIds(toolIdsIPage.records, WebUtil.getLoginUserId()))

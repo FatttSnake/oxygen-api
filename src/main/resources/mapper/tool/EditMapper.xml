@@ -94,7 +94,15 @@
           and t_b_tool_main.id = #{id}
     </select>
 
-    <select id="selectPersonal" resultMap="top.fatweb.oxygen.api.mapper.tool.ManagementMapper.toolMap">
+    <select id="selectPersonalToolIdPage" resultType="string">
+        select distinct t_b_tool_main.tool_id
+        from t_b_tool_main
+        where t_b_tool_main.deleted = 0
+          and t_b_tool_main.author_id = #{userId}
+        order by t_b_tool_main.id desc
+    </select>
+
+    <select id="selectListByToolIds" resultMap="top.fatweb.oxygen.api.mapper.tool.ManagementMapper.toolMap">
         select t_b_tool_main.id          as tool_id,
                t_b_tool_main.name        as tool_name,
                t_b_tool_main.tool_id     as tool_tool_id,
@@ -126,9 +134,18 @@
                            on t_b_tool_main.id = trtmc.tool_id
                  left join (select * from t_b_tool_category where deleted = 0 and enable = 1) as tbtc
                            on tbtc.id = trtmc.category_id
-        where t_b_tool_main.deleted = 0
-          and t_b_tool_main.author_id = #{userId}
-        order by t_b_tool_main.id desc
+        <where>
+            and t_b_tool_main.deleted = 0
+            and t_b_tool_main.author_id = #{userId}
+            <foreach collection="toolIds" item="item" index="index" open="and t_b_tool_main.tool_id in (" separator="," close=")"
+                     nullable="true">
+                #{item}
+            </foreach>
+        </where>
+        <foreach collection="toolIds" item="item" index="index" open="order by field(t_b_tool_main.tool_id," separator=","
+                 close="), t_b_tool_main.id desc" nullable="true">
+            #{item}
+        </foreach>
     </select>
 
     <select id="selectDetail" resultMap="top.fatweb.oxygen.api.mapper.tool.ManagementMapper.toolWithDataMap">

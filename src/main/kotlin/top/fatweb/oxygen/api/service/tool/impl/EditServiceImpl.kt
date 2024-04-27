@@ -2,6 +2,7 @@ package top.fatweb.oxygen.api.service.tool.impl
 
 import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper
 import com.baomidou.mybatisplus.extension.kotlin.KtUpdateWrapper
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.stereotype.Service
@@ -12,9 +13,11 @@ import top.fatweb.oxygen.api.converter.tool.ToolTemplateConverter
 import top.fatweb.oxygen.api.entity.tool.*
 import top.fatweb.oxygen.api.exception.*
 import top.fatweb.oxygen.api.mapper.tool.EditMapper
+import top.fatweb.oxygen.api.param.PageSortParam
 import top.fatweb.oxygen.api.param.tool.*
 import top.fatweb.oxygen.api.service.tool.*
 import top.fatweb.oxygen.api.util.WebUtil
+import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.tool.ToolCategoryVo
 import top.fatweb.oxygen.api.vo.tool.ToolTemplateVo
 import top.fatweb.oxygen.api.vo.tool.ToolVo
@@ -210,9 +213,18 @@ class EditServiceImpl(
         return this.getOne(tool.id!!)
     }
 
-    override fun get(): List<ToolVo> =
-        baseMapper.selectPersonal(WebUtil.getLoginUserId()!!)
-            .map(ToolConverter::toolToToolVo)
+    override fun getPage(pageSortParam: PageSortParam): PageVo<ToolVo> {
+        val toolIdsPage = Page<String>(pageSortParam.currentPage, 20)
+        toolIdsPage.setOptimizeCountSql(false)
+
+        val toolIdsIPage = baseMapper.selectPersonalToolIdPage(toolIdsPage, WebUtil.getLoginUserId()!!)
+        val toolPage = Page<Tool>(toolIdsIPage.current, toolIdsIPage.size, toolIdsIPage.total)
+        if (toolIdsIPage.total > 0) {
+            toolPage.setRecords(baseMapper.selectListByToolIds(toolIdsIPage.records, WebUtil.getLoginUserId()!!))
+        }
+
+        return ToolConverter.toolPageToToolPageVo(toolPage)
+    }
 
     override fun detail(username: String, toolId: String, ver: String, platform: ToolBase.Platform): ToolVo {
         if (username == "!" && WebUtil.getLoginUserId() == null) {
@@ -272,7 +284,12 @@ class EditServiceImpl(
             throw RecordAlreadyExists()
         }
 
-        this.detail(toolFavoriteAddParam.username!!, toolFavoriteAddParam.toolId!!, "latest", toolFavoriteAddParam.platform!!)
+        this.detail(
+            toolFavoriteAddParam.username!!,
+            toolFavoriteAddParam.toolId!!,
+            "latest",
+            toolFavoriteAddParam.platform!!
+        )
 
         toolFavoriteService.save(
             ToolFavorite().apply {
