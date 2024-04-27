@@ -17,6 +17,10 @@ import top.fatweb.oxygen.api.service.system.IEventLogService
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see ServiceImpl
+ * @see EventLogMapper
+ * @see EventLog
+ * @see IEventLogService
  */
 @DS("sqlite")
 @Service

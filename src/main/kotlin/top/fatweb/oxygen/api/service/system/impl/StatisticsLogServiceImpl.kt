@@ -12,6 +12,10 @@ import top.fatweb.oxygen.api.service.system.IStatisticsLogService
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see ServiceImpl
+ * @see StatisticsLogMapper
+ * @see StatisticsLog
+ * @see IStatisticsLogService
  */
 @DS("sqlite")
 @Service
