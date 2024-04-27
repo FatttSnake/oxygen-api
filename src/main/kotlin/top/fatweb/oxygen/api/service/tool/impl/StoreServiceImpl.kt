@@ -1,14 +1,23 @@
 package top.fatweb.oxygen.api.service.tool.impl
 
+import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import top.fatweb.oxygen.api.converter.tool.ToolConverter
 import top.fatweb.oxygen.api.entity.tool.Tool
+import top.fatweb.oxygen.api.entity.tool.ToolFavorite
+import top.fatweb.oxygen.api.exception.NoRecordFoundException
+import top.fatweb.oxygen.api.exception.RecordAlreadyExists
 import top.fatweb.oxygen.api.mapper.tool.StoreMapper
 import top.fatweb.oxygen.api.param.PageSortParam
+import top.fatweb.oxygen.api.param.tool.ToolFavoriteAddParam
+import top.fatweb.oxygen.api.param.tool.ToolFavoriteRemoveParam
 import top.fatweb.oxygen.api.param.tool.ToolStoreGetParam
+import top.fatweb.oxygen.api.service.tool.IEditService
 import top.fatweb.oxygen.api.service.tool.IStoreService
+import top.fatweb.oxygen.api.service.tool.IToolFavoriteService
 import top.fatweb.oxygen.api.util.WebUtil
 import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.tool.ToolVo
@@ -24,7 +33,10 @@ import top.fatweb.oxygen.api.vo.tool.ToolVo
  * @see IStoreService
  */
 @Service
-class StoreServiceImpl : ServiceImpl<StoreMapper, Tool>(), IStoreService {
+class StoreServiceImpl(
+    private val editService: IEditService,
+    private val toolFavoriteService: IToolFavoriteService
+) : ServiceImpl<StoreMapper, Tool>(), IStoreService {
     override fun getPage(toolStoreGetParam: ToolStoreGetParam): PageVo<ToolVo> {
         val toolIdsPage = Page<Long>(toolStoreGetParam.currentPage, 20)
         toolIdsPage.setOptimizeCountSql(false)
@@ -49,5 +61,49 @@ class StoreServiceImpl : ServiceImpl<StoreMapper, Tool>(), IStoreService {
         }
 
         return ToolConverter.toolPageToToolPageVo(toolPage)
+    }
+
+    @Transactional
+    override fun addFavorite(toolFavoriteAddParam: ToolFavoriteAddParam) {
+        if (toolFavoriteService.exists(
+                KtQueryWrapper(ToolFavorite())
+                    .eq(ToolFavorite::userId, WebUtil.getLoginUserId())
+                    .eq(ToolFavorite::username, toolFavoriteAddParam.username)
+                    .eq(ToolFavorite::toolId, toolFavoriteAddParam.toolId)
+                    .eq(ToolFavorite::platform, toolFavoriteAddParam.platform)
+            )
+        ) {
+            throw RecordAlreadyExists()
+        }
+
+        editService.detail(
+            toolFavoriteAddParam.username!!,
+            toolFavoriteAddParam.toolId!!,
+            "latest",
+            toolFavoriteAddParam.platform!!
+        )
+
+        toolFavoriteService.save(
+            ToolFavorite().apply {
+                userId = WebUtil.getLoginUserId()
+                username = toolFavoriteAddParam.username
+                toolId = toolFavoriteAddParam.toolId
+                platform = toolFavoriteAddParam.platform
+            }
+        )
+    }
+
+    @Transactional
+    override fun removeFavorite(toolFavoriteRemoveParam: ToolFavoriteRemoveParam) {
+        if (!toolFavoriteService.remove(
+                KtQueryWrapper(ToolFavorite())
+                    .eq(ToolFavorite::userId, WebUtil.getLoginUserId())
+                    .eq(ToolFavorite::username, toolFavoriteRemoveParam.username)
+                    .eq(ToolFavorite::toolId, toolFavoriteRemoveParam.toolId)
+                    .eq(ToolFavorite::platform, toolFavoriteRemoveParam.platform)
+            )
+        ) {
+            throw NoRecordFoundException()
+        }
     }
 }
