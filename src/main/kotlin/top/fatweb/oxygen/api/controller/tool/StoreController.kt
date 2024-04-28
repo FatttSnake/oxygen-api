@@ -98,4 +98,22 @@ class StoreController(
 
         return ResponseResult.databaseSuccess(ResponseCode.DATABASE_DELETE_SUCCESS)
     }
+
+    /**
+     * Get favorite tool
+     *
+     * @param pageSortParam Page sort parameters
+     * @return Response object includes favorite tool paging information
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see PageSortParam
+     * @see ResponseResult
+     * @see PageVo
+     * @see ToolVo
+     */
+    @Trim
+    @Operation(summary = "获取收藏工具")
+    @GetMapping("/favorite")
+    fun getFavorite(@Valid pageSortParam: PageSortParam): ResponseResult<PageVo<ToolVo>> =
+        ResponseResult.databaseSuccess(data = storeService.getFavorite(pageSortParam))
 }

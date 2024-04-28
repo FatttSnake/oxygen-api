@@ -15,7 +15,6 @@ import top.fatweb.oxygen.api.param.PageSortParam
 import top.fatweb.oxygen.api.param.tool.ToolFavoriteAddParam
 import top.fatweb.oxygen.api.param.tool.ToolFavoriteRemoveParam
 import top.fatweb.oxygen.api.param.tool.ToolStoreGetParam
-import top.fatweb.oxygen.api.service.tool.IEditService
 import top.fatweb.oxygen.api.service.tool.IStoreService
 import top.fatweb.oxygen.api.service.tool.IToolFavoriteService
 import top.fatweb.oxygen.api.util.WebUtil
@@ -34,7 +33,6 @@ import top.fatweb.oxygen.api.vo.tool.ToolVo
  */
 @Service
 class StoreServiceImpl(
-    private val editService: IEditService,
     private val toolFavoriteService: IToolFavoriteService
 ) : ServiceImpl<StoreMapper, Tool>(), IStoreService {
     override fun getPage(toolStoreGetParam: ToolStoreGetParam): PageVo<ToolVo> {
@@ -65,30 +63,33 @@ class StoreServiceImpl(
 
     @Transactional
     override fun addFavorite(toolFavoriteAddParam: ToolFavoriteAddParam) {
+        if (toolFavoriteAddParam.authorId == WebUtil.getLoginUserId()) {
+            throw NoRecordFoundException()
+        }
+
         if (toolFavoriteService.exists(
                 KtQueryWrapper(ToolFavorite())
                     .eq(ToolFavorite::userId, WebUtil.getLoginUserId())
-                    .eq(ToolFavorite::username, toolFavoriteAddParam.username)
+                    .eq(ToolFavorite::authorId, toolFavoriteAddParam.authorId)
                     .eq(ToolFavorite::toolId, toolFavoriteAddParam.toolId)
-                    .eq(ToolFavorite::platform, toolFavoriteAddParam.platform)
             )
         ) {
             throw RecordAlreadyExists()
         }
 
-        editService.detail(
-            toolFavoriteAddParam.username!!,
-            toolFavoriteAddParam.toolId!!,
-            "latest",
-            toolFavoriteAddParam.platform!!
-        )
+        if (baseMapper.countPublishedToolByAuthorAndToolId(
+                toolFavoriteAddParam.authorId!!,
+                toolFavoriteAddParam.toolId!!
+            ) <= 0
+        ) {
+            throw NoRecordFoundException()
+        }
 
         toolFavoriteService.save(
             ToolFavorite().apply {
                 userId = WebUtil.getLoginUserId()
-                username = toolFavoriteAddParam.username
+                authorId = toolFavoriteAddParam.authorId
                 toolId = toolFavoriteAddParam.toolId
-                platform = toolFavoriteAddParam.platform
             }
         )
     }
@@ -98,12 +99,32 @@ class StoreServiceImpl(
         if (!toolFavoriteService.remove(
                 KtQueryWrapper(ToolFavorite())
                     .eq(ToolFavorite::userId, WebUtil.getLoginUserId())
-                    .eq(ToolFavorite::username, toolFavoriteRemoveParam.username)
+                    .eq(ToolFavorite::authorId, toolFavoriteRemoveParam.authorId)
                     .eq(ToolFavorite::toolId, toolFavoriteRemoveParam.toolId)
-                    .eq(ToolFavorite::platform, toolFavoriteRemoveParam.platform)
             )
         ) {
             throw NoRecordFoundException()
         }
+    }
+
+    override fun getFavorite(pageSortParam: PageSortParam): PageVo<ToolVo> {
+        val toolFavoritePage = Page<ToolFavorite>(pageSortParam.currentPage, 20)
+
+        val toolFavoriteIPage = toolFavoriteService.page(
+            toolFavoritePage,
+            KtQueryWrapper(ToolFavorite()).eq(ToolFavorite::userId, WebUtil.getLoginUserId())
+        )
+
+        val toolPage = Page<Tool>(toolFavoriteIPage.current, toolFavoriteIPage.size, toolFavoriteIPage.total)
+        if (toolFavoriteIPage.total > 0) {
+            toolPage.setRecords(
+                baseMapper.selectListByAuthorToolIds(
+                    toolFavoriteIPage.records.map { "${it.authorId}:${it.toolId}" },
+                    WebUtil.getLoginUserId()
+                )
+            )
+        }
+
+        return ToolConverter.toolPageToToolPageVo(toolPage)
     }
 }

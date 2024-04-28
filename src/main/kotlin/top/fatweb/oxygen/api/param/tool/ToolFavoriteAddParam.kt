@@ -2,10 +2,8 @@ package top.fatweb.oxygen.api.param.tool
 
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotBlank
-import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Pattern
 import top.fatweb.oxygen.api.annotation.Trim
-import top.fatweb.oxygen.api.entity.tool.ToolBase
 
 /**
  * Add favorite tool parameters
@@ -15,15 +13,15 @@ import top.fatweb.oxygen.api.entity.tool.ToolBase
  */
 data class ToolFavoriteAddParam(
     /**
-     * Username
+     * Author ID
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
     @Trim
-    @Schema(description = "用户名", required = true)
-    @field: NotBlank(message = "Username cannot be blank")
-    var username: String?,
+    @Schema(description = "作者 ID", required = true)
+    @field: NotBlank(message = "AuthorId cannot be blank")
+    var authorId: Long?,
 
     /**
      * Tool ID
@@ -38,16 +36,5 @@ data class ToolFavoriteAddParam(
         regexp = "^[a-zA-Z-_][0-9a-zA-Z-_]{2,19}\$",
         message = "ToolId can only match '^[a-zA-Z-_][0-9a-zA-Z-_]{2,19}\$'"
     )
-    var toolId: String?,
-
-    /**
-     * Platform
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see ToolBase.Platform
-     */
-    @Schema(description = "平台")
-    @field:NotNull(message = "Platform can not be null")
-    val platform: ToolBase.Platform?
+    var toolId: String?
 )

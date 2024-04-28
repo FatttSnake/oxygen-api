@@ -41,17 +41,6 @@ interface StoreMapper : BaseMapper<Tool> {
     fun selectAuthorToolIdPageByUsername(page: IPage<Long>, @Param("username") username: String): IPage<String>
 
     /**
-     * Select tool in list by tool IDs
-     *
-     * @param ids List of tool IDs
-     * @return List of Tool object
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see Tool
-     */
-    fun selectListByIds(@Param("ids") ids: List<Long>): List<Tool>
-
-    /**
      * Select tool in list by Author:Tool_ID
      *
      * @param ids List of Author:Tool_ID
@@ -61,4 +50,15 @@ interface StoreMapper : BaseMapper<Tool> {
      * @see Tool
      */
     fun selectListByAuthorToolIds(@Param("ids") ids: List<String>, @Param("operator") operator: Long?): List<Tool>
+
+    /**
+     * Count published tool by username and toolId
+     *
+     * @param authorId Author ID
+     * @param toolId Tool ID
+     * @return Number
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    fun countPublishedToolByAuthorAndToolId(@Param("authorId") authorId: Long, @Param("toolId") toolId: String): Long
 }

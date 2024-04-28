@@ -64,4 +64,17 @@ interface IStoreService : IService<Tool> {
      * @see ToolFavoriteRemoveParam
      */
     fun removeFavorite(toolFavoriteRemoveParam: ToolFavoriteRemoveParam)
+
+    /**
+     * Get favorite tool
+     *
+     * @param pageSortParam Page sort parameters
+     * @return PageVo<ToolVo> object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see PageSortParam
+     * @see PageVo
+     * @see ToolVo
+     */
+    fun getFavorite(pageSortParam: PageSortParam): PageVo<ToolVo>
 }

@@ -1,10 +1,6 @@
 package top.fatweb.oxygen.api.entity.tool
 
-import com.baomidou.mybatisplus.annotation.TableField
-import com.baomidou.mybatisplus.annotation.TableId
-import com.baomidou.mybatisplus.annotation.TableLogic
-import com.baomidou.mybatisplus.annotation.TableName
-import com.baomidou.mybatisplus.annotation.Version
+import com.baomidou.mybatisplus.annotation.*
 import java.io.Serializable
 
 @TableName("t_b_tool_favorite")
@@ -28,13 +24,13 @@ class ToolFavorite : Serializable {
     var userId: Long? = null
 
     /**
-     * Username
+     * Author ID
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @TableField("username")
-    var username: String? = null
+    @TableField("author_id")
+    var authorId: Long? = null
 
     /**
      * Tool ID
@@ -44,16 +40,6 @@ class ToolFavorite : Serializable {
      */
     @TableField("tool_id")
     var toolId: String? = null
-
-    /**
-     * Platform
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see ToolBase.Platform
-     */
-    @TableField("platform")
-    var platform: ToolBase.Platform? = null
 
     /**
      * Deleted
@@ -76,6 +62,6 @@ class ToolFavorite : Serializable {
     var version: Int? = null
 
     override fun toString(): String {
-        return "ToolFavorite(id=$id, userId=$userId, username=$username, toolId=$toolId, platform=$platform, deleted=$deleted, version=$version)"
+        return "ToolFavorite(id=$id, userId=$userId, authorId=$authorId, toolId=$toolId, deleted=$deleted, version=$version)"
     }
 }
