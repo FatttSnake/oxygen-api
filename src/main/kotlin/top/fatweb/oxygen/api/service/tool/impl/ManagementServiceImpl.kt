@@ -77,7 +77,7 @@ class ManagementServiceImpl(
         )
 
         this.update(
-            KtUpdateWrapper(Tool())
+            ktUpdate()
                 .eq(Tool::id, id)
                 .set(Tool::review, Tool.ReviewType.PASS)
                 .set(Tool::publish, LocalDateTime.now(ZoneOffset.UTC).toInstant(ZoneOffset.UTC).toEpochMilli())
@@ -93,7 +93,7 @@ class ManagementServiceImpl(
         }
 
         this.update(
-            KtUpdateWrapper(Tool())
+            ktUpdate()
                 .eq(Tool::id, id)
                 .set(Tool::review, Tool.ReviewType.REJECT)
         )
@@ -108,7 +108,7 @@ class ManagementServiceImpl(
         }
 
         this.update(
-            KtUpdateWrapper(Tool())
+            ktUpdate()
                 .eq(Tool::id, id)
                 .set(Tool::review, Tool.ReviewType.REJECT)
         )

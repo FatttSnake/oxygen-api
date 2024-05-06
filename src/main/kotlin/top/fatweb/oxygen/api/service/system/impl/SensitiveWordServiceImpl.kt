@@ -1,7 +1,5 @@
 package top.fatweb.oxygen.api.service.system.impl
 
-import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper
-import com.baomidou.mybatisplus.extension.kotlin.KtUpdateWrapper
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
@@ -38,9 +36,9 @@ class SensitiveWordServiceImpl : ServiceImpl<SensitiveWordMapper, SensitiveWord>
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     override fun update(sensitiveWordUpdateParam: SensitiveWordUpdateParam) {
-        this.update(KtUpdateWrapper(SensitiveWord()).set(SensitiveWord::enable, false))
+        this.update(ktUpdate().set(SensitiveWord::enable, false))
         this.update(
-            KtUpdateWrapper(SensitiveWord()).`in`(SensitiveWord::id, sensitiveWordUpdateParam.ids)
+            ktUpdate().`in`(SensitiveWord::id, sensitiveWordUpdateParam.ids)
                 .set(SensitiveWord::enable, true)
         )
     }
@@ -52,7 +50,7 @@ class SensitiveWordServiceImpl : ServiceImpl<SensitiveWordMapper, SensitiveWord>
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     override fun checkSensitiveWord(str: String) {
-        this.list(KtQueryWrapper(SensitiveWord()).eq(SensitiveWord::enable, 1)).map(SensitiveWord::word).forEach {
+        this.list(ktQuery().eq(SensitiveWord::enable, 1)).map(SensitiveWord::word).forEach {
             it ?: return@forEach
 
             try {
