@@ -8,10 +8,12 @@ import top.fatweb.oxygen.api.annotation.Trim
 import top.fatweb.oxygen.api.entity.common.ResponseCode
 import top.fatweb.oxygen.api.entity.common.ResponseResult
 import top.fatweb.oxygen.api.entity.tool.ToolBase
+import top.fatweb.oxygen.api.param.PageSortParam
 import top.fatweb.oxygen.api.param.tool.ToolCreateParam
 import top.fatweb.oxygen.api.param.tool.ToolUpdateParam
 import top.fatweb.oxygen.api.param.tool.ToolUpgradeParam
 import top.fatweb.oxygen.api.service.tool.IEditService
+import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.tool.ToolCategoryVo
 import top.fatweb.oxygen.api.vo.tool.ToolTemplateVo
 import top.fatweb.oxygen.api.vo.tool.ToolVo
@@ -113,13 +115,16 @@ class EditController(
      * @return Response object includes tool list
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see PageSortParam
      * @see ResponseResult
+     * @see PageVo
      * @see ToolVo
      */
+    @Trim
     @Operation(summary = "获取个人工具")
     @GetMapping
-    fun get(): ResponseResult<List<ToolVo>> =
-        ResponseResult.databaseSuccess(ResponseCode.DATABASE_SELECT_SUCCESS, data = editService.get())
+    fun get(@Valid pageSortParam: PageSortParam): ResponseResult<PageVo<ToolVo>> =
+        ResponseResult.databaseSuccess(ResponseCode.DATABASE_SELECT_SUCCESS, data = editService.getPage(pageSortParam))
 
     /**
      * Get tool detail

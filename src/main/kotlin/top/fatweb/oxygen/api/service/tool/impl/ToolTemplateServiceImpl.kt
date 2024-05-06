@@ -24,6 +24,8 @@ import top.fatweb.oxygen.api.vo.tool.ToolTemplateVo
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see IToolDataService
+ * @see IToolBaseService
  * @see ServiceImpl
  * @see ToolTemplateMapper
  * @see ToolTemplate

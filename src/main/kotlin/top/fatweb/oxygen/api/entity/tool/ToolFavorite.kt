@@ -2,16 +2,9 @@ package top.fatweb.oxygen.api.entity.tool
 
 import com.baomidou.mybatisplus.annotation.*
 import java.io.Serializable
-import java.time.LocalDateTime
 
-/**
- * Tool category entity
- *
- * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.0.0
- */
-@TableName("t_b_tool_category")
-class ToolCategory : Serializable {
+@TableName("t_b_tool_favorite")
+class ToolFavorite : Serializable {
     /**
      * ID
      *
@@ -22,42 +15,31 @@ class ToolCategory : Serializable {
     var id: Long? = null
 
     /**
-     * Name
+     * User ID
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @TableField("name")
-    var name: String? = null
+    @TableField("user_id")
+    var userId: Long? = null
 
     /**
-     * Enabel
+     * Author ID
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @TableField("enable")
-    var enable: Int? = null
+    @TableField("author_id")
+    var authorId: Long? = null
 
     /**
-     * Create time
+     * Tool ID
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
-     * @see LocalDateTime
      */
-    @TableField("create_time", fill = FieldFill.INSERT)
-    var createTime: LocalDateTime? = null
-
-    /**
-     * Update time
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see LocalDateTime
-     */
-    @TableField("update_time", fill = FieldFill.INSERT_UPDATE)
-    var updateTime: LocalDateTime? = null
+    @TableField("tool_id")
+    var toolId: String? = null
 
     /**
      * Deleted
@@ -80,6 +62,6 @@ class ToolCategory : Serializable {
     var version: Int? = null
 
     override fun toString(): String {
-        return "ToolCategory(id=$id, name=$name, enable=$enable, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version)"
+        return "ToolFavorite(id=$id, userId=$userId, authorId=$authorId, toolId=$toolId, deleted=$deleted, version=$version)"
     }
 }

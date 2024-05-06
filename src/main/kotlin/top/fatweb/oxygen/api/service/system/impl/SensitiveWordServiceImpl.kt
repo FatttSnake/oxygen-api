@@ -20,6 +20,10 @@ import top.fatweb.oxygen.api.vo.system.SensitiveWordVo
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see ServiceImpl
+ * @see SensitiveWordMapper
+ * @see SensitiveWord
+ * @see ISensitiveWordService
  */
 @Service
 class SensitiveWordServiceImpl : ServiceImpl<SensitiveWordMapper, SensitiveWord>(), ISensitiveWordService {

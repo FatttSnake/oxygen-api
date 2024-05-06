@@ -41,7 +41,8 @@ object ToolConverter {
         publish = tool.publish,
         review = tool.review,
         createTime = tool.createTime,
-        updateTime = tool.updateTime
+        updateTime = tool.updateTime,
+        favorite = tool.favorite == 1
     )
 
     /**

@@ -29,27 +29,16 @@ interface StoreMapper : BaseMapper<Tool> {
     fun selectAuthorToolIdPage(page: IPage<Long>, @Param("searchValue") searchValue: String?): IPage<String>
 
     /**
-     * Select tool ID by username in page
+     * Select author and tool ID by username in page
      *
      * @param page Pagination
      * @param username Username
-     * @return Tool ID in page
+     * @return Author:Tool_ID in page
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see IPage
      */
     fun selectAuthorToolIdPageByUsername(page: IPage<Long>, @Param("username") username: String): IPage<String>
-
-    /**
-     * Select tool in list by tool IDs
-     *
-     * @param ids List of tool IDs
-     * @return List of tool object
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see Tool
-     */
-    fun selectListByIds(@Param("ids") ids: List<Long>): List<Tool>
 
     /**
      * Select tool in list by Author:Tool_ID
@@ -60,5 +49,16 @@ interface StoreMapper : BaseMapper<Tool> {
      * @since 1.0.0
      * @see Tool
      */
-    fun selectListByAuthorToolIds(@Param("ids") ids: List<String>): List<Tool>
+    fun selectListByAuthorToolIds(@Param("ids") ids: List<String>, @Param("operator") operator: Long?): List<Tool>
+
+    /**
+     * Count published tool by username and toolId
+     *
+     * @param authorId Author ID
+     * @param toolId Tool ID
+     * @return Number
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    fun countPublishedToolByAuthorAndToolId(@Param("authorId") authorId: Long, @Param("toolId") toolId: String): Long
 }

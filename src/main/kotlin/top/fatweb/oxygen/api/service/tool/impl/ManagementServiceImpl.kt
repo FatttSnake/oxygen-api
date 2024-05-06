@@ -29,6 +29,8 @@ import java.time.ZoneOffset
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see IToolDataService
+ * @see IRToolCategoryService
  * @see ServiceImpl
  * @see ManagementMapper
  * @see Tool
@@ -123,5 +125,4 @@ class ManagementServiceImpl(
 
         return this.removeById(id)
     }
-
 }

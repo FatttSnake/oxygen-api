@@ -184,5 +184,14 @@ data class ToolVo(
      * @see LocalDateTime
      */
     @Schema(description = "修改时间", example = "1900-01-01T00:00:00.000Z")
-    val updateTime: LocalDateTime?
+    val updateTime: LocalDateTime?,
+
+    /**
+     * Favorite
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @Schema(description = "收藏")
+    val favorite: Boolean?
 )

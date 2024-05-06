@@ -61,6 +61,7 @@ enum class ResponseCode(val code: Int) {
     DATABASE_EXECUTE_ERROR(BusinessCode.DATABASE, 50),
     DATABASE_DUPLICATE_KEY(BusinessCode.DATABASE, 51),
     DATABASE_NO_RECORD_FOUND(BusinessCode.DATABASE, 52),
+    DATABASE_RECORD_ALREADY_EXISTS(BusinessCode.DATABASE, 53),
 
     TOOL_SUBMIT_SUCCESS(BusinessCode.TOOL, 10),
     TOOL_CANCEL_SUCCESS(BusinessCode.TOOL, 11),

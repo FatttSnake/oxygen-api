@@ -1,6 +1,7 @@
 package top.fatweb.oxygen.api.entity.tool
 
 import com.baomidou.mybatisplus.annotation.*
+import java.io.Serializable
 import java.time.LocalDateTime
 
 /**
@@ -10,7 +11,7 @@ import java.time.LocalDateTime
  * @since 1.0.0
  */
 @TableName("t_b_tool_template")
-class ToolTemplate {
+class ToolTemplate : Serializable {
     /**
      * ID
      *

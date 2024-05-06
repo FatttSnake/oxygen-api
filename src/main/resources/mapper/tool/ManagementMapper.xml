@@ -237,6 +237,7 @@
         <result property="createTime" column="tool_create_time"/>
         <result property="deleted" column="tool_deleted"/>
         <result property="version" column="tool_version"/>
+        <result property="favorite" column="tool_favorite"/>
         <result property="keywords" column="tool_keywords"
                 typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"/>
         <collection property="categories"

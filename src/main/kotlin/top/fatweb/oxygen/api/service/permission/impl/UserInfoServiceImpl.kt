@@ -13,6 +13,7 @@ import top.fatweb.oxygen.api.service.permission.IUserInfoService
  * @since 1.0.0
  * @see ServiceImpl
  * @see UserInfoMapper
+ * @see UserInfo
  * @see IUserInfoService
  */
 @Service

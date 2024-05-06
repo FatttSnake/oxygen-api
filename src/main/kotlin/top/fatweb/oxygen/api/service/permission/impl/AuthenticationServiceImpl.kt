@@ -46,9 +46,15 @@ import java.util.*
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see VelocityEngine
  * @see AuthenticationManager
+ * @see PasswordEncoder
  * @see RedisUtil
+ * @see TurnstileApi
  * @see IUserService
+ * @see IUserInfoService
+ * @see ISensitiveWordService
+ * @see IAvatarService
  * @see IAuthenticationService
  */
 @Service

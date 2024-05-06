@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.*
 import com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler
 import com.fasterxml.jackson.annotation.JsonValue
 import top.fatweb.oxygen.api.entity.permission.User
+import java.io.Serializable
 import java.time.LocalDateTime
 
 /**
@@ -13,7 +14,7 @@ import java.time.LocalDateTime
  * @since 1.0.0
  */
 @TableName("t_b_tool_main", autoResultMap = true)
-class Tool {
+class Tool : Serializable {
     /**
      * Tool review type enum
      *
@@ -246,7 +247,16 @@ class Tool {
     @TableField(exist = false)
     var dist: ToolData? = null
 
+    /**
+     * Favorite
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     */
+    @TableField(exist = false)
+    var favorite: Int? = null
+
     override fun toString(): String {
-        return "Tool(id=$id, name=$name, toolId=$toolId, icon=$icon, platform=$platform, description=$description, baseId=$baseId, authorId=$authorId, ver=$ver, keywords=$keywords, sourceId=$sourceId, distId=$distId, entryPoint=$entryPoint, publish=$publish, review=$review, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version, author=$author, base=$base, categories=$categories, source=$source, dist=$dist)"
+        return "Tool(id=$id, name=$name, toolId=$toolId, icon=$icon, platform=$platform, description=$description, baseId=$baseId, authorId=$authorId, ver=$ver, keywords=$keywords, sourceId=$sourceId, distId=$distId, entryPoint=$entryPoint, publish=$publish, review=$review, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version, author=$author, base=$base, categories=$categories, source=$source, dist=$dist, favorite=$favorite)"
     }
 }

@@ -13,6 +13,7 @@ import top.fatweb.oxygen.api.service.permission.IRUserRoleService
  * @since 1.0.0
  * @see ServiceImpl
  * @see RUserRoleMapper
+ * @see RUserRole
  * @see IRUserRoleService
  */
 @Service
