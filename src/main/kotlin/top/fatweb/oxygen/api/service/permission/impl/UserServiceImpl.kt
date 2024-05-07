@@ -106,7 +106,7 @@ class UserServiceImpl(
             if (!passwordEncoder.matches(userChangePasswordParam.originalPassword, user.password)) {
                 throw BadCredentialsException("Passwords do not match")
             }
-            val wrapper = ktUpdate()
+            val wrapper = KtUpdateWrapper(User())
                 .eq(User::id, user.id)
                 .set(User::password, passwordEncoder.encode(userChangePasswordParam.newPassword))
                 .set(User::credentialsExpiration, null)
@@ -220,7 +220,7 @@ class UserServiceImpl(
 
         this.updateById(user)
         this.update(
-            ktUpdate().eq(User::id, user.id)
+            KtUpdateWrapper(User()).eq(User::id, user.id)
                 .set(
                     User::verify,
                     if (userUpdateParam.verified || userUpdateParam.id == 0L) null else "${
@@ -282,7 +282,7 @@ class UserServiceImpl(
 
         val user = this.getById(userUpdatePasswordParam.id)
         user?.let {
-            val wrapper = ktUpdate()
+            val wrapper = KtUpdateWrapper(User())
                 .eq(User::id, user.id)
                 .set(User::password, passwordEncoder.encode(userUpdatePasswordParam.password))
                 .set(

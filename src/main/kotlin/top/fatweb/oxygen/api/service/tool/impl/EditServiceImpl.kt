@@ -1,6 +1,7 @@
 package top.fatweb.oxygen.api.service.tool.impl
 
 import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper
+import com.baomidou.mybatisplus.extension.kotlin.KtUpdateWrapper
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
 import org.springframework.dao.DuplicateKeyException
@@ -63,7 +64,7 @@ class EditServiceImpl(
     override fun create(toolCreateParam: ToolCreateParam): ToolVo {
         val template = this.getTemplate(toolCreateParam.templateId!!)
         baseMapper.selectOne(
-            ktQuery()
+            KtQueryWrapper(Tool())
                 .eq(Tool::toolId, toolCreateParam.toolId!!)
                 .eq(Tool::authorId, WebUtil.getLoginUserId()!!)
                 .eq(Tool::platform, template.platform)
@@ -244,7 +245,7 @@ class EditServiceImpl(
             throw ToolHasBeenPublishedException()
         }
 
-        return update(ktUpdate().eq(Tool::id, id).set(Tool::review, Tool.ReviewType.PROCESSING))
+        return update(KtUpdateWrapper(Tool()).eq(Tool::id, id).set(Tool::review, Tool.ReviewType.PROCESSING))
     }
 
     override fun cancel(id: Long): Boolean {
@@ -256,13 +257,13 @@ class EditServiceImpl(
             throw ToolNotUnderReviewException()
         }
 
-        return update(ktUpdate().eq(Tool::id, id).set(Tool::review, Tool.ReviewType.NONE))
+        return update(KtUpdateWrapper(Tool()).eq(Tool::id, id).set(Tool::review, Tool.ReviewType.NONE))
     }
 
     @Transactional
     override fun delete(id: Long): Boolean {
         val tool = baseMapper.selectOne(
-            ktQuery().eq(Tool::id, id)
+            KtQueryWrapper(Tool()).eq(Tool::id, id)
                 .eq(Tool::authorId, WebUtil.getLoginUserId()!!)
         ) ?: throw NoRecordFoundException()
 
