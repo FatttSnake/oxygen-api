@@ -1,5 +1,6 @@
 package top.fatweb.oxygen.api.service.tool.impl
 
+import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
 import org.springframework.stereotype.Service
@@ -44,7 +45,7 @@ class ToolBaseServiceImpl(
         return ToolBaseConverter.toolBasePageToToolBasePageVo(
             this.page(
                 basePage,
-                ktQuery().`in`(
+                KtQueryWrapper(ToolBase()).`in`(
                     !toolBaseGetParam?.platform.isNullOrBlank(),
                     ToolBase::platform,
                     toolBaseGetParam?.platform?.split(",")
