@@ -29,24 +29,24 @@ object SysLogConverter {
         syslogPage.pages,
         syslogPage.size,
         syslogPage.current,
-        syslogPage.records.map {
+        syslogPage.records.map { sysLog ->
             SysLogVo(
-                id = it.id,
-                logType = it.logType,
-                operateUserId = it.operateUserId,
-                operateTime = it.operateTime,
-                requestUri = it.requestUri,
-                requestMethod = it.requestMethod,
-                requestParams = it.requestParams,
-                requestIp = it.requestIp,
-                requestServerAddress = it.requestServerAddress,
-                exception = it.exception == 1,
-                exceptionInfo = it.exceptionInfo,
-                startTime = it.startTime,
-                endTime = it.endTime,
-                executeTime = it.executeTime,
-                userAgent = it.userAgent,
-                operateUsername = it.operateUsername
+                id = sysLog.id,
+                logType = sysLog.logType,
+                operateUserId = sysLog.operateUserId,
+                operateTime = sysLog.operateTime,
+                requestUri = sysLog.requestUri,
+                requestMethod = sysLog.requestMethod,
+                requestParams = sysLog.requestParams,
+                requestIp = sysLog.requestIp,
+                requestServerAddress = sysLog.requestServerAddress,
+                exception = sysLog.exception?.let { it == 1},
+                exceptionInfo = sysLog.exceptionInfo,
+                startTime = sysLog.startTime,
+                endTime = sysLog.endTime,
+                executeTime = sysLog.executeTime,
+                userAgent = sysLog.userAgent,
+                operateUsername = sysLog.operateUsername
             )
         })
 

@@ -25,7 +25,7 @@ object SettingsConverter {
         id = sensitiveWord.id,
         word = sensitiveWord.word,
         useFor = sensitiveWord.useFor?.map(SensitiveWord.Use::valueOf)?.toSet(),
-        enable = sensitiveWord.enable == 1
+        enable = sensitiveWord.enable?.let { it == 1}
     )
 
     /**
