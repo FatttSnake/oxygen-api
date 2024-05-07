@@ -30,7 +30,7 @@ object RoleConverter {
     fun roleToRoleVo(role: Role) = RoleVo(
         id = role.id,
         name = role.name,
-        enable = role.enable == 1,
+        enable = role.enable?.let { it == 1},
         createTime = role.createTime,
         updateTime = role.updateTime
     )
@@ -48,7 +48,7 @@ object RoleConverter {
     fun roleToRoleWithPowerVo(role: Role) = RoleWithPowerVo(
         id = role.id,
         name = role.name,
-        enable = role.enable == 1,
+        enable = role.enable?.let { it == 1},
         createTime = role.createTime,
         updateTime = role.updateTime,
         modules = role.modules?.map(ModuleConverter::moduleToModuleVo),

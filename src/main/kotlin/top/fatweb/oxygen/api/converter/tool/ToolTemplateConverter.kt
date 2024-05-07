@@ -31,7 +31,7 @@ object ToolTemplateConverter {
         source = toolTemplate.source?.let(ToolDataConverter::toolDataToToolDataVo),
         platform = toolTemplate.platform,
         entryPoint = toolTemplate.entryPoint,
-        enable = toolTemplate.enable == 1,
+        enable = toolTemplate.enable?.let { it == 1},
         createTime = toolTemplate.createTime,
         updateTime = toolTemplate.updateTime
     )
@@ -72,7 +72,7 @@ object ToolTemplateConverter {
         source = ToolDataVo(id = toolTemplate.sourceId, data = null, createTime = null, updateTime = null),
         platform = toolTemplate.platform,
         entryPoint = toolTemplate.entryPoint,
-        enable = toolTemplate.enable == 1,
+        enable = toolTemplate.enable?.let { it == 1},
         createTime = toolTemplate.createTime,
         updateTime = toolTemplate.updateTime
     )
@@ -99,7 +99,7 @@ object ToolTemplateConverter {
         source = toolTemplate.source?.let(ToolDataConverter::toolDataToToolDataVo),
         platform = toolTemplate.platform,
         entryPoint = toolTemplate.entryPoint,
-        enable = toolTemplate.enable == 1,
+        enable = toolTemplate.enable?.let { it == 1},
         createTime = toolTemplate.createTime,
         updateTime = toolTemplate.updateTime
     )

@@ -48,5 +48,5 @@ data class SensitiveWordVo(
      * @since 1.0.0
      */
     @Schema(description = "启用")
-    val enable: Boolean
+    val enable: Boolean?
 )

@@ -30,7 +30,7 @@ object GroupConverter {
     fun groupToGroupVo(group: Group) = GroupVo(
         id = group.id,
         name = group.name,
-        enable = group.enable == 1,
+        enable = group.enable?.let { it == 1},
         createTime = group.createTime,
         updateTime = group.updateTime
     )
@@ -48,7 +48,7 @@ object GroupConverter {
     fun groupToGroupWithRoleVo(group: Group) = GroupWithRoleVo(
         id = group.id,
         name = group.name,
-        enable = group.enable == 1,
+        enable = group.enable?.let { it == 1},
         createTime = group.createTime,
         updateTime = group.updateTime,
         roles = group.roles?.map(RoleConverter::roleToRoleVo)

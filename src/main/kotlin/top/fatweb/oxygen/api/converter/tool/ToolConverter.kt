@@ -42,7 +42,7 @@ object ToolConverter {
         review = tool.review,
         createTime = tool.createTime,
         updateTime = tool.updateTime,
-        favorite = tool.favorite == 1
+        favorite = tool.favorite?.let { it == 1}
     )
 
     /**

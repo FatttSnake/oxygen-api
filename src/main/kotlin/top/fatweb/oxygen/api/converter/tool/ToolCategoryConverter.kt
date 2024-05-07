@@ -25,7 +25,7 @@ object ToolCategoryConverter {
     fun toolCategoryToToolCategoryVo(toolCategory: ToolCategory) = ToolCategoryVo(
         id = toolCategory.id,
         name = toolCategory.name,
-        enable = toolCategory.enable == 1,
+        enable = toolCategory.enable?.let { it == 1},
         createTime = toolCategory.createTime,
         updateTime = toolCategory.updateTime
     )
