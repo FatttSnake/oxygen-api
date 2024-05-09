@@ -66,10 +66,10 @@ class Tool : Serializable {
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
-     * @see ToolBase.Platform
+     * @see Platform
      */
     @TableField("platform")
-    var platform: ToolBase.Platform? = null
+    var platform: Platform? = null
 
     /**
      * Description

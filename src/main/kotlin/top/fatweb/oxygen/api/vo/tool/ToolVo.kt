@@ -3,8 +3,8 @@ package top.fatweb.oxygen.api.vo.tool
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer
 import io.swagger.v3.oas.annotations.media.Schema
+import top.fatweb.oxygen.api.entity.tool.Platform
 import top.fatweb.oxygen.api.entity.tool.Tool
-import top.fatweb.oxygen.api.entity.tool.ToolBase
 import top.fatweb.oxygen.api.vo.permission.UserWithInfoVo
 import java.time.LocalDateTime
 
@@ -56,10 +56,10 @@ data class ToolVo(
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
-     * @see ToolBase.Platform
+     * @see Platform
      */
     @Schema(description = "平台")
-    val platform: ToolBase.Platform?,
+    val platform: Platform?,
 
     /**
      * Description

@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper
 import com.baomidou.mybatisplus.core.metadata.IPage
 import org.apache.ibatis.annotations.Mapper
 import org.apache.ibatis.annotations.Param
+import top.fatweb.oxygen.api.entity.tool.Platform
 import top.fatweb.oxygen.api.entity.tool.Tool
-import top.fatweb.oxygen.api.entity.tool.ToolBase
 import top.fatweb.oxygen.api.entity.tool.ToolTemplate
 
 /**
@@ -75,13 +75,14 @@ interface EditMapper : BaseMapper<Tool> {
      * @return List of tool object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see Platform
      * @see Tool
      */
     fun selectDetail(
         @Param("username") username: String,
         @Param("toolId") toolId: String,
         @Param("ver") ver: String,
-        @Param("platform") platform: ToolBase.Platform,
+        @Param("platform") platform: Platform,
         @Param("operator") operator: String?
     ): Tool?
 }

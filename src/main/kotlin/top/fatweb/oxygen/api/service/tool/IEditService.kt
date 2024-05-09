@@ -1,8 +1,8 @@
 package top.fatweb.oxygen.api.service.tool
 
 import com.baomidou.mybatisplus.extension.service.IService
+import top.fatweb.oxygen.api.entity.tool.Platform
 import top.fatweb.oxygen.api.entity.tool.Tool
-import top.fatweb.oxygen.api.entity.tool.ToolBase
 import top.fatweb.oxygen.api.param.PageSortParam
 import top.fatweb.oxygen.api.param.tool.ToolCreateParam
 import top.fatweb.oxygen.api.param.tool.ToolUpdateParam
@@ -27,10 +27,10 @@ interface IEditService : IService<Tool> {
      * @return List of ToolTemplateVo object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
-     * @see ToolBase.Platform
+     * @see Platform
      * @see ToolTemplateVo
      */
-    fun getTemplate(platform: ToolBase.Platform): List<ToolTemplateVo>
+    fun getTemplate(platform: Platform): List<ToolTemplateVo>
 
     /**
      * Get tool template by ID
@@ -122,10 +122,10 @@ interface IEditService : IService<Tool> {
      * @return ToolVo object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
-     * @see ToolBase.Platform
+     * @see Platform
      * @see ToolVo
      */
-    fun detail(username: String, toolId: String, ver: String, platform: ToolBase.Platform): ToolVo
+    fun detail(username: String, toolId: String, ver: String, platform: Platform): ToolVo
 
     /**
      * Submit tool review
