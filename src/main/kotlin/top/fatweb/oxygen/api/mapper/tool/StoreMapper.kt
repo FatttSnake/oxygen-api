@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper
 import com.baomidou.mybatisplus.core.metadata.IPage
 import org.apache.ibatis.annotations.Mapper
 import org.apache.ibatis.annotations.Param
+import top.fatweb.oxygen.api.entity.tool.Platform
 import top.fatweb.oxygen.api.entity.tool.Tool
 
 /**
@@ -26,7 +27,11 @@ interface StoreMapper : BaseMapper<Tool> {
      * @since 1.0.0
      * @see IPage
      */
-    fun selectAuthorToolIdPage(page: IPage<Long>, @Param("searchValue") searchValue: String?): IPage<String>
+    fun selectAuthorToolIdPage(
+        page: IPage<Long>,
+        @Param("searchValue") searchValue: String?,
+        @Param("platform") platform: Platform
+    ): IPage<String>
 
     /**
      * Select author and tool ID by username in page

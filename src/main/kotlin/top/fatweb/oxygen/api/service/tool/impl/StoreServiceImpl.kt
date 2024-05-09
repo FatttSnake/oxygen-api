@@ -39,7 +39,8 @@ class StoreServiceImpl(
         val toolIdsPage = Page<Long>(toolStoreGetParam.currentPage, 20)
         toolIdsPage.setOptimizeCountSql(false)
 
-        val toolIdsIPage = baseMapper.selectAuthorToolIdPage(toolIdsPage, toolStoreGetParam.searchValue)
+        val toolIdsIPage =
+            baseMapper.selectAuthorToolIdPage(toolIdsPage, toolStoreGetParam.searchValue, toolStoreGetParam.platform)
         val toolPage = Page<Tool>(toolIdsIPage.current, toolIdsIPage.size, toolIdsIPage.total)
         if (toolIdsIPage.total > 0) {
             toolPage.setRecords(baseMapper.selectListByAuthorToolIds(toolIdsIPage.records, WebUtil.getLoginUserId()))

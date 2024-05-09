@@ -20,6 +20,9 @@
                     or tk.keyword like concat('%', #{searchValue}, '%')
                     )
                 </if>
+                <if test="platform != null">
+                    and temp1.platform = #{platform}
+                </if>
             </where>
             <choose>
                 <when test="searchValue != null">

@@ -7,7 +7,7 @@ import top.fatweb.oxygen.api.annotation.BaseController
 import top.fatweb.oxygen.api.annotation.Trim
 import top.fatweb.oxygen.api.entity.common.ResponseCode
 import top.fatweb.oxygen.api.entity.common.ResponseResult
-import top.fatweb.oxygen.api.entity.tool.ToolBase
+import top.fatweb.oxygen.api.entity.tool.Platform
 import top.fatweb.oxygen.api.param.PageSortParam
 import top.fatweb.oxygen.api.param.tool.ToolCreateParam
 import top.fatweb.oxygen.api.param.tool.ToolUpdateParam
@@ -40,7 +40,7 @@ class EditController(
      */
     @Operation(summary = "获取模板")
     @GetMapping("/template")
-    fun getTemplate(platform: ToolBase.Platform): ResponseResult<List<ToolTemplateVo>> =
+    fun getTemplate(platform: Platform): ResponseResult<List<ToolTemplateVo>> =
         ResponseResult.databaseSuccess(data = editService.getTemplate(platform))
 
     /**
@@ -144,7 +144,7 @@ class EditController(
         @PathVariable username: String,
         @PathVariable toolId: String,
         @PathVariable ver: String,
-        platform: ToolBase.Platform
+        platform: Platform
     ): ResponseResult<ToolVo> =
         ResponseResult.databaseSuccess(
             ResponseCode.DATABASE_SELECT_SUCCESS,

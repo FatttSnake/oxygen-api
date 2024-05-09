@@ -1,7 +1,6 @@
 package top.fatweb.oxygen.api.entity.tool
 
 import com.baomidou.mybatisplus.annotation.*
-import com.fasterxml.jackson.annotation.JsonValue
 import java.io.Serializable
 import java.time.LocalDateTime
 
@@ -13,16 +12,6 @@ import java.time.LocalDateTime
  */
 @TableName("t_b_tool_base")
 class ToolBase : Serializable {
-    /**
-     * Platform enum
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     */
-    enum class Platform(@field:EnumValue @field:JsonValue val code: String) {
-        WEB("WEB"), DESKTOP("DESKTOP"), ANDROID("ANDROID")
-    }
-
     /**
      * ID
      *

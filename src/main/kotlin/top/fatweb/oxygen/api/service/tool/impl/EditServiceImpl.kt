@@ -41,7 +41,7 @@ class EditServiceImpl(
     private val toolDataService: IToolDataService,
     private val rToolCategoryService: IRToolCategoryService
 ) : ServiceImpl<EditMapper, Tool>(), IEditService {
-    override fun getTemplate(platform: ToolBase.Platform): List<ToolTemplateVo> =
+    override fun getTemplate(platform: Platform): List<ToolTemplateVo> =
         toolTemplateService.list(
             KtQueryWrapper(ToolTemplate())
                 .eq(ToolTemplate::platform, platform)
@@ -227,7 +227,7 @@ class EditServiceImpl(
         return ToolConverter.toolPageToToolPageVo(toolPage)
     }
 
-    override fun detail(username: String, toolId: String, ver: String, platform: ToolBase.Platform): ToolVo {
+    override fun detail(username: String, toolId: String, ver: String, platform: Platform): ToolVo {
         if (username == "!" && WebUtil.getLoginUserId() == null) {
             throw NoRecordFoundException()
         }

@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Pattern
 import top.fatweb.oxygen.api.annotation.Trim
-import top.fatweb.oxygen.api.entity.tool.ToolBase
+import top.fatweb.oxygen.api.entity.tool.Platform
 
 /**
  * Upgrade tool parameters
@@ -36,11 +36,11 @@ data class ToolUpgradeParam(
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
-     * @see ToolBase.Platform
+     * @see Platform
      */
     @Schema(description = "平台")
     @field:NotNull(message = "Platform can not be null")
-    val platform: ToolBase.Platform?,
+    val platform: Platform?,
 
 
     /**
