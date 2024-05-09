@@ -20,9 +20,6 @@
                     or tk.keyword like concat('%', #{searchValue}, '%')
                     )
                 </if>
-                <if test="platform != null">
-                    and temp1.platform = #{platform}
-                </if>
             </where>
             <choose>
                 <when test="searchValue != null">
@@ -110,6 +107,9 @@
             on tbtf.user_id = #{operator} and tbtf.author_id = tbtm.author_id and tbtf.tool_id = tbtm.tool_id
         <where>
             and tbtm.rn = 1
+            <if test="platform != null">
+                and tbtm.platform = #{platform}
+            </if>
             <foreach collection="ids" item="item" index="index" open="and concat(tbtm.author_id, ':', tbtm.tool_id) in (" separator="," close=")"
                      nullable="true">
                 #{item}
