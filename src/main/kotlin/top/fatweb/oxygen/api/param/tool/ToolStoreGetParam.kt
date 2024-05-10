@@ -32,5 +32,5 @@ data class ToolStoreGetParam(
      * @see Platform
      */
     @Schema(description = "指定平台", example = "DESKTOP")
-    val platform: Platform
+    val platform: Platform?
 ) : PageSortParam()
