@@ -64,7 +64,7 @@
     </select>
 
     <select id="selectPage" resultType="long">
-        select t_b_tool_main.id
+        select distinct t_b_tool_main.id
         from t_b_tool_main
         left join (select * from t_s_user where deleted = 0) as tsu on tsu.id = t_b_tool_main.author_id
         left join (select * from t_s_user_info where deleted = 0) as tsui on tsui.user_id = t_b_tool_main.author_id
