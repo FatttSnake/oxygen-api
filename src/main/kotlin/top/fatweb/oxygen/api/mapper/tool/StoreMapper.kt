@@ -27,7 +27,11 @@ interface StoreMapper : BaseMapper<Tool> {
      * @since 1.0.0
      * @see IPage
      */
-    fun selectAuthorToolIdPage(page: IPage<Long>, @Param("searchValue") searchValue: String?): IPage<String>
+    fun selectAuthorToolIdPage(
+        page: IPage<Long>,
+        @Param("searchValue") searchValue: String?,
+        @Param("platform") platform: Platform? = null
+    ): IPage<String>
 
     /**
      * Select author and tool ID by username in page
