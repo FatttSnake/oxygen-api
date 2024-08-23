@@ -10,15 +10,15 @@ java -Djarmode=layertools -jar target/*.jar extract --destination target/extract
 
 if [[ "${JAR_VERSION}" =~ ^.*SNAPSHOT$ ]]
 then
-  docker build -t hub.fatweb.top/oxygen-api:snapshot-latest -t hub.fatweb.top/oxygen-api:$JAR_VERSION -t hub.fatweb.top/oxygen-api:$JAR_VERSION-${BUILD_TIME} .
-  cat "${KEYS_PATH}/docker.password" | docker login hub.fatweb.top -u jenkins --password-stdin
-  docker push hub.fatweb.top/oxygen-api:snapshot-latest
-  docker push hub.fatweb.top/oxygen-api:$JAR_VERSION
-  docker push hub.fatweb.top/oxygen-api:$JAR_VERSION-${BUILD_TIME}
+  docker build -t ${DOCKER_HUB_URL}/oxygen-api:snapshot-latest -t ${DOCKER_HUB_URL}/oxygen-api:$JAR_VERSION -t ${DOCKER_HUB_URL}/oxygen-api:$JAR_VERSION-${BUILD_TIME} .
+  cat "${KEYS_PATH}/docker.password" | docker login ${DOCKER_HUB_URL} -u jenkins --password-stdin
+  docker push ${DOCKER_HUB_URL}/oxygen-api:snapshot-latest
+  docker push ${DOCKER_HUB_URL}/oxygen-api:$JAR_VERSION
+  docker push ${DOCKER_HUB_URL}/oxygen-api:$JAR_VERSION-${BUILD_TIME}
 else
-  docker build -t hub.fatweb.top/oxygen-api:latest -t hub.fatweb.top/oxygen-api:$JAR_VERSION -t hub.fatweb.top/oxygen-api:$JAR_VERSION-${BUILD_TIME} .
-  cat "${KEYS_PATH}/docker.password" | docker login hub.fatweb.top -u jenkins --password-stdin
-  docker push hub.fatweb.top/oxygen-api:latest
-  docker push hub.fatweb.top/oxygen-api:$JAR_VERSION
-  docker push hub.fatweb.top/oxygen-api:$JAR_VERSION-${BUILD_TIME}
+  docker build -t ${DOCKER_HUB_URL}/oxygen-api:latest -t ${DOCKER_HUB_URL}/oxygen-api:$JAR_VERSION -t ${DOCKER_HUB_URL}/oxygen-api:$JAR_VERSION-${BUILD_TIME} .
+  cat "${KEYS_PATH}/docker.password" | docker login ${DOCKER_HUB_URL} -u jenkins --password-stdin
+  docker push ${DOCKER_HUB_URL}/oxygen-api:latest
+  docker push ${DOCKER_HUB_URL}/oxygen-api:$JAR_VERSION
+  docker push ${DOCKER_HUB_URL}/oxygen-api:$JAR_VERSION-${BUILD_TIME}
 fi
