@@ -6,7 +6,7 @@
         from t_s_group
         <where>
             deleted = 0
-            <if test="searchName != null">
+            <if test="searchName != null and searchName != ''">
                 <choose>
                     <when test="searchRegex == true">
                         and t_s_group.name regexp #{searchName}

@@ -6,7 +6,7 @@
         from t_s_role
         <where>
             deleted = 0
-            <if test="searchName != null">
+            <if test="searchName != null and searchName != ''">
                 <choose>
                     <when test="searchRegex == true">
                         and t_s_role.name regexp #{searchName}
