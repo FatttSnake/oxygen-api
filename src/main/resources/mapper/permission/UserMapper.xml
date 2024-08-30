@@ -79,7 +79,7 @@
         left join (select * from t_s_user_info where deleted = 0) as tsui on t_s_user.id = tsui.user_id
         <where>
             t_s_user.deleted = 0
-            <if test="searchValue != null">
+            <if test="searchValue != null and searchValue != ''">
                 <choose>
                     <when test="searchType == 'ID'">
                         <choose>

@@ -27,7 +27,7 @@
                      separator="," close=")" nullable="true">
                 #{item}
             </foreach>
-            <if test="searchRequestUrl != null">
+            <if test="searchRequestUrl != null and searchRequestUrl != ''">
                 and ((t_l_sys_log.request_server_address || t_l_sys_log.request_uri ||
                 (case when length(t_l_sys_log.request_params) != 0 then '?' || t_l_sys_log.request_params else '' end))
                 like #{searchRequestUrl})

@@ -80,7 +80,7 @@
                      close=")" nullable="true">
                 #{item}
             </foreach>
-            <if test="searchValue != null">
+            <if test="searchValue != null and searchValue != ''">
                 <choose>
                     <when test="searchType == 'NAME'">
                         <choose>

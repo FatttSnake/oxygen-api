@@ -14,7 +14,7 @@
             ) as temp1
             left join json_table(json_extract(temp1.keywords, '$[*]'), '$[*]' columns (keyword varchar(50) path '$')) as tk on true
             <where>
-                <if test="searchValue != null">
+                <if test="searchValue != null and searchValue != ''">
                     and (
                     temp1.name like concat('%', #{searchValue}, '%')
                     or tk.keyword like concat('%', #{searchValue}, '%')
@@ -25,7 +25,7 @@
                 </if>
             </where>
             <choose>
-                <when test="searchValue != null">
+                <when test="searchValue != null and searchValue != ''">
                     order by instr(temp1.name, #{searchValue}) = 0,
                     char_length(temp1.name),
                     instr(temp1.name, #{searchValue}),
