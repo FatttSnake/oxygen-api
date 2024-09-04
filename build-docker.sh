@@ -6,6 +6,8 @@ JAR_VERSION=${JAR_VERSION#*-}
 JAR_VERSION=${JAR_VERSION#*-}
 BUILD_TIME=$(date "+%Y%m%d%H%M%S")
 
+echo ${BUILD_TIME} > .build_time
+
 mkdir target/extracted
 java -Djarmode=layertools -jar target/${JAR_NAME} extract --destination target/extracted
 
