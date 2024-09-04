@@ -5,9 +5,6 @@
         <span>API of Oxygen Toolbox</span>
     </h1>
 </div>
-
----
-
 <div align="center">
     <a href="https://ci.fatweb.top/job/Oxygen%20Toolbox%20API/">
         <img alt="Build" src="https://ci.fatweb.top/job/Oxygen%20Toolbox%20API/badge/icon">
