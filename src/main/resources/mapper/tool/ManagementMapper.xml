@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.fatweb.oxygen.api.mapper.tool.ManagementMapper">
+    <select id="selectOne" resultMap="toolWithDataMap">
+        select t_b_tool_main.id          as tool_id,
+               t_b_tool_main.name        as tool_name,
+               t_b_tool_main.tool_id     as tool_tool_id,
+               t_b_tool_main.icon        as tool_icon,
+               t_b_tool_main.platform    as tool_platform,
+               t_b_tool_main.description as tool_description,
+               t_b_tool_main.base_id     as tool_base_id,
+               t_b_tool_main.author_id   as tool_author_id,
+               t_b_tool_main.ver         as tool_ver,
+               t_b_tool_main.keywords    as tool_keywords,
+               t_b_tool_main.source_id   as tool_source_id,
+               t_b_tool_main.dist_id     as tool_dist_id,
+               t_b_tool_main.entry_point as tool_entry_point,
+               t_b_tool_main.publish     as tool_publish,
+               t_b_tool_main.review      as tool_review,
+               t_b_tool_main.create_time as tool_create_time,
+               t_b_tool_main.update_time as tool_update_time,
+               t_b_tool_main.deleted     as tool_deleted,
+               t_b_tool_main.version     as tool_version,
+               tsu.id                    as user_id,
+               tsu.username              as user_username,
+               tsui.id                   as user_info_id,
+               tsui.nickname             as user_info_nickname,
+               tsui.avatar               as user_info_avatar,
+               tsui.email                as user_info_email,
+               tbtb.name                 as tool_base_name,
+               tbtb.dist_id              as tool_base_dist_id,
+               tbtbd.data                as tool_base_dist_data,
+               tbts.data                 as tool_source_data,
+               tbts.create_time          as tool_source_create_time,
+               tbts.update_time          as tool_source_update_time,
+               tbts.deleted              as tool_source_deleted,
+               tbts.version              as tool_source_version,
+               tbtd.data                 as tool_dist_data,
+               tbtd.create_time          as tool_dist_create_time,
+               tbtd.update_time          as tool_dist_update_time,
+               tbtd.deleted              as tool_dist_deleted,
+               tbtd.version              as tool_dist_version,
+               tbtc.id                   as tool_category_id,
+               tbtc.name                 as tool_category_name,
+               tbtc.enable               as tool_category_enable,
+               tbtc.create_time          as tool_category_create_time,
+               tbtc.update_time          as tool_category_update_time,
+               tbtc.deleted              as tool_category_deleted,
+               tbtc.version              as tool_category_version
+        from t_b_tool_main
+                 left join (select * from t_s_user where deleted = 0) as tsu on tsu.id = t_b_tool_main.author_id
+                 left join (select * from t_s_user_info where deleted = 0) as tsui
+                           on tsui.user_id = t_b_tool_main.author_id
+                 left join (select * from t_b_tool_base where deleted = 0) as tbtb on tbtb.id = t_b_tool_main.base_id
+                 left join (select * from t_b_tool_data where deleted = 0) as tbtbd on tbtbd.id = tbtb.dist_id
+                 left join (select * from t_b_tool_data where deleted = 0) as tbts on tbts.id = t_b_tool_main.source_id
+                 left join (select * from t_b_tool_data where deleted = 0) as tbtd on tbtd.id = t_b_tool_main.dist_id
+                 left join (select * from t_r_tool_main_category where deleted = 0) as trtmc
+                           on t_b_tool_main.id = trtmc.tool_id
+                 left join (select * from t_b_tool_category where deleted = 0 and enable = 1) as tbtc
+                           on tbtc.id = trtmc.category_id
+        where t_b_tool_main.deleted = 0
+          and t_b_tool_main.id = #{id}
+    </select>
+
+    <select id="selectPage" resultType="long">
+        select distinct t_b_tool_main.id
+        from t_b_tool_main
+        left join (select * from t_s_user where deleted = 0) as tsu on tsu.id = t_b_tool_main.author_id
+        left join (select * from t_s_user_info where deleted = 0) as tsui on tsui.user_id = t_b_tool_main.author_id
+        left join json_table(t_b_tool_main.keywords, '$[*]' columns (keyword varchar(50) path '$')) as tk on true
+        <where>
+            t_b_tool_main.deleted = 0
+            <foreach collection="review" item="item" index="index" open="and t_b_tool_main.review in (" separator=","
+                     close=")" nullable="true">
+                #{item}
+            </foreach>
+            <foreach collection="platform" item="item" index="index" open="and t_b_tool_main.platform in ("
+                     separator=","
+                     close=")" nullable="true">
+                #{item}
+            </foreach>
+            <if test="searchValue != null and searchValue != ''">
+                <choose>
+                    <when test="searchType == 'NAME'">
+                        <choose>
+                            <when test="searchRegex == true">
+                                and t_b_tool_main.name regexp #{searchValue}
+                            </when>
+                            <otherwise>
+                                and t_b_tool_main.name like concat('%', #{searchValue}, '%')
+                            </otherwise>
+                        </choose>
+                    </when>
+                    <when test="searchType == 'TOOL_ID'">
+                        <choose>
+                            <when test="searchRegex == true">
+                                and t_b_tool_main.tool_id regexp #{searchValue}
+                            </when>
+                            <otherwise>
+                                and t_b_tool_main.tool_id like concat('%', #{searchValue}, '%')
+                            </otherwise>
+                        </choose>
+                    </when>
+                    <when test="searchType == 'NICKNAME'">
+                        <choose>
+                            <when test="searchRegex == true">
+                                and tsui.nickname regexp #{searchValue}
+                            </when>
+                            <otherwise>
+                                and tsui.nickname like concat('%', #{searchValue}, '%')
+                            </otherwise>
+                        </choose>
+                    </when>
+                    <when test="searchType == 'USERNAME'">
+                        <choose>
+                            <when test="searchRegex == true">
+                                and tsu.username regexp #{searchValue}
+                            </when>
+                            <otherwise>
+                                and tsu.username like concat('%', #{searchValue}, '%')
+                            </otherwise>
+                        </choose>
+                    </when>
+                    <when test="searchType == 'KEYWORD'">
+                        <choose>
+                            <when test="searchRegex == true">
+                                and tk.keyword regexp #{searchValue}
+                            </when>
+                            <otherwise>
+                                and tk.keyword like concat('%', #{searchValue}, '%')
+                            </otherwise>
+                        </choose>
+                    </when>
+                    <otherwise>
+                        <choose>
+                            <when test="searchRegex == true">
+                                and ( t_b_tool_main.name regexp #{searchValue}
+                                or t_b_tool_main.tool_id regexp #{searchValue}
+                                or tsui.nickname regexp #{searchValue}
+                                or tsu.username regexp #{searchValue}
+                                or tk.keyword regexp #{searchValue} )
+                            </when>
+                            <otherwise>
+                                and ( t_b_tool_main.name like concat('%', #{searchValue}, '%')
+                                or t_b_tool_main.tool_id like concat('%', #{searchValue}, '%')
+                                or tsui.nickname like concat('%', #{searchValue}, '%')
+                                or tsu.username like concat('%', #{searchValue}, '%')
+                                or tk.keyword like concat('%', #{searchValue}, '%') )
+                            </otherwise>
+                        </choose>
+                    </otherwise>
+                </choose>
+            </if>
+        </where>
+        order by t_b_tool_main.id desc
+    </select>
+
+    <select id="selectListByIds" resultMap="toolWithAuthor">
+        select t_b_tool_main.id as tool_id,
+        t_b_tool_main.name as tool_name,
+        t_b_tool_main.tool_id as tool_tool_id,
+        t_b_tool_main.icon as tool_icon,
+        t_b_tool_main.platform as tool_platform,
+        t_b_tool_main.description as tool_description,
+        t_b_tool_main.base_id as tool_base_id,
+        t_b_tool_main.author_id as tool_author_id,
+        t_b_tool_main.ver as tool_ver,
+        t_b_tool_main.keywords as tool_keywords,
+        t_b_tool_main.source_id as tool_source_id,
+        t_b_tool_main.dist_id as tool_dist_id,
+        t_b_tool_main.entry_point as tool_entry_point,
+        t_b_tool_main.publish as tool_publish,
+        t_b_tool_main.review as tool_review,
+        t_b_tool_main.create_time as tool_create_time,
+        t_b_tool_main.update_time as tool_update_time,
+        t_b_tool_main.deleted as tool_deleted,
+        t_b_tool_main.version as tool_version,
+        tsu.id as user_id,
+        tsu.username as user_username,
+        tsui.id as user_info_id,
+        tsui.nickname as user_info_nickname,
+        tsui.avatar as user_info_avatar,
+        tsui.email as user_info_email,
+        tbtc.id as tool_category_id,
+        tbtc.name as tool_category_name,
+        tbtc.enable as tool_category_enable,
+        tbtc.create_time as tool_category_create_time,
+        tbtc.update_time as tool_category_update_time,
+        tbtc.deleted as tool_category_deleted,
+        tbtc.version as tool_category_version
+        from t_b_tool_main
+        left join (select * from t_s_user where deleted = 0) as tsu on tsu.id = t_b_tool_main.author_id
+        left join (select * from t_s_user_info where deleted = 0) as tsui
+        on tsui.user_id = t_b_tool_main.author_id
+        left join (select * from t_r_tool_main_category where deleted = 0) as trtmc
+        on t_b_tool_main.id = trtmc.tool_id
+        left join (select * from t_b_tool_category where deleted = 0 and enable = 1) as tbtc
+        on tbtc.id = trtmc.category_id
+        <where>
+            <foreach collection="ids" item="item" index="index" open="and t_b_tool_main.id in (" separator="," close=")"
+                     nullable="true">
+                #{item}
+            </foreach>
+        </where>
+        <foreach collection="ids" item="item" index="index" open="order by field(t_b_tool_main.id," separator=","
+                 close=")" nullable="true">
+            #{item}
+        </foreach>
+    </select>
+
+    <resultMap id="toolTemplateWithBaseDataMap" type="toolTemplate"
+               extends="top.fatweb.oxygen.api.mapper.tool.ToolTemplateMapper.toolTemplateWithDataMap">
+        <association property="base">
+            <id property="id" column="tool_template_base_id"/>
+            <result property="name" column="tool_template_base_name"/>
+            <result property="distData" column="tool_template_base_dist_data"/>
+        </association>
+    </resultMap>
+
+    <resultMap id="toolMap" type="tool">
+        <id property="id" column="tool_id"/>
+        <result property="name" column="tool_name"/>
+        <result property="toolId" column="tool_tool_id"/>
+        <result property="icon" column="tool_icon"/>
+        <result property="platform" column="tool_platform"/>
+        <result property="description" column="tool_description"/>
+        <result property="baseId" column="tool_base_id"/>
+        <result property="authorId" column="tool_author_id"/>
+        <result property="ver" column="tool_ver"/>
+        <result property="sourceId" column="tool_source_id"/>
+        <result property="distId" column="tool_dist_id"/>
+        <result property="entryPoint" column="tool_entry_point"/>
+        <result property="publish" column="tool_publish"/>
+        <result property="review" column="tool_review"/>
+        <result property="updateTime" column="tool_update_time"/>
+        <result property="createTime" column="tool_create_time"/>
+        <result property="deleted" column="tool_deleted"/>
+        <result property="version" column="tool_version"/>
+        <result property="favorite" column="tool_favorite"/>
+        <result property="keywords" column="tool_keywords"
+                typeHandler="com.baomidou.mybatisplus.extension.handlers.JacksonTypeHandler"/>
+        <collection property="categories"
+                    resultMap="top.fatweb.oxygen.api.mapper.tool.ToolCategoryMapper.toolCategoryMap"/>
+    </resultMap>
+
+    <resultMap id="toolWithAuthor" type="tool" extends="toolMap">
+        <association property="author" resultMap="top.fatweb.oxygen.api.mapper.permission.UserMapper.userWithInfoMap"/>
+    </resultMap>
+
+    <resultMap id="toolWithDataMap" type="tool" extends="toolWithAuthor">
+        <association property="base" resultMap="top.fatweb.oxygen.api.mapper.tool.ToolBaseMapper.toolBaseWithDataMap"/>
+        <association property="source">
+            <id property="id" column="tool_source_id"/>
+            <result property="data" column="tool_source_data"/>
+            <result property="createTime" column="tool_source_create_time"/>
+            <result property="updateTime" column="tool_source_update_time"/>
+            <result property="deleted" column="tool_source_deleted"/>
+            <result property="version" column="tool_source_version"/>
+        </association>
+        <association property="dist">
+            <id property="id" column="tool_dist_id"/>
+            <result property="data" column="tool_dist_data"/>
+            <result property="createTime" column="tool_dist_create_time"/>
+            <result property="updateTime" column="tool_dist_update_time"/>
+            <result property="deleted" column="tool_dist_deleted"/>
+            <result property="version" column="tool_dist_version"/>
+        </association>
+    </resultMap>
+</mapper>

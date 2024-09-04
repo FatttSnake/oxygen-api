@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.fatweb.oxygen.api.mapper.tool.ToolBaseMapper">
+    <select id="selectOne" resultMap="toolBaseWithDataMap">
+        select t_b_tool_base.id          as tool_base_id,
+               t_b_tool_base.name        as tool_base_name,
+               t_b_tool_base.source_id   as tool_base_source_id,
+               t_b_tool_base.dist_id     as tool_base_dist_id,
+               t_b_tool_base.platform    as tool_base_platform,
+               t_b_tool_base.compiled    as tool_base_compiled,
+               t_b_tool_base.create_time as tool_base_create_time,
+               t_b_tool_base.update_time as tool_base_update_time,
+               t_b_tool_base.deleted     as tool_base_deleted,
+               t_b_tool_base.version     as tool_base_version,
+               tbtds.data                as tool_base_source_data,
+               tbtds.create_time         as tool_base_source_create_time,
+               tbtds.update_time         as tool_base_source_update_time,
+               tbtds.deleted             as tool_base_source_delete,
+               tbtds.version             as tool_base_source_version,
+               tbtdd.data                as tool_base_dist_data,
+               tbtdd.create_time         as tool_base_dist_create_time,
+               tbtdd.update_time         as tool_base_dist_update_time,
+               tbtdd.deleted             as tool_base_dist_delete,
+               tbtdd.version             as tool_base_dist_version
+        from t_b_tool_base
+                 left join (select * from t_b_tool_data where deleted = 0) as tbtds
+                           on tbtds.id = t_b_tool_base.source_id
+                 left join (select * from t_b_tool_data where deleted = 0) as tbtdd on tbtdd.id = t_b_tool_base.dist_id
+        where t_b_tool_base.deleted = 0
+          and t_b_tool_base.id = #{id}
+    </select>
+
+    <resultMap id="toolBaseMap" type="toolBase">
+        <id property="id" column="tool_base_id"/>
+        <result property="name" column="tool_base_name"/>
+        <result property="sourceId" column="tool_base_source_id"/>
+        <result property="distId" column="tool_base_dist_id"/>
+        <result property="platform" column="tool_base_platform"/>
+        <result property="compiled" column="tool_base_compiled"/>
+        <result property="createTime" column="tool_base_create_time"/>
+        <result property="updateTime" column="tool_base_update_time"/>
+        <result property="deleted" column="tool_base_deleted"/>
+        <result property="version" column="tool_base_version"/>
+    </resultMap>
+
+    <resultMap id="toolBaseWithDataMap" extends="toolBaseMap" type="toolBase">
+        <association property="source">
+            <id property="id" column="tool_base_source_id"/>
+            <result property="data" column="tool_base_source_data"/>
+            <result property="createTime" column="tool_base_source_create_time"/>
+            <result property="updateTime" column="tool_base_source_update_time"/>
+            <result property="deleted" column="tool_base_source_deleted"/>
+            <result property="version" column="tool_base_source_version"/>
+        </association>
+        <association property="dist">
+            <id property="id" column="tool_base_dist_id"/>
+            <result property="data" column="tool_base_dist_data"/>
+            <result property="createTime" column="tool_base_dist_create_time"/>
+            <result property="updateTime" column="tool_base_dist_update_time"/>
+            <result property="deleted" column="tool_base_dist_deleted"/>
+            <result property="version" column="tool_base_dist_version"/>
+        </association>
+    </resultMap>
+</mapper>
