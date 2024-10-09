@@ -1,6 +1,6 @@
 #!/bin/bash
 
-JAR_NAME=`ls target | grep oxygen-api- | grep -vE "original|asc|pom|javadoc"`
+JAR_NAME=`ls target | grep oxygen-api- | grep -vE "original|asc|pom|javadoc|md5|sha1|sha256|sha512"`
 JAR_VERSION=${JAR_NAME%.*}
 JAR_VERSION=${JAR_VERSION#*-}
 JAR_VERSION=${JAR_VERSION#*-}
