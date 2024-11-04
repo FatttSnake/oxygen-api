@@ -7,8 +7,14 @@
             from (select temp0.*
                 from (select *, row_number() over (partition by t_b_tool_main.tool_id, t_b_tool_main.author_id order by t_b_tool_main.id desc) as rn1
                     from t_b_tool_main
-                    where t_b_tool_main.deleted = 0
-                        and t_b_tool_main.publish != 0 and t_b_tool_main.review = 'PASS'
+                    <where>
+                        and t_b_tool_main.deleted = 0
+                        and t_b_tool_main.publish != 0
+                        and t_b_tool_main.review = 'PASS'
+                        <if test="platform != null">
+                            and t_b_tool_main.platform = #{platform}
+                        </if>
+                    </where>
                     ) as temp0
                 where temp0.rn1 = 1
             ) as temp1
@@ -19,9 +25,6 @@
                     temp1.name like concat('%', #{searchValue}, '%')
                     or tk.keyword like concat('%', #{searchValue}, '%')
                     )
-                </if>
-                <if test="platform != null">
-                    and temp1.platform = #{platform}
                 </if>
             </where>
             <choose>
