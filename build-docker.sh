@@ -1,6 +1,6 @@
 #!/bin/bash
 
-JAR_NAME=`ls target | grep oxygen-api- | grep -vE "original|asc|pom|javadoc"`
+JAR_NAME=`ls target | grep oxygen-api- | grep -vE "original|asc|pom|javadoc|md5|sha1|sha256|sha512"`
 JAR_VERSION=${JAR_NAME%.*}
 JAR_VERSION=${JAR_VERSION#*-}
 JAR_VERSION=${JAR_VERSION#*-}
@@ -13,7 +13,7 @@ java -Djarmode=layertools -jar target/${JAR_NAME} extract --destination target/e
 
 if [[ "${JAR_VERSION}" =~ ^.*SNAPSHOT$ ]]
 then
-  docker build -t ${DOCKER_HUB_URL}/oxygen-api:snapshot-latest -t ${DOCKER_HUB_URL}/oxygen-api:${JAR_VERSION} -t ${DOCKER_HUB_URL}/oxygen-api:${JAR_VERSION}-${BUILD_TIME} .
+  docker build --load -t ${DOCKER_HUB_URL}/oxygen-api:snapshot-latest -t ${DOCKER_HUB_URL}/oxygen-api:${JAR_VERSION} -t ${DOCKER_HUB_URL}/oxygen-api:${JAR_VERSION}-${BUILD_TIME} .
 else
-  docker build -t ${DOCKER_HUB_URL}/oxygen-api:latest -t ${DOCKER_HUB_URL}/oxygen-api:${JAR_VERSION} -t ${DOCKER_HUB_URL}/oxygen-api:${JAR_VERSION}-${BUILD_TIME} .
+  docker build --load -t ${DOCKER_HUB_URL}/oxygen-api:latest -t ${DOCKER_HUB_URL}/oxygen-api:${JAR_VERSION} -t ${DOCKER_HUB_URL}/oxygen-api:${JAR_VERSION}-${BUILD_TIME} .
 fi
