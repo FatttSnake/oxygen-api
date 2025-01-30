@@ -217,6 +217,7 @@
                 <when test="operator == null">
                     and tsu.username = #{username}
                     and t_b_tool_main.publish != 0
+                    and t_b_tool_main.review = 'PASS'
                 </when>
                 <otherwise>
                     <choose>
@@ -229,6 +230,7 @@
                         <otherwise>
                             and tsu.username = #{username}
                             and t_b_tool_main.publish != 0
+                            and t_b_tool_main.review = 'PASS'
                         </otherwise>
                     </choose>
                 </otherwise>
