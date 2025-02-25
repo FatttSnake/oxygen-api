@@ -2,11 +2,9 @@ package top.fatweb.oxygen.api.controller.permission
 
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import jakarta.validation.Valid
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.*
 import top.fatweb.oxygen.api.annotation.BaseController
 import top.fatweb.oxygen.api.annotation.Trim
 import top.fatweb.oxygen.api.entity.common.ResponseCode
@@ -46,10 +44,15 @@ class AuthenticationController(
     @PostMapping("/register")
     fun register(
         request: HttpServletRequest,
+        response: HttpServletResponse,
         @Valid @RequestBody registerParam: RegisterParam
     ): ResponseResult<RegisterVo> = ResponseResult.success(
-        ResponseCode.PERMISSION_REGISTER_SUCCESS,
-        data = authenticationService.register(request, registerParam)
+        code = ResponseCode.PERMISSION_REGISTER_SUCCESS,
+        data = authenticationService.register(
+            request = request,
+            response = response,
+            registerParam = registerParam
+        )
     )
 
 
@@ -104,7 +107,10 @@ class AuthenticationController(
     @Operation(summary = "忘记密码")
     @PostMapping("/forget")
     fun forget(request: HttpServletRequest, @Valid @RequestBody forgetParam: ForgetParam): ResponseResult<Nothing> {
-        authenticationService.forget(request, forgetParam)
+        authenticationService.forget(
+            request = request,
+            forgetParam = forgetParam
+        )
 
         return ResponseResult.success(ResponseCode.PERMISSION_FORGET_SUCCESS)
     }
@@ -127,7 +133,10 @@ class AuthenticationController(
         request: HttpServletRequest,
         @Valid @RequestBody retrieveParam: RetrieveParam
     ): ResponseResult<Nothing> {
-        authenticationService.retrieve(request, retrieveParam)
+        authenticationService.retrieve(
+            request = request,
+            retrieveParam = retrieveParam
+        )
 
         return ResponseResult.success(ResponseCode.PERMISSION_RETRIEVE_SUCCESS)
     }
@@ -148,11 +157,19 @@ class AuthenticationController(
     @Trim
     @Operation(summary = "登录")
     @PostMapping("/login")
-    fun login(request: HttpServletRequest, @Valid @RequestBody loginParam: LoginParam): ResponseResult<LoginVo> =
+    fun login(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        @Valid @RequestBody loginParam: LoginParam
+    ): ResponseResult<LoginVo> =
         ResponseResult.success(
-            ResponseCode.PERMISSION_LOGIN_SUCCESS,
-            "Login success",
-            authenticationService.login(request, loginParam)
+            code = ResponseCode.PERMISSION_LOGIN_SUCCESS,
+            msg = "Login success",
+            data = authenticationService.login(
+                request = request,
+                response = response,
+                loginParam = loginParam
+            )
         )
 
     /**
@@ -208,14 +225,23 @@ class AuthenticationController(
     @PostMapping("/logout")
     fun logout(request: HttpServletRequest): ResponseResult<Nothing> =
         when (authenticationService.logout(WebUtil.getToken(request))) {
-            true -> ResponseResult.success(ResponseCode.PERMISSION_LOGOUT_SUCCESS, "Logout success", null)
-            false -> ResponseResult.fail(ResponseCode.PERMISSION_LOGOUT_FAILED, "Logout failed", null)
+            true -> ResponseResult.success(
+                code = ResponseCode.PERMISSION_LOGOUT_SUCCESS,
+                msg = "Logout success",
+                data = null
+            )
+
+            false -> ResponseResult.fail(
+                code = ResponseCode.PERMISSION_LOGOUT_FAILED,
+                msg = "Logout failed",
+                data = null
+            )
         }
 
     /**
-     * Renew token
+     * Refresh token
      *
-     * @param request
+     * @param response
      * @return Response object includes new token
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
@@ -225,9 +251,16 @@ class AuthenticationController(
      */
     @Operation(summary = "更新 Token")
     @GetMapping("/token")
-    fun renewToken(request: HttpServletRequest): ResponseResult<TokenVo> = ResponseResult.success(
-        ResponseCode.PERMISSION_TOKEN_RENEW_SUCCESS,
-        "Token renew success",
-        authenticationService.renewToken(WebUtil.getToken(request))
+    fun refreshToken(
+        response: HttpServletResponse,
+        @CookieValue("refresh_token") cookieRefreshToken: String?,
+        @RequestParam("refreshToken") queryRefreshToken: String?
+    ): ResponseResult<TokenVo> = ResponseResult.success(
+        code = ResponseCode.PERMISSION_TOKEN_REFRESH_SUCCESS,
+        msg = "Token refresh success",
+        data = authenticationService.refreshToken(
+            response = response,
+            refreshToken = cookieRefreshToken ?: queryRefreshToken
+        )
     )
 }

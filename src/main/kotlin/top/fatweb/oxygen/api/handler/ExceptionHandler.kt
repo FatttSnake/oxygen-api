@@ -130,6 +130,16 @@ class ExceptionHandler {
                 ResponseResult.fail(ResponseCode.PERMISSION_USER_NOT_FOUND, e.localizedMessage, null)
             }
 
+            is LoginFailedException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.PERMISSION_LOGIN_FAILED, e.localizedMessage, null)
+            }
+
+            is TokenRefreshErrorException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.PERMISSION_TOKEN_REFRESH_ERROR, e.localizedMessage, null)
+            }
+
             is NoVerificationRequiredException -> {
                 logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.PERMISSION_NO_VERIFICATION_REQUIRED, e.localizedMessage, null)
@@ -230,7 +240,7 @@ class ExceptionHandler {
                 ResponseResult.fail(ResponseCode.DATABASE_EXECUTE_ERROR, e.localizedMessage, null)
             }
 
-            is RecordAlreadyExists -> {
+            is RecordAlreadyExistsException -> {
                 logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.DATABASE_RECORD_ALREADY_EXISTS, e.localizedMessage, null)
             }

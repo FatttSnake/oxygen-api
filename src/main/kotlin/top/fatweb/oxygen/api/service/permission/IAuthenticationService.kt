@@ -1,6 +1,7 @@
 package top.fatweb.oxygen.api.service.permission
 
 import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import top.fatweb.oxygen.api.entity.permission.User
 import top.fatweb.oxygen.api.param.permission.*
 import top.fatweb.oxygen.api.vo.permission.LoginVo
@@ -18,14 +19,18 @@ interface IAuthenticationService {
     /**
      * Register
      *
+     * @param request
+     * @param response
      * @param registerParam Register parameters
      * @return RegisterVo object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see HttpServletRequest
+     * @see HttpServletResponse
      * @see RegisterParam
      * @see RegisterVo
      */
-    fun register(request: HttpServletRequest, registerParam: RegisterParam): RegisterVo
+    fun register(request: HttpServletRequest, response: HttpServletResponse, registerParam: RegisterParam): RegisterVo
 
     /**
      * Send verify email
@@ -73,15 +78,17 @@ interface IAuthenticationService {
      * Login
      *
      * @param request
+     * @param response
      * @param loginParam Login parameters
      * @return LoginVo object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see HttpServletRequest
+     * @see HttpServletResponse
      * @see User
      * @see LoginVo
      */
-    fun login(request: HttpServletRequest, loginParam: LoginParam): LoginVo
+    fun login(request: HttpServletRequest, response: HttpServletResponse, loginParam: LoginParam): LoginVo
 
     /**
      * Create two-factor
@@ -126,13 +133,15 @@ interface IAuthenticationService {
     fun logout(token: String): Boolean
 
     /**
-     * Renew token
+     * Refresh token
      *
-     * @param token Token
+     * @param response
+     * @param refreshToken  Refresh token
      * @return TokenVo object
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
+     * @see HttpServletResponse
      * @see TokenVo
      */
-    fun renewToken(token: String): TokenVo
+    fun refreshToken(response: HttpServletResponse, refreshToken: String?): TokenVo
 }

@@ -195,9 +195,9 @@ class StatisticsServiceImpl(
         }
 
         return OnlineInfoVo(
-            current = redisUtil.keys("${SecurityProperties.jwtIssuer}_login_*")
+            current = redisUtil.keys("${SecurityProperties.tokenIssuer}_access_*")
                 .distinctBy {
-                    Regex("${SecurityProperties.jwtIssuer}_login_(.*):.*").matchEntire(it)?.groupValues?.getOrNull(
+                    Regex("${SecurityProperties.tokenIssuer}_access_(.*?)_.*:.*").matchEntire(it)?.groupValues?.getOrNull(
                         1
                     )
                 }.size.toLong(),

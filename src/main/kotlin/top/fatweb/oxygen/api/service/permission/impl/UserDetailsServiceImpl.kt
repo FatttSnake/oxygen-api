@@ -20,8 +20,7 @@ class UserDetailsServiceImpl(
     private val userService: IUserService
 ) : UserDetailsService {
     override fun loadUserByUsername(account: String): UserDetails {
-        val user = userService.getUserWithPowerByAccount(account)
-        user ?: throw UserNotFoundException()
+        val user = userService.getUserWithPowerByAccount(account) ?: throw UserNotFoundException()
 
         return LoginUser(user)
     }

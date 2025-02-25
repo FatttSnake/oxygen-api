@@ -7,14 +7,14 @@ app:
 #    nickname: Administrator # Nickname of administrator
 #    email: admin@mail.com # Email of administrator
   security:
-#    header-string: "Authorization" # The key of head to get token
+#    header-key: "Authorization" # Key of head to get token
 #    token-prefix: "Bearer " # Token prefix
-#    jwt-ttl: 2 # The life of token
-#    jwt-ttl-unit: hours # Unit of life of token [nanoseconds, microseconds, milliseconds, seconds, minutes, hours, days]
-    jwt-key: $uuid$ # Key to generate token
-#    jwt-issuer: Oxygen # Token issuer
-#    redis-ttl: 20 # The life of token in redis
-#    redis-ttl-unit: minutes # Unit of life of token in redis [nanoseconds, microseconds, milliseconds, seconds, minutes, hours, days]
+    token-secret: $uuid$ # Secret to generate token
+#    token-issuer: Oxygen # Issuer of token
+#    access-token-ttl: 2 # Life of access token
+#    access-token-ttl-unit: hours # Life util of access token [nanoseconds, microseconds, milliseconds, seconds, minutes, hours, days]
+#    refresh-token-ttl: 128 # Life of refresh token
+#    refresh-token-ttl-unit: days # Life util of refresh token [nanoseconds, microseconds, milliseconds, seconds, minutes, hours, days]
 
 server:
 #  port: 8080 # Server port

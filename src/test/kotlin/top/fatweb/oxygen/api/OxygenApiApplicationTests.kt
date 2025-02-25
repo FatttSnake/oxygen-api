@@ -10,6 +10,7 @@ import top.fatweb.oxygen.api.properties.SecurityProperties
 import top.fatweb.oxygen.api.util.ByteUtil
 import top.fatweb.oxygen.api.util.JwtUtil
 import top.fatweb.oxygen.api.util.StrUtil
+import java.util.concurrent.TimeUnit
 
 
 @ExtendWith(SpringExtension::class)
@@ -23,7 +24,7 @@ class OxygenApiApplicationTests {
 
     @Test
     fun jwtTest() {
-        val jwt = JwtUtil.createJwt("User")
+        val jwt = JwtUtil.generateAccessToken("User")
         assertEquals("User", jwt?.let { JwtUtil.parseJwt(it).subject })
     }
 
@@ -50,5 +51,10 @@ class OxygenApiApplicationTests {
     @Test
     fun underToUpperLetterTest() {
         assertEquals("createTime", StrUtil.underToUpperLetter("create_time"))
+    }
+
+    @Test
+    fun timeUnitTest() {
+        assertEquals(60000, TimeUnit.MINUTES.toMillis(1))
     }
 }

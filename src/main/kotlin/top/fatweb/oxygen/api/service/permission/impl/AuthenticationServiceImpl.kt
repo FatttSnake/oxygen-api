@@ -2,7 +2,9 @@ package top.fatweb.oxygen.api.service.permission.impl
 
 import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper
 import com.baomidou.mybatisplus.extension.kotlin.KtUpdateWrapper
+import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import org.apache.velocity.VelocityContext
 import org.apache.velocity.app.VelocityEngine
 import org.slf4j.Logger
@@ -73,7 +75,11 @@ class AuthenticationServiceImpl(
 
     @EventLogRecord(EventLog.Event.REGISTER)
     @Transactional
-    override fun register(request: HttpServletRequest, registerParam: RegisterParam): RegisterVo {
+    override fun register(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        registerParam: RegisterParam
+    ): RegisterVo {
         verifyCaptcha(registerParam.captchaCode!!)
         sensitiveWordService.checkSensitiveWord(registerParam.username!!)
 
@@ -97,9 +103,18 @@ class AuthenticationServiceImpl(
 
         sendVerifyMail(user.username!!, user.verify!!, registerParam.email!!)
 
-        val loginVo = this.login(request, registerParam.username!!, registerParam.password!!)
+        val loginVo = this.login(
+            request = request,
+            response = response,
+            account = registerParam.username!!,
+            password = registerParam.password!!
+        )
 
-        return RegisterVo(token = loginVo.token, userId = loginVo.userId)
+        return RegisterVo(
+            refreshToken = loginVo.refreshToken,
+            accessToken = loginVo.accessToken,
+            userId = loginVo.userId
+        )
     }
 
     @Transactional
@@ -207,12 +222,18 @@ class AuthenticationServiceImpl(
     }
 
     @EventLogRecord(EventLog.Event.LOGIN)
-    override fun login(request: HttpServletRequest, loginParam: LoginParam): LoginVo {
+    override fun login(request: HttpServletRequest, response: HttpServletResponse, loginParam: LoginParam): LoginVo {
         if (loginParam.twoFactorCode.isNullOrBlank()) {
             verifyCaptcha(loginParam.captchaCode!!)
         }
 
-        return this.login(request, loginParam.account!!, loginParam.password!!, loginParam.twoFactorCode)
+        return this.login(
+            request = request,
+            response = response,
+            account = loginParam.account!!,
+            password = loginParam.password!!,
+            twoFactorCode = loginParam.twoFactorCode
+        )
     }
 
     override fun createTwoFactor(): TwoFactorVo {
@@ -222,7 +243,8 @@ class AuthenticationServiceImpl(
             throw AlreadyHasTwoFactorException()
         }
 
-        val secretKey = TOTPUtil.generateSecretKey(SettingsOperator.getTwoFactorValue(TwoFactorSettings::secretKeyLength, 16))
+        val secretKey =
+            TOTPUtil.generateSecretKey(SettingsOperator.getTwoFactorValue(TwoFactorSettings::secretKeyLength, 16))
         val qrCodeSVGBase64 = TOTPUtil.generateQRCodeSVGBase64(
             SettingsOperator.getTwoFactorValue(TwoFactorSettings::issuer, "OxygenToolbox"),
             user.username!!,
@@ -268,26 +290,70 @@ class AuthenticationServiceImpl(
 
     @EventLogRecord(EventLog.Event.LOGOUT)
     override fun logout(token: String): Boolean {
-        val loginUser = WebUtil.getLoginUser() ?: throw TokenHasExpiredException()
+        var redisKeyPattern = "${SecurityProperties.tokenIssuer}_access_*:${token}"
+        var redisKeys = redisUtil.keys(redisKeyPattern)
+        if (redisKeys.isEmpty()) {
+            return false
+        }
+        redisUtil.delObject(redisKeys)
 
-        return redisUtil.delObject("${SecurityProperties.jwtIssuer}_login_${loginUser.user.id}:${token}")
+        val refreshToken = Regex("${SecurityProperties.tokenIssuer}_access_.*?_(.*):.*").matchEntire(redisKeys.first())?.groupValues?.getOrNull(1)
+        redisKeyPattern = "${SecurityProperties.tokenIssuer}_token_*:${refreshToken}"
+        redisKeys = redisUtil.keys(redisKeyPattern)
+        if (redisKeys.isEmpty()) {
+            return false
+        }
+        redisUtil.delObject(redisKeys)
+
+        return true
     }
 
-    override fun renewToken(token: String): TokenVo {
-        val loginUser = WebUtil.getLoginUser() ?: throw TokenHasExpiredException()
+    override fun refreshToken(response: HttpServletResponse, refreshToken: String?): TokenVo {
+        refreshToken ?: throw TokenRefreshErrorException()
+        JwtUtil.parseJwt(refreshToken)
 
-        val oldRedisKey = "${SecurityProperties.jwtIssuer}_login_${loginUser.user.id}:${token}"
-        redisUtil.delObject(oldRedisKey)
-        val jwt = JwtUtil.createJwt(WebUtil.getLoginUserId().toString())
+        var redisKeyPattern = "${SecurityProperties.tokenIssuer}_token_*:${refreshToken}"
+        var redisKeys = redisUtil.keys(redisKeyPattern)
+        if (redisKeys.isEmpty()) {
+            throw TokenHasExpiredException()
+        }
 
-        jwt ?: throw RuntimeException("Login failed")
+        val loginUser = redisUtil.getObject<LoginUser>(redisKeys.first()) ?: throw TokenHasExpiredException()
+        val userId = loginUser.user.id.toString()
+        val newRefreshToken = JwtUtil.generateRefreshToken(userId) ?: throw TokenRefreshErrorException()
+        val newAccessToken = JwtUtil.generateAccessToken(userId) ?: throw TokenRefreshErrorException()
 
-        val redisKey = "${SecurityProperties.jwtIssuer}_login_${loginUser.user.id}:${jwt}"
+        var redisKey = "${SecurityProperties.tokenIssuer}_token_${userId}:${newRefreshToken}"
         redisUtil.setObject(
-            redisKey, loginUser, SecurityProperties.redisTtl, SecurityProperties.redisTtlUnit
+            key = redisKey,
+            value = loginUser,
+            timeout = SecurityProperties.refreshTokenTtl,
+            timeUnit = SecurityProperties.refreshTokenTtlUnit
+        )
+        redisKey = "${SecurityProperties.tokenIssuer}_access_${userId}_${newRefreshToken}:${newAccessToken}"
+        redisUtil.setObject(
+            key = redisKey,
+            value = loginUser,
+            timeout = SecurityProperties.accessTokenTtl,
+            timeUnit = SecurityProperties.accessTokenTtlUnit
         )
 
-        return TokenVo(jwt)
+        val cookie = Cookie("refresh_token", newRefreshToken).apply {
+            path = "/token"
+            maxAge = SecurityProperties.refreshTokenTtlUnit.toSeconds(SecurityProperties.refreshTokenTtl).toInt()
+            isHttpOnly = true
+        }
+        response.addCookie(cookie)
+
+        redisUtil.delObject(redisKeys)
+        redisKeyPattern = "${SecurityProperties.tokenIssuer}_access_*_${refreshToken}:*"
+        redisKeys = redisUtil.keys(redisKeyPattern)
+        redisUtil.delObject(redisKeys)
+
+        return TokenVo(
+            refreshToken = newRefreshToken,
+            accessToken = newAccessToken,
+        )
     }
 
     private fun sendVerifyMail(username: String, code: String, email: String) {
@@ -362,14 +428,14 @@ class AuthenticationServiceImpl(
 
     private fun login(
         request: HttpServletRequest,
+        response: HttpServletResponse,
         account: String,
         password: String,
         twoFactorCode: String? = null
     ): LoginVo {
         val usernamePasswordAuthenticationToken =
             UsernamePasswordAuthenticationToken(account, password)
-        val authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken)
-        authentication ?: throw RuntimeException("Login failed")
+        val authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken) ?: throw LoginFailedException()
 
         val loginUser = authentication.principal as LoginUser
         loginUser.user.password = ""
@@ -392,14 +458,38 @@ class AuthenticationServiceImpl(
         }, KtUpdateWrapper(User()).eq(User::username, loginUser.username))
 
         val userId = loginUser.user.id.toString()
-        val jwt = JwtUtil.createJwt(userId)
+        val refreshToken = JwtUtil.generateRefreshToken(userId) ?: throw LoginFailedException()
+        val accessToken = JwtUtil.generateAccessToken(userId) ?: throw LoginFailedException()
 
-        jwt ?: throw RuntimeException("Login failed")
+        var redisKey = "${SecurityProperties.tokenIssuer}_token_${userId}:${refreshToken}"
+        redisUtil.setObject(
+            key = redisKey,
+            value = loginUser,
+            timeout = SecurityProperties.refreshTokenTtl,
+            timeUnit = SecurityProperties.refreshTokenTtlUnit
+        )
+        redisKey = "${SecurityProperties.tokenIssuer}_access_${userId}_${refreshToken}:${accessToken}"
+        redisUtil.setObject(
+            key = redisKey,
+            value = loginUser,
+            timeout = SecurityProperties.accessTokenTtl,
+            timeUnit = SecurityProperties.accessTokenTtlUnit
+        )
 
-        val redisKey = "${SecurityProperties.jwtIssuer}_login_${userId}:${jwt}"
-        redisUtil.setObject(redisKey, loginUser, SecurityProperties.redisTtl, SecurityProperties.redisTtlUnit)
+        val cookie = Cookie("refresh_token", refreshToken).apply {
+            path = "/token"
+            maxAge = SecurityProperties.refreshTokenTtlUnit.toSeconds(SecurityProperties.refreshTokenTtl).toInt()
+            isHttpOnly = true
+        }
+        response.addCookie(cookie)
 
-        return LoginVo(jwt, loginUser.user.id, loginUser.user.currentLoginTime, loginUser.user.currentLoginIp)
+        return LoginVo(
+            refreshToken = refreshToken,
+            accessToken = accessToken,
+            userId = loginUser.user.id,
+            lastLoginTime = loginUser.user.currentLoginTime,
+            lastLoginIp = loginUser.user.currentLoginIp
+        )
     }
 
     private fun verifyCaptcha(captchaCode: String) {

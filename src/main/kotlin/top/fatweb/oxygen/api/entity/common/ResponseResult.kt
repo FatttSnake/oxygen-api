@@ -10,13 +10,17 @@ import java.io.Serializable
  * @since 1.0.0
  */
 class ResponseResult<T> private constructor(
-    @Schema(description = "响应码", defaultValue = "200") val code: Int,
+    @Schema(description = "响应码", defaultValue = "200")
+    val code: Int,
 
-    @Schema(description = "是否调用成功") val success: Boolean,
+    @Schema(description = "是否调用成功")
+    val success: Boolean,
 
-    @Schema(description = "信息") val msg: String,
+    @Schema(description = "信息")
+    val msg: String,
 
-    @Schema(description = "数据") val data: T?
+    @Schema(description = "数据")
+    val data: T?
 ) : Serializable {
     companion object {
         /**
