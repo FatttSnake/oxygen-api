@@ -5,7 +5,6 @@ import top.fatweb.oxygen.api.entity.permission.User
 import top.fatweb.oxygen.api.param.permission.user.*
 import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.permission.UserWithInfoVo
-import top.fatweb.oxygen.api.vo.permission.UserWithPasswordRoleInfoVo
 import top.fatweb.oxygen.api.vo.permission.UserWithPowerInfoVo
 import top.fatweb.oxygen.api.vo.permission.UserWithRoleInfoVo
 
@@ -104,13 +103,13 @@ interface IUserService : IService<User> {
      * Add user
      *
      * @param userAddParam Add user parameters
-     * @return UserWithPasswordRoleInfoVo object
+     * @return UserWithRoleInfoVo object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see UserAddParam
-     * @see UserWithPasswordRoleInfoVo
+     * @see UserWithRoleInfoVo
      */
-    fun add(userAddParam: UserAddParam): UserWithPasswordRoleInfoVo
+    fun add(userAddParam: UserAddParam): UserWithRoleInfoVo
 
     /**
      * Update user

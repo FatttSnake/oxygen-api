@@ -10,7 +10,6 @@ import top.fatweb.oxygen.api.param.permission.user.UserAddParam
 import top.fatweb.oxygen.api.param.permission.user.UserUpdateParam
 import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.permission.UserWithInfoVo
-import top.fatweb.oxygen.api.vo.permission.UserWithPasswordRoleInfoVo
 import top.fatweb.oxygen.api.vo.permission.UserWithPowerInfoVo
 import top.fatweb.oxygen.api.vo.permission.UserWithRoleInfoVo
 
@@ -109,37 +108,6 @@ object UserConverter {
         createTime = user.createTime,
         updateTime = user.updateTime,
         userInfo = user.userInfo?.let(UserInfoConverter::userInfoToUserInfoVo)
-    )
-
-    /**
-     * Convert User object into UserWithPasswordRoleInfoVo object
-     *
-     * @param user User object
-     * @return UserWithPasswordRoleInfoVo object
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see User
-     * @see UserWithPasswordRoleInfoVo
-     */
-    fun userToUserWithPasswordRoleInfoVo(user: User) = UserWithPasswordRoleInfoVo(
-        id = user.id,
-        username = user.username,
-        password = user.password,
-        twoFactor = !user.twoFactor.isNullOrBlank() && !user.twoFactor!!.endsWith("?"),
-        verify = user.verify,
-        locking = user.locking?.let { it == 1 },
-        expiration = user.expiration,
-        credentialsExpiration = user.credentialsExpiration,
-        enable = user.enable?.let { it == 1 },
-        currentLoginTime = user.currentLoginTime,
-        currentLoginIp = user.currentLoginIp,
-        lastLoginTime = user.lastLoginTime,
-        lastLoginIp = user.lastLoginIp,
-        createTime = user.createTime,
-        updateTime = user.updateTime,
-        userInfo = user.userInfo?.let(UserInfoConverter::userInfoToUserInfoVo),
-        roles = user.roles?.map(RoleConverter::roleToRoleVo),
-        groups = user.groups?.map(GroupConverter::groupToGroupVo)
     )
 
     /**

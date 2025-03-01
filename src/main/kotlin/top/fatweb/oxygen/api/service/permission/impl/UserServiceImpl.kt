@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.authentication.BadCredentialsException
+import org.springframework.security.core.token.Sha512DigestUtils
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -29,7 +30,6 @@ import top.fatweb.oxygen.api.util.StrUtil
 import top.fatweb.oxygen.api.util.WebUtil
 import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.permission.UserWithInfoVo
-import top.fatweb.oxygen.api.vo.permission.UserWithPasswordRoleInfoVo
 import top.fatweb.oxygen.api.vo.permission.UserWithPowerInfoVo
 import top.fatweb.oxygen.api.vo.permission.UserWithRoleInfoVo
 import java.time.LocalDateTime
@@ -147,13 +147,13 @@ class UserServiceImpl(
     override fun getList() = baseMapper.selectListWithInfo().map(UserConverter::userToUserWithInfoVo)
 
     @Transactional
-    override fun add(userAddParam: UserAddParam): UserWithPasswordRoleInfoVo {
-        val rawPassword =
-            if (userAddParam.password.isNullOrBlank()) StrUtil.getRandomPassword(10) else userAddParam.password
+    override fun add(userAddParam: UserAddParam): UserWithRoleInfoVo {
+        val newPassword =
+            if (userAddParam.password.isNullOrBlank()) Sha512DigestUtils.shaHex(StrUtil.getRandomPassword(10)) else userAddParam.password
         val user = UserConverter.userAddParamToUser(userAddParam)
 
         user.apply {
-            password = passwordEncoder.encode(rawPassword)
+            password = passwordEncoder.encode(newPassword)
             verify = if (userAddParam.verified) null else "${
                 LocalDateTime.now(ZoneOffset.UTC).toInstant(ZoneOffset.UTC).toEpochMilli()
             }-${UUID.randomUUID()}-${UUID.randomUUID()}-${UUID.randomUUID()}"
@@ -184,9 +184,7 @@ class UserServiceImpl(
             })
         }
 
-        user.password = rawPassword
-
-        return UserConverter.userToUserWithPasswordRoleInfoVo(user)
+        return UserConverter.userToUserWithRoleInfoVo(user)
     }
 
     @Transactional

@@ -5,6 +5,7 @@ import jakarta.annotation.PostConstruct
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.DependsOn
+import org.springframework.security.core.token.Sha512DigestUtils
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 import top.fatweb.avatargenerator.GitHubAvatar
@@ -42,7 +43,7 @@ class InitConfig(
                 logger.warn("No default administrator password is set, a randomly generated password will be used")
                 StrUtil.getRandomPassword(10)
             }
-            val encodedPassword = passwordEncoder.encode(rawPassword)
+            val encodedPassword = passwordEncoder.encode(Sha512DigestUtils.shaHex(rawPassword))
 
             val user = User().apply {
                 id = 0

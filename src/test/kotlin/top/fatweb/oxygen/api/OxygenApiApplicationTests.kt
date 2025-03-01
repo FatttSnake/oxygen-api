@@ -28,14 +28,6 @@ class OxygenApiApplicationTests {
         assertEquals("User", jwt?.let { JwtUtil.parseJwt(it).subject })
     }
 
-    /*
-        @Test
-        fun generatePassword() {
-            val passwordEncoder = BCryptPasswordEncoder()
-            logger.info(passwordEncoder.encode("admin@dev"))
-        }
-    */
-
     @Test
     fun byteUtilTest() {
         assertEquals("512B", ByteUtil.formatByteSize(512))
