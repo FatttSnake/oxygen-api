@@ -12,7 +12,6 @@ import top.fatweb.oxygen.api.param.permission.user.*
 import top.fatweb.oxygen.api.service.permission.IUserService
 import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.permission.UserWithInfoVo
-import top.fatweb.oxygen.api.vo.permission.UserWithPasswordRoleInfoVo
 import top.fatweb.oxygen.api.vo.permission.UserWithPowerInfoVo
 import top.fatweb.oxygen.api.vo.permission.UserWithRoleInfoVo
 
@@ -137,13 +136,13 @@ class UserController(
      * @since 1.0.0
      * @see UserAddParam
      * @see ResponseResult
-     * @see UserWithPasswordRoleInfoVo
+     * @see UserWithRoleInfoVo
      */
     @Trim
     @Operation(summary = "添加用户")
     @PostMapping
     @PreAuthorize("hasAnyAuthority('system:user:add:one')")
-    fun add(@Valid @RequestBody userAddParam: UserAddParam): ResponseResult<UserWithPasswordRoleInfoVo> =
+    fun add(@Valid @RequestBody userAddParam: UserAddParam): ResponseResult<UserWithRoleInfoVo> =
         ResponseResult.databaseSuccess(
             ResponseCode.DATABASE_INSERT_SUCCESS, data = userService.add(userAddParam)
         )

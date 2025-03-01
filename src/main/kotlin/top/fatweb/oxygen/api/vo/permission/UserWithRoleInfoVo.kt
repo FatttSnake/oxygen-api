@@ -82,11 +82,10 @@ data class UserWithRoleInfoVo(
     val credentialsExpiration: LocalDateTime?,
 
     /**
-     * Current login time
+     * Enable
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
-     * @see LocalDateTime
      */
     @Schema(description = "是否启用", example = "true")
     val enable: Boolean?,
@@ -102,11 +101,10 @@ data class UserWithRoleInfoVo(
     val currentLoginTime: LocalDateTime?,
 
     /**
-     * Last login time
+     * Current login IP
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
-     * @see LocalDateTime
      */
     @Schema(description = "当前登录 IP", example = "1.1.1.1")
     val currentLoginIp: String?,
@@ -141,11 +139,11 @@ data class UserWithRoleInfoVo(
     val createTime: LocalDateTime?,
 
     /**
-     * User information object
+     * Update time
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
-     * @see UserInfoVo
+     * @see LocalDateTime
      */
     @Schema(description = "修改时间", example = "1900-01-01T00:00:00.000Z")
     val updateTime: LocalDateTime?,

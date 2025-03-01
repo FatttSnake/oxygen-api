@@ -9,7 +9,7 @@ import top.fatweb.oxygen.api.converter.tool.ToolConverter
 import top.fatweb.oxygen.api.entity.tool.Tool
 import top.fatweb.oxygen.api.entity.tool.ToolFavorite
 import top.fatweb.oxygen.api.exception.NoRecordFoundException
-import top.fatweb.oxygen.api.exception.RecordAlreadyExists
+import top.fatweb.oxygen.api.exception.RecordAlreadyExistsException
 import top.fatweb.oxygen.api.mapper.tool.StoreMapper
 import top.fatweb.oxygen.api.param.PageSortParam
 import top.fatweb.oxygen.api.param.tool.ToolFavoriteAddParam
@@ -75,7 +75,7 @@ class StoreServiceImpl(
                     .eq(ToolFavorite::toolId, toolFavoriteAddParam.toolId)
             )
         ) {
-            throw RecordAlreadyExists()
+            throw RecordAlreadyExistsException()
         }
 
         if (baseMapper.countPublishedToolByAuthorAndToolId(

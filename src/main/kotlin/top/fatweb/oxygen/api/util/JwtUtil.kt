@@ -25,45 +25,69 @@ object JwtUtil {
      * @since 1.0.0
      */
     private fun generalKey(): SecretKeySpec {
-        val encodeKey = Base64.getEncoder().encode(SecurityProperties.jwtKey.toByteArray())
+        val encodeKey = Base64.getEncoder().encode(SecurityProperties.tokenSecret.toByteArray())
         return SecretKeySpec(encodeKey, 0, encodeKey.size, "AES")
     }
 
     private fun algorithm(): Algorithm = Algorithm.HMAC256(generalKey().toString())
 
     /**
-     * Create token
+     * Generate access token
      *
      * @param subject Data stored in token (json format)
-     * @param ttl TTL of token
-     * @param timeUnit TTL unit of token
+     * @return Access token
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.1.0
+     */
+    fun generateAccessToken(
+        subject: String
+    ) = generateJwt(
+        subject = subject,
+        ttl = SecurityProperties.accessTokenTtl,
+        ttlUnit = SecurityProperties.accessTokenTtlUnit
+    )
+
+    /**
+     * Generate refresh token
+     *
+     * @param subject Data stored in token (json format)
+     * @return Refresh token
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.1.0
+     */
+    fun generateRefreshToken(
+        subject: String
+    ) = generateJwt(
+        subject = subject,
+        ttl = SecurityProperties.refreshTokenTtl,
+        ttlUnit = SecurityProperties.refreshTokenTtlUnit
+    )
+
+    /**
+     * Generate jwt token
+     *
+     * @param subject Data stored in token (json format)
+     * @param ttl Life of token
+     * @param ttlUnit Life util of token
      * @param uuid UUID
      * @return JWT token
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
      * @see TimeUnit
      */
-    fun createJwt(
+    private fun generateJwt(
         subject: String,
-        ttl: Long = SecurityProperties.jwtTtl,
-        timeUnit: TimeUnit = SecurityProperties.jwtTtlUnit,
+        ttl: Long,
+        ttlUnit: TimeUnit,
         uuid: String = getUUID()
     ): String? {
         val nowMillis = System.currentTimeMillis()
         val nowDate = Date(nowMillis)
-        val unitTtl = (ttl * when (timeUnit) {
-            TimeUnit.DAYS -> 24 * 60 * 60 * 1000
-            TimeUnit.HOURS -> 60 * 60 * 1000
-            TimeUnit.MINUTES -> 60 * 1000
-            TimeUnit.SECONDS -> 1000
-            TimeUnit.MILLISECONDS -> 1
-            TimeUnit.NANOSECONDS -> 1 / 1000
-            TimeUnit.MICROSECONDS -> 1 / 1000 / 1000
-        })
-        val expMillis = nowMillis + unitTtl
+        val ttlMillis = ttlUnit.toMillis(ttl)
+        val expMillis = nowMillis + ttlMillis
         val expDate = Date(expMillis)
 
-        return JWT.create().withJWTId(uuid).withSubject(subject).withIssuer(SecurityProperties.jwtIssuer)
+        return JWT.create().withJWTId(uuid).withSubject(subject).withIssuer(SecurityProperties.tokenIssuer)
             .withIssuedAt(nowDate).withExpiresAt(expDate).sign(algorithm())
     }
 

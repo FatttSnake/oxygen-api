@@ -11,6 +11,8 @@ import org.springframework.jdbc.BadSqlGrammarException
 import org.springframework.jdbc.UncategorizedSQLException
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.authentication.*
+import org.springframework.security.web.csrf.InvalidCsrfTokenException
+import org.springframework.security.web.csrf.MissingCsrfTokenException
 import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -120,6 +122,16 @@ class ExceptionHandler {
                 ResponseResult.fail(ResponseCode.PERMISSION_TOKEN_ILLEGAL, "Token illegal", null)
             }
 
+            is InvalidCsrfTokenException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.PERMISSION_INVALID_CSRF_TOKEN, e.localizedMessage, null)
+            }
+
+            is MissingCsrfTokenException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.PERMISSION_MISSING_CSRF_TOKEN, e.localizedMessage, null)
+            }
+
             is AccessDeniedException -> {
                 logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.PERMISSION_ACCESS_DENIED, "Access Denied", null)
@@ -128,6 +140,16 @@ class ExceptionHandler {
             is UserNotFoundException -> {
                 logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.PERMISSION_USER_NOT_FOUND, e.localizedMessage, null)
+            }
+
+            is LoginFailedException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.PERMISSION_LOGIN_FAILED, e.localizedMessage, null)
+            }
+
+            is TokenRefreshErrorException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.PERMISSION_TOKEN_REFRESH_ERROR, e.localizedMessage, null)
             }
 
             is NoVerificationRequiredException -> {
@@ -230,7 +252,7 @@ class ExceptionHandler {
                 ResponseResult.fail(ResponseCode.DATABASE_EXECUTE_ERROR, e.localizedMessage, null)
             }
 
-            is RecordAlreadyExists -> {
+            is RecordAlreadyExistsException -> {
                 logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.DATABASE_RECORD_ALREADY_EXISTS, e.localizedMessage, null)
             }

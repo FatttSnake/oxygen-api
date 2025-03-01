@@ -3,7 +3,6 @@ package top.fatweb.oxygen.api.param.permission
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
-import jakarta.validation.constraints.Size
 import top.fatweb.oxygen.api.annotation.Trim
 import top.fatweb.oxygen.api.param.CaptchaCodeParam
 
@@ -49,6 +48,6 @@ data class RegisterParam(
      */
     @Schema(description = "密码", required = true)
     @field:NotBlank(message = "Password can not be blank")
-    @field:Size(min = 10, max = 30, message = "Password must be 10-30 characters")
+    @field:Pattern(regexp = "^[a-fA-F0-9]{128}$", message = "Password must be encrypted by SHA512")
     val password: String?
 ) : CaptchaCodeParam()

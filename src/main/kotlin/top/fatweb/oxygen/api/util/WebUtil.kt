@@ -72,7 +72,8 @@ object WebUtil {
     fun offlineUser(redisUtil: RedisUtil, vararg userIds: Long) {
         val keys = HashSet<String>()
         userIds.forEach {
-            keys.addAll(redisUtil.keys("${SecurityProperties.jwtIssuer}_login_${it}:*"))
+            keys.addAll(redisUtil.keys("${SecurityProperties.tokenIssuer}_token_${it}:*"))
+            keys.addAll(redisUtil.keys("${SecurityProperties.tokenIssuer}_access_${it}_*:*"))
         }
 
         redisUtil.delObject(keys)
