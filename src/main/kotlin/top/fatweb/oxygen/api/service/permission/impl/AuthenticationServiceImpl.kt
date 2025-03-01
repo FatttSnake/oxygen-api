@@ -308,7 +308,11 @@ class AuthenticationServiceImpl(
         return true
     }
 
-    override fun refreshToken(response: HttpServletResponse, refreshToken: String?): TokenVo {
+    override fun refreshToken(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        refreshToken: String?
+    ): TokenVo {
         refreshToken ?: throw TokenRefreshErrorException()
         JwtUtil.parseJwt(refreshToken)
 
@@ -339,9 +343,12 @@ class AuthenticationServiceImpl(
         )
 
         val cookie = Cookie("refresh_token", newRefreshToken).apply {
+            isHttpOnly = true
+            secure = request.scheme.lowercase() == "https"
+            domain = request.serverName
             path = "/token"
             maxAge = SecurityProperties.refreshTokenTtlUnit.toSeconds(SecurityProperties.refreshTokenTtl).toInt()
-            isHttpOnly = true
+            setAttribute("SameSite", "Lax")
         }
         response.addCookie(cookie)
 
@@ -477,9 +484,12 @@ class AuthenticationServiceImpl(
         )
 
         val cookie = Cookie("refresh_token", refreshToken).apply {
+            isHttpOnly = true
+            secure = request.scheme.lowercase() == "https"
+            domain = request.serverName
             path = "/token"
             maxAge = SecurityProperties.refreshTokenTtlUnit.toSeconds(SecurityProperties.refreshTokenTtl).toInt()
-            isHttpOnly = true
+            setAttribute("SameSite", "Lax")
         }
         response.addCookie(cookie)
 

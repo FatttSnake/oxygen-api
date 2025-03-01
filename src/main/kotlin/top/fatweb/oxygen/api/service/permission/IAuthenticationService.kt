@@ -135,13 +135,15 @@ interface IAuthenticationService {
     /**
      * Refresh token
      *
+     * @param request
      * @param response
      * @param refreshToken  Refresh token
      * @return TokenVo object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.1.0
+     * @see HttpServletRequest
      * @see HttpServletResponse
      * @see TokenVo
      */
-    fun refreshToken(response: HttpServletResponse, refreshToken: String?): TokenVo
+    fun refreshToken(request: HttpServletRequest, response: HttpServletResponse, refreshToken: String?): TokenVo
 }

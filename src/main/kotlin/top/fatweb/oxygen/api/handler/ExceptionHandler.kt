@@ -11,6 +11,8 @@ import org.springframework.jdbc.BadSqlGrammarException
 import org.springframework.jdbc.UncategorizedSQLException
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.authentication.*
+import org.springframework.security.web.csrf.InvalidCsrfTokenException
+import org.springframework.security.web.csrf.MissingCsrfTokenException
 import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -118,6 +120,16 @@ class ExceptionHandler {
             is SignatureVerificationException, is JWTDecodeException -> {
                 logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.PERMISSION_TOKEN_ILLEGAL, "Token illegal", null)
+            }
+
+            is InvalidCsrfTokenException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.PERMISSION_INVALID_CSRF_TOKEN, e.localizedMessage, null)
+            }
+
+            is MissingCsrfTokenException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.PERMISSION_MISSING_CSRF_TOKEN, e.localizedMessage, null)
             }
 
             is AccessDeniedException -> {

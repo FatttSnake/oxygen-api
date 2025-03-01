@@ -241,17 +241,20 @@ class AuthenticationController(
     /**
      * Refresh token
      *
+     * @param request
      * @param response
      * @return Response object includes new token
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see HttpServletRequest
+     * @see HttpServletResponse
      * @see ResponseResult
      * @see TokenVo
      */
     @Operation(summary = "更新 Token")
-    @GetMapping("/token")
+    @PostMapping("/token")
     fun refreshToken(
+        request: HttpServletRequest,
         response: HttpServletResponse,
         @CookieValue("refresh_token") cookieRefreshToken: String?,
         @RequestParam("refreshToken") queryRefreshToken: String?
@@ -259,6 +262,7 @@ class AuthenticationController(
         code = ResponseCode.PERMISSION_TOKEN_REFRESH_SUCCESS,
         msg = "Token refresh success",
         data = authenticationService.refreshToken(
+            request = request,
             response = response,
             refreshToken = cookieRefreshToken ?: queryRefreshToken
         )
