@@ -125,12 +125,15 @@ interface IAuthenticationService {
     /**
      * Logout
      *
-     * @param token Token
+     * @param request
+     * @param response
      * @return Logout result
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
+     * @see HttpServletRequest
+     * @see HttpServletResponse
      */
-    fun logout(token: String): Boolean
+    fun logout(request: HttpServletRequest, response: HttpServletResponse): Boolean
 
     /**
      * Refresh token

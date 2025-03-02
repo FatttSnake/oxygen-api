@@ -11,7 +11,6 @@ import top.fatweb.oxygen.api.entity.common.ResponseCode
 import top.fatweb.oxygen.api.entity.common.ResponseResult
 import top.fatweb.oxygen.api.param.permission.*
 import top.fatweb.oxygen.api.service.permission.IAuthenticationService
-import top.fatweb.oxygen.api.util.WebUtil
 import top.fatweb.oxygen.api.vo.permission.LoginVo
 import top.fatweb.oxygen.api.vo.permission.RegisterVo
 import top.fatweb.oxygen.api.vo.permission.TokenVo
@@ -223,8 +222,8 @@ class AuthenticationController(
      */
     @Operation(summary = "登出")
     @PostMapping("/logout")
-    fun logout(request: HttpServletRequest): ResponseResult<Nothing> =
-        when (authenticationService.logout(WebUtil.getToken(request))) {
+    fun logout(request: HttpServletRequest, response: HttpServletResponse): ResponseResult<Nothing> =
+        when (authenticationService.logout(request = request, response = response)) {
             true -> ResponseResult.success(
                 code = ResponseCode.PERMISSION_LOGOUT_SUCCESS,
                 msg = "Logout success",
