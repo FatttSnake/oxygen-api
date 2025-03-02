@@ -289,7 +289,9 @@ class AuthenticationServiceImpl(
     }
 
     @EventLogRecord(EventLog.Event.LOGOUT)
-    override fun logout(token: String): Boolean {
+    override fun logout(request: HttpServletRequest, response: HttpServletResponse): Boolean {
+        val token = WebUtil.getToken(request)
+
         var redisKeyPattern = "${SecurityProperties.tokenIssuer}_access_*:${token}"
         var redisKeys = redisUtil.keys(redisKeyPattern)
         if (redisKeys.isEmpty()) {
@@ -304,6 +306,8 @@ class AuthenticationServiceImpl(
             return false
         }
         redisUtil.delObject(redisKeys)
+
+        response.addCookie(Cookie("refresh_token", null).apply { maxAge = 0 })
 
         return true
     }
