@@ -9,13 +9,14 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import top.fatweb.oxygen.api.filter.JwtAuthenticationTokenFilter
 import top.fatweb.oxygen.api.handler.JwtAccessDeniedHandler
 import top.fatweb.oxygen.api.handler.JwtAuthenticationEntryPointHandler
+import top.fatweb.oxygen.api.util.CookieWithHeaderCsrfTokenRepository
 
 /**
  * Spring Security configuration
@@ -49,6 +50,7 @@ class SecurityConfig(
                 allowedHeaders = listOf("Authorization", "Content-Type", "X-XSRF-TOKEN")
                 allowCredentials = true
                 maxAge = 3600L
+                exposedHeaders = listOf("X-XSRF-TOKEN")
             })
         }
     }
@@ -62,14 +64,16 @@ class SecurityConfig(
         }
 
         .csrf {
-            it.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+            it.csrfTokenRepository(CookieWithHeaderCsrfTokenRepository())
             it.csrfTokenRequestHandler(CsrfTokenRequestAttributeHandler())
-            it.ignoringRequestMatchers("/error/thrown")
+            it.requireCsrfProtectionMatcher { request ->
+                request.method == "POST" && AntPathRequestMatcher("/token").matches(request) && request.getParameter("refreshToken")
+                    .isNullOrBlank()
+            }
         }
 
         .authorizeHttpRequests {
             it
-                // Allow anonymous access
                 .requestMatchers(
                     "/error/thrown",
                     "/doc.html",
@@ -90,7 +94,6 @@ class SecurityConfig(
                     "/tool/store/*",
                     "/system/user/info/*"
                 ).permitAll()
-                // Authentication required
                 .anyRequest().authenticated()
         }
 
