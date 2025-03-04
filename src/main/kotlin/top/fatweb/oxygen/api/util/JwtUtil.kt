@@ -6,7 +6,6 @@ import com.auth0.jwt.interfaces.DecodedJWT
 import top.fatweb.oxygen.api.properties.SecurityProperties
 import java.util.*
 import java.util.concurrent.TimeUnit
-import javax.crypto.spec.SecretKeySpec
 
 /**
  * Jwt util
@@ -17,19 +16,7 @@ import javax.crypto.spec.SecretKeySpec
 object JwtUtil {
     private fun getUUID() = UUID.randomUUID().toString().replace("-", "")
 
-    /**
-     * Generate encrypted secret key
-     *
-     * @return Secret key
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     */
-    private fun generalKey(): SecretKeySpec {
-        val encodeKey = Base64.getEncoder().encode(SecurityProperties.tokenSecret.toByteArray())
-        return SecretKeySpec(encodeKey, 0, encodeKey.size, "AES")
-    }
-
-    private fun algorithm(): Algorithm = Algorithm.HMAC256(generalKey().toString())
+    private fun algorithm(): Algorithm = Algorithm.HMAC256(SecurityProperties.tokenSecret)
 
     /**
      * Generate access token
@@ -82,13 +69,10 @@ object JwtUtil {
         uuid: String = getUUID()
     ): String? {
         val nowMillis = System.currentTimeMillis()
-        val nowDate = Date(nowMillis)
-        val ttlMillis = ttlUnit.toMillis(ttl)
-        val expMillis = nowMillis + ttlMillis
-        val expDate = Date(expMillis)
+        val expMillis = nowMillis + ttlUnit.toMillis(ttl)
 
         return JWT.create().withJWTId(uuid).withSubject(subject).withIssuer(SecurityProperties.tokenIssuer)
-            .withIssuedAt(nowDate).withExpiresAt(expDate).sign(algorithm())
+            .withIssuedAt(Date(nowMillis)).withExpiresAt(Date(expMillis)).sign(algorithm())
     }
 
     /**
