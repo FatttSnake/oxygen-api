@@ -307,7 +307,16 @@ class AuthenticationServiceImpl(
         }
         redisUtil.delObject(redisKeys)
 
-        response.addCookie(Cookie("refresh_token", null).apply { maxAge = 0 })
+        val cookie = Cookie("refresh_token", null).apply {
+            isHttpOnly = true
+            secure = request.scheme.lowercase() == "https"
+            domain = request.serverName
+            path = "/token"
+            maxAge = 0
+            setAttribute("SameSite", "Lax")
+        }
+
+        response.addCookie(cookie)
 
         return true
     }
