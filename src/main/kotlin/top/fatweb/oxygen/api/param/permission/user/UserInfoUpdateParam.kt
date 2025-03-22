@@ -1,7 +1,6 @@
 package top.fatweb.oxygen.api.param.permission.user
 
 import io.swagger.v3.oas.annotations.media.Schema
-import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Size
 import top.fatweb.oxygen.api.annotation.Trim
 
@@ -31,7 +30,6 @@ data class UserInfoUpdateParam(
      */
     @Trim
     @Schema(description = "昵称", example = "QwQ")
-    @field:NotBlank(message = "Nickname can not be blank")
     @field:Size(min = 3, max = 20, message = "Nickname must be 3-20 characters")
     var nickname: String?
 )
