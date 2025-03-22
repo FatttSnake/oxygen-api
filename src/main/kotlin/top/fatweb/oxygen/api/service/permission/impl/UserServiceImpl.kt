@@ -95,8 +95,8 @@ class UserServiceImpl(
         val userId = WebUtil.getLoginUserId() ?: throw AccessDeniedException("Access denied")
         return userInfoService.update(
             KtUpdateWrapper(UserInfo()).eq(UserInfo::userId, userId)
-                .set(UserInfo::avatar, userInfoUpdateParam.avatar)
-                .set(UserInfo::nickname, userInfoUpdateParam.nickname)
+                .set(!userInfoUpdateParam.avatar.isNullOrBlank(), UserInfo::avatar, userInfoUpdateParam.avatar)
+                .set(!userInfoUpdateParam.nickname.isNullOrBlank(), UserInfo::nickname, userInfoUpdateParam.nickname)
         )
     }
 
