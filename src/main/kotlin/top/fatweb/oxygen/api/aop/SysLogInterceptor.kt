@@ -17,6 +17,7 @@ import top.fatweb.oxygen.api.entity.system.SysLog
 import top.fatweb.oxygen.api.service.system.ISysLogService
 import top.fatweb.oxygen.api.util.WebUtil
 import top.fatweb.oxygen.api.vo.permission.LoginVo
+import java.lang.Exception
 import java.net.URI
 import java.time.LocalDateTime
 import java.time.ZoneOffset
@@ -60,7 +61,10 @@ class SysLogInterceptor(
     }
 
     override fun afterCompletion(
-        request: HttpServletRequest, response: HttpServletResponse, handler: Any, ex: Exception?
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        handler: Any,
+        ex: Exception?
     ) {
         val sysLog = sysLogThreadLocal.get()
         val result = resultThreadLocal.get()

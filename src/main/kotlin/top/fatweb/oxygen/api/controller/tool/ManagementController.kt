@@ -5,7 +5,7 @@ import jakarta.validation.Valid
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import top.fatweb.oxygen.api.annotation.BaseController
-import top.fatweb.oxygen.api.annotation.Trim
+import top.fatweb.oxygen.api.annotation.ProcessParam
 import top.fatweb.oxygen.api.entity.common.ResponseCode
 import top.fatweb.oxygen.api.entity.common.ResponseResult
 import top.fatweb.oxygen.api.param.tool.ToolManagementGetParam
@@ -53,11 +53,10 @@ class ManagementController(
      * @see PageVo
      * @see ToolVo
      */
-    @Trim
     @Operation(summary = "获取工具")
     @GetMapping
     @PreAuthorize("hasAnyAuthority('system:tool:query:tool')")
-    fun get(toolManagementGetParam: ToolManagementGetParam): ResponseResult<PageVo<ToolVo>> =
+    fun get(@ProcessParam toolManagementGetParam: ToolManagementGetParam): ResponseResult<PageVo<ToolVo>> =
         ResponseResult.databaseSuccess(data = managementService.getPage(toolManagementGetParam))
 
     /**

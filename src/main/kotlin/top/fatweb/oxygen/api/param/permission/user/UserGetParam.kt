@@ -1,7 +1,7 @@
 package top.fatweb.oxygen.api.param.permission.user
 
 import io.swagger.v3.oas.annotations.media.Schema
-import top.fatweb.oxygen.api.annotation.Trim
+import top.fatweb.oxygen.api.annotation.ParamProcessor
 import top.fatweb.oxygen.api.param.PageSortParam
 
 /**
@@ -11,7 +11,7 @@ import top.fatweb.oxygen.api.param.PageSortParam
  * @since 1.0.0
  * @see PageSortParam
  */
-@Trim
+@ParamProcessor
 @Schema(description = "查询用户请求参数")
 data class UserGetParam(
     /**
@@ -34,7 +34,6 @@ data class UserGetParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Trim
     @Schema(description = "查询内容", example = "User_1")
     var searchValue: String?,
 

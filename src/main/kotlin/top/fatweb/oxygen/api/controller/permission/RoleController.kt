@@ -5,7 +5,7 @@ import jakarta.validation.Valid
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import top.fatweb.oxygen.api.annotation.BaseController
-import top.fatweb.oxygen.api.annotation.Trim
+import top.fatweb.oxygen.api.annotation.ProcessParam
 import top.fatweb.oxygen.api.entity.common.ResponseCode
 import top.fatweb.oxygen.api.entity.common.ResponseResult
 import top.fatweb.oxygen.api.param.permission.role.*
@@ -52,11 +52,10 @@ class RoleController(
      * @see ResponseResult
      * @see RoleWithPowerVo
      */
-    @Trim
     @Operation(summary = "获取角色")
     @GetMapping
     @PreAuthorize("hasAnyAuthority('system:role:query:all')")
-    fun get(roleGetParam: RoleGetParam?): ResponseResult<PageVo<RoleWithPowerVo>> =
+    fun get(@ProcessParam roleGetParam: RoleGetParam?): ResponseResult<PageVo<RoleWithPowerVo>> =
         ResponseResult.databaseSuccess(
             data = roleService.getPage(roleGetParam)
         )
@@ -90,11 +89,10 @@ class RoleController(
      * @see ResponseResult
      * @see RoleVo
      */
-    @Trim
     @Operation(summary = "添加角色")
     @PostMapping
     @PreAuthorize("hasAnyAuthority('system:role:add:one')")
-    fun add(@Valid @RequestBody roleAddParam: RoleAddParam): ResponseResult<RoleVo> =
+    fun add(@ProcessParam @Valid @RequestBody roleAddParam: RoleAddParam): ResponseResult<RoleVo> =
         ResponseResult.databaseSuccess(
             ResponseCode.DATABASE_INSERT_SUCCESS, data = roleService.add(roleAddParam)
         )
@@ -110,11 +108,10 @@ class RoleController(
      * @see ResponseResult
      * @see RoleVo
      */
-    @Trim
     @Operation(summary = "修改角色")
     @PutMapping
     @PreAuthorize("hasAnyAuthority('system:role:modify:one')")
-    fun update(@Valid @RequestBody roleUpdateParam: RoleUpdateParam): ResponseResult<RoleVo> =
+    fun update(@ProcessParam @Valid @RequestBody roleUpdateParam: RoleUpdateParam): ResponseResult<RoleVo> =
         ResponseResult.databaseSuccess(
             ResponseCode.DATABASE_UPDATE_SUCCESS, data = roleService.update(roleUpdateParam)
         )

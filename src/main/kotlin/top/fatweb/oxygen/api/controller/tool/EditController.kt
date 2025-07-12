@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Operation
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.*
 import top.fatweb.oxygen.api.annotation.BaseController
-import top.fatweb.oxygen.api.annotation.Trim
+import top.fatweb.oxygen.api.annotation.ProcessParam
 import top.fatweb.oxygen.api.entity.common.ResponseCode
 import top.fatweb.oxygen.api.entity.common.ResponseResult
 import top.fatweb.oxygen.api.entity.tool.Platform
@@ -83,10 +83,9 @@ class EditController(
      * @see ResponseResult
      * @see ToolVo
      */
-    @Trim
     @Operation(summary = "创建工具")
     @PostMapping
-    fun create(@RequestBody @Valid toolCreateParam: ToolCreateParam): ResponseResult<ToolVo> =
+    fun create(@ProcessParam @RequestBody @Valid toolCreateParam: ToolCreateParam): ResponseResult<ToolVo> =
         ResponseResult.databaseSuccess(ResponseCode.DATABASE_INSERT_SUCCESS, data = editService.create(toolCreateParam))
 
     /**
@@ -100,10 +99,9 @@ class EditController(
      * @see ResponseResult
      * @see ToolVo
      */
-    @Trim
     @Operation(summary = "升级工具")
     @PatchMapping
-    fun upgrade(@RequestBody @Valid toolUpgradeParam: ToolUpgradeParam): ResponseResult<ToolVo> =
+    fun upgrade(@ProcessParam @RequestBody @Valid toolUpgradeParam: ToolUpgradeParam): ResponseResult<ToolVo> =
         ResponseResult.databaseSuccess(
             ResponseCode.DATABASE_UPDATE_SUCCESS,
             data = editService.upgrade(toolUpgradeParam)
@@ -120,7 +118,6 @@ class EditController(
      * @see PageVo
      * @see ToolVo
      */
-    @Trim
     @Operation(summary = "获取个人工具")
     @GetMapping
     fun get(@Valid pageSortParam: PageSortParam): ResponseResult<PageVo<ToolVo>> =
@@ -162,10 +159,9 @@ class EditController(
      * @see ResponseResult
      * @see ToolVo
      */
-    @Trim
     @Operation(summary = "更新工具")
     @PutMapping
-    fun update(@RequestBody @Valid toolUpdateParam: ToolUpdateParam): ResponseResult<ToolVo> =
+    fun update(@ProcessParam @RequestBody @Valid toolUpdateParam: ToolUpdateParam): ResponseResult<ToolVo> =
         ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS, data = editService.update(toolUpdateParam))
 
     /**

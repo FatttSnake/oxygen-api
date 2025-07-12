@@ -5,7 +5,7 @@ import jakarta.validation.Valid
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import top.fatweb.oxygen.api.annotation.BaseController
-import top.fatweb.oxygen.api.annotation.Trim
+import top.fatweb.oxygen.api.annotation.ProcessParam
 import top.fatweb.oxygen.api.entity.common.ResponseCode
 import top.fatweb.oxygen.api.entity.common.ResponseResult
 import top.fatweb.oxygen.api.param.permission.group.*
@@ -53,11 +53,10 @@ class GroupController(
      * @see PageVo
      * @see GroupWithRoleVo
      */
-    @Trim
     @Operation(summary = "获取用户组")
     @GetMapping
     @PreAuthorize("hasAnyAuthority('system:group:query:all')")
-    fun get(@Valid groupGetParam: GroupGetParam?): ResponseResult<PageVo<GroupWithRoleVo>> =
+    fun get(@ProcessParam @Valid groupGetParam: GroupGetParam?): ResponseResult<PageVo<GroupWithRoleVo>> =
         ResponseResult.databaseSuccess(
             data = groupService.getPage(groupGetParam)
         )
@@ -90,11 +89,10 @@ class GroupController(
      * @see ResponseResult
      * @see GroupVo
      */
-    @Trim
     @Operation(summary = "添加用户组")
     @PostMapping
     @PreAuthorize("hasAnyAuthority('system:group:add:one')")
-    fun add(@Valid @RequestBody groupAddParam: GroupAddParam): ResponseResult<GroupVo> =
+    fun add(@ProcessParam @Valid @RequestBody groupAddParam: GroupAddParam): ResponseResult<GroupVo> =
         ResponseResult.databaseSuccess(
             ResponseCode.DATABASE_INSERT_SUCCESS, data = groupService.add(groupAddParam)
         )
@@ -110,11 +108,10 @@ class GroupController(
      * @see ResponseResult
      * @see GroupVo
      */
-    @Trim
     @Operation(summary = "修改用户组")
     @PutMapping
     @PreAuthorize("hasAnyAuthority('system:group:modify:one')")
-    fun update(@Valid @RequestBody groupUpdateParam: GroupUpdateParam): ResponseResult<GroupVo> =
+    fun update(@ProcessParam @Valid @RequestBody groupUpdateParam: GroupUpdateParam): ResponseResult<GroupVo> =
         ResponseResult.databaseSuccess(
             ResponseCode.DATABASE_UPDATE_SUCCESS, data = groupService.update(groupUpdateParam)
         )

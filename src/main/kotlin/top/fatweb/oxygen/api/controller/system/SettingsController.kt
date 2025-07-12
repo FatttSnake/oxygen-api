@@ -5,7 +5,7 @@ import jakarta.validation.Valid
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import top.fatweb.oxygen.api.annotation.BaseController
-import top.fatweb.oxygen.api.annotation.Trim
+import top.fatweb.oxygen.api.annotation.ProcessParam
 import top.fatweb.oxygen.api.entity.common.ResponseCode
 import top.fatweb.oxygen.api.entity.common.ResponseResult
 import top.fatweb.oxygen.api.param.system.*
@@ -54,11 +54,10 @@ class SettingsController(
      * @see BaseSettingsParam
      * @see ResponseResult
      */
-    @Trim
     @Operation(summary = "更新基础设置")
     @PutMapping("/base")
     @PreAuthorize("hasAnyAuthority('system:settings:modify:base')")
-    fun updateApp(@RequestBody baseSettingsParam: BaseSettingsParam): ResponseResult<Nothing> {
+    fun updateApp(@ProcessParam @RequestBody baseSettingsParam: BaseSettingsParam): ResponseResult<Nothing> {
         settingsService.updateBase(baseSettingsParam)
         return ResponseResult.success()
     }
@@ -88,11 +87,10 @@ class SettingsController(
      * @see MailSettingsParam
      * @see ResponseResult
      */
-    @Trim
     @Operation(summary = "更新邮件设置")
     @PutMapping("/mail")
     @PreAuthorize("hasAnyAuthority('system:settings:modify:mail')")
-    fun updateMail(@RequestBody mailSettingsParam: MailSettingsParam): ResponseResult<Nothing> {
+    fun updateMail(@ProcessParam @RequestBody mailSettingsParam: MailSettingsParam): ResponseResult<Nothing> {
         settingsService.updateMail(mailSettingsParam)
         return ResponseResult.success()
     }
@@ -107,11 +105,10 @@ class SettingsController(
      * @see MailSendParam
      * @see ResponseResult
      */
-    @Trim
     @Operation(summary = "邮件发送测试")
     @PostMapping("/mail")
     @PreAuthorize("hasAnyAuthority('system:settings:modify:mail')")
-    fun sendMail(@RequestBody @Valid mailSendParam: MailSendParam): ResponseResult<Nothing> {
+    fun sendMail(@ProcessParam @RequestBody @Valid mailSendParam: MailSendParam): ResponseResult<Nothing> {
         settingsService.sendMail(mailSendParam)
         return ResponseResult.success()
     }
@@ -141,11 +138,10 @@ class SettingsController(
      * @see SensitiveWordAddParam
      * @see ResponseResult
      */
-    @Trim
     @Operation(summary = "添加敏感词")
     @PostMapping("/sensitive")
     @PreAuthorize("hasAnyAuthority('system:settings:modify:sensitive')")
-    fun addSensitive(@RequestBody @Valid sensitiveWordAddParam: SensitiveWordAddParam): ResponseResult<Nothing> {
+    fun addSensitive(@ProcessParam @RequestBody @Valid sensitiveWordAddParam: SensitiveWordAddParam): ResponseResult<Nothing> {
         sensitiveWordService.add(sensitiveWordAddParam)
         return ResponseResult.databaseSuccess(ResponseCode.DATABASE_INSERT_SUCCESS)
     }
@@ -210,11 +206,10 @@ class SettingsController(
      * @see TwoFactorSettingsParam
      * @see ResponseResult
      */
-    @Trim
     @Operation(summary = "更新双因素设置")
     @PutMapping("/two-factor")
     @PreAuthorize("hasAnyAuthority('system:settings:modify:two-factor')")
-    fun updateTwoFactor(@RequestBody twoFactorSettingsParam: TwoFactorSettingsParam): ResponseResult<Nothing> {
+    fun updateTwoFactor(@ProcessParam @RequestBody twoFactorSettingsParam: TwoFactorSettingsParam): ResponseResult<Nothing> {
         settingsService.updateTwoFactor(twoFactorSettingsParam)
         return ResponseResult.success()
     }

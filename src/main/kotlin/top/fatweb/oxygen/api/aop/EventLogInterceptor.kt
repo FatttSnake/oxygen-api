@@ -53,6 +53,6 @@ class EventLogInterceptor(
             else -> -1
         }
 
-        eventLogService.saveEvent(annotation, userId)
+        eventLogService.saveEvent(annotation!!, userId)
     }
 }

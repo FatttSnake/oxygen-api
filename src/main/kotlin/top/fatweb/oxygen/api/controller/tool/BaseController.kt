@@ -5,7 +5,7 @@ import jakarta.validation.Valid
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import top.fatweb.oxygen.api.annotation.BaseController
-import top.fatweb.oxygen.api.annotation.Trim
+import top.fatweb.oxygen.api.annotation.ProcessParam
 import top.fatweb.oxygen.api.entity.common.ResponseCode
 import top.fatweb.oxygen.api.entity.common.ResponseResult
 import top.fatweb.oxygen.api.param.tool.ToolBaseAddParam
@@ -87,11 +87,10 @@ class BaseController(
      * @see ResponseResult
      * @see ToolBaseVo
      */
-    @Trim
     @Operation(summary = "新增基板")
     @PostMapping
     @PreAuthorize("hasAnyAuthority('system:tool:add:base')")
-    fun add(@RequestBody @Valid toolBaseAddParam: ToolBaseAddParam): ResponseResult<ToolBaseVo> =
+    fun add(@ProcessParam @RequestBody @Valid toolBaseAddParam: ToolBaseAddParam): ResponseResult<ToolBaseVo> =
         ResponseResult.databaseSuccess(
             ResponseCode.DATABASE_INSERT_SUCCESS,
             data = toolBaseService.add(toolBaseAddParam)
@@ -108,11 +107,10 @@ class BaseController(
      * @see ResponseResult
      * @see ToolBaseVo
      */
-    @Trim
     @Operation(summary = "更新基板")
     @PutMapping
     @PreAuthorize("hasAnyAuthority('system:tool:modify:base')")
-    fun update(@RequestBody @Valid toolBaseUpdateParam: ToolBaseUpdateParam): ResponseResult<ToolBaseVo> =
+    fun update(@ProcessParam @RequestBody @Valid toolBaseUpdateParam: ToolBaseUpdateParam): ResponseResult<ToolBaseVo> =
         ResponseResult.databaseSuccess(
             ResponseCode.DATABASE_UPDATE_SUCCESS,
             data = toolBaseService.update(toolBaseUpdateParam)

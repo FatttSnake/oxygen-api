@@ -18,6 +18,6 @@ data class UserDeleteParam(
      * @since 1.0.0
      */
     @Schema(description = "用户 ID 列表", required = true)
-    @field: NotEmpty(message = "Ids can not be empty")
+    @field:NotEmpty(message = "Ids can not be empty")
     val ids: List<Long>?
 )

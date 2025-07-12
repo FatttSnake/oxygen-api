@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Operation
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.*
 import top.fatweb.oxygen.api.annotation.BaseController
-import top.fatweb.oxygen.api.annotation.Trim
+import top.fatweb.oxygen.api.annotation.ProcessParam
 import top.fatweb.oxygen.api.entity.common.ResponseCode
 import top.fatweb.oxygen.api.entity.common.ResponseResult
 import top.fatweb.oxygen.api.param.PageSortParam
@@ -38,10 +38,9 @@ class StoreController(
      * @see PageVo
      * @see ToolVo
      */
-    @Trim
     @Operation(description = "获取商店工具")
     @GetMapping
-    fun get(@Valid toolStoreGetParam: ToolStoreGetParam): ResponseResult<PageVo<ToolVo>> =
+    fun get(@ProcessParam @Valid toolStoreGetParam: ToolStoreGetParam): ResponseResult<PageVo<ToolVo>> =
         ResponseResult.databaseSuccess(data = storeService.getPage(toolStoreGetParam))
 
     /**
@@ -57,7 +56,6 @@ class StoreController(
      * @see PageVo
      * @see ToolVo
      */
-    @Trim
     @Operation(description = "获取商店指定用户工具")
     @GetMapping("/{username}")
     fun get(@PathVariable username: String, @Valid pageSortParam: PageSortParam): ResponseResult<PageVo<ToolVo>> =
@@ -111,7 +109,6 @@ class StoreController(
      * @see PageVo
      * @see ToolVo
      */
-    @Trim
     @Operation(summary = "获取收藏工具")
     @GetMapping("/favorite")
     fun getFavorite(@Valid pageSortParam: PageSortParam): ResponseResult<PageVo<ToolVo>> =

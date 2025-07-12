@@ -50,7 +50,7 @@ object StrUtil {
         val characterSet = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
         val password = StringBuilder()
 
-        for (i in 0 until length) {
+        (0 until length).forEach { _ ->
             password.append(characterSet.random())
         }
 

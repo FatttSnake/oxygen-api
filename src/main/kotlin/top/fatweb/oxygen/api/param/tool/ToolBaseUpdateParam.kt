@@ -1,9 +1,9 @@
 package top.fatweb.oxygen.api.param.tool
 
 import io.swagger.v3.oas.annotations.media.Schema
+import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
-import jakarta.validation.constraints.Pattern
-import top.fatweb.oxygen.api.annotation.Trim
+import top.fatweb.oxygen.api.annotation.ParamProcessor
 
 /**
  * Update tool base parameters
@@ -11,7 +11,7 @@ import top.fatweb.oxygen.api.annotation.Trim
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-@Trim
+@ParamProcessor
 data class ToolBaseUpdateParam(
     /**
      * ID
@@ -20,7 +20,7 @@ data class ToolBaseUpdateParam(
      * @since 1.0.0
      */
     @Schema(description = "ID", required = true)
-    @field: NotNull(message = "ID can not be null")
+    @field:NotNull(message = "ID can not be null")
     val id: Long?,
 
     /**
@@ -29,9 +29,8 @@ data class ToolBaseUpdateParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Trim
     @Schema(description = "名称")
-    @field: Pattern(regexp = "^.*\\S.*$", message = "Name can not be blank")
+    @field:NotBlank(message = "Name can not be blank")
     var name: String?,
 
     /**
@@ -41,7 +40,7 @@ data class ToolBaseUpdateParam(
      * @since 1.0.0
      */
     @Schema(description = "源码")
-    @field: Pattern(regexp = "^.*\\S.*$", message = "Source can not be blank")
+    @field:NotBlank(message = "Source can not be blank")
     val source: String?,
 
     /**
@@ -51,6 +50,6 @@ data class ToolBaseUpdateParam(
      * @since 1.0.0
      */
     @Schema(description = "产物")
-    @field: Pattern(regexp = "^.*\\S.*$", message = "Dist can not be blank")
+    @field:NotBlank(message = "Dist can not be blank")
     val dist: String?
 )

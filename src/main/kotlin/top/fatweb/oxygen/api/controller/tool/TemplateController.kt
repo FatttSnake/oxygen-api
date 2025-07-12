@@ -5,7 +5,7 @@ import jakarta.validation.Valid
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import top.fatweb.oxygen.api.annotation.BaseController
-import top.fatweb.oxygen.api.annotation.Trim
+import top.fatweb.oxygen.api.annotation.ProcessParam
 import top.fatweb.oxygen.api.entity.common.ResponseCode
 import top.fatweb.oxygen.api.entity.common.ResponseResult
 import top.fatweb.oxygen.api.param.tool.ToolTemplateAddParam
@@ -71,11 +71,10 @@ class TemplateController(
      * @see ResponseResult
      * @see ToolTemplateVo
      */
-    @Trim
     @Operation(summary = "添加模板")
     @PostMapping
     @PreAuthorize("hasAnyAuthority('system:tool:add:template')")
-    fun add(@RequestBody @Valid toolTemplateAddParam: ToolTemplateAddParam): ResponseResult<ToolTemplateVo> =
+    fun add(@ProcessParam @RequestBody @Valid toolTemplateAddParam: ToolTemplateAddParam): ResponseResult<ToolTemplateVo> =
         ResponseResult.databaseSuccess(
             ResponseCode.DATABASE_INSERT_SUCCESS,
             data = toolTemplateService.add(toolTemplateAddParam)
@@ -92,11 +91,10 @@ class TemplateController(
      * @see ResponseResult
      * @see ToolTemplateVo
      */
-    @Trim
     @Operation(summary = "更新模板")
     @PutMapping
     @PreAuthorize("hasAnyAuthority('system:tool:modify:template')")
-    fun update(@RequestBody @Valid toolTemplateUpdateParam: ToolTemplateUpdateParam): ResponseResult<ToolTemplateVo> =
+    fun update(@ProcessParam @RequestBody @Valid toolTemplateUpdateParam: ToolTemplateUpdateParam): ResponseResult<ToolTemplateVo> =
         ResponseResult.databaseSuccess(
             ResponseCode.DATABASE_UPDATE_SUCCESS,
             data = toolTemplateService.update(toolTemplateUpdateParam)

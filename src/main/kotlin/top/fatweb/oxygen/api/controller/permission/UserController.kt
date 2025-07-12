@@ -5,7 +5,8 @@ import jakarta.validation.Valid
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import top.fatweb.oxygen.api.annotation.BaseController
-import top.fatweb.oxygen.api.annotation.Trim
+import top.fatweb.oxygen.api.annotation.ParamProcessor
+import top.fatweb.oxygen.api.annotation.ProcessParam
 import top.fatweb.oxygen.api.entity.common.ResponseCode
 import top.fatweb.oxygen.api.entity.common.ResponseResult
 import top.fatweb.oxygen.api.param.permission.user.*
@@ -50,10 +51,9 @@ class UserController(
      * @see ResponseResult
      * @see UserWithPowerInfoVo
      */
-    @Trim
     @Operation(summary = "获取指定用户基本信息")
     @GetMapping("/info/{username}")
-    fun getBasicInfo(@PathVariable username: String): ResponseResult<UserWithInfoVo> =
+    fun getBasicInfo(@ProcessParam @ParamProcessor @PathVariable username: String): ResponseResult<UserWithInfoVo> =
         ResponseResult.databaseSuccess(data = userService.getBasicInfo(username.trim()))
 
     /**
@@ -66,10 +66,9 @@ class UserController(
      * @see UserInfoUpdateParam
      * @see ResponseResult
      */
-    @Trim
     @Operation(summary = "更新当前用户信息")
     @PatchMapping("info")
-    fun updateInfo(@RequestBody @Valid userInfoUpdateParam: UserInfoUpdateParam): ResponseResult<Nothing> =
+    fun updateInfo(@ProcessParam @RequestBody @Valid userInfoUpdateParam: UserInfoUpdateParam): ResponseResult<Nothing> =
         if (userService.updateInfo(userInfoUpdateParam)) ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
         else ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_FAILED)
 
@@ -118,11 +117,10 @@ class UserController(
      * @see ResponseResult
      * @see UserWithRoleInfoVo
      */
-    @Trim
     @Operation(summary = "获取用户")
     @GetMapping
     @PreAuthorize("hasAnyAuthority('system:user:query:all')")
-    fun get(@Valid userGetParam: UserGetParam?): ResponseResult<PageVo<UserWithRoleInfoVo>> =
+    fun get(@ProcessParam @Valid userGetParam: UserGetParam?): ResponseResult<PageVo<UserWithRoleInfoVo>> =
         ResponseResult.databaseSuccess(
             data = userService.getPage(userGetParam)
         )
@@ -138,11 +136,10 @@ class UserController(
      * @see ResponseResult
      * @see UserWithRoleInfoVo
      */
-    @Trim
     @Operation(summary = "添加用户")
     @PostMapping
     @PreAuthorize("hasAnyAuthority('system:user:add:one')")
-    fun add(@Valid @RequestBody userAddParam: UserAddParam): ResponseResult<UserWithRoleInfoVo> =
+    fun add(@ProcessParam @Valid @RequestBody userAddParam: UserAddParam): ResponseResult<UserWithRoleInfoVo> =
         ResponseResult.databaseSuccess(
             ResponseCode.DATABASE_INSERT_SUCCESS, data = userService.add(userAddParam)
         )
@@ -158,11 +155,10 @@ class UserController(
      * @see ResponseResult
      * @see UserWithRoleInfoVo
      */
-    @Trim
     @Operation(summary = "修改用户")
     @PutMapping
     @PreAuthorize("hasAnyAuthority('system:user:modify:one')")
-    fun update(@Valid @RequestBody userUpdateParam: UserUpdateParam): ResponseResult<UserWithRoleInfoVo> =
+    fun update(@ProcessParam @Valid @RequestBody userUpdateParam: UserUpdateParam): ResponseResult<UserWithRoleInfoVo> =
         ResponseResult.databaseSuccess(
             ResponseCode.DATABASE_UPDATE_SUCCESS, data = userService.update(userUpdateParam)
         )

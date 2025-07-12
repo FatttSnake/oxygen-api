@@ -3,7 +3,7 @@ package top.fatweb.oxygen.api.param.system
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotNull
-import top.fatweb.oxygen.api.annotation.Trim
+import top.fatweb.oxygen.api.annotation.ParamProcessor
 
 /**
  * Two-factor settings parameters
@@ -11,7 +11,7 @@ import top.fatweb.oxygen.api.annotation.Trim
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-@Trim
+@ParamProcessor
 @Schema(description = "双因素设置请求参数")
 data class TwoFactorSettingsParam(
     /**
@@ -20,7 +20,6 @@ data class TwoFactorSettingsParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Trim
     @Schema(description = "发布者")
     var issuer: String?,
 
