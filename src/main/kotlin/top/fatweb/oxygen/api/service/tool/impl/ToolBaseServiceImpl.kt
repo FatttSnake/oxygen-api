@@ -5,7 +5,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import top.fatweb.oxygen.api.converter.tool.ToolBaseConverter
+import top.fatweb.oxygen.api.converter.tool.toVo
+import top.fatweb.oxygen.api.converter.tool.toVoByGetList
 import top.fatweb.oxygen.api.entity.tool.ToolBase
 import top.fatweb.oxygen.api.entity.tool.ToolData
 import top.fatweb.oxygen.api.exception.NoRecordFoundException
@@ -35,26 +36,24 @@ class ToolBaseServiceImpl(
     private val toolDataService: IToolDataService
 ) : ServiceImpl<ToolBaseMapper, ToolBase>(), IToolBaseService {
     override fun getOne(id: Long): ToolBaseVo =
-        baseMapper.selectOne(id)?.let(ToolBaseConverter::toolBaseToToolBaseVo) ?: throw NoRecordFoundException()
+        baseMapper.selectOne(id)?.let(ToolBase::toVo) ?: throw NoRecordFoundException()
 
     override fun get(toolBaseGetParam: ToolBaseGetParam?): PageVo<ToolBaseVo> {
         val basePage = Page<ToolBase>(toolBaseGetParam?.currentPage ?: 1, toolBaseGetParam?.pageSize ?: 20)
 
         PageUtil.setPageSort(toolBaseGetParam, basePage)
 
-        return ToolBaseConverter.toolBasePageToToolBasePageVo(
-            this.page(
-                basePage,
-                KtQueryWrapper(ToolBase()).`in`(
-                    !toolBaseGetParam?.platform.isNullOrBlank(),
-                    ToolBase::platform,
-                    toolBaseGetParam?.platform?.split(",")
-                )
+        return this.page(
+            basePage,
+            KtQueryWrapper(ToolBase()).`in`(
+                !toolBaseGetParam?.platform.isNullOrBlank(),
+                ToolBase::platform,
+                toolBaseGetParam?.platform?.split(",")
             )
-        )
+        ).toVo()
     }
 
-    override fun getList(): List<ToolBaseVo> = this.list().map(ToolBaseConverter::toolBaseToToolBaseVoByGetList)
+    override fun getList(): List<ToolBaseVo> = this.list().map(ToolBase::toVoByGetList)
 
     @Transactional
     override fun add(toolBaseAddParam: ToolBaseAddParam): ToolBaseVo {
@@ -74,7 +73,7 @@ class ToolBaseServiceImpl(
 
         this.save(toolBase)
 
-        return ToolBaseConverter.toolBaseToToolBaseVo(toolBase)
+        return toolBase.toVo()
     }
 
     @Transactional
@@ -113,6 +112,6 @@ class ToolBaseServiceImpl(
         val toolBase = this.getById(id)
 
         return toolDataService.removeBatchByIds(listOf(toolBase.sourceId, toolBase.distId))
-            && this.removeById(id)
+                && this.removeById(id)
     }
 }

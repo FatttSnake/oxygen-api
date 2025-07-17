@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
 import org.springframework.stereotype.Service
-import top.fatweb.oxygen.api.converter.system.SysLogConverter
+import top.fatweb.oxygen.api.converter.system.toVo
 import top.fatweb.oxygen.api.entity.permission.User
 import top.fatweb.oxygen.api.entity.system.SysLog
 import top.fatweb.oxygen.api.mapper.system.SysLogMapper
@@ -59,6 +59,6 @@ class SysLogServiceImpl(
                 }
         }
 
-        return SysLogConverter.sysLogPageToSysLogPageVo(sysLogIPage)
+        return sysLogIPage.toVo()
     }
 }

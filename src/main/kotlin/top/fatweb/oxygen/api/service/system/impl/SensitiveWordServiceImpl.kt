@@ -6,7 +6,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
-import top.fatweb.oxygen.api.converter.system.SettingsConverter
+import top.fatweb.oxygen.api.converter.system.toEntity
+import top.fatweb.oxygen.api.converter.system.toVo
 import top.fatweb.oxygen.api.entity.system.SensitiveWord
 import top.fatweb.oxygen.api.exception.MatchSensitiveWordException
 import top.fatweb.oxygen.api.mapper.system.SensitiveWordMapper
@@ -28,12 +29,12 @@ import top.fatweb.oxygen.api.vo.system.SensitiveWordVo
 @Service
 class SensitiveWordServiceImpl : ServiceImpl<SensitiveWordMapper, SensitiveWord>(), ISensitiveWordService {
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    override fun get(): List<SensitiveWordVo> = this.list().map(SettingsConverter::sensitiveWordToSensitiveWordVo)
+    override fun get(): List<SensitiveWordVo> = this.list().map(SensitiveWord::toVo)
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     override fun add(sensitiveWordAddParam: SensitiveWordAddParam) {
         checkSensitiveWord(sensitiveWordAddParam.word!!)
-        this.save(SettingsConverter.sensitiveWordAddParamToSensitiveWord(sensitiveWordAddParam))
+        this.save(sensitiveWordAddParam.toEntity())
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)

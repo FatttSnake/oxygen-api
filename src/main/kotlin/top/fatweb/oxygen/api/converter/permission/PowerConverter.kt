@@ -1,29 +1,20 @@
 package top.fatweb.oxygen.api.converter.permission
 
-import top.fatweb.oxygen.api.entity.permission.PowerSet
+import top.fatweb.oxygen.api.entity.permission.*
 import top.fatweb.oxygen.api.vo.permission.PowerSetVo
 
 /**
- * Power converter
+ * Convert to PowerSetVo object
  *
+ * @return PowerSetVo object
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.0.0
+ * @since 1.1.0
+ * @see PowerSet
+ * @see PowerSetVo
  */
-object PowerConverter {
-    /**
-     * Convert PowerSet object into PowerSetVo object
-     *
-     * @param powerSet PowerSet object
-     * @return PowerSetVo object
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see PowerSet
-     * @see PowerSetVo
-     */
-    fun powerSetToPowerSetVo(powerSet: PowerSet) = PowerSetVo(
-        moduleList = powerSet.moduleList?.map(ModuleConverter::moduleToModuleVo),
-        menuList = powerSet.menuList?.map(MenuConverter::menuToMenuVo),
-        funcList = powerSet.funcList?.map(FuncConverter::funcToFuncVo),
-        operationList = powerSet.operationList?.map(OperationConverter::operationToOperationVo)
-    )
-}
+fun PowerSet.toVo() = PowerSetVo(
+    moduleList = this.moduleList?.map(Module::toVo),
+    menuList = this.menuList?.map(Menu::toVo),
+    funcList = this.funcList?.map(Func::toVo),
+    operationList = this.operationList?.map(Operation::toVo)
+)

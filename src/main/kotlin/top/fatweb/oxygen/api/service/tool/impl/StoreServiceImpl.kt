@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import top.fatweb.oxygen.api.converter.tool.ToolConverter
+import top.fatweb.oxygen.api.converter.tool.toVo
 import top.fatweb.oxygen.api.entity.tool.Tool
 import top.fatweb.oxygen.api.entity.tool.ToolFavorite
 import top.fatweb.oxygen.api.exception.NoRecordFoundException
@@ -43,10 +43,16 @@ class StoreServiceImpl(
             baseMapper.selectAuthorToolIdPage(toolIdsPage, toolStoreGetParam.searchValue, toolStoreGetParam.platform)
         val toolPage = Page<Tool>(toolIdsIPage.current, toolIdsIPage.size, toolIdsIPage.total)
         if (toolIdsIPage.total > 0) {
-            toolPage.setRecords(baseMapper.selectListByAuthorToolIds(toolIdsIPage.records, WebUtil.getLoginUserId(), toolStoreGetParam.platform))
+            toolPage.setRecords(
+                baseMapper.selectListByAuthorToolIds(
+                    toolIdsIPage.records,
+                    WebUtil.getLoginUserId(),
+                    toolStoreGetParam.platform
+                )
+            )
         }
 
-        return ToolConverter.toolPageToToolPageVo(toolPage)
+        return toolPage.toVo()
     }
 
     override fun getPage(pageSortParam: PageSortParam, username: String): PageVo<ToolVo> {
@@ -59,7 +65,7 @@ class StoreServiceImpl(
             toolPage.setRecords(baseMapper.selectListByAuthorToolIds(toolIdsIPage.records, WebUtil.getLoginUserId()))
         }
 
-        return ToolConverter.toolPageToToolPageVo(toolPage)
+        return toolPage.toVo()
     }
 
     @Transactional
@@ -126,6 +132,6 @@ class StoreServiceImpl(
             )
         }
 
-        return ToolConverter.toolPageToToolPageVo(toolPage)
+        return toolPage.toVo()
     }
 }

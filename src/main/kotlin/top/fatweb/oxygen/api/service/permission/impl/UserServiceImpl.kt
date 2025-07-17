@@ -12,7 +12,10 @@ import org.springframework.security.core.token.Sha512DigestUtils
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import top.fatweb.oxygen.api.converter.permission.UserConverter
+import top.fatweb.oxygen.api.converter.permission.toEntity
+import top.fatweb.oxygen.api.converter.permission.toVoWithInfo
+import top.fatweb.oxygen.api.converter.permission.toVoWithPowerInfo
+import top.fatweb.oxygen.api.converter.permission.toVoWithRoleInfo
 import top.fatweb.oxygen.api.entity.permission.RUserGroup
 import top.fatweb.oxygen.api.entity.permission.RUserRole
 import top.fatweb.oxygen.api.entity.permission.User
@@ -83,11 +86,11 @@ class UserServiceImpl(
     }
 
     override fun getInfo(): UserWithPowerInfoVo =
-        WebUtil.getLoginUsername()?.let(::getUserWithPowerByAccount)?.let(UserConverter::userToUserWithPowerInfoVo)
+        WebUtil.getLoginUsername()?.let(::getUserWithPowerByAccount)?.let(User::toVoWithPowerInfo)
             ?: throw UserNotFoundException()
 
     override fun getBasicInfo(username: String): UserWithInfoVo =
-        baseMapper.selectOneWithBasicInfoByUsername(username)?.let(UserConverter::userToUserWithInfoVo)
+        baseMapper.selectOneWithBasicInfoByUsername(username)?.let(User::toVoWithInfo)
             ?: throw NoRecordFoundException()
 
 
@@ -121,7 +124,7 @@ class UserServiceImpl(
     }
 
     override fun getOne(id: Long): UserWithRoleInfoVo =
-        baseMapper.selectOneWithRoleInfoById(id)?.let(UserConverter::userToUserWithRoleInfoVo)
+        baseMapper.selectOneWithRoleInfoById(id)?.let(User::toVoWithRoleInfo)
             ?: throw UserNotFoundException()
 
     override fun getPage(userGetParam: UserGetParam?): PageVo<UserWithRoleInfoVo> {
@@ -141,16 +144,16 @@ class UserServiceImpl(
             userPage.setRecords(baseMapper.selectListWithRoleInfoByIds(userIdsIPage.records))
         }
 
-        return UserConverter.userPageToUserWithRoleInfoPageVo(userPage)
+        return userPage.toVoWithRoleInfo()
     }
 
-    override fun getList() = baseMapper.selectListWithInfo().map(UserConverter::userToUserWithInfoVo)
+    override fun getList() = baseMapper.selectListWithInfo().map(User::toVoWithInfo)
 
     @Transactional
     override fun add(userAddParam: UserAddParam): UserWithRoleInfoVo {
         val newPassword =
             if (userAddParam.password.isNullOrBlank()) Sha512DigestUtils.shaHex(StrUtil.getRandomPassword(10)) else userAddParam.password
-        val user = UserConverter.userAddParamToUser(userAddParam)
+        val user = userAddParam.toEntity()
 
         user.apply {
             password = passwordEncoder.encode(newPassword)
@@ -184,12 +187,12 @@ class UserServiceImpl(
             })
         }
 
-        return UserConverter.userToUserWithRoleInfoVo(user)
+        return user.toVoWithRoleInfo()
     }
 
     @Transactional
     override fun update(userUpdateParam: UserUpdateParam): UserWithRoleInfoVo {
-        val user = UserConverter.userUpdateParamToUser(userUpdateParam)
+        val user = userUpdateParam.toEntity()
         user.updateTime = LocalDateTime.now(ZoneOffset.UTC)
 
         val oldRoleList = rUserRoleService.list(
@@ -270,7 +273,7 @@ class UserServiceImpl(
 
         userUpdateParam.id?.let { WebUtil.offlineUser(redisUtil, it) }
 
-        return UserConverter.userToUserWithRoleInfoVo(user)
+        return user.toVoWithRoleInfo()
     }
 
     override fun password(userUpdatePasswordParam: UserUpdatePasswordParam) {

@@ -7,9 +7,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import top.fatweb.oxygen.api.converter.tool.ToolCategoryConverter
-import top.fatweb.oxygen.api.converter.tool.ToolConverter
-import top.fatweb.oxygen.api.converter.tool.ToolTemplateConverter
+import top.fatweb.oxygen.api.converter.tool.toVo
+import top.fatweb.oxygen.api.converter.tool.toVoByList
+import top.fatweb.oxygen.api.converter.tool.toVoWithBaseDist
 import top.fatweb.oxygen.api.entity.tool.*
 import top.fatweb.oxygen.api.exception.*
 import top.fatweb.oxygen.api.mapper.tool.EditMapper
@@ -46,19 +46,19 @@ class EditServiceImpl(
             KtQueryWrapper(ToolTemplate())
                 .eq(ToolTemplate::platform, platform)
                 .eq(ToolTemplate::enable, 1)
-        ).map(ToolTemplateConverter::toolTemplateToToolTemplateVoByList)
+        ).map(ToolTemplate::toVoByList)
 
     override fun getTemplate(id: Long): ToolTemplateVo =
-        baseMapper.selectTemplate(id)?.let(ToolTemplateConverter::toolTemplateToToolTemplateVoWithBaseDist)
+        baseMapper.selectTemplate(id)?.let(ToolTemplate::toVoWithBaseDist)
             ?: throw NoRecordFoundException()
 
     override fun getCategory(): List<ToolCategoryVo> =
         toolCategoryService.list(KtQueryWrapper(ToolCategory()).eq(ToolCategory::enable, 1))
-            .map(ToolCategoryConverter::toolCategoryToToolCategoryVo)
+            .map(ToolCategory::toVo)
 
     override fun getOne(id: Long): ToolVo =
         baseMapper.selectOne(id, WebUtil.getLoginUserId()!!)
-            ?.let(ToolConverter::toolToToolVo) ?: throw NoRecordFoundException()
+            ?.let(Tool::toVo) ?: throw NoRecordFoundException()
 
     @Transactional
     override fun create(toolCreateParam: ToolCreateParam): ToolVo {
@@ -224,7 +224,7 @@ class EditServiceImpl(
             toolPage.setRecords(baseMapper.selectListByToolIds(toolIdsIPage.records, WebUtil.getLoginUserId()!!))
         }
 
-        return ToolConverter.toolPageToToolPageVo(toolPage)
+        return toolPage.toVo()
     }
 
     override fun detail(username: String, toolId: String, ver: String, platform: Platform): ToolVo {
@@ -233,7 +233,7 @@ class EditServiceImpl(
         }
 
         return baseMapper.selectDetail(username, toolId, ver, platform, WebUtil.getLoginUsername())
-            ?.let(ToolConverter::toolToToolVo) ?: throw NoRecordFoundException()
+            ?.let(Tool::toVo) ?: throw NoRecordFoundException()
     }
 
     override fun submit(id: Long): Boolean {

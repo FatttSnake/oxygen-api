@@ -11,114 +11,99 @@ import top.fatweb.oxygen.api.vo.permission.GroupWithRoleVo
 import top.fatweb.oxygen.api.vo.permission.base.GroupVo
 
 /**
- * Group converter
+ * Convert to GroupVo object
  *
+ * @return GroupVo object
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.0.0
+ * @since 1.1.0
+ * @see Group
+ * @see GroupVo
  */
-object GroupConverter {
-    /**
-     * Convert Group object into GroupVo object
-     *
-     * @param group Group object
-     * @return GroupVo object
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see Group
-     * @see GroupVo
-     */
-    fun groupToGroupVo(group: Group) = GroupVo(
-        id = group.id,
-        name = group.name,
-        enable = group.enable?.let { it == 1},
-        createTime = group.createTime,
-        updateTime = group.updateTime
-    )
+fun Group.toVo() = GroupVo(
+    id = this.id,
+    name = this.name,
+    enable = this.enable?.let { it == 1 },
+    createTime = this.createTime,
+    updateTime = this.updateTime
+)
 
-    /**
-     * Convert Group object into GroupWithRoleVo object
-     *
-     * @param group Group object
-     * @return GroupWithRoleVo object
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see Group
-     * @see GroupWithRoleVo
-     */
-    fun groupToGroupWithRoleVo(group: Group) = GroupWithRoleVo(
-        id = group.id,
-        name = group.name,
-        enable = group.enable?.let { it == 1},
-        createTime = group.createTime,
-        updateTime = group.updateTime,
-        roles = group.roles?.map(RoleConverter::roleToRoleVo)
-    )
+/**
+ * Convert to GroupWithRoleVo object
+ *
+ * @return GroupWithRoleVo object
+ * @author FatttSnake, fatttsnake@gmail.com
+ * @since 1.1.0
+ * @see Group
+ * @see GroupWithRoleVo
+ */
+fun Group.toVoWithRole() = GroupWithRoleVo(
+    id = this.id,
+    name = this.name,
+    enable = this.enable?.let { it == 1 },
+    createTime = this.createTime,
+    updateTime = this.updateTime,
+    roles = this.roles?.map(Role::toVo)
+)
 
-    /**
-     * Convert IPage<Group> object into PageVo<GroupWithRoleVo> object
-     *
-     * @param groupPage IPage<Group> object
-     * @return PageVo<GroupWithRoleVo> object
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see IPage
-     * @see Group
-     * @see PageVo
-     * @see GroupWithRoleVo
-     */
-    fun groupPageToGroupWithRolePageVo(groupPage: IPage<Group>) = PageVo(
-        total = groupPage.total,
-        pages = groupPage.pages,
-        size = groupPage.size,
-        current = groupPage.current,
-        records = groupPage.records.map(::groupToGroupWithRoleVo)
-    )
+/**
+ * Convert to PageVo<GroupWithRoleVo> object
+ *
+ * @return PageVo<GroupWithRoleVo> object
+ * @author FatttSnake, fatttsnake@gmail.com
+ * @since 1.1.0
+ * @see IPage
+ * @see Group
+ * @see PageVo
+ */
+fun IPage<Group>.toVoWithRole() = PageVo(
+    total = this.total,
+    pages = this.pages,
+    size = this.size,
+    current = this.current,
+    records = this.records.map(Group::toVoWithRole)
+)
 
-    /**
-     * Convert GroupAddParam object into Group object
-     *
-     * @param groupAddParam GroupAddParam object
-     * @return Group object
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see GroupAddParam
-     * @see Group
-     */
-    fun groupAddParamToGroup(groupAddParam: GroupAddParam) = Group().apply {
-        name = groupAddParam.name
-        enable = if (groupAddParam.enable) 1 else 0
-        roles = groupAddParam.roleIds?.map { Role().apply { id = it } }
-    }
+/**
+ * Convert to Group object
+ *
+ * @return Group object
+ * @author FatttSnake, fatttsnake@gmail.com
+ * @since 1.1.0
+ * @see GroupAddParam
+ * @see Group
+ */
+fun GroupAddParam.toEntity() = Group().apply {
+    name = this@toEntity.name
+    enable = if (this@toEntity.enable) 1 else 0
+    roles = this@toEntity.roleIds?.map { Role().apply { id = it } }
+}
 
-    /**
-     * Convert GroupUpdateParam object into Group object
-     *
-     * @param groupUpdateParam GroupUpdateParam object
-     * @return Group object
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see GroupUpdateParam
-     * @see Group
-     */
-    fun groupUpdateParamToGroup(groupUpdateParam: GroupUpdateParam) = Group().apply {
-        id = groupUpdateParam.id
-        name = groupUpdateParam.name
-        enable = if (groupUpdateParam.enable) 1 else 0
-        roles = groupUpdateParam.roleIds?.map { Role().apply { id = it } }
-    }
+/**
+ * Convert to Group object
+ *
+ * @return Group object
+ * @author FatttSnake, fatttsnake@gmail.com
+ * @since 1.1.0
+ * @see GroupUpdateParam
+ * @see Group
+ */
+fun GroupUpdateParam.toEntity() = Group().apply {
+    id = this@toEntity.id
+    name = this@toEntity.name
+    enable = if (this@toEntity.enable) 1 else 0
+    roles = this@toEntity.roleIds?.map { Role().apply { id = it } }
+}
 
-    /**
-     * Convert GroupUpdateStatusParam object into Group object
-     *
-     * @param groupUpdateStatusParam GroupUpdateStatusParam object
-     * @return Group object
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see GroupUpdateStatusParam
-     * @see Group
-     */
-    fun groupUpdateStatusParamToGroup(groupUpdateStatusParam: GroupUpdateStatusParam) = Group().apply {
-        id = groupUpdateStatusParam.id
-        enable = if (groupUpdateStatusParam.enable) 1 else 0
-    }
+/**
+ * Convert to Group object
+ *
+ * @return Group object
+ * @author FatttSnake, fatttsnake@gmail.com
+ * @since 1.1.0
+ * @see GroupUpdateStatusParam
+ * @see Group
+ */
+fun GroupUpdateStatusParam.toEntity() = Group().apply {
+    id = this@toEntity.id
+    enable = if (this@toEntity.enable) 1 else 0
 }

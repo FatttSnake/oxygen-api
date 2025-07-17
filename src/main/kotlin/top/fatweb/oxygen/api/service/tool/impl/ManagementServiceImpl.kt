@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import top.fatweb.oxygen.api.converter.tool.ToolConverter
+import top.fatweb.oxygen.api.converter.tool.toVo
 import top.fatweb.oxygen.api.entity.tool.RToolCategory
 import top.fatweb.oxygen.api.entity.tool.Tool
 import top.fatweb.oxygen.api.entity.tool.ToolData
@@ -43,7 +43,7 @@ class ManagementServiceImpl(
 ) : ServiceImpl<ManagementMapper, Tool>(), IManagementService {
     override fun getOne(id: Long): ToolVo =
         baseMapper.selectOne(id)
-            ?.let(ToolConverter::toolToToolVo) ?: throw NoRecordFoundException()
+            ?.let(Tool::toVo) ?: throw NoRecordFoundException()
 
     override fun getPage(toolManagementGetParam: ToolManagementGetParam?): PageVo<ToolVo> {
         val toolIdsPage = Page<Long>(toolManagementGetParam?.currentPage ?: 1, toolManagementGetParam?.pageSize ?: 20)
@@ -63,7 +63,7 @@ class ManagementServiceImpl(
             toolPage.setRecords(baseMapper.selectListByIds(toolIdsIPage.records))
         }
 
-        return ToolConverter.toolPageToToolPageVo(toolPage)
+        return toolPage.toVo()
     }
 
     override fun pass(id: Long, toolManagementPassParam: ToolManagementPassParam): ToolVo {

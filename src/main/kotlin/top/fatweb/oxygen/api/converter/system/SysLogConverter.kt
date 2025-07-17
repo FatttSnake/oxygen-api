@@ -6,48 +6,38 @@ import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.system.SysLogVo
 
 /**
- * System log converter
+ * Convert to PageVo<SysLogVo> object
  *
+ * @return PageVo<SysLogVo> object
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.0.0
+ * @since 1.1.0
+ * @see IPage
+ * @see SysLog
+ * @see PageVo
  */
-object SysLogConverter {
-    /**
-     * Convert IPage<SysLog> object into PageVo<SysLogVo> object
-     *
-     * @param syslogPage IPage<Syslog> object
-     * @return PageVo<SysLogVo> object
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see IPage
-     * @see SysLog
-     * @see PageVo
-     * @see SysLogVo
-     */
-    fun sysLogPageToSysLogPageVo(syslogPage: IPage<SysLog>) = PageVo(
-        syslogPage.total,
-        syslogPage.pages,
-        syslogPage.size,
-        syslogPage.current,
-        syslogPage.records.map { sysLog ->
-            SysLogVo(
-                id = sysLog.id,
-                logType = sysLog.logType,
-                operateUserId = sysLog.operateUserId,
-                operateTime = sysLog.operateTime,
-                requestUri = sysLog.requestUri,
-                requestMethod = sysLog.requestMethod,
-                requestParams = sysLog.requestParams,
-                requestIp = sysLog.requestIp,
-                requestServerAddress = sysLog.requestServerAddress,
-                exception = sysLog.exception?.let { it == 1},
-                exceptionInfo = sysLog.exceptionInfo,
-                startTime = sysLog.startTime,
-                endTime = sysLog.endTime,
-                executeTime = sysLog.executeTime,
-                userAgent = sysLog.userAgent,
-                operateUsername = sysLog.operateUsername
-            )
-        })
-
-}
+fun IPage<SysLog>.toVo() = PageVo(
+    this.total,
+    this.pages,
+    this.size,
+    this.current,
+    this.records.map { sysLog ->
+        SysLogVo(
+            id = sysLog.id,
+            logType = sysLog.logType,
+            operateUserId = sysLog.operateUserId,
+            operateTime = sysLog.operateTime,
+            requestUri = sysLog.requestUri,
+            requestMethod = sysLog.requestMethod,
+            requestParams = sysLog.requestParams,
+            requestIp = sysLog.requestIp,
+            requestServerAddress = sysLog.requestServerAddress,
+            exception = sysLog.exception?.let { it == 1 },
+            exceptionInfo = sysLog.exceptionInfo,
+            startTime = sysLog.startTime,
+            endTime = sysLog.endTime,
+            executeTime = sysLog.executeTime,
+            userAgent = sysLog.userAgent,
+            operateUsername = sysLog.operateUsername
+        )
+    }
+)

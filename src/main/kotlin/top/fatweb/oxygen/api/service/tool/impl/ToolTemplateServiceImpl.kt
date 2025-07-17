@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import top.fatweb.oxygen.api.converter.tool.ToolTemplateConverter
+import top.fatweb.oxygen.api.converter.tool.toVo
 import top.fatweb.oxygen.api.entity.tool.ToolData
 import top.fatweb.oxygen.api.entity.tool.ToolTemplate
 import top.fatweb.oxygen.api.exception.NoRecordFoundException
@@ -37,7 +37,7 @@ class ToolTemplateServiceImpl(
     private val toolBaseService: IToolBaseService
 ) : ServiceImpl<ToolTemplateMapper, ToolTemplate>(), IToolTemplateService {
     override fun getOne(id: Long): ToolTemplateVo =
-        baseMapper.selectOne(id)?.let(ToolTemplateConverter::toolTemplateToToolTemplateVo)
+        baseMapper.selectOne(id)?.let(ToolTemplate::toVo)
             ?: throw NoRecordFoundException()
 
     override fun get(toolTemplateGetParam: ToolTemplateGetParam?): PageVo<ToolTemplateVo> {
@@ -46,9 +46,9 @@ class ToolTemplateServiceImpl(
 
         PageUtil.setPageSort(toolTemplateGetParam, templatePage)
 
-        return ToolTemplateConverter.toolTemplatePageToToolTemplatePageVo(
-            baseMapper.selectListWithBaseName(templatePage, toolTemplateGetParam?.platform?.split(","))
-        )
+        return baseMapper
+            .selectListWithBaseName(templatePage, toolTemplateGetParam?.platform?.split(","))
+            .toVo()
     }
 
     @Transactional
@@ -71,7 +71,7 @@ class ToolTemplateServiceImpl(
 
         this.save(toolTemplate)
 
-        return ToolTemplateConverter.toolTemplateToToolTemplateVo(toolTemplate)
+        return toolTemplate.toVo()
     }
 
     @Transactional
@@ -98,6 +98,6 @@ class ToolTemplateServiceImpl(
         val toolTemplate = this.getById(id)
 
         return toolDataService.removeById(toolTemplate.sourceId)
-            && this.removeById(id)
+                && this.removeById(id)
     }
 }

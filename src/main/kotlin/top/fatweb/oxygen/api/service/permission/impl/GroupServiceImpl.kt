@@ -5,7 +5,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import top.fatweb.oxygen.api.converter.permission.GroupConverter
+import top.fatweb.oxygen.api.converter.permission.toEntity
+import top.fatweb.oxygen.api.converter.permission.toVo
+import top.fatweb.oxygen.api.converter.permission.toVoWithRole
 import top.fatweb.oxygen.api.entity.permission.Group
 import top.fatweb.oxygen.api.entity.permission.RRoleGroup
 import top.fatweb.oxygen.api.exception.DatabaseInsertException
@@ -54,23 +56,23 @@ class GroupServiceImpl(
             groupPage.setRecords(baseMapper.selectListWithRoleByIds(groupIdsIPage.records))
         }
 
-        return GroupConverter.groupPageToGroupWithRolePageVo(groupPage)
+        return groupPage.toVoWithRole()
     }
 
     override fun getOne(id: Long): GroupWithRoleVo =
-        baseMapper.selectOneById(id)?.let(GroupConverter::groupToGroupWithRoleVo) ?: throw NoRecordFoundException()
+        baseMapper.selectOneById(id)?.let(Group::toVoWithRole) ?: throw NoRecordFoundException()
 
-    override fun getList(): List<GroupVo> = this.list().map(GroupConverter::groupToGroupVo)
+    override fun getList(): List<GroupVo> = this.list().map(Group::toVo)
 
     @Transactional
     override fun add(groupAddParam: GroupAddParam): GroupVo {
-        val group = GroupConverter.groupAddParamToGroup(groupAddParam)
+        val group = groupAddParam.toEntity()
         if (baseMapper.insert(group) != 1) {
             throw DatabaseInsertException()
         }
 
         if (group.roles.isNullOrEmpty()) {
-            return GroupConverter.groupToGroupVo(group)
+            return group.toVo()
         }
 
         rRoleGroupService.saveBatch(group.roles!!.map {
@@ -80,12 +82,12 @@ class GroupServiceImpl(
             }
         })
 
-        return GroupConverter.groupToGroupVo(group)
+        return group.toVo()
     }
 
     @Transactional
     override fun update(groupUpdateParam: GroupUpdateParam): GroupVo {
-        val group = GroupConverter.groupUpdateParamToGroup(groupUpdateParam)
+        val group = groupUpdateParam.toEntity()
 
         if (baseMapper.updateById(group) != 1) {
             throw DatabaseUpdateException()
@@ -120,11 +122,11 @@ class GroupServiceImpl(
 
         groupUpdateParam.id?.let { offlineUser(it) }
 
-        return GroupConverter.groupToGroupVo(group)
+        return group.toVo()
     }
 
     override fun status(groupUpdateStatusParam: GroupUpdateStatusParam) {
-        updateById(GroupConverter.groupUpdateStatusParamToGroup(groupUpdateStatusParam)).let {
+        updateById(groupUpdateStatusParam.toEntity()).let {
             if (!it) {
                 throw DatabaseUpdateException()
             }
@@ -142,7 +144,7 @@ class GroupServiceImpl(
 
     @Transactional
     override fun delete(groupDeleteParam: GroupDeleteParam) {
-        baseMapper.deleteBatchIds(groupDeleteParam.ids)
+        baseMapper.deleteByIds(groupDeleteParam.ids)
         rRoleGroupService.remove(KtQueryWrapper(RRoleGroup()).`in`(RRoleGroup::groupId, groupDeleteParam.ids))
         offlineUser(*groupDeleteParam.ids!!.toLongArray())
     }
