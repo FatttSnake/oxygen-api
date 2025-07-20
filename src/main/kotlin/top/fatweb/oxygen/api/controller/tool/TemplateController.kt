@@ -112,7 +112,7 @@ class TemplateController(
     @Operation(summary = "删除模板")
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('system:tool:delete:template')")
-    fun delete(@PathVariable id: Long): ResponseResult<Nothing> =
+    fun delete(@PathVariable id: Long): ResponseResult<Unit> =
         if (toolTemplateService.delete(id)) ResponseResult.databaseSuccess(ResponseCode.DATABASE_DELETE_SUCCESS)
         else ResponseResult.databaseFail(ResponseCode.DATABASE_DELETE_FAILED)
 }

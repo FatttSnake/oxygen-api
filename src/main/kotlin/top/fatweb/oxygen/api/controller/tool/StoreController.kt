@@ -73,7 +73,7 @@ class StoreController(
      */
     @Operation(summary = "收藏工具")
     @PostMapping("/favorite")
-    fun addFavorite(@RequestBody toolFavoriteAddParam: ToolFavoriteAddParam): ResponseResult<Nothing> {
+    fun addFavorite(@RequestBody toolFavoriteAddParam: ToolFavoriteAddParam): ResponseResult<Unit> {
         storeService.addFavorite(toolFavoriteAddParam)
 
         return ResponseResult.databaseSuccess(ResponseCode.DATABASE_INSERT_SUCCESS)
@@ -91,7 +91,7 @@ class StoreController(
      */
     @Operation(summary = "收藏工具")
     @DeleteMapping("/favorite")
-    fun addFavorite(@RequestBody toolFavoriteRemoveParam: ToolFavoriteRemoveParam): ResponseResult<Nothing> {
+    fun addFavorite(@RequestBody toolFavoriteRemoveParam: ToolFavoriteRemoveParam): ResponseResult<Unit> {
         storeService.removeFavorite(toolFavoriteRemoveParam)
 
         return ResponseResult.databaseSuccess(ResponseCode.DATABASE_DELETE_SUCCESS)

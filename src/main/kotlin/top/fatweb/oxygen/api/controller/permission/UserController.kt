@@ -68,7 +68,7 @@ class UserController(
      */
     @Operation(summary = "更新当前用户信息")
     @PatchMapping("info")
-    fun updateInfo(@ProcessParam @RequestBody @Valid userInfoUpdateParam: UserInfoUpdateParam): ResponseResult<Nothing> =
+    fun updateInfo(@ProcessParam @RequestBody @Valid userInfoUpdateParam: UserInfoUpdateParam): ResponseResult<Unit> =
         if (userService.updateInfo(userInfoUpdateParam)) ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
         else ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_FAILED)
 
@@ -84,7 +84,7 @@ class UserController(
      */
     @Operation(summary = "更改密码")
     @PostMapping("info")
-    fun password(@RequestBody @Valid userChangePasswordParam: UserChangePasswordParam): ResponseResult<Nothing> {
+    fun password(@RequestBody @Valid userChangePasswordParam: UserChangePasswordParam): ResponseResult<Unit> {
         userService.password(userChangePasswordParam)
 
         return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
@@ -176,7 +176,7 @@ class UserController(
     @Operation(summary = "修改密码")
     @PatchMapping
     @PreAuthorize("hasAnyAuthority('system:user:modify:password')")
-    fun password(@Valid @RequestBody userUpdatePasswordParam: UserUpdatePasswordParam): ResponseResult<Nothing> {
+    fun password(@Valid @RequestBody userUpdatePasswordParam: UserUpdatePasswordParam): ResponseResult<Unit> {
         userService.password(userUpdatePasswordParam)
         return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
     }
@@ -193,7 +193,7 @@ class UserController(
     @Operation(summary = "删除用户")
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('system:user:delete:one')")
-    fun delete(@PathVariable id: Long): ResponseResult<Nothing> {
+    fun delete(@PathVariable id: Long): ResponseResult<Unit> {
         userService.deleteOne(id)
         return ResponseResult.databaseSuccess(ResponseCode.DATABASE_DELETE_SUCCESS)
     }
@@ -211,7 +211,7 @@ class UserController(
     @Operation(summary = "批量删除用户")
     @DeleteMapping
     @PreAuthorize("hasAnyAuthority('system:user:delete:multiple')")
-    fun deleteList(@Valid @RequestBody userDeleteParam: UserDeleteParam): ResponseResult<Nothing> {
+    fun deleteList(@Valid @RequestBody userDeleteParam: UserDeleteParam): ResponseResult<Unit> {
         userService.delete(userDeleteParam)
         return ResponseResult.databaseSuccess(ResponseCode.DATABASE_DELETE_SUCCESS)
     }

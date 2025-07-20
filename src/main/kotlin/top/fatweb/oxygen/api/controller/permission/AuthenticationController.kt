@@ -64,7 +64,7 @@ class AuthenticationController(
      */
     @Operation(summary = "发送验证邮件")
     @PostMapping("/resend")
-    fun resend(): ResponseResult<Nothing> {
+    fun resend(): ResponseResult<Unit> {
         authenticationService.resend()
 
         return ResponseResult.success(ResponseCode.PERMISSION_RESEND_SUCCESS)
@@ -82,7 +82,7 @@ class AuthenticationController(
      */
     @Operation(summary = "验证邮箱")
     @PostMapping("/verify")
-    fun verify(@ProcessParam @Valid @RequestBody verifyParam: VerifyParam): ResponseResult<Nothing> {
+    fun verify(@ProcessParam @Valid @RequestBody verifyParam: VerifyParam): ResponseResult<Unit> {
         authenticationService.verify(verifyParam)
 
         return ResponseResult.success(ResponseCode.PERMISSION_VERIFY_SUCCESS)
@@ -102,7 +102,7 @@ class AuthenticationController(
      */
     @Operation(summary = "忘记密码")
     @PostMapping("/forget")
-    fun forget(request: HttpServletRequest, @Valid @RequestBody forgetParam: ForgetParam): ResponseResult<Nothing> {
+    fun forget(request: HttpServletRequest, @Valid @RequestBody forgetParam: ForgetParam): ResponseResult<Unit> {
         authenticationService.forget(
             request = request,
             forgetParam = forgetParam
@@ -128,7 +128,7 @@ class AuthenticationController(
     fun retrieve(
         request: HttpServletRequest,
         @Valid @RequestBody retrieveParam: RetrieveParam
-    ): ResponseResult<Nothing> {
+    ): ResponseResult<Unit> {
         authenticationService.retrieve(
             request = request,
             retrieveParam = retrieveParam
@@ -189,7 +189,7 @@ class AuthenticationController(
      */
     @Operation(summary = "验证双因素")
     @PostMapping("/two-factor")
-    fun validateTwoFactor(@RequestBody @Valid twoFactorValidateParam: TwoFactorValidateParam): ResponseResult<Nothing> =
+    fun validateTwoFactor(@RequestBody @Valid twoFactorValidateParam: TwoFactorValidateParam): ResponseResult<Unit> =
         if (authenticationService.validateTwoFactor(twoFactorValidateParam)) ResponseResult.success()
         else ResponseResult.fail()
 
@@ -201,7 +201,7 @@ class AuthenticationController(
      */
     @Operation(summary = "移除双因素")
     @DeleteMapping("/two-factor")
-    fun removeTwoFactor(@RequestBody @Valid twoFactorRemoveParam: TwoFactorRemoveParam): ResponseResult<Nothing> =
+    fun removeTwoFactor(@RequestBody @Valid twoFactorRemoveParam: TwoFactorRemoveParam): ResponseResult<Unit> =
         if (authenticationService.removeTwoFactor(twoFactorRemoveParam)) ResponseResult.success()
         else ResponseResult.fail()
 
@@ -218,7 +218,7 @@ class AuthenticationController(
      */
     @Operation(summary = "登出")
     @PostMapping("/logout")
-    fun logout(request: HttpServletRequest, response: HttpServletResponse): ResponseResult<Nothing> =
+    fun logout(request: HttpServletRequest, response: HttpServletResponse): ResponseResult<Unit> =
         when (authenticationService.logout(request = request, response = response)) {
             true -> ResponseResult.success(
                 code = ResponseCode.PERMISSION_LOGOUT_SUCCESS,

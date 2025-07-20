@@ -129,7 +129,7 @@ class RoleController(
     @Operation(summary = "修改角色状态")
     @PatchMapping
     @PreAuthorize("hasAnyAuthority('system:role:modify:status')")
-    fun status(@Valid @RequestBody roleUpdateStatusParam: RoleUpdateStatusParam): ResponseResult<Nothing> {
+    fun status(@Valid @RequestBody roleUpdateStatusParam: RoleUpdateStatusParam): ResponseResult<Unit> {
         roleService.status(roleUpdateStatusParam)
         return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
     }
@@ -146,7 +146,7 @@ class RoleController(
     @Operation(summary = "删除角色")
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('system:role:delete:one')")
-    fun delete(@PathVariable id: Long): ResponseResult<Nothing> {
+    fun delete(@PathVariable id: Long): ResponseResult<Unit> {
         roleService.deleteOne(id)
         return ResponseResult.databaseSuccess(ResponseCode.DATABASE_DELETE_SUCCESS)
     }
@@ -164,7 +164,7 @@ class RoleController(
     @Operation(summary = "批量删除角色")
     @DeleteMapping
     @PreAuthorize("hasAnyAuthority('system:role:delete:multiple')")
-    fun deleteList(@Valid @RequestBody roleDeleteParam: RoleDeleteParam): ResponseResult<Nothing> {
+    fun deleteList(@Valid @RequestBody roleDeleteParam: RoleDeleteParam): ResponseResult<Unit> {
         roleService.delete(roleDeleteParam)
         return ResponseResult.databaseSuccess(ResponseCode.DATABASE_DELETE_SUCCESS)
     }

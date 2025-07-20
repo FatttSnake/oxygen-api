@@ -107,7 +107,7 @@ class CategoryController(
     @Operation(summary = "删除类别")
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('system:tool:delete:category')")
-    fun delete(@PathVariable id: Long): ResponseResult<Nothing> =
+    fun delete(@PathVariable id: Long): ResponseResult<Unit> =
         if (toolCategoryService.delete(id)) ResponseResult.databaseSuccess(ResponseCode.DATABASE_DELETE_SUCCESS)
         else ResponseResult.databaseFail(ResponseCode.DATABASE_DELETE_FAILED)
 }

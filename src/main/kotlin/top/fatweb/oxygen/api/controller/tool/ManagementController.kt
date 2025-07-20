@@ -127,7 +127,7 @@ class ManagementController(
     @Operation(summary = "删除工具")
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('system:tool:delete:tool')")
-    fun delete(@PathVariable id: Long): ResponseResult<Nothing> =
+    fun delete(@PathVariable id: Long): ResponseResult<Unit> =
         if (managementService.delete(id)) ResponseResult.databaseSuccess(ResponseCode.DATABASE_DELETE_SUCCESS)
         else ResponseResult.databaseFail(ResponseCode.DATABASE_DELETE_FAILED)
 }

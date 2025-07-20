@@ -175,7 +175,7 @@ class EditController(
      */
     @Operation(summary = "提交工具审核")
     @PostMapping("/{id}")
-    fun submit(@PathVariable id: Long): ResponseResult<Nothing> =
+    fun submit(@PathVariable id: Long): ResponseResult<Unit> =
         if (editService.submit(id)) ResponseResult.success(ResponseCode.TOOL_SUBMIT_SUCCESS)
         else ResponseResult.fail(ResponseCode.TOOL_SUBMIT_ERROR)
 
@@ -190,7 +190,7 @@ class EditController(
      */
     @Operation(summary = "取消工具审核")
     @PutMapping("/{id}")
-    fun cancel(@PathVariable id: Long): ResponseResult<Nothing> =
+    fun cancel(@PathVariable id: Long): ResponseResult<Unit> =
         if (editService.cancel(id)) ResponseResult.success(ResponseCode.TOOL_CANCEL_SUCCESS)
         else ResponseResult.fail(ResponseCode.TOOL_CANCEL_ERROR)
 
@@ -205,7 +205,7 @@ class EditController(
      */
     @Operation(summary = "删除工具")
     @DeleteMapping("/{id}")
-    fun delete(@PathVariable id: Long): ResponseResult<Nothing> =
+    fun delete(@PathVariable id: Long): ResponseResult<Unit> =
         if (editService.delete(id)) ResponseResult.databaseSuccess(ResponseCode.DATABASE_DELETE_SUCCESS)
         else ResponseResult.databaseFail(ResponseCode.DATABASE_DELETE_FAILED)
 }

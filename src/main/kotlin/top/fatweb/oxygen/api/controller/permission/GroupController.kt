@@ -129,7 +129,7 @@ class GroupController(
     @Operation(summary = "修改用户组状态")
     @PatchMapping
     @PreAuthorize("hasAnyAuthority('system:group:modify:status')")
-    fun updateStatus(@Valid @RequestBody groupUpdateStatusParam: GroupUpdateStatusParam): ResponseResult<Nothing> {
+    fun updateStatus(@Valid @RequestBody groupUpdateStatusParam: GroupUpdateStatusParam): ResponseResult<Unit> {
         groupService.status(groupUpdateStatusParam)
         return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
     }
@@ -146,7 +146,7 @@ class GroupController(
     @Operation(summary = "删除用户组")
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('system:group:delete:one')")
-    fun delete(@PathVariable id: Long): ResponseResult<Nothing> {
+    fun delete(@PathVariable id: Long): ResponseResult<Unit> {
         groupService.deleteOne(id)
         return ResponseResult.databaseSuccess(ResponseCode.DATABASE_DELETE_SUCCESS)
     }
@@ -164,7 +164,7 @@ class GroupController(
     @Operation(summary = "批量删除用户组")
     @DeleteMapping
     @PreAuthorize("hasAnyAuthority('system:group:delete:multiple')")
-    fun deleteList(@Valid @RequestBody groupDeleteParam: GroupDeleteParam): ResponseResult<Nothing> {
+    fun deleteList(@Valid @RequestBody groupDeleteParam: GroupDeleteParam): ResponseResult<Unit> {
         groupService.delete(groupDeleteParam)
         return ResponseResult.databaseSuccess(ResponseCode.DATABASE_DELETE_SUCCESS)
     }

@@ -128,7 +128,7 @@ class BaseController(
     @Operation(summary = "删除基板")
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('system:tool:delete:base')")
-    fun delete(@PathVariable id: Long): ResponseResult<Nothing> =
+    fun delete(@PathVariable id: Long): ResponseResult<Unit> =
         if (toolBaseService.delete(id)) ResponseResult.databaseSuccess(ResponseCode.DATABASE_DELETE_SUCCESS)
         else ResponseResult.databaseFail(ResponseCode.DATABASE_DELETE_FAILED)
 }
