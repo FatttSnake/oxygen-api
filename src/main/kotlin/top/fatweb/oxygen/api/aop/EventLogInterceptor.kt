@@ -8,7 +8,7 @@ import org.aspectj.lang.reflect.MethodSignature
 import org.springframework.stereotype.Component
 import top.fatweb.oxygen.api.annotation.EventLogRecord
 import top.fatweb.oxygen.api.service.system.IEventLogService
-import top.fatweb.oxygen.api.util.WebUtil
+import top.fatweb.oxygen.api.util.getLoginUserId
 import top.fatweb.oxygen.api.vo.permission.LoginVo
 import top.fatweb.oxygen.api.vo.permission.RegisterVo
 
@@ -47,7 +47,7 @@ class EventLogInterceptor(
     fun doAfter(joinPoint: JoinPoint, retValue: Any?) {
         val annotation = (joinPoint.signature as MethodSignature).method.getAnnotation(EventLogRecord::class.java)
 
-        val userId = WebUtil.getLoginUserId() ?: when (retValue) {
+        val userId = getLoginUserId() ?: when (retValue) {
             is LoginVo -> retValue.userId!!
             is RegisterVo -> retValue.userId!!
             else -> -1

@@ -119,7 +119,7 @@ class AuthenticationServiceImpl(
 
     @Transactional
     override fun resend() {
-        val user = userService.getById(WebUtil.getLoginUserId())
+        val user = userService.getById(getLoginUserId())
 
         user.verify ?: throw NoVerificationRequiredException()
 
@@ -136,7 +136,7 @@ class AuthenticationServiceImpl(
         user.updateTime = LocalDateTime.now(ZoneOffset.UTC)
         userService.updateById(user)
 
-        WebUtil.getLoginUser()?.user?.userInfo?.email?.let {
+        getLoginUser()?.user?.userInfo?.email?.let {
             sendVerifyMail(user.username!!, user.verify!!, it)
         } ?: throw AccessDeniedException("Access Denied")
     }
@@ -144,7 +144,7 @@ class AuthenticationServiceImpl(
     @EventLogRecord(EventLog.Event.VERIFY)
     @Transactional
     override fun verify(verifyParam: VerifyParam) {
-        val user = userService.getById(WebUtil.getLoginUserId())
+        val user = userService.getById(getLoginUserId())
         user.verify ?: throw NoVerificationRequiredException()
         if (LocalDateTime.ofInstant(Instant.ofEpochMilli(user.verify!!.split("-").first().toLong()), ZoneOffset.UTC)
                 .isBefore(LocalDateTime.now(ZoneOffset.UTC).minusHours(2)) || user.verify != verifyParam.code
@@ -186,7 +186,7 @@ class AuthenticationServiceImpl(
             LocalDateTime.now(ZoneOffset.UTC).toInstant(ZoneOffset.UTC).toEpochMilli()
         }-${UUID.randomUUID()}-${UUID.randomUUID()}-${UUID.randomUUID()}"
         userService.update(KtUpdateWrapper(User()).eq(User::id, user.id).set(User::forget, code))
-        sendRetrieveMail(user.username!!, WebUtil.getRequestIp(request), code, forgetParam.email!!)
+        sendRetrieveMail(user.username!!, getRequestIp(request), code, forgetParam.email!!)
     }
 
     @Transactional
@@ -203,7 +203,7 @@ class AuthenticationServiceImpl(
             ) {
                 throw RetrieveCodeErrorOrExpiredException()
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             throw RetrieveCodeErrorOrExpiredException()
         }
 
@@ -216,9 +216,9 @@ class AuthenticationServiceImpl(
                 .set(User::password, passwordEncoder.encode(retrieveParam.password!!))
         )
 
-        WebUtil.offlineUser(redisUtil, user.id!!)
+        offlineUser(redisUtil, user.id!!)
 
-        sendPasswordChangedMail(user.username!!, WebUtil.getRequestIp(request), userInfo!!.email!!)
+        sendPasswordChangedMail(user.username!!, getRequestIp(request), userInfo!!.email!!)
     }
 
     @EventLogRecord(EventLog.Event.LOGIN)
@@ -237,7 +237,7 @@ class AuthenticationServiceImpl(
     }
 
     override fun createTwoFactor(): TwoFactorVo {
-        val user = userService.getById(WebUtil.getLoginUserId()) ?: throw UserNotFoundException()
+        val user = userService.getById(getLoginUserId()) ?: throw UserNotFoundException()
 
         if (!user.twoFactor.isNullOrBlank() && !user.twoFactor!!.endsWith("?")) {
             throw AlreadyHasTwoFactorException()
@@ -257,7 +257,7 @@ class AuthenticationServiceImpl(
     }
 
     override fun validateTwoFactor(twoFactorValidateParam: TwoFactorValidateParam): Boolean {
-        val user = userService.getById(WebUtil.getLoginUserId()) ?: throw UserNotFoundException()
+        val user = userService.getById(getLoginUserId()) ?: throw UserNotFoundException()
         if (user.twoFactor.isNullOrBlank()) {
             throw NoTwoFactorFoundException()
         }
@@ -275,7 +275,7 @@ class AuthenticationServiceImpl(
     }
 
     override fun removeTwoFactor(twoFactorRemoveParam: TwoFactorRemoveParam): Boolean {
-        val user = userService.getById(WebUtil.getLoginUserId()) ?: throw UserNotFoundException()
+        val user = userService.getById(getLoginUserId()) ?: throw UserNotFoundException()
         if (user.twoFactor.isNullOrBlank() || user.twoFactor!!.endsWith("?")) {
             throw NoTwoFactorFoundException()
         }
@@ -290,7 +290,7 @@ class AuthenticationServiceImpl(
 
     @EventLogRecord(EventLog.Event.LOGOUT)
     override fun logout(request: HttpServletRequest, response: HttpServletResponse): Boolean {
-        val token = WebUtil.getToken(request)
+        val token = getToken(request)
 
         var redisKeyPattern = "${SecurityProperties.tokenIssuer}_access_*:${token}"
         var redisKeys = redisUtil.keys(redisKeyPattern)
@@ -299,7 +299,10 @@ class AuthenticationServiceImpl(
         }
         redisUtil.delObject(redisKeys)
 
-        val refreshToken = Regex("${SecurityProperties.tokenIssuer}_access_.*?_(.*):.*").matchEntire(redisKeys.first())?.groupValues?.getOrNull(1)
+        val refreshToken =
+            Regex("${SecurityProperties.tokenIssuer}_access_.*?_(.*):.*").matchEntire(redisKeys.first())?.groupValues?.getOrNull(
+                1
+            )
         redisKeyPattern = "${SecurityProperties.tokenIssuer}_token_*:${refreshToken}"
         redisKeys = redisUtil.keys(redisKeyPattern)
         if (redisKeys.isEmpty()) {
@@ -455,7 +458,8 @@ class AuthenticationServiceImpl(
     ): LoginVo {
         val usernamePasswordAuthenticationToken =
             UsernamePasswordAuthenticationToken(account, password)
-        val authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken) ?: throw LoginFailedException()
+        val authentication =
+            authenticationManager.authenticate(usernamePasswordAuthenticationToken) ?: throw LoginFailedException()
 
         val loginUser = authentication.principal as LoginUser
         loginUser.user.password = ""
@@ -469,9 +473,9 @@ class AuthenticationServiceImpl(
             }
         }
 
-        logger.info("用户登录 [用户名: '{}', IP: '{}']", loginUser.username, WebUtil.getRequestIp(request))
+        logger.info("用户登录 [用户名: '{}', IP: '{}']", loginUser.username, getRequestIp(request))
         userService.update(User().apply {
-            currentLoginIp = WebUtil.getRequestIp(request)
+            currentLoginIp = getRequestIp(request)
             currentLoginTime = LocalDateTime.now(ZoneOffset.UTC)
             lastLoginIp = loginUser.user.currentLoginIp
             lastLoginTime = loginUser.user.currentLoginTime
@@ -521,7 +525,7 @@ class AuthenticationServiceImpl(
             if (!siteverifyResponse.success) {
                 throw InvalidCaptchaCodeException()
             }
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             throw InvalidCaptchaCodeException()
         }
     }

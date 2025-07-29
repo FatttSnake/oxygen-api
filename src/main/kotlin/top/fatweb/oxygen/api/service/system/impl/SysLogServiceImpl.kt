@@ -13,7 +13,7 @@ import top.fatweb.oxygen.api.mapper.system.SysLogMapper
 import top.fatweb.oxygen.api.param.system.SysLogGetParam
 import top.fatweb.oxygen.api.service.permission.IUserService
 import top.fatweb.oxygen.api.service.system.ISysLogService
-import top.fatweb.oxygen.api.util.PageUtil
+import top.fatweb.oxygen.api.util.setPageSort
 import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.system.SysLogVo
 
@@ -35,7 +35,7 @@ class SysLogServiceImpl(
     override fun getPage(sysLogGetParam: SysLogGetParam?): PageVo<SysLogVo> {
         val sysLogPage = Page<SysLog>(sysLogGetParam?.currentPage ?: 1, sysLogGetParam?.pageSize ?: 20)
 
-        PageUtil.setPageSort(sysLogGetParam, sysLogPage, OrderItem.desc("start_time"))
+        setPageSort(sysLogGetParam, sysLogPage, OrderItem.desc("start_time"))
 
         val sysLogIPage = baseMapper.selectPage(
             sysLogPage,

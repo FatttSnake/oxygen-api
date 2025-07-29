@@ -18,9 +18,9 @@ import top.fatweb.oxygen.api.param.permission.group.*
 import top.fatweb.oxygen.api.service.permission.IGroupService
 import top.fatweb.oxygen.api.service.permission.IRRoleGroupService
 import top.fatweb.oxygen.api.service.permission.IUserService
-import top.fatweb.oxygen.api.util.PageUtil
 import top.fatweb.oxygen.api.util.RedisUtil
-import top.fatweb.oxygen.api.util.WebUtil
+import top.fatweb.oxygen.api.util.offlineUser
+import top.fatweb.oxygen.api.util.setPageSort
 import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.permission.GroupWithRoleVo
 import top.fatweb.oxygen.api.vo.permission.base.GroupVo
@@ -47,7 +47,7 @@ class GroupServiceImpl(
     override fun getPage(groupGetParam: GroupGetParam?): PageVo<GroupWithRoleVo> {
         val groupIdsPage = Page<Long>(groupGetParam?.currentPage ?: 1, groupGetParam?.pageSize ?: 20)
 
-        PageUtil.setPageSort(groupGetParam, groupIdsPage)
+        setPageSort(groupGetParam, groupIdsPage)
 
         val groupIdsIPage =
             baseMapper.selectPage(groupIdsPage, groupGetParam?.searchName, groupGetParam?.searchRegex ?: false)
@@ -67,7 +67,7 @@ class GroupServiceImpl(
     @Transactional
     override fun add(groupAddParam: GroupAddParam): GroupVo {
         val group = groupAddParam.toEntity()
-        if (baseMapper.insert(group) != 1) {
+        if (!this.save(group)) {
             throw DatabaseInsertException()
         }
 
@@ -89,7 +89,7 @@ class GroupServiceImpl(
     override fun update(groupUpdateParam: GroupUpdateParam): GroupVo {
         val group = groupUpdateParam.toEntity()
 
-        if (baseMapper.updateById(group) != 1) {
+        if (!this.updateById(group)) {
             throw DatabaseUpdateException()
         }
 
@@ -144,13 +144,13 @@ class GroupServiceImpl(
 
     @Transactional
     override fun delete(groupDeleteParam: GroupDeleteParam) {
-        baseMapper.deleteByIds(groupDeleteParam.ids)
+        this.removeBatchByIds(groupDeleteParam.ids)
         rRoleGroupService.remove(KtQueryWrapper(RRoleGroup()).`in`(RRoleGroup::groupId, groupDeleteParam.ids))
         offlineUser(*groupDeleteParam.ids!!.toLongArray())
     }
 
     private fun offlineUser(vararg groupIds: Long) {
         val userIds = userService.getIdsByGroupIds(groupIds.toList())
-        WebUtil.offlineUser(redisUtil, *userIds.toLongArray())
+        offlineUser(redisUtil, *userIds.toLongArray())
     }
 }

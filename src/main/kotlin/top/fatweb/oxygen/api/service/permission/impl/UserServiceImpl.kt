@@ -27,10 +27,7 @@ import top.fatweb.oxygen.api.exception.UserNotFoundException
 import top.fatweb.oxygen.api.mapper.permission.UserMapper
 import top.fatweb.oxygen.api.param.permission.user.*
 import top.fatweb.oxygen.api.service.permission.*
-import top.fatweb.oxygen.api.util.PageUtil
-import top.fatweb.oxygen.api.util.RedisUtil
-import top.fatweb.oxygen.api.util.StrUtil
-import top.fatweb.oxygen.api.util.WebUtil
+import top.fatweb.oxygen.api.util.*
 import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.permission.UserWithInfoVo
 import top.fatweb.oxygen.api.vo.permission.UserWithPowerInfoVo
@@ -86,7 +83,7 @@ class UserServiceImpl(
     }
 
     override fun getInfo(): UserWithPowerInfoVo =
-        WebUtil.getLoginUsername()?.let(::getUserWithPowerByAccount)?.let(User::toVoWithPowerInfo)
+        getLoginUsername()?.let(::getUserWithPowerByAccount)?.let(User::toVoWithPowerInfo)
             ?: throw UserNotFoundException()
 
     override fun getBasicInfo(username: String): UserWithInfoVo =
@@ -95,7 +92,7 @@ class UserServiceImpl(
 
 
     override fun updateInfo(userInfoUpdateParam: UserInfoUpdateParam): Boolean {
-        val userId = WebUtil.getLoginUserId() ?: throw AccessDeniedException("Access denied")
+        val userId = getLoginUserId() ?: throw AccessDeniedException("Access denied")
         return userInfoService.update(
             KtUpdateWrapper(UserInfo()).eq(UserInfo::userId, userId)
                 .set(!userInfoUpdateParam.avatar.isNullOrBlank(), UserInfo::avatar, userInfoUpdateParam.avatar)
@@ -104,7 +101,7 @@ class UserServiceImpl(
     }
 
     override fun password(userChangePasswordParam: UserChangePasswordParam) {
-        val user = this.getById(WebUtil.getLoginUserId() ?: throw AccessDeniedException("Access denied"))
+        val user = this.getById(getLoginUserId() ?: throw AccessDeniedException("Access denied"))
         user?.let {
             if (!passwordEncoder.matches(userChangePasswordParam.originalPassword, user.password)) {
                 throw BadCredentialsException("Passwords do not match")
@@ -119,7 +116,7 @@ class UserServiceImpl(
                 throw DatabaseUpdateException()
             }
 
-            WebUtil.offlineUser(redisUtil, user.id!!)
+            offlineUser(redisUtil, user.id!!)
         } ?: throw NoRecordFoundException()
     }
 
@@ -130,7 +127,7 @@ class UserServiceImpl(
     override fun getPage(userGetParam: UserGetParam?): PageVo<UserWithRoleInfoVo> {
         val userIdsPage = Page<Long>(userGetParam?.currentPage ?: 1, userGetParam?.pageSize ?: 20)
 
-        PageUtil.setPageSort(userGetParam, userIdsPage, OrderItem.asc("id"))
+        setPageSort(userGetParam, userIdsPage, OrderItem.asc("id"))
 
         val userIdsIPage =
             baseMapper.selectPage(
@@ -152,7 +149,7 @@ class UserServiceImpl(
     @Transactional
     override fun add(userAddParam: UserAddParam): UserWithRoleInfoVo {
         val newPassword =
-            if (userAddParam.password.isNullOrBlank()) Sha512DigestUtils.shaHex(StrUtil.getRandomPassword(10)) else userAddParam.password
+            if (userAddParam.password.isNullOrBlank()) Sha512DigestUtils.shaHex(generateRandomPassword(10)) else userAddParam.password
         val user = userAddParam.toEntity()
 
         user.apply {
@@ -271,13 +268,13 @@ class UserServiceImpl(
             })
         }
 
-        userUpdateParam.id?.let { WebUtil.offlineUser(redisUtil, it) }
+        userUpdateParam.id?.let { offlineUser(redisUtil, it) }
 
         return user.toVoWithRoleInfo()
     }
 
     override fun password(userUpdatePasswordParam: UserUpdatePasswordParam) {
-        if (WebUtil.getLoginUserId() != 0L && userUpdatePasswordParam.id == 0L) {
+        if (getLoginUserId() != 0L && userUpdatePasswordParam.id == 0L) {
             throw AccessDeniedException("Access denied")
         }
 
@@ -296,7 +293,7 @@ class UserServiceImpl(
                 throw DatabaseUpdateException()
             }
 
-            userUpdatePasswordParam.id?.let { WebUtil.offlineUser(redisUtil, it) }
+            userUpdatePasswordParam.id?.let { offlineUser(redisUtil, it) }
         } ?: throw NoRecordFoundException()
     }
 
@@ -321,7 +318,7 @@ class UserServiceImpl(
         rUserRoleService.remove(KtQueryWrapper(RUserRole()).`in`(RUserRole::userId, ids))
         rUserGroupService.remove(KtQueryWrapper(RUserGroup()).`in`(RUserGroup::userId, ids))
 
-        WebUtil.offlineUser(redisUtil, *ids.toLongArray())
+        offlineUser(redisUtil, *ids.toLongArray())
     }
 
     override fun getIdsByRoleIds(roleIds: List<Long>) = baseMapper.selectIdsWithRoleIds(roleIds)

@@ -16,9 +16,9 @@ import top.fatweb.oxygen.api.exception.NoRecordFoundException
 import top.fatweb.oxygen.api.mapper.permission.RoleMapper
 import top.fatweb.oxygen.api.param.permission.role.*
 import top.fatweb.oxygen.api.service.permission.*
-import top.fatweb.oxygen.api.util.PageUtil
 import top.fatweb.oxygen.api.util.RedisUtil
-import top.fatweb.oxygen.api.util.WebUtil
+import top.fatweb.oxygen.api.util.offlineUser
+import top.fatweb.oxygen.api.util.setPageSort
 import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.permission.RoleWithPowerVo
 import top.fatweb.oxygen.api.vo.permission.base.RoleVo
@@ -49,7 +49,7 @@ class RoleServiceImpl(
     override fun getPage(roleGetParam: RoleGetParam?): PageVo<RoleWithPowerVo> {
         val roleIdsPage = Page<Long>(roleGetParam?.currentPage ?: 1, roleGetParam?.pageSize ?: 20)
 
-        PageUtil.setPageSort(roleGetParam, roleIdsPage)
+        setPageSort(roleGetParam, roleIdsPage)
 
         val roleIdsIPage =
             baseMapper.selectPage(roleIdsPage, roleGetParam?.searchName, roleGetParam?.searchRegex ?: false)
@@ -73,7 +73,7 @@ class RoleServiceImpl(
         val fullPowerIds = roleAddParam.powerIds?.let(::getFullPowerIds)
 
         val role = roleAddParam.toEntity()
-        if (baseMapper.insert(role) != 1) {
+        if (!this.save(role)) {
             throw DatabaseInsertException()
         }
 
@@ -96,7 +96,7 @@ class RoleServiceImpl(
 
         val role = roleUpdateParam.toEntity()
 
-        if (baseMapper.updateById(role) != 1) {
+        if (!this.updateById(role)) {
             throw DatabaseUpdateException()
         }
 
@@ -151,7 +151,7 @@ class RoleServiceImpl(
 
     @Transactional
     override fun delete(roleDeleteParam: RoleDeleteParam) {
-        baseMapper.deleteByIds(roleDeleteParam.ids)
+        this.removeBatchByIds(roleDeleteParam.ids)
         rPowerRoleService.remove(KtQueryWrapper(RPowerRole()).`in`(RPowerRole::roleId, roleDeleteParam.ids))
         offlineUser(*roleDeleteParam.ids!!.toLongArray())
     }
@@ -184,6 +184,6 @@ class RoleServiceImpl(
 
     private fun offlineUser(vararg roleIds: Long) {
         val userIds = userService.getIdsByRoleIds(roleIds.toList())
-        WebUtil.offlineUser(redisUtil, *userIds.toLongArray())
+        offlineUser(redisUtil, *userIds.toLongArray())
     }
 }

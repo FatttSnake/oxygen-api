@@ -9,7 +9,7 @@ import top.fatweb.avatargenerator.layer.background.ColorPaintBackgroundLayer
 import top.fatweb.oxygen.api.param.api.v1.avatar.AvatarBaseParam
 import top.fatweb.oxygen.api.param.api.v1.avatar.AvatarGitHubParam
 import top.fatweb.oxygen.api.service.api.v1.IAvatarService
-import top.fatweb.oxygen.api.util.NumberUtil
+import top.fatweb.oxygen.api.util.getRandomLong
 import top.fatweb.oxygen.api.vo.api.v1.avatar.AvatarBase64Vo
 import java.awt.Color
 import kotlin.io.encoding.Base64
@@ -68,7 +68,7 @@ class AvatarServiceImpl : IAvatarService {
                 avatarBaseParam?.background?.let { layers(ColorPaintBackgroundLayer(decodeColor(it))) }
             }.build()
 
-        return avatar.createAsPngBytes(avatarBaseParam?.seed ?: NumberUtil.getRandomLong())
+        return avatar.createAsPngBytes(avatarBaseParam?.seed ?: getRandomLong())
     }
 
     override fun triangleBase64(avatarBaseParam: AvatarBaseParam?) =
@@ -88,7 +88,7 @@ class AvatarServiceImpl : IAvatarService {
                 avatarBaseParam?.background?.let { layers(ColorPaintBackgroundLayer(decodeColor(it))) }
             }.build()
 
-        return avatar.createAsPngBytes(avatarBaseParam?.seed ?: NumberUtil.getRandomLong())
+        return avatar.createAsPngBytes(avatarBaseParam?.seed ?: getRandomLong())
     }
 
     override fun squareBase64(avatarBaseParam: AvatarBaseParam?) =
@@ -105,7 +105,7 @@ class AvatarServiceImpl : IAvatarService {
             avatarBaseParam?.background?.let { layers(ColorPaintBackgroundLayer(decodeColor(it))) }
         }.build()
 
-        return avatar.createAsPngBytes(avatarBaseParam?.seed ?: NumberUtil.getRandomLong())
+        return avatar.createAsPngBytes(avatarBaseParam?.seed ?: getRandomLong())
     }
 
     override fun identiconBase64(avatarBaseParam: AvatarBaseParam?) =
@@ -123,7 +123,7 @@ class AvatarServiceImpl : IAvatarService {
             avatarGitHubParam?.background?.let { layers(ColorPaintBackgroundLayer(decodeColor(it))) }
         }.build()
 
-        return avatar.createAsPngBytes(avatarGitHubParam?.seed ?: NumberUtil.getRandomLong())
+        return avatar.createAsPngBytes(avatarGitHubParam?.seed ?: getRandomLong())
     }
 
     override fun githubBase64(avatarGitHubParam: AvatarGitHubParam?) =

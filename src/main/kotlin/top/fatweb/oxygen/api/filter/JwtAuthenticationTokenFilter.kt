@@ -13,7 +13,7 @@ import top.fatweb.oxygen.api.exception.TokenHasExpiredException
 import top.fatweb.oxygen.api.properties.SecurityProperties
 import top.fatweb.oxygen.api.util.JwtUtil
 import top.fatweb.oxygen.api.util.RedisUtil
-import top.fatweb.oxygen.api.util.WebUtil
+import top.fatweb.oxygen.api.util.getToken
 
 /**
  * Jwt authentication token filter
@@ -35,7 +35,7 @@ class JwtAuthenticationTokenFilter(private val redisUtil: RedisUtil) : OncePerRe
             return
         }
 
-        val token = WebUtil.getToken(tokenWithPrefix)
+        val token = getToken(tokenWithPrefix)
         JwtUtil.parseJwt(token)
 
         val redisKeyPattern = "${SecurityProperties.tokenIssuer}_access_*:${token}"
