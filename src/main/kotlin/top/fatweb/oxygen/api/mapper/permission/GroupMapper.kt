@@ -42,7 +42,7 @@ interface GroupMapper : BaseMapper<Group> {
      * @since 1.0.0
      * @see Group
      */
-    fun selectListWithRoleByIds(@Param("groupIds") groupIds: List<Long>): List<Group>?
+    fun selectListWithRoleByIds(@Param("groupIds") groupIds: List<Long>): List<Group>
 
     /**
      * Select one group by ID

@@ -54,7 +54,7 @@ class UserController(
     @Operation(summary = "获取指定用户基本信息")
     @GetMapping("/info/{username}")
     fun getBasicInfo(@ProcessParam @ParamProcessor @PathVariable username: String): ResponseResult<UserWithInfoVo> =
-        ResponseResult.databaseSuccess(data = userService.getBasicInfo(username.trim()))
+        ResponseResult.databaseSuccess(data = userService.getBasicInfo(username))
 
     /**
      * Update current user information
