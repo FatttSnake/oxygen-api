@@ -14,6 +14,7 @@ import top.fatweb.oxygen.api.mapper.system.SensitiveWordMapper
 import top.fatweb.oxygen.api.param.system.SensitiveWordAddParam
 import top.fatweb.oxygen.api.param.system.SensitiveWordUpdateParam
 import top.fatweb.oxygen.api.service.system.ISensitiveWordService
+import top.fatweb.oxygen.api.util.saveOrThrowException
 import top.fatweb.oxygen.api.vo.system.SensitiveWordVo
 
 /**
@@ -34,16 +35,24 @@ class SensitiveWordServiceImpl : ServiceImpl<SensitiveWordMapper, SensitiveWord>
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     override fun add(sensitiveWordAddParam: SensitiveWordAddParam) {
         checkSensitiveWord(sensitiveWordAddParam.word!!)
-        this.save(sensitiveWordAddParam.toEntity())
+        saveOrThrowException { this.save(sensitiveWordAddParam.toEntity()) }
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     override fun update(sensitiveWordUpdateParam: SensitiveWordUpdateParam) {
-        this.update(KtUpdateWrapper(SensitiveWord()).set(SensitiveWord::enable, false))
-        this.update(
-            KtUpdateWrapper(SensitiveWord()).`in`(SensitiveWord::id, sensitiveWordUpdateParam.ids)
-                .set(SensitiveWord::enable, true)
-        )
+        saveOrThrowException {
+            this.update(
+                KtUpdateWrapper(SensitiveWord())
+                    .set(SensitiveWord::enable, false)
+            )
+        }
+        saveOrThrowException {
+            this.update(
+                KtUpdateWrapper(SensitiveWord())
+                    .`in`(SensitiveWord::id, sensitiveWordUpdateParam.ids)
+                    .set(SensitiveWord::enable, true)
+            )
+        }
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
@@ -53,7 +62,10 @@ class SensitiveWordServiceImpl : ServiceImpl<SensitiveWordMapper, SensitiveWord>
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     override fun checkSensitiveWord(str: String) {
-        this.list(KtQueryWrapper(SensitiveWord()).eq(SensitiveWord::enable, 1)).map(SensitiveWord::word).forEach {
+        this.list(
+            KtQueryWrapper(SensitiveWord())
+                .eq(SensitiveWord::enable, 1)
+        ).map(SensitiveWord::word).forEach {
             it ?: return@forEach
 
             try {

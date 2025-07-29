@@ -2,6 +2,9 @@ package top.fatweb.oxygen.api.util
 
 import com.baomidou.mybatisplus.core.metadata.OrderItem
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page
+import top.fatweb.oxygen.api.exception.DatabaseInsertException
+import top.fatweb.oxygen.api.exception.DatabaseUpdateException
+import top.fatweb.oxygen.api.exception.NoRecordFoundException
 import top.fatweb.oxygen.api.param.PageSortParam
 
 /**
@@ -30,5 +33,48 @@ fun <T : Page<*>> setPageSort(pageSortParam: PageSortParam?, page: T, defaultOrd
         )
     } else {
         defaultOrder?.let { page.addOrder(defaultOrder) }
+    }
+}
+
+/**
+ * Execute database query operation, throw exception when not found
+ *
+ * @param exception Exception to throw
+ * @param func Database select operation function
+ * @author FatttSnake, fatttsnake@gmail.com
+ * @since 1.1.0
+ * @see RuntimeException
+ */
+fun <T> queryOrThrowException(exception: RuntimeException? = null, func: () -> T?): T {
+    return func() ?: throw exception ?: NoRecordFoundException()
+}
+
+/**
+ * Execute database insert operation, throw exception when failure
+ *
+ * @param exception Exception to throw
+ * @param func Database insert operation function
+ * @author FatttSnake, fatttsnake@gmail.com
+ * @since 1.1.0
+ * @see RuntimeException
+ */
+fun saveOrThrowException(exception: RuntimeException? = null, func: () -> Boolean) {
+    if (!func()) {
+        throw exception ?: DatabaseInsertException()
+    }
+}
+
+/**
+ * Execute database update operation, throw exception when failure
+ *
+ * @param exception Exception to throw
+ * @param func Database update operation function
+ * @author FatttSnake, fatttsnake@gmail.com
+ * @since 1.1.0
+ * @see RuntimeException
+ */
+fun updateOrThrowException(exception: RuntimeException? = null, func: () -> Boolean) {
+    if (!func()) {
+        throw exception ?: DatabaseUpdateException()
     }
 }

@@ -80,7 +80,7 @@ class AuthenticationServiceImpl(
         response: HttpServletResponse,
         registerParam: RegisterParam
     ): RegisterVo {
-        verifyCaptcha(registerParam.captchaCode!!)
+        this.verifyCaptcha(registerParam.captchaCode!!)
         sensitiveWordService.checkSensitiveWord(registerParam.username!!)
 
         val user = User().apply {
@@ -93,13 +93,16 @@ class AuthenticationServiceImpl(
             locking = 0
             enable = 1
         }
-        userService.save(user)
-        userInfoService.save(UserInfo().apply {
-            userId = user.id
-            nickname = registerParam.username
-            avatar = avatarService.randomBase64(null).base64
-            email = registerParam.email
-        })
+        saveOrThrowException { userService.save(user) }
+
+        saveOrThrowException {
+            userInfoService.save(UserInfo().apply {
+                userId = user.id
+                nickname = registerParam.username
+                avatar = avatarService.randomBase64(null).base64
+                email = registerParam.email
+            })
+        }
 
         sendVerifyMail(user.username!!, user.verify!!, registerParam.email!!)
 
@@ -119,7 +122,7 @@ class AuthenticationServiceImpl(
 
     @Transactional
     override fun resend() {
-        val user = userService.getById(getLoginUserId())
+        val user = queryOrThrowException(UserNotFoundException()) { userService.getById(getLoginUserId()) }
 
         user.verify ?: throw NoVerificationRequiredException()
 
@@ -129,12 +132,14 @@ class AuthenticationServiceImpl(
             throw RequestTooFrequentException()
         }
 
-        user.verify =
-            "${
-                LocalDateTime.now(ZoneOffset.UTC).toInstant(ZoneOffset.UTC).toEpochMilli()
-            }-${UUID.randomUUID()}-${UUID.randomUUID()}-${UUID.randomUUID()}"
-        user.updateTime = LocalDateTime.now(ZoneOffset.UTC)
-        userService.updateById(user)
+        updateOrThrowException {
+            userService.updateById(user.apply {
+                verify = "${
+                    LocalDateTime.now(ZoneOffset.UTC).toInstant(ZoneOffset.UTC).toEpochMilli()
+                }-${UUID.randomUUID()}-${UUID.randomUUID()}-${UUID.randomUUID()}"
+                updateTime = LocalDateTime.now(ZoneOffset.UTC)
+            })
+        }
 
         getLoginUser()?.user?.userInfo?.email?.let {
             sendVerifyMail(user.username!!, user.verify!!, it)
@@ -144,7 +149,7 @@ class AuthenticationServiceImpl(
     @EventLogRecord(EventLog.Event.VERIFY)
     @Transactional
     override fun verify(verifyParam: VerifyParam) {
-        val user = userService.getById(getLoginUserId())
+        val user = queryOrThrowException(UserNotFoundException()) { userService.getById(getLoginUserId()) }
         user.verify ?: throw NoVerificationRequiredException()
         if (LocalDateTime.ofInstant(Instant.ofEpochMilli(user.verify!!.split("-").first().toLong()), ZoneOffset.UTC)
                 .isBefore(LocalDateTime.now(ZoneOffset.UTC).minusHours(2)) || user.verify != verifyParam.code
@@ -157,22 +162,27 @@ class AuthenticationServiceImpl(
         }
         sensitiveWordService.checkSensitiveWord(verifyParam.nickname!!)
 
-        userService.update(
-            KtUpdateWrapper(User()).eq(User::id, user.id).set(User::verify, null)
-                .set(User::updateTime, LocalDateTime.now(ZoneOffset.UTC))
-        )
-        userInfoService.update(
-            KtUpdateWrapper(UserInfo()).eq(UserInfo::userId, user.id).set(UserInfo::nickname, verifyParam.nickname)
-                .set(UserInfo::avatar, verifyParam.avatar)
-        )
+        updateOrThrowException {
+            userService.update(
+                KtUpdateWrapper(User()).eq(User::id, user.id).set(User::verify, null)
+                    .set(User::updateTime, LocalDateTime.now(ZoneOffset.UTC))
+            )
+        }
+        updateOrThrowException {
+            userInfoService.update(
+                KtUpdateWrapper(UserInfo()).eq(UserInfo::userId, user.id).set(UserInfo::nickname, verifyParam.nickname)
+                    .set(UserInfo::avatar, verifyParam.avatar)
+            )
+        }
     }
 
     @Transactional
     override fun forget(request: HttpServletRequest, forgetParam: ForgetParam) {
         verifyCaptcha(forgetParam.captchaCode!!)
 
-        val user = userService.getUserWithPowerByAccount(forgetParam.email!!)
-        user ?: throw UserNotFoundException()
+        val user = queryOrThrowException(UserNotFoundException()) {
+            userService.getUserWithPowerByAccount(forgetParam.email!!)
+        }
 
         user.forget?.let {
             if (LocalDateTime.ofInstant(Instant.ofEpochMilli(it.split("-").first().toLong()), ZoneOffset.UTC)
@@ -185,7 +195,14 @@ class AuthenticationServiceImpl(
         val code = "${
             LocalDateTime.now(ZoneOffset.UTC).toInstant(ZoneOffset.UTC).toEpochMilli()
         }-${UUID.randomUUID()}-${UUID.randomUUID()}-${UUID.randomUUID()}"
-        userService.update(KtUpdateWrapper(User()).eq(User::id, user.id).set(User::forget, code))
+        updateOrThrowException {
+            userService.update(
+                KtUpdateWrapper(User())
+                    .eq(User::id, user.id)
+                    .set(User::forget, code)
+            )
+        }
+
         sendRetrieveMail(user.username!!, getRequestIp(request), code, forgetParam.email!!)
     }
 
@@ -207,18 +224,28 @@ class AuthenticationServiceImpl(
             throw RetrieveCodeErrorOrExpiredException()
         }
 
-        val user = userService.getOne(KtQueryWrapper(User()).eq(User::forget, retrieveParam.code))
-            ?: throw RetrieveCodeErrorOrExpiredException()
-        val userInfo = userInfoService.getOne(KtQueryWrapper(UserInfo()).eq(UserInfo::userId, user.id))
-
-        userService.update(
-            KtUpdateWrapper(User()).eq(User::id, user.id).set(User::forget, null)
-                .set(User::password, passwordEncoder.encode(retrieveParam.password!!))
-        )
+        val user = queryOrThrowException(RetrieveCodeErrorOrExpiredException()) {
+            userService.getOne(
+                KtQueryWrapper(User())
+                    .eq(User::forget, retrieveParam.code)
+            )
+        }
+        val userInfo = queryOrThrowException {
+            userInfoService.getOne(
+                KtQueryWrapper(UserInfo())
+                    .eq(UserInfo::userId, user.id)
+            )
+        }
+        updateOrThrowException {
+            userService.update(
+                KtUpdateWrapper(User()).eq(User::id, user.id).set(User::forget, null)
+                    .set(User::password, passwordEncoder.encode(retrieveParam.password!!))
+            )
+        }
 
         offlineUser(redisUtil, user.id!!)
 
-        sendPasswordChangedMail(user.username!!, getRequestIp(request), userInfo!!.email!!)
+        sendPasswordChangedMail(user.username!!, getRequestIp(request), userInfo.email!!)
     }
 
     @EventLogRecord(EventLog.Event.LOGIN)
@@ -237,7 +264,7 @@ class AuthenticationServiceImpl(
     }
 
     override fun createTwoFactor(): TwoFactorVo {
-        val user = userService.getById(getLoginUserId()) ?: throw UserNotFoundException()
+        val user = queryOrThrowException(UserNotFoundException()) { userService.getById(getLoginUserId()) }
 
         if (!user.twoFactor.isNullOrBlank() && !user.twoFactor!!.endsWith("?")) {
             throw AlreadyHasTwoFactorException()
@@ -251,13 +278,19 @@ class AuthenticationServiceImpl(
             secretKey
         )
 
-        userService.update(KtUpdateWrapper(User()).eq(User::id, user.id).set(User::twoFactor, "${secretKey}?"))
+        updateOrThrowException {
+            userService.update(
+                KtUpdateWrapper(User())
+                    .eq(User::id, user.id)
+                    .set(User::twoFactor, "${secretKey}?")
+            )
+        }
 
         return TwoFactorVo(qrCodeSVGBase64)
     }
 
     override fun validateTwoFactor(twoFactorValidateParam: TwoFactorValidateParam): Boolean {
-        val user = userService.getById(getLoginUserId()) ?: throw UserNotFoundException()
+        val user = queryOrThrowException(UserNotFoundException()) { userService.getById(getLoginUserId()) }
         if (user.twoFactor.isNullOrBlank()) {
             throw NoTwoFactorFoundException()
         }
@@ -267,7 +300,13 @@ class AuthenticationServiceImpl(
         val secretKey = user.twoFactor!!.substring(0, user.twoFactor!!.length - 1)
 
         if (TOTPUtil.validateCode(secretKey, twoFactorValidateParam.code!!)) {
-            userService.update(KtUpdateWrapper(User()).eq(User::id, user.id).set(User::twoFactor, secretKey))
+            updateOrThrowException {
+                userService.update(
+                    KtUpdateWrapper(User())
+                        .eq(User::id, user.id)
+                        .set(User::twoFactor, secretKey)
+                )
+            }
             return true
         }
 
@@ -275,13 +314,19 @@ class AuthenticationServiceImpl(
     }
 
     override fun removeTwoFactor(twoFactorRemoveParam: TwoFactorRemoveParam): Boolean {
-        val user = userService.getById(getLoginUserId()) ?: throw UserNotFoundException()
+        val user = queryOrThrowException(UserNotFoundException()) { userService.getById(getLoginUserId()) }
         if (user.twoFactor.isNullOrBlank() || user.twoFactor!!.endsWith("?")) {
             throw NoTwoFactorFoundException()
         }
 
         if (TOTPUtil.validateCode(user.twoFactor!!, twoFactorRemoveParam.code!!)) {
-            userService.update(KtUpdateWrapper(User()).eq(User::id, user.id).set(User::twoFactor, null))
+            updateOrThrowException {
+                userService.update(
+                    KtUpdateWrapper(User())
+                        .eq(User::id, user.id)
+                        .set(User::twoFactor, null)
+                )
+            }
             return true
         }
 
@@ -474,12 +519,18 @@ class AuthenticationServiceImpl(
         }
 
         logger.info("用户登录 [用户名: '{}', IP: '{}']", loginUser.username, getRequestIp(request))
-        userService.update(User().apply {
-            currentLoginIp = getRequestIp(request)
-            currentLoginTime = LocalDateTime.now(ZoneOffset.UTC)
-            lastLoginIp = loginUser.user.currentLoginIp
-            lastLoginTime = loginUser.user.currentLoginTime
-        }, KtUpdateWrapper(User()).eq(User::username, loginUser.username))
+        updateOrThrowException {
+            userService.update(
+                User().apply {
+                    currentLoginIp = getRequestIp(request)
+                    currentLoginTime = LocalDateTime.now(ZoneOffset.UTC)
+                    lastLoginIp = loginUser.user.currentLoginIp
+                    lastLoginTime = loginUser.user.currentLoginTime
+                },
+                KtUpdateWrapper(User())
+                    .eq(User::username, loginUser.username)
+            )
+        }
 
         val userId = loginUser.user.id.toString()
         val refreshToken = JwtUtil.generateRefreshToken(userId) ?: throw LoginFailedException()

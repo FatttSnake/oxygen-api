@@ -66,19 +66,16 @@ interface IGroupService : IService<Group> {
      * Update group
      *
      * @param groupUpdateParam Update group parameters
-     * @return GroupVo object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see GroupUpdateParam
-     * @see GroupVo
      */
-    fun update(groupUpdateParam: GroupUpdateParam): GroupVo
+    fun update(groupUpdateParam: GroupUpdateParam)
 
     /**
      * Update status of group
      *
      * @param groupUpdateStatusParam Update status of group parameters
-     * @return Result
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see GroupUpdateStatusParam

@@ -40,7 +40,7 @@ class UserController(
     @GetMapping("/info")
     fun getInfo(): ResponseResult<UserWithPowerInfoVo> =
         ResponseResult.databaseSuccess(data = userService.getInfo())
-    
+
     /**
      * Get basic user information
      *
@@ -68,9 +68,11 @@ class UserController(
      */
     @Operation(summary = "更新当前用户信息")
     @PatchMapping("info")
-    fun updateInfo(@ProcessParam @RequestBody @Valid userInfoUpdateParam: UserInfoUpdateParam): ResponseResult<Unit> =
-        if (userService.updateInfo(userInfoUpdateParam)) ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
-        else ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_FAILED)
+    fun updateInfo(@ProcessParam @RequestBody @Valid userInfoUpdateParam: UserInfoUpdateParam): ResponseResult<Unit> {
+        userService.updateInfo(userInfoUpdateParam)
+
+        return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
+    }
 
     /**
      * Change password
@@ -158,10 +160,11 @@ class UserController(
     @Operation(summary = "修改用户")
     @PutMapping
     @PreAuthorize("hasAnyAuthority('system:user:modify:one')")
-    fun update(@ProcessParam @Valid @RequestBody userUpdateParam: UserUpdateParam): ResponseResult<UserWithRoleInfoVo> =
-        ResponseResult.databaseSuccess(
-            ResponseCode.DATABASE_UPDATE_SUCCESS, data = userService.update(userUpdateParam)
-        )
+    fun update(@ProcessParam @Valid @RequestBody userUpdateParam: UserUpdateParam): ResponseResult<Unit> {
+        userService.update(userUpdateParam)
+
+        return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
+    }
 
     /**
      * Update user password
@@ -178,6 +181,7 @@ class UserController(
     @PreAuthorize("hasAnyAuthority('system:user:modify:password')")
     fun password(@Valid @RequestBody userUpdatePasswordParam: UserUpdatePasswordParam): ResponseResult<Unit> {
         userService.password(userUpdatePasswordParam)
+
         return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
     }
 
@@ -195,6 +199,7 @@ class UserController(
     @PreAuthorize("hasAnyAuthority('system:user:delete:one')")
     fun delete(@PathVariable id: Long): ResponseResult<Unit> {
         userService.deleteOne(id)
+
         return ResponseResult.databaseSuccess(ResponseCode.DATABASE_DELETE_SUCCESS)
     }
 
@@ -213,6 +218,7 @@ class UserController(
     @PreAuthorize("hasAnyAuthority('system:user:delete:multiple')")
     fun deleteList(@Valid @RequestBody userDeleteParam: UserDeleteParam): ResponseResult<Unit> {
         userService.delete(userDeleteParam)
+
         return ResponseResult.databaseSuccess(ResponseCode.DATABASE_DELETE_SUCCESS)
     }
 }

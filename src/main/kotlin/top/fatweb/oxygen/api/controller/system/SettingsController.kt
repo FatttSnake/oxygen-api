@@ -59,6 +59,7 @@ class SettingsController(
     @PreAuthorize("hasAnyAuthority('system:settings:modify:base')")
     fun updateApp(@ProcessParam @RequestBody baseSettingsParam: BaseSettingsParam): ResponseResult<Unit> {
         settingsService.updateBase(baseSettingsParam)
+
         return ResponseResult.success()
     }
 
@@ -92,6 +93,7 @@ class SettingsController(
     @PreAuthorize("hasAnyAuthority('system:settings:modify:mail')")
     fun updateMail(@ProcessParam @RequestBody mailSettingsParam: MailSettingsParam): ResponseResult<Unit> {
         settingsService.updateMail(mailSettingsParam)
+
         return ResponseResult.success()
     }
 
@@ -110,6 +112,7 @@ class SettingsController(
     @PreAuthorize("hasAnyAuthority('system:settings:modify:mail')")
     fun sendMail(@ProcessParam @RequestBody @Valid mailSendParam: MailSendParam): ResponseResult<Unit> {
         settingsService.sendMail(mailSendParam)
+
         return ResponseResult.success()
     }
 
@@ -143,6 +146,7 @@ class SettingsController(
     @PreAuthorize("hasAnyAuthority('system:settings:modify:sensitive')")
     fun addSensitive(@ProcessParam @RequestBody @Valid sensitiveWordAddParam: SensitiveWordAddParam): ResponseResult<Unit> {
         sensitiveWordService.add(sensitiveWordAddParam)
+
         return ResponseResult.databaseSuccess(ResponseCode.DATABASE_INSERT_SUCCESS)
     }
 
@@ -161,6 +165,7 @@ class SettingsController(
     @PreAuthorize("hasAnyAuthority('system:settings:modify:sensitive')")
     fun updateSensitive(@RequestBody sensitiveWordUpdateParam: SensitiveWordUpdateParam): ResponseResult<Unit> {
         sensitiveWordService.update(sensitiveWordUpdateParam)
+
         return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
     }
 
@@ -178,6 +183,7 @@ class SettingsController(
     @PreAuthorize("hasAnyAuthority('system:settings:modify:sensitive')")
     fun deleteSensitive(@PathVariable id: Long): ResponseResult<Unit> {
         sensitiveWordService.delete(id)
+
         return ResponseResult.databaseSuccess(ResponseCode.DATABASE_DELETE_SUCCESS)
     }
 
@@ -211,6 +217,7 @@ class SettingsController(
     @PreAuthorize("hasAnyAuthority('system:settings:modify:two-factor')")
     fun updateTwoFactor(@ProcessParam @RequestBody twoFactorSettingsParam: TwoFactorSettingsParam): ResponseResult<Unit> {
         settingsService.updateTwoFactor(twoFactorSettingsParam)
+
         return ResponseResult.success()
     }
 }

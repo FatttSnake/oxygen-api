@@ -111,10 +111,11 @@ class RoleController(
     @Operation(summary = "修改角色")
     @PutMapping
     @PreAuthorize("hasAnyAuthority('system:role:modify:one')")
-    fun update(@ProcessParam @Valid @RequestBody roleUpdateParam: RoleUpdateParam): ResponseResult<RoleVo> =
-        ResponseResult.databaseSuccess(
-            ResponseCode.DATABASE_UPDATE_SUCCESS, data = roleService.update(roleUpdateParam)
-        )
+    fun update(@ProcessParam @Valid @RequestBody roleUpdateParam: RoleUpdateParam): ResponseResult<Unit> {
+        roleService.update(roleUpdateParam)
+
+        return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
+    }
 
     /**
      * Update status of role
@@ -131,6 +132,7 @@ class RoleController(
     @PreAuthorize("hasAnyAuthority('system:role:modify:status')")
     fun status(@Valid @RequestBody roleUpdateStatusParam: RoleUpdateStatusParam): ResponseResult<Unit> {
         roleService.status(roleUpdateStatusParam)
+
         return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
     }
 
@@ -148,6 +150,7 @@ class RoleController(
     @PreAuthorize("hasAnyAuthority('system:role:delete:one')")
     fun delete(@PathVariable id: Long): ResponseResult<Unit> {
         roleService.deleteOne(id)
+
         return ResponseResult.databaseSuccess(ResponseCode.DATABASE_DELETE_SUCCESS)
     }
 
@@ -166,6 +169,7 @@ class RoleController(
     @PreAuthorize("hasAnyAuthority('system:role:delete:multiple')")
     fun deleteList(@Valid @RequestBody roleDeleteParam: RoleDeleteParam): ResponseResult<Unit> {
         roleService.delete(roleDeleteParam)
+
         return ResponseResult.databaseSuccess(ResponseCode.DATABASE_DELETE_SUCCESS)
     }
 }

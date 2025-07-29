@@ -111,10 +111,11 @@ class GroupController(
     @Operation(summary = "修改用户组")
     @PutMapping
     @PreAuthorize("hasAnyAuthority('system:group:modify:one')")
-    fun update(@ProcessParam @Valid @RequestBody groupUpdateParam: GroupUpdateParam): ResponseResult<GroupVo> =
-        ResponseResult.databaseSuccess(
-            ResponseCode.DATABASE_UPDATE_SUCCESS, data = groupService.update(groupUpdateParam)
-        )
+    fun update(@ProcessParam @Valid @RequestBody groupUpdateParam: GroupUpdateParam): ResponseResult<Unit> {
+        groupService.update(groupUpdateParam)
+
+        return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
+    }
 
     /**
      * Update status of group
@@ -131,6 +132,7 @@ class GroupController(
     @PreAuthorize("hasAnyAuthority('system:group:modify:status')")
     fun updateStatus(@Valid @RequestBody groupUpdateStatusParam: GroupUpdateStatusParam): ResponseResult<Unit> {
         groupService.status(groupUpdateStatusParam)
+
         return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
     }
 
@@ -148,6 +150,7 @@ class GroupController(
     @PreAuthorize("hasAnyAuthority('system:group:delete:one')")
     fun delete(@PathVariable id: Long): ResponseResult<Unit> {
         groupService.deleteOne(id)
+
         return ResponseResult.databaseSuccess(ResponseCode.DATABASE_DELETE_SUCCESS)
     }
 
@@ -166,6 +169,7 @@ class GroupController(
     @PreAuthorize("hasAnyAuthority('system:group:delete:multiple')")
     fun deleteList(@Valid @RequestBody groupDeleteParam: GroupDeleteParam): ResponseResult<Unit> {
         groupService.delete(groupDeleteParam)
+
         return ResponseResult.databaseSuccess(ResponseCode.DATABASE_DELETE_SUCCESS)
     }
 }

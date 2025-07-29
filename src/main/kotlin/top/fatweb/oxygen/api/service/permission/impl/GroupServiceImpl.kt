@@ -10,17 +10,12 @@ import top.fatweb.oxygen.api.converter.permission.toVo
 import top.fatweb.oxygen.api.converter.permission.toVoWithRole
 import top.fatweb.oxygen.api.entity.permission.Group
 import top.fatweb.oxygen.api.entity.permission.RRoleGroup
-import top.fatweb.oxygen.api.exception.DatabaseInsertException
-import top.fatweb.oxygen.api.exception.DatabaseUpdateException
-import top.fatweb.oxygen.api.exception.NoRecordFoundException
 import top.fatweb.oxygen.api.mapper.permission.GroupMapper
 import top.fatweb.oxygen.api.param.permission.group.*
 import top.fatweb.oxygen.api.service.permission.IGroupService
 import top.fatweb.oxygen.api.service.permission.IRRoleGroupService
 import top.fatweb.oxygen.api.service.permission.IUserService
-import top.fatweb.oxygen.api.util.RedisUtil
-import top.fatweb.oxygen.api.util.offlineUser
-import top.fatweb.oxygen.api.util.setPageSort
+import top.fatweb.oxygen.api.util.*
 import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.permission.GroupWithRoleVo
 import top.fatweb.oxygen.api.vo.permission.base.GroupVo
@@ -60,38 +55,36 @@ class GroupServiceImpl(
     }
 
     override fun getOne(id: Long): GroupWithRoleVo =
-        baseMapper.selectOneById(id)?.let(Group::toVoWithRole) ?: throw NoRecordFoundException()
+        queryOrThrowException { baseMapper.selectOneById(id)?.let(Group::toVoWithRole) }
 
     override fun getList(): List<GroupVo> = this.list().map(Group::toVo)
 
     @Transactional
     override fun add(groupAddParam: GroupAddParam): GroupVo {
         val group = groupAddParam.toEntity()
-        if (!this.save(group)) {
-            throw DatabaseInsertException()
-        }
+        saveOrThrowException { this.save(group) }
 
         if (group.roles.isNullOrEmpty()) {
             return group.toVo()
         }
 
-        rRoleGroupService.saveBatch(group.roles!!.map {
-            RRoleGroup().apply {
-                groupId = group.id
-                roleId = it.id
-            }
-        })
+        saveOrThrowException {
+            rRoleGroupService.saveBatch(group.roles!!.map {
+                RRoleGroup().apply {
+                    groupId = group.id
+                    roleId = it.id
+                }
+            })
+        }
 
         return group.toVo()
     }
 
     @Transactional
-    override fun update(groupUpdateParam: GroupUpdateParam): GroupVo {
+    override fun update(groupUpdateParam: GroupUpdateParam) {
         val group = groupUpdateParam.toEntity()
 
-        if (!this.updateById(group)) {
-            throw DatabaseUpdateException()
-        }
+        updateOrThrowException { this.updateById(group) }
 
         val oldRoleList = rRoleGroupService.list(
             KtQueryWrapper(RRoleGroup()).select(RRoleGroup::roleId).eq(RRoleGroup::groupId, groupUpdateParam.id)
@@ -114,22 +107,20 @@ class GroupServiceImpl(
         }
 
         addRoleIds.forEach {
-            rRoleGroupService.save(RRoleGroup().apply {
-                groupId = groupUpdateParam.id
-                roleId = it
-            })
+            saveOrThrowException {
+                rRoleGroupService.save(RRoleGroup().apply {
+                    groupId = groupUpdateParam.id
+                    roleId = it
+                })
+            }
         }
 
         groupUpdateParam.id?.let { offlineUser(it) }
-
-        return group.toVo()
     }
 
     override fun status(groupUpdateStatusParam: GroupUpdateStatusParam) {
         updateById(groupUpdateStatusParam.toEntity()).let {
-            if (!it) {
-                throw DatabaseUpdateException()
-            }
+            updateOrThrowException { it }
 
             if (!groupUpdateStatusParam.enable) {
                 groupUpdateStatusParam.id?.let { id -> offlineUser(id) }
