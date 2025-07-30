@@ -80,13 +80,13 @@ class UserServiceImpl(
 
     override fun getInfo(): UserWithPowerInfoVo =
         queryOrThrowException(UserNotFoundException()) {
-            getLoginUsername()?.let(::getUserWithPowerByAccount)?.let(User::toVoWithPowerInfo)
-        }
+            getLoginUsername()?.let(::getUserWithPowerByAccount)
+        }.let(User::toVoWithPowerInfo)
 
     override fun getBasicInfo(username: String): UserWithInfoVo =
         queryOrThrowException(UserNotFoundException()) {
-            baseMapper.selectOneWithBasicInfoByUsername(username)?.let(User::toVoWithInfo)
-        }
+            baseMapper.selectOneWithBasicInfoByUsername(username)
+        }.let(User::toVoWithInfo)
 
     override fun updateInfo(userInfoUpdateParam: UserInfoUpdateParam) {
         val userId = getLoginUserId() ?: throw AccessDeniedException("Access denied")
@@ -129,8 +129,8 @@ class UserServiceImpl(
 
     override fun getOne(id: Long): UserWithRoleInfoVo =
         queryOrThrowException(UserNotFoundException()) {
-            baseMapper.selectOneWithRoleInfoById(id)?.let(User::toVoWithRoleInfo)
-        }
+            baseMapper.selectOneWithRoleInfoById(id)
+        }.let(User::toVoWithRoleInfo)
 
     override fun getPage(userGetParam: UserGetParam?): PageVo<UserWithRoleInfoVo> {
         val userIdsPage = Page<Long>(userGetParam?.currentPage ?: 1, userGetParam?.pageSize ?: 20)

@@ -55,7 +55,7 @@ class GroupServiceImpl(
     }
 
     override fun getOne(id: Long): GroupWithRoleVo =
-        queryOrThrowException { baseMapper.selectOneById(id)?.let(Group::toVoWithRole) }
+        queryOrThrowException { baseMapper.selectOneById(id) }.let(Group::toVoWithRole)
 
     override fun getList(): List<GroupVo> = this.list().map(Group::toVo)
 

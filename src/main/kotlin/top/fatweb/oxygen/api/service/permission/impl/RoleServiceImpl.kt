@@ -59,7 +59,7 @@ class RoleServiceImpl(
     }
 
     override fun getOne(id: Long): RoleWithPowerVo =
-        queryOrThrowException { baseMapper.selectOneById(id)?.let(Role::toVoWithPower) }
+        queryOrThrowException { baseMapper.selectOneById(id) }.let(Role::toVoWithPower)
 
     override fun getList(): List<RoleVo> = this.list().map(Role::toVo)
 
