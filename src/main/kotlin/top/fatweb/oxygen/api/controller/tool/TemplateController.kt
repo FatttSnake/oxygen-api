@@ -8,12 +8,11 @@ import top.fatweb.oxygen.api.annotation.BaseController
 import top.fatweb.oxygen.api.annotation.ProcessParam
 import top.fatweb.oxygen.api.entity.common.ResponseCode
 import top.fatweb.oxygen.api.entity.common.ResponseResult
-import top.fatweb.oxygen.api.param.tool.ToolTemplateAddParam
-import top.fatweb.oxygen.api.param.tool.ToolTemplateGetParam
-import top.fatweb.oxygen.api.param.tool.ToolTemplateUpdateParam
+import top.fatweb.oxygen.api.param.tool.*
 import top.fatweb.oxygen.api.service.tool.IToolTemplateService
 import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.tool.ToolTemplateVo
+import top.fatweb.oxygen.api.vo.tool.ToolTemplateWithSourceVo
 
 /**
  * Tool template management controller
@@ -34,12 +33,12 @@ class TemplateController(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see ResponseResult
-     * @see ToolTemplateVo
+     * @see ToolTemplateWithSourceVo
      */
     @Operation(summary = "获取单个模板")
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('system:tool:query:template')")
-    fun getOne(@PathVariable id: Long): ResponseResult<ToolTemplateVo> =
+    fun getOne(@PathVariable id: Long): ResponseResult<ToolTemplateWithSourceVo> =
         ResponseResult.databaseSuccess(data = toolTemplateService.getOne(id))
 
     /**
@@ -69,12 +68,12 @@ class TemplateController(
      * @since 1.0.0
      * @see ToolTemplateAddParam
      * @see ResponseResult
-     * @see ToolTemplateVo
+     * @see ToolTemplateWithSourceVo
      */
     @Operation(summary = "添加模板")
     @PostMapping
     @PreAuthorize("hasAnyAuthority('system:tool:add:template')")
-    fun add(@ProcessParam @RequestBody @Valid toolTemplateAddParam: ToolTemplateAddParam): ResponseResult<ToolTemplateVo> =
+    fun add(@ProcessParam @RequestBody @Valid toolTemplateAddParam: ToolTemplateAddParam): ResponseResult<ToolTemplateWithSourceVo> =
         ResponseResult.databaseSuccess(
             ResponseCode.DATABASE_INSERT_SUCCESS,
             data = toolTemplateService.add(toolTemplateAddParam)
@@ -84,21 +83,58 @@ class TemplateController(
      * Update tool template
      *
      * @param toolTemplateUpdateParam Update tool template parameters
-     * @return Response object includes tool template information
+     * @return Response object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see ToolTemplateUpdateParam
      * @see ResponseResult
-     * @see ToolTemplateVo
      */
     @Operation(summary = "更新模板")
     @PutMapping
     @PreAuthorize("hasAnyAuthority('system:tool:modify:template')")
-    fun update(@ProcessParam @RequestBody @Valid toolTemplateUpdateParam: ToolTemplateUpdateParam): ResponseResult<ToolTemplateVo> =
-        ResponseResult.databaseSuccess(
-            ResponseCode.DATABASE_UPDATE_SUCCESS,
-            data = toolTemplateService.update(toolTemplateUpdateParam)
-        )
+    fun update(@ProcessParam @RequestBody @Valid toolTemplateUpdateParam: ToolTemplateUpdateParam): ResponseResult<Unit> {
+        toolTemplateService.update(toolTemplateUpdateParam)
+
+        return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
+    }
+
+    /**
+     * Update tool template source
+     *
+     * @param toolTemplateUpdateSourceParam Update tool template source parameters
+     * @return Response object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.1.0
+     * @see ToolTemplateUpdateSourceParam
+     * @see ResponseResult
+     */
+    @Operation(summary = "更新模板源码")
+    @PatchMapping("/source")
+    @PreAuthorize("hasAnyAuthority('system:tool:modify:template')")
+    fun updateSource(@RequestBody @Valid toolTemplateUpdateSourceParam: ToolTemplateUpdateSourceParam): ResponseResult<Unit> {
+        toolTemplateService.updateSource(toolTemplateUpdateSourceParam)
+
+        return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
+    }
+
+    /**
+     * Upgrade tool template base version
+     *
+     * @param toolOrTemplateUpgradeBaseParam Upgrade tool template base version parameters
+     * @return Response object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.1.0
+     * @see ToolOrTemplateUpgradeBaseParam
+     * @see ResponseResult
+     */
+    @Operation(summary = "更新模板基板版本")
+    @PatchMapping("/upgradeBase")
+    @PreAuthorize("hasAnyAuthority('system:tool:modify:template')")
+    fun upgradeBase(@RequestBody @Valid toolOrTemplateUpgradeBaseParam: ToolOrTemplateUpgradeBaseParam): ResponseResult<Unit> {
+        toolTemplateService.upgradeBase(toolOrTemplateUpgradeBaseParam)
+
+        return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
+    }
 
     /**
      * Delete tool template

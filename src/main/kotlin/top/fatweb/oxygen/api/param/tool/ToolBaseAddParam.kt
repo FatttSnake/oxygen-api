@@ -13,6 +13,7 @@ import top.fatweb.oxygen.api.entity.tool.Platform
  * @since 1.0.0
  */
 @ParamProcessor
+@Schema(description = "新增工具基板请求参数")
 data class ToolBaseAddParam(
     /**
      * Name

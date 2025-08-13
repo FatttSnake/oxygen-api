@@ -7,18 +7,18 @@ import top.fatweb.oxygen.api.entity.tool.Platform
 import java.time.LocalDateTime
 
 /**
- * Tool base value object
+ * Tool base dist value object
  *
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.0.0
+ * @since 1.1.0
  */
-@Schema(description = "工具基板返回参数")
-data class ToolBaseVo(
+@Schema(description = "工具基板带产物返回参数")
+data class ToolBaseWithDistVo(
     /**
      * ID
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
      */
     @JsonSerialize(using = ToStringSerializer::class)
     val id: Long?,
@@ -27,16 +27,26 @@ data class ToolBaseVo(
      * Name
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
      */
     @Schema(description = "名称")
     val name: String?,
 
     /**
+     * Dist
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.1.0
+     * @see ToolDataVo
+     */
+    @Schema(description = "产物")
+    val dist: ToolDataVo?,
+
+    /**
      * Platform
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
      * @see Platform
      */
     @Schema(description = "平台")
@@ -55,7 +65,7 @@ data class ToolBaseVo(
      * Create time
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
      * @see LocalDateTime
      */
     @Schema(description = "创建时间", example = "1900-01-01T00:00:00.000Z")
@@ -65,9 +75,10 @@ data class ToolBaseVo(
      * Update time
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
      * @see LocalDateTime
      */
     @Schema(description = "修改时间", example = "1900-01-01T00:00:00.000Z")
     val updateTime: LocalDateTime?
+
 )

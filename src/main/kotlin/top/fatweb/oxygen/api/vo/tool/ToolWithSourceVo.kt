@@ -12,14 +12,14 @@ import java.time.LocalDateTime
  * Tool value object
  *
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.0.0
+ * @since 1.1.0
  */
-data class ToolVo(
+data class ToolWithSourceVo(
     /**
      * ID
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
      */
     @JsonSerialize(using = ToStringSerializer::class)
     val id: Long?,
@@ -28,7 +28,7 @@ data class ToolVo(
      * Name
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
      */
     @Schema(description = "名称")
     val name: String?,
@@ -37,7 +37,7 @@ data class ToolVo(
      * Tool ID
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
      */
     @Schema(description = "工具 ID")
     val toolId: String?,
@@ -46,7 +46,7 @@ data class ToolVo(
      * Icon
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
      */
     @Schema(description = "图标")
     val icon: String?,
@@ -55,7 +55,7 @@ data class ToolVo(
      * Platform
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
      * @see Platform
      */
     @Schema(description = "平台")
@@ -65,7 +65,7 @@ data class ToolVo(
      * Description
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
      */
     @Schema(description = "简介")
     val description: String?,
@@ -93,7 +93,7 @@ data class ToolVo(
      * Author
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
      * @see UserWithInfoVo
      */
     @Schema(description = "作者")
@@ -103,7 +103,7 @@ data class ToolVo(
      * Version
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
      */
     @Schema(description = "版本")
     val ver: String?,
@@ -112,7 +112,7 @@ data class ToolVo(
      * Keywords
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
      */
     @Schema(description = "关键字")
     val keywords: List<String>?,
@@ -121,17 +121,27 @@ data class ToolVo(
      * Categories
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
      * @see ToolCategoryVo
      */
     @Schema(description = "类别")
     val categories: List<ToolCategoryVo>?,
 
     /**
+     * Source
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.1.0
+     * @see ToolDataVo
+     */
+    @Schema(description = "源码")
+    val source: ToolDataVo?,
+
+    /**
      * Entry point
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
      */
     @Schema(description = "入口文件")
     val entryPoint: String?,
@@ -140,7 +150,7 @@ data class ToolVo(
      * Publish
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
      */
     @Schema(description = "发布")
     @JsonSerialize(using = ToStringSerializer::class)
@@ -150,7 +160,7 @@ data class ToolVo(
      * Review
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
      * @see Tool.ReviewType
      */
     @Schema(description = "审核")
@@ -160,7 +170,7 @@ data class ToolVo(
      * Create time
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
      * @see LocalDateTime
      */
     @Schema(description = "创建时间", example = "1900-01-01T00:00:00.000Z")
@@ -170,7 +180,7 @@ data class ToolVo(
      * Update time
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
      * @see LocalDateTime
      */
     @Schema(description = "修改时间", example = "1900-01-01T00:00:00.000Z")
@@ -180,7 +190,7 @@ data class ToolVo(
      * Favorite
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
      */
     @Schema(description = "收藏")
     val favorite: Boolean?

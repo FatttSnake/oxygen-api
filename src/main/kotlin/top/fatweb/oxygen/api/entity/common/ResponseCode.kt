@@ -16,6 +16,7 @@ enum class ResponseCode(val code: Int) {
     SYSTEM_INVALID_CAPTCHA_CODE(BusinessCode.SYSTEM, 54),
     SYSTEM_REQUEST_TOO_FREQUENT(BusinessCode.SYSTEM, 55),
     SYSTEM_MATCH_SENSITIVE_WORD(BusinessCode.SYSTEM, 56),
+    SYSTEM_NO_EMAIL_CONFIG(BusinessCode.SYSTEM, 57),
 
     PERMISSION_LOGIN_SUCCESS(BusinessCode.PERMISSION, 0),
     PERMISSION_PASSWORD_CHANGE_SUCCESS(BusinessCode.PERMISSION, 1),
@@ -75,6 +76,8 @@ enum class ResponseCode(val code: Int) {
     TOOL_HAS_UNPUBLISHED_VERSION(BusinessCode.TOOL, 53),
     TOOL_HAS_NOT_BEEN_PUBLISHED(BusinessCode.TOOL, 54),
     TOOL_HAS_BEEN_PUBLISHED(BusinessCode.TOOL, 55),
+    TOOL_BASE_HAS_BEEN_COMPILED(BusinessCode.TOOL, 56),
+    TOOL_HAS_NOT_BEEN_DELISTED(BusinessCode.TOOL, 57),
     TOOL_SUBMIT_ERROR(BusinessCode.TOOL, 60),
     TOOL_CANCEL_ERROR(BusinessCode.TOOL, 61),
 

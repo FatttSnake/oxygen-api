@@ -4,19 +4,16 @@ import io.swagger.v3.oas.annotations.Operation
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.*
 import top.fatweb.oxygen.api.annotation.BaseController
+import top.fatweb.oxygen.api.annotation.ParamProcessor
 import top.fatweb.oxygen.api.annotation.ProcessParam
 import top.fatweb.oxygen.api.entity.common.ResponseCode
 import top.fatweb.oxygen.api.entity.common.ResponseResult
 import top.fatweb.oxygen.api.entity.tool.Platform
 import top.fatweb.oxygen.api.param.PageSortParam
-import top.fatweb.oxygen.api.param.tool.ToolCreateParam
-import top.fatweb.oxygen.api.param.tool.ToolUpdateParam
-import top.fatweb.oxygen.api.param.tool.ToolUpgradeParam
+import top.fatweb.oxygen.api.param.tool.*
 import top.fatweb.oxygen.api.service.tool.IEditService
 import top.fatweb.oxygen.api.vo.PageVo
-import top.fatweb.oxygen.api.vo.tool.ToolCategoryVo
-import top.fatweb.oxygen.api.vo.tool.ToolTemplateVo
-import top.fatweb.oxygen.api.vo.tool.ToolVo
+import top.fatweb.oxygen.api.vo.tool.*
 
 /**
  * Tool edit controller
@@ -51,11 +48,11 @@ class EditController(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see ResponseResult
-     * @see ToolTemplateVo
+     * @see ToolTemplateWithSourceVo
      */
     @Operation(summary = "获取单个模板")
     @GetMapping("/template/{id}")
-    fun getTemplate(@PathVariable id: Long): ResponseResult<ToolTemplateVo> =
+    fun getTemplate(@PathVariable id: Long): ResponseResult<ToolTemplateWithSourceVo> =
         ResponseResult.databaseSuccess(data = editService.getTemplate(id))
 
     /**
@@ -73,43 +70,89 @@ class EditController(
         ResponseResult.databaseSuccess(data = editService.getCategory())
 
     /**
-     * Create tool
+     * Get tool base dist
      *
-     * @param toolCreateParam Create tool parameters
-     * @return Response object includes tool information
+     * @param id Tool base ID
+     * @param version Tool base version
+     * @return Response object includes tool base with dist
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see ToolCreateParam
-     * @see ResponseResult
-     * @see ToolVo
+     * @since 1.1.0
      */
-    @Operation(summary = "创建工具")
-    @PostMapping
-    fun create(@ProcessParam @RequestBody @Valid toolCreateParam: ToolCreateParam): ResponseResult<ToolVo> =
-        ResponseResult.databaseSuccess(ResponseCode.DATABASE_INSERT_SUCCESS, data = editService.create(toolCreateParam))
+    @Operation(summary = "获取基板产物")
+    @GetMapping("/base/{id}/{version}")
+    fun getBaseDist(@PathVariable id: Long, @PathVariable version: Long): ResponseResult<ToolBaseWithDistVo> =
+        ResponseResult.databaseSuccess(data = editService.getBaseDist(id, version))
 
     /**
-     * Upgrade tool
+     * Get tool base latest version
      *
-     * @param toolUpgradeParam Upgrade tool parameters
-     * @return Response object includes tool information
+     * @param id Tool base ID
+     * @return Version
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see ToolUpgradeParam
+     * @since 1.1.0
      * @see ResponseResult
-     * @see ToolVo
      */
-    @Operation(summary = "升级工具")
-    @PatchMapping
-    fun upgrade(@ProcessParam @RequestBody @Valid toolUpgradeParam: ToolUpgradeParam): ResponseResult<ToolVo> =
+    @Operation(summary = "获取基板最新版本")
+    @GetMapping("/base/{id}/version")
+    fun getBaseLatestVersion(@PathVariable id: Long): ResponseResult<Long> =
+        ResponseResult.databaseSuccess(data = editService.getBaseLatestVersion(id))
+
+    /**
+     * Get tool source
+     *
+     * @param username Username
+     * @param toolId Tool ID
+     * @param ver Version
+     * @return Response object includes tool source
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.1.0
+     * @see Platform
+     * @see ResponseResult
+     * @see ToolWithSourceVo
+     */
+    @Operation(summary = "获取工具源码")
+    @GetMapping("/source/{username}/{toolId}/{ver}")
+    fun source(
+        @ProcessParam @ParamProcessor @PathVariable username: String,
+        @ProcessParam @ParamProcessor @PathVariable toolId: String,
+        @ProcessParam @ParamProcessor @PathVariable ver: String,
+        platform: Platform
+    ): ResponseResult<ToolWithSourceVo> =
         ResponseResult.databaseSuccess(
-            ResponseCode.DATABASE_UPDATE_SUCCESS,
-            data = editService.upgrade(toolUpgradeParam)
+            code = ResponseCode.DATABASE_SELECT_SUCCESS,
+            data = editService.source(username, toolId, ver, platform)
+        )
+
+    /**
+     * Get tool dist
+     *
+     * @param username Username
+     * @param toolId Tool ID
+     * @param ver Version
+     * @return Response object includes tool dist
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.1.0
+     * @see Platform
+     * @see ResponseResult
+     * @see ToolWithDistVo
+     */
+    @Operation(summary = "获取工具产物")
+    @GetMapping("/dist/{username}/{toolId}/{ver}")
+    fun dist(
+        @ProcessParam @ParamProcessor @PathVariable username: String,
+        @ProcessParam @ParamProcessor @PathVariable toolId: String,
+        @ProcessParam @ParamProcessor @PathVariable ver: String,
+        platform: Platform
+    ): ResponseResult<ToolWithDistVo> =
+        ResponseResult.databaseSuccess(
+            code = ResponseCode.DATABASE_SELECT_SUCCESS,
+            data = editService.dist(username, toolId, ver, platform)
         )
 
     /**
      * Get personal tool
      *
+     * @param pageSortParam Page sort parameters
      * @return Response object includes tool list
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
@@ -121,31 +164,28 @@ class EditController(
     @Operation(summary = "获取个人工具")
     @GetMapping
     fun get(@Valid pageSortParam: PageSortParam): ResponseResult<PageVo<ToolVo>> =
-        ResponseResult.databaseSuccess(ResponseCode.DATABASE_SELECT_SUCCESS, data = editService.getPage(pageSortParam))
+        ResponseResult.databaseSuccess(
+            code = ResponseCode.DATABASE_SELECT_SUCCESS,
+            data = editService.getPage(pageSortParam)
+        )
 
     /**
-     * Get tool detail
+     * Create tool
      *
-     * @param username Username
-     * @param toolId Tool ID
-     * @param ver Version
+     * @param toolCreateParam Create tool parameters
      * @return Response object includes tool information
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see ToolCreateParam
      * @see ResponseResult
-     * @see ToolVo
+     * @see ToolWithSourceVo
      */
-    @Operation(summary = "获取工具内容")
-    @GetMapping("/detail/{username}/{toolId}/{ver}")
-    fun detail(
-        @PathVariable username: String,
-        @PathVariable toolId: String,
-        @PathVariable ver: String,
-        platform: Platform
-    ): ResponseResult<ToolVo> =
+    @Operation(summary = "创建工具")
+    @PostMapping
+    fun create(@ProcessParam @RequestBody @Valid toolCreateParam: ToolCreateParam): ResponseResult<ToolWithSourceVo> =
         ResponseResult.databaseSuccess(
-            ResponseCode.DATABASE_SELECT_SUCCESS,
-            data = editService.detail(username.trim(), toolId.trim(), ver.trim(), platform)
+            code = ResponseCode.DATABASE_INSERT_SUCCESS,
+            data = editService.create(toolCreateParam)
         )
 
     /**
@@ -157,12 +197,69 @@ class EditController(
      * @since 1.0.0
      * @see ToolUpdateParam
      * @see ResponseResult
-     * @see ToolVo
      */
     @Operation(summary = "更新工具")
     @PutMapping
-    fun update(@ProcessParam @RequestBody @Valid toolUpdateParam: ToolUpdateParam): ResponseResult<ToolVo> =
-        ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS, data = editService.update(toolUpdateParam))
+    fun update(@ProcessParam @RequestBody @Valid toolUpdateParam: ToolUpdateParam): ResponseResult<Unit> {
+        editService.update(toolUpdateParam)
+
+        return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
+    }
+
+    /**
+     * Update tool source
+     *
+     * @param toolUpdateSourceParam Update tool source parameters
+     * @return Response object includes tool information
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.1.0
+     * @see ToolUpdateSourceParam
+     * @see ResponseResult
+     */
+    @Operation(summary = "更新工具源码")
+    @PatchMapping("/source")
+    fun updateSource(@ProcessParam @RequestBody @Valid toolUpdateSourceParam: ToolUpdateSourceParam): ResponseResult<Unit> {
+        editService.updateSource(toolUpdateSourceParam)
+
+        return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
+    }
+
+    /**
+     * Upgrade tool
+     *
+     * @param toolUpgradeParam Upgrade tool parameters
+     * @return Response object includes tool information
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see ToolUpgradeParam
+     * @see ResponseResult
+     * @see ToolWithSourceVo
+     */
+    @Operation(summary = "升级工具")
+    @PatchMapping("/upgrade")
+    fun upgrade(@ProcessParam @RequestBody @Valid toolUpgradeParam: ToolUpgradeParam): ResponseResult<ToolWithSourceVo> =
+        ResponseResult.databaseSuccess(
+            code = ResponseCode.DATABASE_UPDATE_SUCCESS,
+            data = editService.upgrade(toolUpgradeParam)
+        )
+
+    /**
+     * Upgrade tool base version
+     *
+     * @param toolOrTemplateUpgradeBaseParam Upgrade tool base version
+     * @return Response result
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.1.0
+     * @see ToolOrTemplateUpgradeBaseParam
+     * @see ResponseResult
+     */
+    @Operation(summary = "更新工具基板版本")
+    @PatchMapping("/upgradeBase")
+    fun upgradeBase(@RequestBody @Valid toolOrTemplateUpgradeBaseParam: ToolOrTemplateUpgradeBaseParam): ResponseResult<Unit> {
+        editService.upgradeBase(toolOrTemplateUpgradeBaseParam)
+
+        return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
+    }
 
     /**
      * Submit tool review

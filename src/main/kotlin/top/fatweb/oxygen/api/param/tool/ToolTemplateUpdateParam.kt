@@ -12,6 +12,7 @@ import top.fatweb.oxygen.api.annotation.ParamProcessor
  * @since 1.0.0
  */
 @ParamProcessor
+@Schema(description = "更新工具模板请求参数")
 data class ToolTemplateUpdateParam(
     /**
      * ID
@@ -34,16 +35,6 @@ data class ToolTemplateUpdateParam(
     var name: String?,
 
     /**
-     * Source
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     */
-    @Schema(description = "源码")
-    @field:NotBlank(message = "Source can not be blank")
-    val source: String?,
-
-    /**
      * Entry point
      *
      * @author FatttSnake, fatttsnake@gmail.com
@@ -60,5 +51,5 @@ data class ToolTemplateUpdateParam(
      * @since 1.0.0
      */
     @Schema(description = "启用", allowableValues = ["true", "false"])
-    val enable: Boolean?
+    val enable: Boolean = true
 )

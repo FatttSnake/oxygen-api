@@ -11,6 +11,7 @@ import top.fatweb.oxygen.api.annotation.ParamProcessor
  * @since 1.0.0
  */
 @ParamProcessor
+@Schema(description = "新增工具类别请求参数")
 data class ToolCategoryAddParam(
     /**
      * Name

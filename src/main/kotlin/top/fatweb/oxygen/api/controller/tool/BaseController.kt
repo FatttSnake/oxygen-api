@@ -8,12 +8,12 @@ import top.fatweb.oxygen.api.annotation.BaseController
 import top.fatweb.oxygen.api.annotation.ProcessParam
 import top.fatweb.oxygen.api.entity.common.ResponseCode
 import top.fatweb.oxygen.api.entity.common.ResponseResult
-import top.fatweb.oxygen.api.param.tool.ToolBaseAddParam
-import top.fatweb.oxygen.api.param.tool.ToolBaseGetParam
-import top.fatweb.oxygen.api.param.tool.ToolBaseUpdateParam
+import top.fatweb.oxygen.api.param.tool.*
 import top.fatweb.oxygen.api.service.tool.IToolBaseService
 import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.tool.ToolBaseVo
+import top.fatweb.oxygen.api.vo.tool.ToolBaseWithSourceVo
+import top.fatweb.oxygen.api.vo.tool.ToolBaseWithVersionsVo
 
 /**
  * Tool base management controller
@@ -27,20 +27,21 @@ class BaseController(
     private val toolBaseService: IToolBaseService
 ) {
     /**
-     * Get tool base by ID
+     * Get tool base by ID and version
      *
      * @param id Tool base ID
+     * @param version Tool base version
      * @return Response object includes tool base information
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see ResponseResult
-     * @see ToolBaseVo
+     * @see ToolBaseWithSourceVo
      */
     @Operation(summary = "获取单个基板")
-    @GetMapping("/{id}")
+    @GetMapping("/{id}/{version}")
     @PreAuthorize("hasAnyAuthority('system:tool:query:base')")
-    fun getOne(@PathVariable id: Long): ResponseResult<ToolBaseVo> =
-        ResponseResult.databaseSuccess(data = toolBaseService.getOne(id))
+    fun getOne(@PathVariable id: Long, @PathVariable version: Long): ResponseResult<ToolBaseWithSourceVo> =
+        ResponseResult.databaseSuccess(data = toolBaseService.getOne(id = id, version = version))
 
     /**
      * Get tool base paging information
@@ -52,12 +53,12 @@ class BaseController(
      * @see ToolBaseGetParam
      * @see ResponseResult
      * @see PageVo
-     * @see ToolBaseVo
+     * @see ToolBaseWithVersionsVo
      */
     @Operation(summary = "获取基板")
     @GetMapping
     @PreAuthorize("hasAnyAuthority('system:tool:query:base')")
-    fun get(toolBaseGetParam: ToolBaseGetParam?): ResponseResult<PageVo<ToolBaseVo>> =
+    fun get(toolBaseGetParam: ToolBaseGetParam?): ResponseResult<PageVo<ToolBaseWithVersionsVo>> =
         ResponseResult.databaseSuccess(data = toolBaseService.get(toolBaseGetParam))
 
     /**
@@ -100,20 +101,57 @@ class BaseController(
      * Update tool base
      *
      * @param toolBaseUpdateParam Update tool base parameters
-     * @return Response object includes tool base information
+     * @return Response object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see ToolBaseUpdateParam
      * @see ResponseResult
-     * @see ToolBaseVo
      */
     @Operation(summary = "更新基板")
     @PutMapping
     @PreAuthorize("hasAnyAuthority('system:tool:modify:base')")
-    fun update(@ProcessParam @RequestBody @Valid toolBaseUpdateParam: ToolBaseUpdateParam): ResponseResult<ToolBaseVo> =
+    fun update(@ProcessParam @RequestBody @Valid toolBaseUpdateParam: ToolBaseUpdateParam): ResponseResult<Unit> {
+        toolBaseService.update(toolBaseUpdateParam)
+
+        return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
+    }
+
+    /**
+     * Update tool base source
+     *
+     * @param toolBaseUpdateSourceParam Update tool base source parameters
+     * @return Response object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.1.0
+     * @see ToolBaseUpdateSourceParam
+     * @see ResponseResult
+     */
+    @Operation(summary = "更新基板源码")
+    @PatchMapping("/source")
+    @PreAuthorize("hasAnyAuthority('system:tool:modify:base')")
+    fun updateSource(@RequestBody @Valid toolBaseUpdateSourceParam: ToolBaseUpdateSourceParam): ResponseResult<Unit> {
+        toolBaseService.updateSource(toolBaseUpdateSourceParam)
+
+        return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
+    }
+
+    /**
+     * Update tool base dist
+     *
+     * @param toolBaseUpdateDistParam Update tool base dist parameters
+     * @return Response object include version
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.1.0
+     * @see ToolBaseUpdateDistParam
+     * @see ResponseResult
+     */
+    @Operation(summary = "更新基板产物")
+    @PatchMapping("/dist")
+    @PreAuthorize("hasAnyAuthority('system:tool:modify:base')")
+    fun updateDist(@RequestBody @Valid toolBaseUpdateDistParam: ToolBaseUpdateDistParam): ResponseResult<Long> =
         ResponseResult.databaseSuccess(
-            ResponseCode.DATABASE_UPDATE_SUCCESS,
-            data = toolBaseService.update(toolBaseUpdateParam)
+            code = ResponseCode.DATABASE_UPDATE_SUCCESS,
+            data = toolBaseService.updateDist(toolBaseUpdateDistParam)
         )
 
     /**

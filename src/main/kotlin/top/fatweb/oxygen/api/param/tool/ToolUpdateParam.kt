@@ -72,15 +72,5 @@ data class ToolUpdateParam(
      */
     @Schema(description = "类别")
     @field:Size(min = 1, message = "Categories can not be empty")
-    val categories: List<Long>?,
-
-    /**
-     * Source
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     */
-    @Schema(description = "源码")
-    @field:NotBlank(message = "Source can not be blank")
-    val source: String?
+    val categories: List<Long>?
 )

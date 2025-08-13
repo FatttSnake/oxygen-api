@@ -89,7 +89,8 @@ class SecurityConfig(
                 ).anonymous()
                 .requestMatchers(
                     "/token",
-                    "/tool/detail/**",
+                    "/tool/dist/**",
+                    "/tool/base/**",
                     "/tool/store",
                     "/tool/store/*",
                     "/system/user/info/*"

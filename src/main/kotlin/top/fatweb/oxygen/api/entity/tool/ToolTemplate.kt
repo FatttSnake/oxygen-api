@@ -40,6 +40,15 @@ class ToolTemplate : Serializable {
     var baseId: Long? = null
 
     /**
+     * Base version
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.1.0
+     */
+    @TableField("base_version")
+    var baseVersion: Long? = null
+
+    /**
      * Source ID
      *
      * @author FatttSnake, fatttsnake@gmail.com
@@ -135,6 +144,6 @@ class ToolTemplate : Serializable {
     var base: ToolBase? = null
 
     override fun toString(): String {
-        return "ToolTemplate(id=$id, name=$name, baseId=$baseId, sourceId=$sourceId, platform=$platform, entryPoint=$entryPoint, enable=$enable, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version, source=$source, base=$base)"
+        return "ToolTemplate(id=$id, name=$name, baseId=$baseId, baseVersion=$baseVersion, sourceId=$sourceId, platform=$platform, entryPoint=$entryPoint, enable=$enable, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version, source=$source, base=$base)"
     }
 }

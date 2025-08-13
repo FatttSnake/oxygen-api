@@ -7,18 +7,18 @@ import top.fatweb.oxygen.api.entity.tool.Platform
 import java.time.LocalDateTime
 
 /**
- * Tool base value object
+ * Tool template with source value object
  *
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.0.0
+ * @since 1.1.0
  */
-@Schema(description = "工具基板返回参数")
-data class ToolBaseVo(
+@Schema(description = "工具模板带源码返回参数")
+data class ToolTemplateWithSourceVo(
     /**
      * ID
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
      */
     @JsonSerialize(using = ToStringSerializer::class)
     val id: Long?,
@@ -27,35 +27,64 @@ data class ToolBaseVo(
      * Name
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
      */
     @Schema(description = "名称")
     val name: String?,
 
     /**
+     * Base
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.1.0
+     * @see ToolBaseVo
+     */
+    @Schema(description = "基板")
+    val base: ToolBaseVo?,
+
+    /**
+     * Source
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.1.0
+     * @see ToolDataVo
+     */
+    @Schema(description = "源码")
+    val source: ToolDataVo?,
+
+    /**
      * Platform
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
      * @see Platform
      */
     @Schema(description = "平台")
     val platform: Platform?,
 
     /**
-     * Version
+     * Entry point
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.1.0
      */
-    @Schema(description = "版本")
-    val version: Long?,
+    @Schema(description = "入口文件")
+    val entryPoint: String?,
+
+    /**
+     * Enable
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.1.0
+     */
+    @Schema(description = "启用")
+    val enable: Boolean?,
 
     /**
      * Create time
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
      * @see LocalDateTime
      */
     @Schema(description = "创建时间", example = "1900-01-01T00:00:00.000Z")
@@ -65,7 +94,7 @@ data class ToolBaseVo(
      * Update time
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
      * @see LocalDateTime
      */
     @Schema(description = "修改时间", example = "1900-01-01T00:00:00.000Z")

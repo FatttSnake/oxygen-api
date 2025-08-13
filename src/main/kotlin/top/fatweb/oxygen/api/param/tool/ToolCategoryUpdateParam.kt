@@ -12,6 +12,7 @@ import top.fatweb.oxygen.api.annotation.ParamProcessor
  * @since 1.0.0
  */
 @ParamProcessor
+@Schema(description = "更新工具类别请求参数")
 data class ToolCategoryUpdateParam(
     /**
      * ID

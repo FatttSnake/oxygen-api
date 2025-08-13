@@ -10,7 +10,7 @@ import top.fatweb.oxygen.api.param.PageSortParam
 /**
  * Set sort parameters into page object
  *
- * @param pageSortParam Sort parameters
+ * @param pageSortParam Page sort parameters
  * @param page Page object
  * @param defaultOrder Default order by
  * @author FatttSnake, fatttsnake@gmail.com

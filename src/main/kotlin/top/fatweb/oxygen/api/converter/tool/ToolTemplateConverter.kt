@@ -4,10 +4,11 @@ import com.baomidou.mybatisplus.core.metadata.IPage
 import top.fatweb.oxygen.api.entity.tool.ToolBase
 import top.fatweb.oxygen.api.entity.tool.ToolData
 import top.fatweb.oxygen.api.entity.tool.ToolTemplate
+import top.fatweb.oxygen.api.param.tool.ToolTemplateAddParam
+import top.fatweb.oxygen.api.param.tool.ToolTemplateUpdateParam
 import top.fatweb.oxygen.api.vo.PageVo
-import top.fatweb.oxygen.api.vo.tool.ToolBaseVo
-import top.fatweb.oxygen.api.vo.tool.ToolDataVo
 import top.fatweb.oxygen.api.vo.tool.ToolTemplateVo
+import top.fatweb.oxygen.api.vo.tool.ToolTemplateWithSourceVo
 
 /**
  * Convert to ToolTemplateVo object
@@ -22,7 +23,6 @@ fun ToolTemplate.toVo() = ToolTemplateVo(
     id = this.id,
     name = this.name,
     base = this.base?.let(ToolBase::toVo),
-    source = this.source?.let(ToolData::toVo),
     platform = this.platform,
     entryPoint = this.entryPoint,
     enable = this.enable?.let { it == 1 },
@@ -49,28 +49,19 @@ fun IPage<ToolTemplate>.toVo() = PageVo(
 )
 
 /**
- * Convert to ToolTemplateVo object by list
+ * Convert to ToolTemplateWithSourceVo object with base dist
  *
- * @return ToolTemplateVo object
+ * @return ToolTemplateWithSourceVo object
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.1.0
  * @see ToolTemplate
- * @see ToolTemplateVo
+ * @see ToolTemplateWithSourceVo
  */
-fun ToolTemplate.toVoByList() = ToolTemplateVo(
+fun ToolTemplate.toVoWithSource() = ToolTemplateWithSourceVo(
     id = this.id,
     name = this.name,
-    base = ToolBaseVo(
-        id = this.baseId,
-        name = null,
-        source = null,
-        dist = null,
-        platform = this.base?.platform,
-        compiled = null,
-        createTime = null,
-        updateTime = null
-    ),
-    source = ToolDataVo(id = this.sourceId, data = null, createTime = null, updateTime = null),
+    base = this.base?.let(ToolBase::toVo),
+    source = this.source?.let(ToolData::toVo),
     platform = this.platform,
     entryPoint = this.entryPoint,
     enable = this.enable?.let { it == 1 },
@@ -79,31 +70,34 @@ fun ToolTemplate.toVoByList() = ToolTemplateVo(
 )
 
 /**
- * Convert to ToolTemplateVo object with base dist
+ * Convert to ToolTemplate object
  *
- * @return ToolTemplateVo object
+ * @return ToolTemplate object
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.1.0
+ * @see ToolTemplateAddParam
  * @see ToolTemplate
- * @see ToolTemplateVo
  */
-fun ToolTemplate.toVoWithBaseDist() = ToolTemplateVo(
-    id = this.id,
-    name = this.name,
-    base = ToolBaseVo(
-        id = this.baseId,
-        name = this.base?.name,
-        source = null,
-        dist = ToolDataVo(id = null, data = this.base?.distData, createTime = null, updateTime = null),
-        platform = this.base?.platform,
-        compiled = null,
-        createTime = null,
-        updateTime = null
-    ),
-    source = this.source?.let(ToolData::toVo),
-    platform = this.platform,
-    entryPoint = this.entryPoint,
-    enable = this.enable?.let { it == 1 },
-    createTime = this.createTime,
-    updateTime = this.updateTime
-)
+fun ToolTemplateAddParam.toEntity() = ToolTemplate().apply {
+    name = this@toEntity.name
+    baseId = this@toEntity.baseId
+    baseVersion = this@toEntity.baseVersion
+    entryPoint = this@toEntity.entryPoint
+    enable = if (this@toEntity.enable) 1 else 0
+}
+
+/**
+ * Convert to ToolTemplate object
+ *
+ * @return ToolTemplate object
+ * @author FatttSnake, fatttsnake@gmail.com
+ * @since 1.1.0
+ * @see ToolTemplateUpdateParam
+ * @see ToolTemplate
+ */
+fun ToolTemplateUpdateParam.toEntity() = ToolTemplate().apply {
+    id = this@toEntity.id
+    name = this@toEntity.name
+    entryPoint = this@toEntity.entryPoint
+    enable = if (this@toEntity.enable) 1 else 0
+}

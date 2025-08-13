@@ -13,6 +13,7 @@ import top.fatweb.oxygen.api.param.PageSortParam
  * @see PageSortParam
  */
 @ParamProcessor
+@Schema(description = "工具商店获取列表请求参数")
 data class ToolStoreGetParam(
     /**
      * Value to search for

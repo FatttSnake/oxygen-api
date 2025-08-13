@@ -5,13 +5,13 @@ import org.springframework.stereotype.Service
 import top.fatweb.oxygen.api.converter.tool.toEntity
 import top.fatweb.oxygen.api.converter.tool.toVo
 import top.fatweb.oxygen.api.entity.tool.ToolCategory
-import top.fatweb.oxygen.api.exception.DatabaseInsertException
-import top.fatweb.oxygen.api.exception.DatabaseUpdateException
-import top.fatweb.oxygen.api.exception.NoRecordFoundException
 import top.fatweb.oxygen.api.mapper.tool.ToolCategoryMapper
 import top.fatweb.oxygen.api.param.tool.ToolCategoryAddParam
 import top.fatweb.oxygen.api.param.tool.ToolCategoryUpdateParam
 import top.fatweb.oxygen.api.service.tool.IToolCategoryService
+import top.fatweb.oxygen.api.util.queryOrThrowException
+import top.fatweb.oxygen.api.util.saveOrThrowException
+import top.fatweb.oxygen.api.util.updateOrThrowException
 import top.fatweb.oxygen.api.vo.tool.ToolCategoryVo
 
 /**
@@ -27,7 +27,7 @@ import top.fatweb.oxygen.api.vo.tool.ToolCategoryVo
 @Service
 class ToolCategoryServiceImpl : ServiceImpl<ToolCategoryMapper, ToolCategory>(), IToolCategoryService {
     override fun getOne(id: Long): ToolCategoryVo =
-        this.getById(id)?.let(ToolCategory::toVo) ?: throw NoRecordFoundException()
+        queryOrThrowException { this.getById(id) }.let(ToolCategory::toVo)
 
     override fun get(): List<ToolCategoryVo> =
         this.list().map(ToolCategory::toVo)
@@ -35,9 +35,7 @@ class ToolCategoryServiceImpl : ServiceImpl<ToolCategoryMapper, ToolCategory>(),
     override fun add(toolCategoryAddParam: ToolCategoryAddParam): ToolCategoryVo {
         val toolCategory = toolCategoryAddParam.toEntity()
 
-        if (!this.save(toolCategory)) {
-            throw DatabaseInsertException()
-        }
+        saveOrThrowException { this.save(toolCategory) }
 
         return toolCategory.toVo()
     }
@@ -45,9 +43,7 @@ class ToolCategoryServiceImpl : ServiceImpl<ToolCategoryMapper, ToolCategory>(),
     override fun update(toolCategoryUpdateParam: ToolCategoryUpdateParam): ToolCategoryVo {
         val toolCategory = toolCategoryUpdateParam.toEntity()
 
-        if (!this.updateById(toolCategory)) {
-            throw DatabaseUpdateException()
-        }
+        updateOrThrowException { this.updateById(toolCategory) }
 
         return toolCategory.toVo()
     }

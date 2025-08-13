@@ -12,6 +12,7 @@ import top.fatweb.oxygen.api.annotation.ParamProcessor
  * @since 1.0.0
  */
 @ParamProcessor
+@Schema(description = "新增工具模板请求参数")
 data class ToolTemplateAddParam(
     /**
      * Name
@@ -32,6 +33,16 @@ data class ToolTemplateAddParam(
     @Schema(description = "Base ID", required = true)
     @field:NotNull(message = "BaseId can not be null")
     val baseId: Long? = null,
+
+    /**
+     * Base version
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.1.0
+     */
+    @Schema(description = "Base version", required = true)
+    @field:NotNull(message = "Base version can not be null")
+    val baseVersion: Long? = null,
 
     /**
      * Entry point

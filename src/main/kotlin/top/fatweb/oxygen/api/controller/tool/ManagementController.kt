@@ -13,6 +13,7 @@ import top.fatweb.oxygen.api.param.tool.ToolManagementPassParam
 import top.fatweb.oxygen.api.service.tool.IManagementService
 import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.tool.ToolVo
+import top.fatweb.oxygen.api.vo.tool.ToolWithSourceVo
 
 /**
  * Tool management controller
@@ -33,12 +34,12 @@ class ManagementController(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see ResponseResult
-     * @see ToolVo
+     * @see ToolWithSourceVo
      */
     @Operation(summary = "获取单个工具")
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('system:tool:query:tool')")
-    fun getOne(@PathVariable id: Long): ResponseResult<ToolVo> =
+    fun getOne(@PathVariable id: Long): ResponseResult<ToolWithSourceVo> =
         ResponseResult.databaseSuccess(data = managementService.getOne(id))
 
     /**
@@ -64,12 +65,11 @@ class ManagementController(
      *
      * @param id Tool ID
      * @param toolManagementPassParam Pass tool parameters in tool management
-     * @return Response object includes tool information
+     * @return Response object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see ToolManagementPassParam
      * @see ResponseResult
-     * @see ToolVo
      */
     @Operation(summary = "通过审核")
     @PostMapping("/{id}")
@@ -77,43 +77,83 @@ class ManagementController(
     fun pass(
         @PathVariable id: Long,
         @RequestBody @Valid toolManagementPassParam: ToolManagementPassParam
-    ): ResponseResult<ToolVo> =
-        ResponseResult.databaseSuccess(
-            ResponseCode.DATABASE_UPDATE_SUCCESS,
-            data = managementService.pass(id, toolManagementPassParam)
-        )
+    ): ResponseResult<Unit> {
+        managementService.pass(id, toolManagementPassParam)
+
+        return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
+    }
 
     /**
      * Reject tool review
      *
      * @param id Tool ID
-     * @return Response object includes tool information
+     * @return Response object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see ResponseResult
-     * @see ToolVo
      */
     @Operation(summary = "驳回审核")
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}/reject")
     @PreAuthorize("hasAnyAuthority('system:tool:modify:tool')")
-    fun reject(@PathVariable id: Long): ResponseResult<ToolVo> =
-        ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS, data = managementService.reject(id))
+    fun reject(@PathVariable id: Long): ResponseResult<Unit> {
+        managementService.reject(id)
+
+        return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
+    }
 
     /**
-     * Put off shelve
+     * Delist tool
      *
      * @param id Tool ID
-     * @return Response object includes tool information
+     * @return Response object
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
      * @see ResponseResult
-     * @see ToolVo
      */
     @Operation(summary = "下架")
-    @PatchMapping("/{id}")
+    @PatchMapping("/{id}/delist")
     @PreAuthorize("hasAnyAuthority('system:tool:modify:tool')")
-    fun offShelve(@PathVariable id: Long): ResponseResult<ToolVo> =
-        ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS, data = managementService.offShelve(id))
+    fun delist(@PathVariable id: Long): ResponseResult<Unit> {
+        managementService.delist(id)
+
+        return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
+    }
+
+    /**
+     * Delist tool all versions
+     *
+     * @param id Tool ID
+     * @return Response object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.1.0
+     * @see ResponseResult
+     */
+    @Operation(summary = "下架所有版本")
+    @PatchMapping("/{id}/delistAll")
+    @PreAuthorize("hasAnyAuthority('system:tool:modify:tool')")
+    fun delistAllVersions(@PathVariable id: Long): ResponseResult<Unit> {
+        managementService.delistAllVersion(id)
+
+        return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
+    }
+
+    /**
+     * Relist tool
+     *
+     * @param id Tool ID
+     * @return Response object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.1.0
+     * @see ResponseResult
+     */
+    @Operation(summary = "重新上架")
+    @PatchMapping("/{id}/relist")
+    @PreAuthorize("hasAnyAuthority('system:tool:modify:tool')")
+    fun relist(@PathVariable id: Long): ResponseResult<Unit> {
+        managementService.relist(id)
+
+        return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
+    }
 
     /**
      * Delete tool

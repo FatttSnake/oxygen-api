@@ -10,6 +10,7 @@ import jakarta.validation.constraints.Pattern
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
+@Schema(description = "移除工具收藏请求参数")
 data class ToolFavoriteRemoveParam(
     /**
      * Author ID

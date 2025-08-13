@@ -59,7 +59,7 @@ class ExceptionHandler {
 
             is MethodArgumentNotValidException -> {
                 logger.debug(e.localizedMessage, e)
-                val errorMessage = e.allErrors.map { error -> error.defaultMessage }.joinToString(". ")
+                val errorMessage = e.allErrors.joinToString(". ") { error -> error.defaultMessage.toString() }
                 ResponseResult.fail(ResponseCode.SYSTEM_ARGUMENT_NOT_VALID, errorMessage, null)
             }
 
@@ -279,10 +279,25 @@ class ExceptionHandler {
                 ResponseResult.fail(ResponseCode.TOOL_HAS_BEEN_PUBLISHED, e.localizedMessage, null)
             }
 
+            is ToolBaseHasBeenCompiledException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.TOOL_BASE_HAS_BEEN_COMPILED, e.localizedMessage, null)
+            }
+
+            is ToolHasNotBeenDelisted -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.TOOL_HAS_NOT_BEEN_DELISTED, e.localizedMessage, null)
+            }
+
             /* Other */
             is MatchSensitiveWordException -> {
                 logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.SYSTEM_MATCH_SENSITIVE_WORD, e.localizedMessage, null)
+            }
+
+            is NoEmailConfigException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.SYSTEM_NO_EMAIL_CONFIG, e.localizedMessage, null)
             }
 
             /* API */
