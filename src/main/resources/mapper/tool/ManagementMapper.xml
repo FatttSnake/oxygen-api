@@ -195,7 +195,7 @@
         </foreach>
     </select>
 
-    <resultMap id="toolMap" type="tool">
+    <resultMap id="toolMap" type="top.fatweb.oxygen.api.entity.tool.Tool">
         <id property="id" column="tool_id"/>
         <result property="name" column="tool_name"/>
         <result property="toolId" column="tool_tool_id"/>
@@ -222,11 +222,11 @@
                     resultMap="top.fatweb.oxygen.api.mapper.tool.ToolCategoryMapper.toolCategoryMap"/>
     </resultMap>
 
-    <resultMap id="toolWithAuthorMap" type="tool" extends="toolMap">
+    <resultMap id="toolWithAuthorMap" type="top.fatweb.oxygen.api.entity.tool.Tool" extends="toolMap">
         <association property="author" resultMap="top.fatweb.oxygen.api.mapper.permission.UserMapper.userWithInfoMap"/>
     </resultMap>
 
-    <resultMap id="toolWithSourceMap" type="tool" extends="toolWithAuthorMap">
+    <resultMap id="toolWithSourceMap" type="top.fatweb.oxygen.api.entity.tool.Tool" extends="toolWithAuthorMap">
         <association property="source">
             <id property="id" column="tool_source_id"/>
             <result property="data" column="tool_source_data"/>
@@ -237,7 +237,7 @@
         </association>
     </resultMap>
 
-    <resultMap id="toolWithDistMap" type="tool" extends="toolWithAuthorMap">
+    <resultMap id="toolWithDistMap" type="top.fatweb.oxygen.api.entity.tool.Tool" extends="toolWithAuthorMap">
         <association property="dist">
             <id property="id" column="tool_dist_id"/>
             <result property="data" column="tool_dist_data"/>

@@ -71,7 +71,7 @@
         where t_s_group.id = #{id}
     </select>
 
-    <resultMap id="groupMap" type="group">
+    <resultMap id="groupMap" type="top.fatweb.oxygen.api.entity.permission.Group">
         <id property="id" column="group_id"/>
         <result property="name" column="group_name"/>
         <result property="enable" column="group_enable"/>
@@ -81,7 +81,7 @@
         <result property="version" column="group_version"/>
     </resultMap>
 
-    <resultMap id="groupWithRoleMap" type="group" extends="groupMap">
+    <resultMap id="groupWithRoleMap" type="top.fatweb.oxygen.api.entity.permission.Group" extends="groupMap">
         <collection property="roles" resultMap="top.fatweb.oxygen.api.mapper.permission.RoleMapper.roleMap"/>
     </resultMap>
 </mapper>

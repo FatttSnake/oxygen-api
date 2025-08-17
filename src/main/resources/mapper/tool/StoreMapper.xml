@@ -140,7 +140,7 @@
           and t_b_tool_main.review = 'PASS'
     </select>
 
-    <resultMap id="toolIdentifierMap" type="toolIdentifier">
+    <resultMap id="toolIdentifierMap" type="top.fatweb.oxygen.api.entity.tool.ToolIdentifier">
         <result property="authorId" column="tool_author_id"/>
         <result property="toolId" column="tool_tool_id"/>
     </resultMap>
