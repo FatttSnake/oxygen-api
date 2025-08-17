@@ -2,15 +2,17 @@ package top.fatweb.oxygen.api.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher
+import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import top.fatweb.oxygen.api.filter.JwtAuthenticationTokenFilter
@@ -35,7 +37,7 @@ class SecurityConfig(
     private val accessDeniedHandler: JwtAccessDeniedHandler
 ) {
     @Bean
-    fun passwordEncoder() = BCryptPasswordEncoder()
+    fun passwordEncoder(): PasswordEncoder = Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8()
 
     @Bean
     fun authenticationManager(authenticationConfiguration: AuthenticationConfiguration): AuthenticationManager =
@@ -67,8 +69,8 @@ class SecurityConfig(
             it.csrfTokenRepository(CookieWithHeaderCsrfTokenRepository())
             it.csrfTokenRequestHandler(CsrfTokenRequestAttributeHandler())
             it.requireCsrfProtectionMatcher { request ->
-                request.method == "POST" && AntPathRequestMatcher("/token").matches(request) && request.getParameter("refreshToken")
-                    .isNullOrBlank()
+                PathPatternRequestMatcher.withDefaults().matcher(HttpMethod.POST, "/token").matches(request) &&
+                        request.getParameter("refreshToken").isNullOrBlank()
             }
         }
 

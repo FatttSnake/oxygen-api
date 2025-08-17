@@ -13,7 +13,6 @@ import top.fatweb.oxygen.api.util.underToUpperLetter
 import top.fatweb.oxygen.api.util.upperToUnderLetter
 import java.util.concurrent.TimeUnit
 
-
 @ExtendWith(SpringExtension::class)
 class OxygenApiApplicationTests {
     private val logger: Logger = LoggerFactory.getLogger(this::class.java)
