@@ -23,7 +23,6 @@
         <bcprov.version>1.81</bcprov.version>
         <build.timestamp>${maven.build.timestamp}</build.timestamp>
         <maven.build.timestamp.format>yyyy-MM-dd'T'HH:mm:ss</maven.build.timestamp.format>
-        <velocity.version>2.3</velocity.version>
         <mybatis-plus.version>3.5.7</mybatis-plus.version>
         <retrofit.version>3.0.0</retrofit.version>
         <dynamic-datasource.version>4.3.1</dynamic-datasource.version>
@@ -204,9 +203,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.velocity</groupId>
-            <artifactId>velocity-engine-core</artifactId>
-            <version>${velocity.version}</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
         <dependency>
             <groupId>com.mysql</groupId>
