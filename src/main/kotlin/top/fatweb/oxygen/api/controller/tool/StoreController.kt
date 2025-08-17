@@ -93,9 +93,9 @@ class StoreController(
      * @see ToolFavoriteRemoveParam
      * @see ResponseResult
      */
-    @Operation(summary = "收藏工具")
+    @Operation(summary = "取消收藏工具")
     @DeleteMapping("/favorite")
-    fun addFavorite(@RequestBody toolFavoriteRemoveParam: ToolFavoriteRemoveParam): ResponseResult<Unit> {
+    fun removeFavorite(@RequestBody toolFavoriteRemoveParam: ToolFavoriteRemoveParam): ResponseResult<Unit> {
         storeService.removeFavorite(toolFavoriteRemoveParam)
 
         return ResponseResult.databaseSuccess(ResponseCode.DATABASE_DELETE_SUCCESS)
