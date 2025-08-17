@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.apache.velocity.VelocityContext
 import org.apache.velocity.app.VelocityEngine
+import kotlinx.coroutines.runBlocking
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.security.access.AccessDeniedException
@@ -572,11 +573,12 @@ class AuthenticationServiceImpl(
 
     private fun verifyCaptcha(captchaCode: String) {
         try {
-            val siteverifyResponse = turnstileApi.siteverify(captchaCode)
+            val siteverifyResponse = runBlocking { turnstileApi.siteverify(captchaCode) }
             if (!siteverifyResponse.success) {
                 throw InvalidCaptchaCodeException()
             }
-        } catch (_: Exception) {
+        } catch (e: Exception) {
+            logger.error("Verify captcha error", e)
             throw InvalidCaptchaCodeException()
         }
     }
