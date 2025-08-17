@@ -1,7 +1,6 @@
 package top.fatweb.oxygen.api.mapper.tool
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper
-import com.baomidou.mybatisplus.core.metadata.IPage
 import org.apache.ibatis.annotations.Mapper
 import org.apache.ibatis.annotations.Param
 import top.fatweb.oxygen.api.entity.tool.ToolBase
@@ -70,20 +69,15 @@ interface ToolBaseMapper : BaseMapper<ToolBase> {
     fun selectLatestVersion(@Param("id") id: Long): Long?
 
     /**
-     * Select tool base with versions in page by platform
+     * Select tool base with version in list by IDs
      *
-     * @param page Pagination
-     * @param platform Platform list
-     * @return ToolBase in page
+     * @param ids List of tool base IDs
+     * @return List of tool base object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.1.0
-     * @see IPage
      * @see ToolBase
      */
-    fun selectPageWithVersions(
-        page: IPage<ToolBase>,
-        @Param("platform") platform: List<String>?
-    ): IPage<ToolBase>
+    fun selectListWithVersionByIds(@Param("ids") ids: List<Long>): List<ToolBase>
 
     /**
      * Select tool base with version in list

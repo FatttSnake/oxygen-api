@@ -82,16 +82,26 @@ class ToolBaseServiceImpl(
         }
 
     override fun get(toolBaseGetParam: ToolBaseGetParam?): PageVo<ToolBaseWithVersionsVo> {
-        val basePage = Page<ToolBase>(toolBaseGetParam?.currentPage ?: 1, toolBaseGetParam?.pageSize ?: 20)
+        var basePage = Page<ToolBase>(toolBaseGetParam?.currentPage ?: 1, toolBaseGetParam?.pageSize ?: 20)
 
         setPageSort(toolBaseGetParam, basePage)
 
-        return baseMapper
-            .selectPageWithVersions(
-                page = basePage,
-                platform = toolBaseGetParam?.platform?.split(",")
-            )
-            .toVo()
+        basePage = this.page(
+            basePage,
+            KtQueryWrapper(ToolBase())
+                .select(ToolBase::id)
+                .`in`(
+                    !toolBaseGetParam?.platform.isNullOrBlank(),
+                    ToolBase::platform,
+                    toolBaseGetParam?.platform?.split(",")
+                )
+        )
+
+        if (basePage.total > 0) {
+            basePage.setRecords(baseMapper.selectListWithVersionByIds(basePage.records.map { it.id!! }))
+        }
+
+        return basePage.toVo()
     }
 
     override fun getList(): List<ToolBaseVo> =

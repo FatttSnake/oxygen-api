@@ -113,7 +113,8 @@ class EditServiceImpl(
 
     override fun getPage(pageSortParam: PageSortParam): PageVo<ToolVo> {
         val toolIdsPage = Page<String>(pageSortParam.currentPage, 20)
-        toolIdsPage.setOptimizeCountSql(false)
+
+        setPageSort(pageSortParam, toolIdsPage)
 
         val toolIdsIPage = baseMapper.selectPersonalToolIdPage(toolIdsPage, getLoginUserId()!!)
         val toolPage = Page<Tool>(toolIdsIPage.current, toolIdsIPage.size, toolIdsIPage.total)

@@ -20,6 +20,7 @@ import top.fatweb.oxygen.api.service.tool.IStoreService
 import top.fatweb.oxygen.api.service.tool.IToolFavoriteService
 import top.fatweb.oxygen.api.util.getLoginUserId
 import top.fatweb.oxygen.api.util.saveOrThrowException
+import top.fatweb.oxygen.api.util.setPageSort
 import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.tool.ToolVo
 
@@ -39,7 +40,8 @@ class StoreServiceImpl(
 ) : ServiceImpl<StoreMapper, Tool>(), IStoreService {
     override fun getPage(toolStoreGetParam: ToolStoreGetParam): PageVo<ToolVo> {
         val toolIdsPage = Page<ToolIdentifier>(toolStoreGetParam.currentPage, 20)
-        toolIdsPage.setOptimizeCountSql(false)
+
+        setPageSort(toolStoreGetParam, toolIdsPage)
 
         val toolIdsIPage =
             baseMapper.selectAuthorToolIdentifierPage(
@@ -63,7 +65,8 @@ class StoreServiceImpl(
 
     override fun getPage(pageSortParam: PageSortParam, username: String): PageVo<ToolVo> {
         val toolIdsPage = Page<ToolIdentifier>(pageSortParam.currentPage, 20)
-        toolIdsPage.setOptimizeCountSql(false)
+
+        setPageSort(pageSortParam, toolIdsPage)
 
         val toolIdsIPage = baseMapper.selectAuthorToolIdentifierPageByUsername(toolIdsPage, username)
         val toolPage = Page<Tool>(toolIdsIPage.current, toolIdsIPage.size, toolIdsIPage.total)

@@ -21,6 +21,7 @@ import top.fatweb.oxygen.api.service.tool.IManagementService
 import top.fatweb.oxygen.api.service.tool.IRToolCategoryService
 import top.fatweb.oxygen.api.service.tool.IToolDataService
 import top.fatweb.oxygen.api.util.queryOrThrowException
+import top.fatweb.oxygen.api.util.setPageSort
 import top.fatweb.oxygen.api.util.updateOrThrowException
 import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.tool.ToolVo
@@ -50,7 +51,8 @@ class ManagementServiceImpl(
 
     override fun getPage(toolManagementGetParam: ToolManagementGetParam?): PageVo<ToolVo> {
         val toolIdsPage = Page<Long>(toolManagementGetParam?.currentPage ?: 1, toolManagementGetParam?.pageSize ?: 20)
-        toolIdsPage.setOptimizeCountSql(false)
+
+        setPageSort(toolManagementGetParam, toolIdsPage)
 
         val toolIdsIPage =
             baseMapper.selectPage(
