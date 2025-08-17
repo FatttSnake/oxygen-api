@@ -1,23 +1,28 @@
 package top.fatweb.oxygen.api.service.tool.impl
 
+import com.baomidou.mybatisplus.extension.kotlin.KtUpdateWrapper
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import top.fatweb.oxygen.api.converter.tool.ToolTemplateConverter
+import top.fatweb.oxygen.api.converter.tool.toEntity
+import top.fatweb.oxygen.api.converter.tool.toVo
+import top.fatweb.oxygen.api.converter.tool.toVoWithSource
 import top.fatweb.oxygen.api.entity.tool.ToolData
 import top.fatweb.oxygen.api.entity.tool.ToolTemplate
-import top.fatweb.oxygen.api.exception.NoRecordFoundException
+import top.fatweb.oxygen.api.exception.DatabaseUpdateException
 import top.fatweb.oxygen.api.mapper.tool.ToolTemplateMapper
-import top.fatweb.oxygen.api.param.tool.ToolTemplateAddParam
-import top.fatweb.oxygen.api.param.tool.ToolTemplateGetParam
-import top.fatweb.oxygen.api.param.tool.ToolTemplateUpdateParam
+import top.fatweb.oxygen.api.param.tool.*
 import top.fatweb.oxygen.api.service.tool.IToolBaseService
 import top.fatweb.oxygen.api.service.tool.IToolDataService
 import top.fatweb.oxygen.api.service.tool.IToolTemplateService
-import top.fatweb.oxygen.api.util.PageUtil
+import top.fatweb.oxygen.api.util.queryOrThrowException
+import top.fatweb.oxygen.api.util.saveOrThrowException
+import top.fatweb.oxygen.api.util.setPageSort
+import top.fatweb.oxygen.api.util.updateOrThrowException
 import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.tool.ToolTemplateVo
+import top.fatweb.oxygen.api.vo.tool.ToolTemplateWithSourceVo
 
 /**
  * Tool template service implement
@@ -36,61 +41,78 @@ class ToolTemplateServiceImpl(
     private val toolDataService: IToolDataService,
     private val toolBaseService: IToolBaseService
 ) : ServiceImpl<ToolTemplateMapper, ToolTemplate>(), IToolTemplateService {
-    override fun getOne(id: Long): ToolTemplateVo =
-        baseMapper.selectOne(id)?.let(ToolTemplateConverter::toolTemplateToToolTemplateVo)
-            ?: throw NoRecordFoundException()
+    override fun getOne(id: Long): ToolTemplateWithSourceVo =
+        queryOrThrowException {
+            baseMapper.selectOne(id)
+        }.let(ToolTemplate::toVoWithSource)
 
     override fun get(toolTemplateGetParam: ToolTemplateGetParam?): PageVo<ToolTemplateVo> {
         val templatePage =
             Page<ToolTemplate>(toolTemplateGetParam?.currentPage ?: 1, toolTemplateGetParam?.pageSize ?: 20)
 
-        PageUtil.setPageSort(toolTemplateGetParam, templatePage)
+        setPageSort(toolTemplateGetParam, templatePage)
 
-        return ToolTemplateConverter.toolTemplatePageToToolTemplatePageVo(
-            baseMapper.selectListWithBaseName(templatePage, toolTemplateGetParam?.platform?.split(","))
-        )
+        return baseMapper
+            .selectPageWithBase(
+                page = templatePage,
+                platform = toolTemplateGetParam?.platform?.split(",")
+            )
+            .toVo()
     }
 
     @Transactional
-    override fun add(toolTemplateAddParam: ToolTemplateAddParam): ToolTemplateVo {
-        val toolBase = toolBaseService.getOne(toolTemplateAddParam.baseId!!)
+    override fun add(toolTemplateAddParam: ToolTemplateAddParam): ToolTemplateWithSourceVo {
+        val toolBase = toolBaseService.getOne(toolTemplateAddParam.baseId!!, toolTemplateAddParam.baseVersion!!)
 
         val newSource = ToolData().apply { data = "" }
 
-        toolDataService.save(newSource)
+        saveOrThrowException { toolDataService.save(newSource) }
 
-        val toolTemplate = ToolTemplate().apply {
-            name = toolTemplateAddParam.name
-            baseId = toolTemplateAddParam.baseId
+        val toolTemplate = toolTemplateAddParam.toEntity().apply {
             sourceId = newSource.id
-            source = newSource
             platform = toolBase.platform
-            entryPoint = toolTemplateAddParam.entryPoint
-            enable = if (toolTemplateAddParam.enable) 1 else 0
         }
 
-        this.save(toolTemplate)
+        saveOrThrowException { this.save(toolTemplate) }
 
-        return ToolTemplateConverter.toolTemplateToToolTemplateVo(toolTemplate)
+        return this.getOne(toolTemplate.id!!)
     }
 
     @Transactional
-    override fun update(toolTemplateUpdateParam: ToolTemplateUpdateParam): ToolTemplateVo {
-        val toolTemplate = baseMapper.selectOne(toolTemplateUpdateParam.id!!) ?: throw NoRecordFoundException()
+    override fun update(toolTemplateUpdateParam: ToolTemplateUpdateParam) {
+        val toolTemplate = toolTemplateUpdateParam.toEntity()
 
-        toolDataService.updateById(ToolData().apply {
-            id = toolTemplate.sourceId
-            data = toolTemplateUpdateParam.source
-        })
+        updateOrThrowException { this.updateById(toolTemplate) }
+    }
 
-        this.updateById(ToolTemplate().apply {
-            id = toolTemplateUpdateParam.id
-            name = toolTemplateUpdateParam.name
-            entryPoint = toolTemplateUpdateParam.entryPoint
-            enable = toolTemplateUpdateParam.enable?.let { if (it) 1 else 0 }
-        })
+    @Transactional
+    override fun updateSource(toolTemplateUpdateSourceParam: ToolTemplateUpdateSourceParam) {
+        val toolTemplate = queryOrThrowException { this.getById(toolTemplateUpdateSourceParam.id) }
 
-        return this.getOne(toolTemplate.id!!)
+        updateOrThrowException {
+            toolDataService.update(
+                KtUpdateWrapper(ToolData())
+                    .eq(ToolData::id, toolTemplate.sourceId)
+                    .set(ToolData::data, toolTemplateUpdateSourceParam.source)
+            )
+        }
+    }
+
+    @Transactional
+    override fun upgradeBase(toolOrTemplateUpgradeBaseParam: ToolOrTemplateUpgradeBaseParam) {
+        val toolTemplate = queryOrThrowException { this.getOne(toolOrTemplateUpgradeBaseParam.id!!) }
+        if (toolTemplate.base!!.version!! >= toolOrTemplateUpgradeBaseParam.baseVersion!!) {
+            throw DatabaseUpdateException()
+        }
+        toolBaseService.getOne(id = toolTemplate.base.id!!, version = toolOrTemplateUpgradeBaseParam.baseVersion)
+
+        updateOrThrowException {
+            this.update(
+                KtUpdateWrapper(ToolTemplate())
+                    .eq(ToolTemplate::id, toolOrTemplateUpgradeBaseParam.id)
+                    .set(ToolTemplate::baseVersion, toolOrTemplateUpgradeBaseParam.baseVersion)
+            )
+        }
     }
 
     @Transactional
@@ -98,6 +120,6 @@ class ToolTemplateServiceImpl(
         val toolTemplate = this.getById(id)
 
         return toolDataService.removeById(toolTemplate.sourceId)
-            && this.removeById(id)
+                && this.removeById(id)
     }
 }

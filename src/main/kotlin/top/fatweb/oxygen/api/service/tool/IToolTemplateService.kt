@@ -5,8 +5,11 @@ import top.fatweb.oxygen.api.entity.tool.ToolTemplate
 import top.fatweb.oxygen.api.param.tool.ToolTemplateAddParam
 import top.fatweb.oxygen.api.param.tool.ToolTemplateGetParam
 import top.fatweb.oxygen.api.param.tool.ToolTemplateUpdateParam
+import top.fatweb.oxygen.api.param.tool.ToolTemplateUpdateSourceParam
+import top.fatweb.oxygen.api.param.tool.ToolOrTemplateUpgradeBaseParam
 import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.tool.ToolTemplateVo
+import top.fatweb.oxygen.api.vo.tool.ToolTemplateWithSourceVo
 
 /**
  * Tool template service interface
@@ -21,12 +24,12 @@ interface IToolTemplateService : IService<ToolTemplate> {
      * Get tool template by ID
      *
      * @param id ID
-     * @return ToolTemplateVo object
+     * @return ToolTemplateWithSourceVo object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
-     * @see ToolTemplateVo
+     * @see ToolTemplateWithSourceVo
      */
-    fun getOne(id: Long): ToolTemplateVo
+    fun getOne(id: Long): ToolTemplateWithSourceVo
 
     /**
      * Get tool template in page
@@ -44,13 +47,13 @@ interface IToolTemplateService : IService<ToolTemplate> {
      * Add tool template
      *
      * @param toolTemplateAddParam Add tool template parameters
-     * @return ToolTemplateVo object
+     * @return ToolTemplateWithSourceVo object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see ToolTemplateAddParam
-     * @see ToolTemplateVo
+     * @see ToolTemplateWithSourceVo
      */
-    fun add(toolTemplateAddParam: ToolTemplateAddParam): ToolTemplateVo
+    fun add(toolTemplateAddParam: ToolTemplateAddParam): ToolTemplateWithSourceVo
 
     /**
      * Update tool template
@@ -60,9 +63,28 @@ interface IToolTemplateService : IService<ToolTemplate> {
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see ToolTemplateUpdateParam
-     * @see ToolTemplateVo
      */
-    fun update(toolTemplateUpdateParam: ToolTemplateUpdateParam): ToolTemplateVo
+    fun update(toolTemplateUpdateParam: ToolTemplateUpdateParam)
+
+    /**
+     * Update tool template source
+     *
+     * @param toolTemplateUpdateSourceParam Update tool template source parameters
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.1.0
+     * @see ToolTemplateUpdateSourceParam
+     */
+    fun updateSource(toolTemplateUpdateSourceParam: ToolTemplateUpdateSourceParam)
+
+    /**
+     * Upgrade tool template base version
+     *
+     * @param toolOrTemplateUpgradeBaseParam Upgrade tool template base version parameters
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.1.0
+     * @see ToolOrTemplateUpgradeBaseParam
+     */
+    fun upgradeBase(toolOrTemplateUpgradeBaseParam: ToolOrTemplateUpgradeBaseParam)
 
     /**
      * Delete tool template

@@ -52,16 +52,20 @@ interface IUserService : IService<User> {
     /**
      * Update user information
      *
+     * @param userInfoUpdateParam Update user information parameters
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see UserInfoUpdateParam
      */
-    fun updateInfo(userInfoUpdateParam: UserInfoUpdateParam): Boolean
+    fun updateInfo(userInfoUpdateParam: UserInfoUpdateParam)
 
     /**
      * Change password
      *
+     * @param userChangePasswordParam Change password parameters
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see UserChangePasswordParam
      */
     fun password(userChangePasswordParam: UserChangePasswordParam)
 
@@ -115,13 +119,11 @@ interface IUserService : IService<User> {
      * Update user
      *
      * @param userUpdateParam Update user parameters
-     * @return UserWithRoleInfoVo object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see UserUpdateParam
-     * @see UserWithRoleInfoVo
      */
-    fun update(userUpdateParam: UserUpdateParam): UserWithRoleInfoVo
+    fun update(userUpdateParam: UserUpdateParam)
 
     /**
      * Update user password

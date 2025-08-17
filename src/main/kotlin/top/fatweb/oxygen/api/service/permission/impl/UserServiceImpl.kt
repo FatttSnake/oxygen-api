@@ -12,22 +12,19 @@ import org.springframework.security.core.token.Sha512DigestUtils
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import top.fatweb.oxygen.api.converter.permission.UserConverter
+import top.fatweb.oxygen.api.converter.permission.toEntity
+import top.fatweb.oxygen.api.converter.permission.toVoWithInfo
+import top.fatweb.oxygen.api.converter.permission.toVoWithPowerInfo
+import top.fatweb.oxygen.api.converter.permission.toVoWithRoleInfo
 import top.fatweb.oxygen.api.entity.permission.RUserGroup
 import top.fatweb.oxygen.api.entity.permission.RUserRole
 import top.fatweb.oxygen.api.entity.permission.User
 import top.fatweb.oxygen.api.entity.permission.UserInfo
-import top.fatweb.oxygen.api.exception.DatabaseInsertException
-import top.fatweb.oxygen.api.exception.DatabaseUpdateException
-import top.fatweb.oxygen.api.exception.NoRecordFoundException
 import top.fatweb.oxygen.api.exception.UserNotFoundException
 import top.fatweb.oxygen.api.mapper.permission.UserMapper
 import top.fatweb.oxygen.api.param.permission.user.*
 import top.fatweb.oxygen.api.service.permission.*
-import top.fatweb.oxygen.api.util.PageUtil
-import top.fatweb.oxygen.api.util.RedisUtil
-import top.fatweb.oxygen.api.util.StrUtil
-import top.fatweb.oxygen.api.util.WebUtil
+import top.fatweb.oxygen.api.util.*
 import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.permission.UserWithInfoVo
 import top.fatweb.oxygen.api.vo.permission.UserWithPowerInfoVo
@@ -69,8 +66,7 @@ class UserServiceImpl(
     private val rUserGroupService: IRUserGroupService
 ) : ServiceImpl<UserMapper, User>(), IUserService {
     override fun getUserWithPowerByAccount(account: String): User? {
-        val user = baseMapper.selectOneWithPowerInfoByAccount(account)
-        user ?: return null
+        val user = baseMapper.selectOneWithPowerInfoByAccount(account) ?: return null
 
         if (user.id == 0L) {
             user.modules = moduleService.list()
@@ -83,51 +79,63 @@ class UserServiceImpl(
     }
 
     override fun getInfo(): UserWithPowerInfoVo =
-        WebUtil.getLoginUsername()?.let(::getUserWithPowerByAccount)?.let(UserConverter::userToUserWithPowerInfoVo)
-            ?: throw UserNotFoundException()
+        queryOrThrowException(UserNotFoundException()) {
+            getLoginUsername()?.let(::getUserWithPowerByAccount)
+        }.let(User::toVoWithPowerInfo)
 
     override fun getBasicInfo(username: String): UserWithInfoVo =
-        baseMapper.selectOneWithBasicInfoByUsername(username)?.let(UserConverter::userToUserWithInfoVo)
-            ?: throw NoRecordFoundException()
+        queryOrThrowException(UserNotFoundException()) {
+            baseMapper.selectOneWithBasicInfoByUsername(username)
+        }.let(User::toVoWithInfo)
 
-
-    override fun updateInfo(userInfoUpdateParam: UserInfoUpdateParam): Boolean {
-        val userId = WebUtil.getLoginUserId() ?: throw AccessDeniedException("Access denied")
-        return userInfoService.update(
-            KtUpdateWrapper(UserInfo()).eq(UserInfo::userId, userId)
-                .set(!userInfoUpdateParam.avatar.isNullOrBlank(), UserInfo::avatar, userInfoUpdateParam.avatar)
-                .set(!userInfoUpdateParam.nickname.isNullOrBlank(), UserInfo::nickname, userInfoUpdateParam.nickname)
-        )
+    override fun updateInfo(userInfoUpdateParam: UserInfoUpdateParam) {
+        val userId = getLoginUserId() ?: throw AccessDeniedException("Access denied")
+        updateOrThrowException {
+            userInfoService.update(
+                KtUpdateWrapper(UserInfo()).eq(UserInfo::userId, userId)
+                    .set(!userInfoUpdateParam.avatar.isNullOrBlank(), UserInfo::avatar, userInfoUpdateParam.avatar)
+                    .set(
+                        !userInfoUpdateParam.nickname.isNullOrBlank(),
+                        UserInfo::nickname,
+                        userInfoUpdateParam.nickname
+                    )
+            )
+        }
     }
 
     override fun password(userChangePasswordParam: UserChangePasswordParam) {
-        val user = this.getById(WebUtil.getLoginUserId() ?: throw AccessDeniedException("Access denied"))
-        user?.let {
-            if (!passwordEncoder.matches(userChangePasswordParam.originalPassword, user.password)) {
-                throw BadCredentialsException("Passwords do not match")
-            }
-            val wrapper = KtUpdateWrapper(User())
-                .eq(User::id, user.id)
-                .set(User::password, passwordEncoder.encode(userChangePasswordParam.newPassword))
-                .set(User::credentialsExpiration, null)
-                .set(User::updateTime, LocalDateTime.now(ZoneOffset.UTC))
+        val user = queryOrThrowException(UserNotFoundException()) {
+            this.getById(
+                getLoginUserId() ?: throw AccessDeniedException("Access denied")
+            )
+        }
 
-            if (!this.update(wrapper)) {
-                throw DatabaseUpdateException()
-            }
+        if (!passwordEncoder.matches(userChangePasswordParam.originalPassword, user.password)) {
+            throw BadCredentialsException("Passwords do not match")
+        }
 
-            WebUtil.offlineUser(redisUtil, user.id!!)
-        } ?: throw NoRecordFoundException()
+        updateOrThrowException {
+            this.update(
+                KtUpdateWrapper(User())
+                    .eq(User::id, user.id)
+                    .set(User::password, passwordEncoder.encode(userChangePasswordParam.newPassword))
+                    .set(User::credentialsExpiration, null)
+                    .set(User::updateTime, LocalDateTime.now(ZoneOffset.UTC))
+            )
+        }
+
+        offlineUser(redisUtil, user.id!!)
     }
 
     override fun getOne(id: Long): UserWithRoleInfoVo =
-        baseMapper.selectOneWithRoleInfoById(id)?.let(UserConverter::userToUserWithRoleInfoVo)
-            ?: throw UserNotFoundException()
+        queryOrThrowException(UserNotFoundException()) {
+            baseMapper.selectOneWithRoleInfoById(id)
+        }.let(User::toVoWithRoleInfo)
 
     override fun getPage(userGetParam: UserGetParam?): PageVo<UserWithRoleInfoVo> {
         val userIdsPage = Page<Long>(userGetParam?.currentPage ?: 1, userGetParam?.pageSize ?: 20)
 
-        PageUtil.setPageSort(userGetParam, userIdsPage, OrderItem.asc("id"))
+        setPageSort(userGetParam, userIdsPage, OrderItem.asc("id"))
 
         val userIdsIPage =
             baseMapper.selectPage(
@@ -141,16 +149,16 @@ class UserServiceImpl(
             userPage.setRecords(baseMapper.selectListWithRoleInfoByIds(userIdsIPage.records))
         }
 
-        return UserConverter.userPageToUserWithRoleInfoPageVo(userPage)
+        return userPage.toVoWithRoleInfo()
     }
 
-    override fun getList() = baseMapper.selectListWithInfo().map(UserConverter::userToUserWithInfoVo)
+    override fun getList() = baseMapper.selectListWithInfo().map(User::toVoWithInfo)
 
     @Transactional
     override fun add(userAddParam: UserAddParam): UserWithRoleInfoVo {
         val newPassword =
-            if (userAddParam.password.isNullOrBlank()) Sha512DigestUtils.shaHex(StrUtil.getRandomPassword(10)) else userAddParam.password
-        val user = UserConverter.userAddParamToUser(userAddParam)
+            if (userAddParam.password.isNullOrBlank()) Sha512DigestUtils.shaHex(generateRandomPassword(10)) else userAddParam.password
+        val user = userAddParam.toEntity()
 
         user.apply {
             password = passwordEncoder.encode(newPassword)
@@ -159,41 +167,44 @@ class UserServiceImpl(
             }-${UUID.randomUUID()}-${UUID.randomUUID()}-${UUID.randomUUID()}"
         }
 
-        if (!this.save(user)) {
-            throw DatabaseInsertException()
-        }
+        saveOrThrowException { this.save(user) }
 
-
-        user.userInfo?.apply { userId = user.id }?.let(userInfoService::save)
+        saveOrThrowException { user.userInfo!!.apply { userId = user.id }.let(userInfoService::save) }
 
         if (!user.roles.isNullOrEmpty()) {
-            rUserRoleService.saveBatch(user.roles!!.map {
-                RUserRole().apply {
-                    userId = user.id
-                    roleId = it.id
-                }
-            })
+            saveOrThrowException {
+                rUserRoleService.saveBatch(user.roles!!.map {
+                    RUserRole().apply {
+                        userId = user.id
+                        roleId = it.id
+                    }
+                })
+            }
         }
 
         if (!user.groups.isNullOrEmpty()) {
-            rUserGroupService.saveBatch(user.groups!!.map {
-                RUserGroup().apply {
-                    userId = user.id
-                    groupId = it.id
-                }
-            })
+            saveOrThrowException {
+                rUserGroupService.saveBatch(user.groups!!.map {
+                    RUserGroup().apply {
+                        userId = user.id
+                        groupId = it.id
+                    }
+                })
+            }
         }
 
-        return UserConverter.userToUserWithRoleInfoVo(user)
+        return user.toVoWithRoleInfo()
     }
 
     @Transactional
-    override fun update(userUpdateParam: UserUpdateParam): UserWithRoleInfoVo {
-        val user = UserConverter.userUpdateParamToUser(userUpdateParam)
+    override fun update(userUpdateParam: UserUpdateParam) {
+        val user = userUpdateParam.toEntity()
         user.updateTime = LocalDateTime.now(ZoneOffset.UTC)
 
         val oldRoleList = rUserRoleService.list(
-            KtQueryWrapper(RUserRole()).select(RUserRole::roleId).eq(RUserRole::userId, userUpdateParam.id)
+            KtQueryWrapper(RUserRole())
+                .select(RUserRole::roleId)
+                .eq(RUserRole::userId, userUpdateParam.id)
         ).map { it.roleId }
         val addRoleIds = HashSet<Long>()
         val removeRoleIds = HashSet<Long>()
@@ -205,7 +216,9 @@ class UserServiceImpl(
         oldRoleList.toSet().let(addRoleIds::removeAll)
 
         val oldGroupList = rUserGroupService.list(
-            KtQueryWrapper(RUserGroup()).select(RUserGroup::groupId).eq(RUserGroup::userId, userUpdateParam.id)
+            KtQueryWrapper(RUserGroup())
+                .select(RUserGroup::groupId)
+                .eq(RUserGroup::userId, userUpdateParam.id)
         ).map { it.groupId }
         val addGroupIds = HashSet<Long>()
         val removeGroupIds = HashSet<Long>()
@@ -216,25 +229,34 @@ class UserServiceImpl(
         removeGroupIds.removeAll(addGroupIds)
         oldGroupList.toSet().let(addGroupIds::removeAll)
 
-        this.updateById(user)
-        this.update(
-            KtUpdateWrapper(User()).eq(User::id, user.id)
-                .set(
-                    User::verify,
-                    if (userUpdateParam.verified || userUpdateParam.id == 0L) null else "${
-                        LocalDateTime.now(ZoneOffset.UTC).toInstant(ZoneOffset.UTC).toEpochMilli()
-                    }-${UUID.randomUUID()}-${UUID.randomUUID()}-${UUID.randomUUID()}"
-                )
-                .set(User::expiration, if (userUpdateParam.id == 0L) null else user.expiration)
-                .set(User::credentialsExpiration, if (userUpdateParam.id == 0L) null else user.credentialsExpiration)
-        )
+        updateOrThrowException { this.updateById(user) }
+        updateOrThrowException {
+            this.update(
+                KtUpdateWrapper(User()).eq(User::id, user.id)
+                    .set(
+                        User::verify,
+                        if (userUpdateParam.verified || userUpdateParam.id == 0L) null else "${
+                            LocalDateTime.now(ZoneOffset.UTC).toInstant(ZoneOffset.UTC).toEpochMilli()
+                        }-${UUID.randomUUID()}-${UUID.randomUUID()}-${UUID.randomUUID()}"
+                    )
+                    .set(User::expiration, if (userUpdateParam.id == 0L) null else user.expiration)
+                    .set(
+                        User::credentialsExpiration,
+                        if (userUpdateParam.id == 0L) null else user.credentialsExpiration
+                    )
+            )
+        }
 
         user.userInfo?.let { userInfo ->
             userInfoService.getOne(
-                KtQueryWrapper(UserInfo()).select(UserInfo::id).eq(UserInfo::userId, userUpdateParam.id)
+                KtQueryWrapper(UserInfo())
+                    .select(UserInfo::id)
+                    .eq(UserInfo::userId, userUpdateParam.id)
             )?.let {
                 userInfo.id = it.id
-                userInfoService.updateById(userInfo)
+                updateOrThrowException {
+                    userInfoService.updateById(userInfo)
+                }
             }
         }
 
@@ -247,10 +269,12 @@ class UserServiceImpl(
         }
 
         addRoleIds.forEach {
-            rUserRoleService.save(RUserRole().apply {
-                userId = userUpdateParam.id
-                roleId = it
-            })
+            saveOrThrowException {
+                rUserRoleService.save(RUserRole().apply {
+                    userId = userUpdateParam.id
+                    roleId = it
+                })
+            }
         }
 
         removeGroupIds.forEach {
@@ -262,39 +286,37 @@ class UserServiceImpl(
         }
 
         addGroupIds.forEach {
-            rUserGroupService.save(RUserGroup().apply {
-                userId = userUpdateParam.id
-                groupId = it
-            })
+            saveOrThrowException {
+                rUserGroupService.save(RUserGroup().apply {
+                    userId = userUpdateParam.id
+                    groupId = it
+                })
+            }
         }
 
-        userUpdateParam.id?.let { WebUtil.offlineUser(redisUtil, it) }
-
-        return UserConverter.userToUserWithRoleInfoVo(user)
+        userUpdateParam.id?.let { offlineUser(redisUtil, it) }
     }
 
     override fun password(userUpdatePasswordParam: UserUpdatePasswordParam) {
-        if (WebUtil.getLoginUserId() != 0L && userUpdatePasswordParam.id == 0L) {
+        if (getLoginUserId() != 0L && userUpdatePasswordParam.id == 0L) {
             throw AccessDeniedException("Access denied")
         }
 
-        val user = this.getById(userUpdatePasswordParam.id)
-        user?.let {
-            val wrapper = KtUpdateWrapper(User())
-                .eq(User::id, user.id)
-                .set(User::password, passwordEncoder.encode(userUpdatePasswordParam.password))
-                .set(
-                    User::credentialsExpiration,
-                    if (user.id != 0L) userUpdatePasswordParam.credentialsExpiration else null
-                )
-                .set(User::updateTime, LocalDateTime.now(ZoneOffset.UTC))
+        val user = queryOrThrowException { this.getById(userUpdatePasswordParam.id) }
+        updateOrThrowException {
+            this.update(
+                KtUpdateWrapper(User())
+                    .eq(User::id, user.id)
+                    .set(User::password, passwordEncoder.encode(userUpdatePasswordParam.password))
+                    .set(
+                        User::credentialsExpiration,
+                        if (user.id != 0L) userUpdatePasswordParam.credentialsExpiration else null
+                    )
+                    .set(User::updateTime, LocalDateTime.now(ZoneOffset.UTC))
+            )
+        }
 
-            if (!this.update(wrapper)) {
-                throw DatabaseUpdateException()
-            }
-
-            userUpdatePasswordParam.id?.let { WebUtil.offlineUser(redisUtil, it) }
-        } ?: throw NoRecordFoundException()
+        userUpdatePasswordParam.id?.let { offlineUser(redisUtil, it) }
     }
 
     @Transactional
@@ -318,7 +340,7 @@ class UserServiceImpl(
         rUserRoleService.remove(KtQueryWrapper(RUserRole()).`in`(RUserRole::userId, ids))
         rUserGroupService.remove(KtQueryWrapper(RUserGroup()).`in`(RUserGroup::userId, ids))
 
-        WebUtil.offlineUser(redisUtil, *ids.toLongArray())
+        offlineUser(redisUtil, *ids.toLongArray())
     }
 
     override fun getIdsByRoleIds(roleIds: List<Long>) = baseMapper.selectIdsWithRoleIds(roleIds)

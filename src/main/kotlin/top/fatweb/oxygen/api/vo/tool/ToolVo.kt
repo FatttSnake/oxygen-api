@@ -71,13 +71,23 @@ data class ToolVo(
     val description: String?,
 
     /**
-     * Base
+     * Base ID
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
      */
-    @Schema(description = "基板")
-    val base: ToolBaseVo?,
+    @Schema(description = "基板 ID")
+    @JsonSerialize(using = ToStringSerializer::class)
+    val baseId: Long?,
+
+    /**
+     * Base version
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.1.0
+     */
+    @Schema(description = "基板版本")
+    val baseVersion: Long?,
 
     /**
      * Author
@@ -118,26 +128,6 @@ data class ToolVo(
     val categories: List<ToolCategoryVo>?,
 
     /**
-     * Source
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see ToolDataVo
-     */
-    @Schema(description = "源码")
-    val source: ToolDataVo?,
-
-    /**
-     * Dist
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see ToolDataVo
-     */
-    @Schema(description = "产物")
-    val dist: ToolDataVo?,
-
-    /**
      * Entry point
      *
      * @author FatttSnake, fatttsnake@gmail.com
@@ -152,8 +142,8 @@ data class ToolVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @JsonSerialize(using = ToStringSerializer::class)
     @Schema(description = "发布")
+    @JsonSerialize(using = ToStringSerializer::class)
     val publish: Long?,
 
     /**

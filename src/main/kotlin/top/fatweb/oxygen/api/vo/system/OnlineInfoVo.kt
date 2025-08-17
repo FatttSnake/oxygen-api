@@ -1,7 +1,6 @@
 package top.fatweb.oxygen.api.vo.system
 
 import io.swagger.v3.oas.annotations.media.Schema
-import top.fatweb.oxygen.api.vo.system.OnlineInfoVo.HistoryVo
 import java.time.LocalDateTime
 
 /**

@@ -2,7 +2,7 @@ package top.fatweb.oxygen.api.param.permission
 
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotBlank
-import top.fatweb.oxygen.api.annotation.Trim
+import top.fatweb.oxygen.api.annotation.ParamProcessor
 import top.fatweb.oxygen.api.param.CaptchaCodeParam
 
 /**
@@ -12,7 +12,7 @@ import top.fatweb.oxygen.api.param.CaptchaCodeParam
  * @since 1.0.0
  * @see CaptchaCodeParam
  */
-@Trim
+@ParamProcessor
 @Schema(description = "登录请求参数")
 data class LoginParam(
     /**
@@ -21,7 +21,6 @@ data class LoginParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Trim
     @Schema(description = "账户", required = true, example = "test")
     @field:NotBlank(message = "Account can not be blank")
     var account: String?,

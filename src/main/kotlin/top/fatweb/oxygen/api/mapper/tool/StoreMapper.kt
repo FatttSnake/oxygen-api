@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper
 import org.apache.ibatis.annotations.Param
 import top.fatweb.oxygen.api.entity.tool.Platform
 import top.fatweb.oxygen.api.entity.tool.Tool
+import top.fatweb.oxygen.api.entity.tool.ToolIdentifier
 
 /**
  * Tool store mapper
@@ -26,12 +27,13 @@ interface StoreMapper : BaseMapper<Tool> {
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see IPage
+     * @see ToolIdentifier
      */
-    fun selectAuthorToolIdPage(
-        page: IPage<Long>,
+    fun selectAuthorToolIdentifierPage(
+        page: IPage<ToolIdentifier>,
         @Param("searchValue") searchValue: String?,
         @Param("platform") platform: Platform? = null
-    ): IPage<String>
+    ): IPage<ToolIdentifier>
 
     /**
      * Select author and tool ID by username in page
@@ -42,20 +44,25 @@ interface StoreMapper : BaseMapper<Tool> {
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see IPage
+     * @see ToolIdentifier
      */
-    fun selectAuthorToolIdPageByUsername(page: IPage<Long>, @Param("username") username: String): IPage<String>
+    fun selectAuthorToolIdentifierPageByUsername(
+        page: IPage<ToolIdentifier>,
+        @Param("username") username: String
+    ): IPage<ToolIdentifier>
 
     /**
      * Select tool in list by Author:Tool_ID
      *
-     * @param ids List of Author:Tool_ID
+     * @param identifiers List of ToolIdentifier object
      * @return List of tool object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see ToolIdentifier
      * @see Tool
      */
     fun selectListByAuthorToolIds(
-        @Param("ids") ids: List<String>,
+        @Param("identifiers") identifiers: List<ToolIdentifier>,
         @Param("operator") operator: Long?,
         @Param("platform") platform: Platform? = null
     ): List<Tool>
@@ -69,5 +76,8 @@ interface StoreMapper : BaseMapper<Tool> {
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    fun countPublishedToolByAuthorAndToolId(@Param("authorId") authorId: Long, @Param("toolId") toolId: String): Long
+    fun countPublishedToolByAuthorAndToolId(
+        @Param("authorId") authorId: Long,
+        @Param("toolId") toolId: String
+    ): Long
 }

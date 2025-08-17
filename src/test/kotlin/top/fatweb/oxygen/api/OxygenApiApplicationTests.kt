@@ -9,7 +9,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 import top.fatweb.oxygen.api.properties.SecurityProperties
 import top.fatweb.oxygen.api.util.ByteUtil
 import top.fatweb.oxygen.api.util.JwtUtil
-import top.fatweb.oxygen.api.util.StrUtil
+import top.fatweb.oxygen.api.util.underToUpperLetter
+import top.fatweb.oxygen.api.util.upperToUnderLetter
 import java.util.concurrent.TimeUnit
 
 
@@ -37,12 +38,12 @@ class OxygenApiApplicationTests {
 
     @Test
     fun upperToUnderLetterTest() {
-        assertEquals("create_time", StrUtil.upperToUnderLetter("createTime"))
+        assertEquals("create_time", upperToUnderLetter("createTime"))
     }
 
     @Test
     fun underToUpperLetterTest() {
-        assertEquals("createTime", StrUtil.underToUpperLetter("create_time"))
+        assertEquals("createTime", underToUpperLetter("create_time"))
     }
 
     @Test

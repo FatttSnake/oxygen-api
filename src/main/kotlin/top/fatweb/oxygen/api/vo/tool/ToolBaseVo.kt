@@ -33,24 +33,6 @@ data class ToolBaseVo(
     val name: String?,
 
     /**
-     * Source
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     */
-    @Schema(description = "源码")
-    val source: ToolDataVo?,
-
-    /**
-     * Dist
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     */
-    @Schema(description = "产物")
-    val dist: ToolDataVo?,
-
-    /**
      * Platform
      *
      * @author FatttSnake, fatttsnake@gmail.com
@@ -61,13 +43,13 @@ data class ToolBaseVo(
     val platform: Platform?,
 
     /**
-     * Compiled
+     * Version
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
      */
-    @Schema(description = "已编译")
-    val compiled: Boolean?,
+    @Schema(description = "版本")
+    val version: Long?,
 
     /**
      * Create time

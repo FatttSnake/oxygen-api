@@ -42,7 +42,7 @@ interface RoleMapper : BaseMapper<Role> {
      * @since 1.0.0
      * @see Role
      */
-    fun selectListWithPowerByIds(@Param("roleIds") roleIds: List<Long>): List<Role>?
+    fun selectListWithPowerByIds(@Param("roleIds") roleIds: List<Long>): List<Role>
 
     /**
      * Select one role by ID

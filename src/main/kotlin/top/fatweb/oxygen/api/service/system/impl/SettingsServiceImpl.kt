@@ -12,7 +12,7 @@ import top.fatweb.oxygen.api.settings.MailSettings
 import top.fatweb.oxygen.api.settings.SettingsOperator
 import top.fatweb.oxygen.api.settings.TwoFactorSettings
 import top.fatweb.oxygen.api.util.MailUtil
-import top.fatweb.oxygen.api.util.StrUtil
+import top.fatweb.oxygen.api.util.md5
 import top.fatweb.oxygen.api.vo.system.BaseSettingsVo
 import top.fatweb.oxygen.api.vo.system.MailSettingsVo
 import top.fatweb.oxygen.api.vo.system.TwoFactorSettingsVo
@@ -53,7 +53,7 @@ class SettingsServiceImpl : ISettingsService {
         port = SettingsOperator.getMailValue(MailSettings::port),
         securityType = SettingsOperator.getMailValue(MailSettings::securityType),
         username = SettingsOperator.getMailValue(MailSettings::username),
-        password = SettingsOperator.getMailValue(MailSettings::password)?.let(StrUtil::md5),
+        password = SettingsOperator.getMailValue(MailSettings::password)?.let(::md5),
         from = SettingsOperator.getMailValue(MailSettings::from),
         fromName = SettingsOperator.getMailValue(MailSettings::fromName)
     )
@@ -83,7 +83,7 @@ class SettingsServiceImpl : ISettingsService {
         }
     }
 
-    override fun getTwoFactor()= TwoFactorSettingsVo(
+    override fun getTwoFactor() = TwoFactorSettingsVo(
         issuer = SettingsOperator.getTwoFactorValue(TwoFactorSettings::issuer, "OxygenToolbox"),
         secretKeyLength = SettingsOperator.getTwoFactorValue(TwoFactorSettings::secretKeyLength, 16)
     )

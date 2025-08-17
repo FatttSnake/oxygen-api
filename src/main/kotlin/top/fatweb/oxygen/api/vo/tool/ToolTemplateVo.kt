@@ -37,18 +37,10 @@ data class ToolTemplateVo(
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see ToolBaseVo
      */
     @Schema(description = "基板")
     val base: ToolBaseVo?,
-
-    /**
-     * Source
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     */
-    @Schema(description = "源码")
-    val source: ToolDataVo?,
 
     /**
      * Platform

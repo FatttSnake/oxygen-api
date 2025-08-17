@@ -3,7 +3,7 @@ package top.fatweb.oxygen.api.settings
 import com.fasterxml.jackson.databind.exc.MismatchedInputException
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import top.fatweb.oxygen.api.util.StrUtil
+import top.fatweb.oxygen.api.util.md5
 import java.io.File
 import java.io.IOException
 import kotlin.reflect.KMutableProperty1
@@ -132,7 +132,7 @@ object SettingsOperator {
         systemSettings.mail?.let {
             if (field == MailSettings::password) {
                 getMailValue(MailSettings::password)?.let { password ->
-                    if (StrUtil.md5(password) == value) {
+                    if (md5(password) == value) {
                         return
                     }
                 }

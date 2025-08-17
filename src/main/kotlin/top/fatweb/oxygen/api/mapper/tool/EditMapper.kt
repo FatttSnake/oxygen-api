@@ -6,7 +6,6 @@ import org.apache.ibatis.annotations.Mapper
 import org.apache.ibatis.annotations.Param
 import top.fatweb.oxygen.api.entity.tool.Platform
 import top.fatweb.oxygen.api.entity.tool.Tool
-import top.fatweb.oxygen.api.entity.tool.ToolTemplate
 
 /**
  * Tool edit mapper
@@ -19,17 +18,6 @@ import top.fatweb.oxygen.api.entity.tool.ToolTemplate
 @Mapper
 interface EditMapper : BaseMapper<Tool> {
     /**
-     * Select tool template by ID
-     *
-     * @param id Template ID
-     * @return ToolTemplate object
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see ToolTemplate
-     */
-    fun selectTemplate(@Param("id") id: Long): ToolTemplate?
-
-    /**
      * Select tool by ID and user ID
      *
      * @param id Tool ID
@@ -40,6 +28,48 @@ interface EditMapper : BaseMapper<Tool> {
      * @see Tool
      */
     fun selectOne(@Param("id") id: Long, @Param("userId") userId: Long): Tool?
+
+    /**
+     * Select tool source
+     *
+     * @param username Username
+     * @param toolId Tool ID
+     * @param ver Tool version
+     * @param operator Operator username
+     * @return List of tool object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.1.0
+     * @see Platform
+     * @see Tool
+     */
+    fun selectSource(
+        @Param("username") username: String,
+        @Param("toolId") toolId: String,
+        @Param("ver") ver: String,
+        @Param("platform") platform: Platform,
+        @Param("operator") operator: String?
+    ): Tool?
+
+    /**
+     * Select tool dist
+     *
+     * @param username Username
+     * @param toolId Tool ID
+     * @param ver Tool version
+     * @param operator Operator username
+     * @return List of tool object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.1.0
+     * @see Platform
+     * @see Tool
+     */
+    fun selectDist(
+        @Param("username") username: String,
+        @Param("toolId") toolId: String,
+        @Param("ver") ver: String,
+        @Param("platform") platform: Platform,
+        @Param("operator") operator: String?
+    ): Tool?
 
     /**
      * Select tool ID by user ID in page
@@ -64,25 +94,4 @@ interface EditMapper : BaseMapper<Tool> {
      * @see Tool
      */
     fun selectListByToolIds(@Param("toolIds") toolIds: List<String>, @Param("userId") userId: Long): List<Tool>
-
-    /**
-     * Select tool detail
-     *
-     * @param username Username
-     * @param toolId Tool ID
-     * @param ver Tool version
-     * @param operator Operator username
-     * @return List of tool object
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see Platform
-     * @see Tool
-     */
-    fun selectDetail(
-        @Param("username") username: String,
-        @Param("toolId") toolId: String,
-        @Param("ver") ver: String,
-        @Param("platform") platform: Platform,
-        @Param("operator") operator: String?
-    ): Tool?
 }

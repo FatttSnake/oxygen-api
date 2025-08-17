@@ -4,24 +4,15 @@ import top.fatweb.oxygen.api.entity.permission.Module
 import top.fatweb.oxygen.api.vo.permission.base.ModuleVo
 
 /**
- * Module converter
+ * Convert to ModuleVo object
  *
+ * @return ModuleVo object
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.0.0
+ * @since 1.1.0
+ * @see Module
+ * @see ModuleVo
  */
-object ModuleConverter {
-    /**
-     * Convert Module object into ModuleVo object
-     *
-     * @param module Module object
-     * @return ModuleVo object
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see Module
-     * @see ModuleVo
-     */
-    fun moduleToModuleVo(module: Module) = ModuleVo(
-        id = module.id,
-        name = module.name
-    )
-}
+fun Module.toVo() = ModuleVo(
+    id = this.id,
+    name = this.name
+)

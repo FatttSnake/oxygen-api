@@ -31,24 +31,6 @@ class ToolBase : Serializable {
     var name: String? = null
 
     /**
-     * Source ID
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     */
-    @TableField("source_id")
-    var sourceId: Long? = null
-
-    /**
-     * Dist ID
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     */
-    @TableField("dist_id")
-    var distId: Long? = null
-
-    /**
      * Platform
      *
      * @author FatttSnake, fatttsnake@gmail.com
@@ -57,15 +39,6 @@ class ToolBase : Serializable {
      */
     @TableField("platform")
     var platform: Platform? = null
-
-    /**
-     * Has compiled
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     */
-    @TableField("compiled")
-    var compiled: Int? = null
 
     /**
      * Create time
@@ -126,15 +99,24 @@ class ToolBase : Serializable {
     var dist: ToolData? = null
 
     /**
-     * Dist data
+     * Version list
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
      */
     @TableField(exist = false)
-    var distData: String? = null
+    var versions: List<Long>? = null
+
+    /**
+     * Base version
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.1.0
+     */
+    @TableField(exist = false)
+    var baseVersion: Long? = null
 
     override fun toString(): String {
-        return "ToolBase(id=$id, name=$name, sourceId=$sourceId, distId=$distId, platform=$platform, compiled=$compiled, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version, source=$source, dist=$dist, distData=$distData)"
+        return "ToolBase(id=$id, name=$name, platform=$platform, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version, source=$source, dist=$dist, versions=$versions, baseVersion=$baseVersion)"
     }
 }

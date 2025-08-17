@@ -66,19 +66,16 @@ interface IRoleService : IService<Role> {
      * Update role
      *
      * @param roleUpdateParam Update role parameters
-     * @return RoleVo object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see RoleUpdateParam
-     * @see RoleVo
      */
-    fun update(roleUpdateParam: RoleUpdateParam): RoleVo
+    fun update(roleUpdateParam: RoleUpdateParam)
 
     /**
      * Update status of role
      *
      * @param roleUpdateStatusParam Update status of role parameters
-     * @return Result
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see RoleUpdateStatusParam

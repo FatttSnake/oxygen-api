@@ -5,18 +5,15 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import top.fatweb.oxygen.api.converter.permission.RoleConverter
+import top.fatweb.oxygen.api.converter.permission.toEntity
+import top.fatweb.oxygen.api.converter.permission.toVo
+import top.fatweb.oxygen.api.converter.permission.toVoWithPower
 import top.fatweb.oxygen.api.entity.permission.RPowerRole
 import top.fatweb.oxygen.api.entity.permission.Role
-import top.fatweb.oxygen.api.exception.DatabaseInsertException
-import top.fatweb.oxygen.api.exception.DatabaseUpdateException
-import top.fatweb.oxygen.api.exception.NoRecordFoundException
 import top.fatweb.oxygen.api.mapper.permission.RoleMapper
 import top.fatweb.oxygen.api.param.permission.role.*
 import top.fatweb.oxygen.api.service.permission.*
-import top.fatweb.oxygen.api.util.PageUtil
-import top.fatweb.oxygen.api.util.RedisUtil
-import top.fatweb.oxygen.api.util.WebUtil
+import top.fatweb.oxygen.api.util.*
 import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.permission.RoleWithPowerVo
 import top.fatweb.oxygen.api.vo.permission.base.RoleVo
@@ -47,7 +44,7 @@ class RoleServiceImpl(
     override fun getPage(roleGetParam: RoleGetParam?): PageVo<RoleWithPowerVo> {
         val roleIdsPage = Page<Long>(roleGetParam?.currentPage ?: 1, roleGetParam?.pageSize ?: 20)
 
-        PageUtil.setPageSort(roleGetParam, roleIdsPage)
+        setPageSort(roleGetParam, roleIdsPage)
 
         val roleIdsIPage =
             baseMapper.selectPage(roleIdsPage, roleGetParam?.searchName, roleGetParam?.searchRegex ?: false)
@@ -58,45 +55,43 @@ class RoleServiceImpl(
         }
 
 
-        return RoleConverter.rolePageToRoleWithPowerPageVo(rolePage)
+        return rolePage.toVoWithPower()
     }
 
     override fun getOne(id: Long): RoleWithPowerVo =
-        baseMapper.selectOneById(id)?.let(RoleConverter::roleToRoleWithPowerVo) ?: throw NoRecordFoundException()
+        queryOrThrowException { baseMapper.selectOneById(id) }.let(Role::toVoWithPower)
 
-    override fun getList(): List<RoleVo> = this.list().map(RoleConverter::roleToRoleVo)
+    override fun getList(): List<RoleVo> = this.list().map(Role::toVo)
 
     @Transactional
     override fun add(roleAddParam: RoleAddParam): RoleVo {
         val fullPowerIds = roleAddParam.powerIds?.let(::getFullPowerIds)
 
-        val role = RoleConverter.roleAddParamToRole(roleAddParam)
-        if (baseMapper.insert(role) != 1) {
-            throw DatabaseInsertException()
-        }
+        val role = roleAddParam.toEntity()
+        saveOrThrowException { this.save(role) }
 
         if (fullPowerIds.isNullOrEmpty()) {
-            return RoleConverter.roleToRoleVo(role)
+            return role.toVo()
         }
 
-        rPowerRoleService.saveBatch(fullPowerIds.map {
-            RPowerRole().apply {
-                roleId = role.id
-                powerId = it
-            }
-        })
-        return RoleConverter.roleToRoleVo(role)
+        saveOrThrowException {
+            rPowerRoleService.saveBatch(fullPowerIds.map {
+                RPowerRole().apply {
+                    roleId = role.id
+                    powerId = it
+                }
+            })
+        }
+        return role.toVo()
     }
 
     @Transactional
-    override fun update(roleUpdateParam: RoleUpdateParam): RoleVo {
+    override fun update(roleUpdateParam: RoleUpdateParam) {
         val fullPowerIds = roleUpdateParam.powerIds?.let(::getFullPowerIds)
 
-        val role = RoleConverter.roleUpdateParamToRole(roleUpdateParam)
+        val role = roleUpdateParam.toEntity()
 
-        if (baseMapper.updateById(role) != 1) {
-            throw DatabaseUpdateException()
-        }
+        updateOrThrowException { this.updateById(role) }
 
         val oldPowerList = rPowerRoleService.list(
             KtQueryWrapper(RPowerRole()).select(RPowerRole::powerId).eq(RPowerRole::roleId, roleUpdateParam.id)
@@ -119,22 +114,20 @@ class RoleServiceImpl(
         }
 
         addPowerIds.forEach {
-            rPowerRoleService.save(RPowerRole().apply {
-                roleId = roleUpdateParam.id
-                powerId = it
-            })
+            saveOrThrowException {
+                rPowerRoleService.save(RPowerRole().apply {
+                    roleId = roleUpdateParam.id
+                    powerId = it
+                })
+            }
         }
 
         roleUpdateParam.id?.let { offlineUser(it) }
-
-        return RoleConverter.roleToRoleVo(role)
     }
 
     override fun status(roleUpdateStatusParam: RoleUpdateStatusParam) {
-        updateById(RoleConverter.roleUpdateStatusParamToRole(roleUpdateStatusParam)).let {
-            if (!it) {
-                throw DatabaseUpdateException()
-            }
+        updateById(roleUpdateStatusParam.toEntity()).let {
+            updateOrThrowException { it }
 
             if (!roleUpdateStatusParam.enable) {
                 roleUpdateStatusParam.id?.let { id -> offlineUser(id) }
@@ -149,7 +142,7 @@ class RoleServiceImpl(
 
     @Transactional
     override fun delete(roleDeleteParam: RoleDeleteParam) {
-        baseMapper.deleteBatchIds(roleDeleteParam.ids)
+        this.removeBatchByIds(roleDeleteParam.ids)
         rPowerRoleService.remove(KtQueryWrapper(RPowerRole()).`in`(RPowerRole::roleId, roleDeleteParam.ids))
         offlineUser(*roleDeleteParam.ids!!.toLongArray())
     }
@@ -182,6 +175,6 @@ class RoleServiceImpl(
 
     private fun offlineUser(vararg roleIds: Long) {
         val userIds = userService.getIdsByRoleIds(roleIds.toList())
-        WebUtil.offlineUser(redisUtil, *userIds.toLongArray())
+        offlineUser(redisUtil, *userIds.toLongArray())
     }
 }

@@ -9,6 +9,7 @@ import jakarta.validation.constraints.NotBlank
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
+@Schema(description = "工具管理审批通过请求参数")
 data class ToolManagementPassParam(
     /**
      * Dist

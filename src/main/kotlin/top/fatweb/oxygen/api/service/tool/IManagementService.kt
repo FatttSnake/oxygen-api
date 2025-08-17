@@ -6,6 +6,7 @@ import top.fatweb.oxygen.api.param.tool.ToolManagementGetParam
 import top.fatweb.oxygen.api.param.tool.ToolManagementPassParam
 import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.tool.ToolVo
+import top.fatweb.oxygen.api.vo.tool.ToolWithSourceVo
 
 /**
  * Tool management service interface
@@ -20,12 +21,12 @@ interface IManagementService : IService<Tool> {
      * Get tool by ID
      *
      * @param id Tool ID
-     * @return ToolVo object
+     * @return ToolWithSourceVo object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
-     * @see ToolVo
+     * @see ToolWithSourceVo
      */
-    fun getOne(id: Long): ToolVo
+    fun getOne(id: Long): ToolWithSourceVo
 
     /**
      * Get tool in page
@@ -45,35 +46,47 @@ interface IManagementService : IService<Tool> {
      *
      * @param id Tool ID
      * @param toolManagementPassParam Pass tool review parameters in tool management
-     * @return ToolVo object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see ToolManagementPassParam
-     * @see ToolVo
      */
-    fun pass(id: Long, toolManagementPassParam: ToolManagementPassParam): ToolVo
+    fun pass(id: Long, toolManagementPassParam: ToolManagementPassParam)
 
     /**
      * Reject tool review
      *
      * @param id Tool ID
-     * @return ToolVo object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
-     * @see ToolVo
      */
-    fun reject(id: Long): ToolVo
+    fun reject(id: Long)
 
     /**
-     * Off shelve tool
+     * Delist tool
      *
      * @param id Tool ID
-     * @return ToolVo object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
-     * @see ToolVo
      */
-    fun offShelve(id: Long): ToolVo
+    fun delist(id: Long)
+
+    /**
+     * Delist tool all versions
+     *
+     * @param id Tool ID
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.1.0
+     */
+    fun delistAllVersion(id: Long)
+
+    /**
+     * Relist tool
+     *
+     * @param id Tool ID
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.1.0
+     */
+    fun relist(id: Long)
 
     /**
      * Delete tool
