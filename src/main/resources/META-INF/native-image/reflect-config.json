@@ -1,0 +1,964 @@
+[
+  {
+    "name": "kotlin.collections.EmptySet",
+    "allDeclaredConstructors": true,
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "com.fasterxml.jackson.databind.ser.std.ToStringSerializer",
+    "allDeclaredConstructors": true,
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "com.zaxxer.hikari.HikariConfig",
+    "allDeclaredConstructors": true,
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "com.sun.jna.CallbackReference",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "com.sun.jna.Klass",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "com.sun.jna.Native",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "com.sun.jna.Structure",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true,
+    "fields": [
+      {
+        "name": "memory",
+        "allowWrite": true
+      },
+      {
+        "name": "typeInfo"
+      }
+    ],
+    "methods": [
+      {
+        "name": "newInstance",
+        "parameterTypes": [
+          "java.lang.Class",
+          "com.sun.jna.Pointer"
+        ]
+      },
+      {
+        "name": "newInstance",
+        "parameterTypes": [
+          "java.lang.Class",
+          "long"
+        ]
+      },
+      {
+        "name": "newInstance",
+        "parameterTypes": [
+          "java.lang.Class"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.NativeLong",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "com.sun.jna.ptr.PointerByReference",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "com.sun.jna.ptr.IntByReference",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "java.util.Base64$Decoder",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "com.sun.jna.CallbackProxy",
+    "methods": [
+      {
+        "name": "callback",
+        "parameterTypes": [
+          "java.lang.Object[]"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.NativeLong",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.Union",
+    "allDeclaredFields": true
+  },
+  {
+    "name": "com.sun.jna.platform.win32.BaseTSD$SIZE_T",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.BaseTSD$DWORD_PTR",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.BaseTSD$ULONG_PTR",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.COM.Dispatch",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.COM.Dispatch$ByReference",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.COM.Unknown",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.COM.Unknown$ByReference",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.COM.Wbemcli$IWbemServices",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.Guid$CLSID",
+    "allDeclaredFields": true
+  },
+  {
+    "name": "com.sun.jna.platform.win32.Guid$GUID",
+    "allDeclaredFields": true,
+    "allPublicFields": true
+  },
+  {
+    "name": "com.sun.jna.platform.win32.OaIdl$CURRENCY",
+    "allDeclaredFields": true,
+    "allPublicConstructors": true
+  },
+  {
+    "name": "com.sun.jna.platform.win32.OaIdl$CURRENCY$_CURRENCY",
+    "allDeclaredFields": true,
+    "allPublicConstructors": true
+  },
+  {
+    "name": "com.sun.jna.platform.win32.OaIdl$DATE",
+    "allDeclaredFields": true,
+    "allPublicConstructors": true,
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.OaIdl$DECIMAL",
+    "allDeclaredFields": true,
+    "allPublicConstructors": true
+  },
+  {
+    "name": "com.sun.jna.platform.win32.OaIdl$DECIMAL$_DECIMAL1",
+    "allDeclaredFields": true,
+    "allPublicConstructors": true
+  },
+  {
+    "name": "com.sun.jna.platform.win32.OaIdl$DECIMAL$_DECIMAL1$_DECIMAL1_DECIMAL",
+    "allDeclaredFields": true,
+    "allPublicConstructors": true
+  },
+  {
+    "name": "com.sun.jna.platform.win32.OaIdl$DECIMAL$_DECIMAL2",
+    "allDeclaredFields": true,
+    "allPublicConstructors": true
+  },
+  {
+    "name": "com.sun.jna.platform.win32.OaIdl$DECIMAL$_DECIMAL2$_DECIMAL2_DECIMAL",
+    "allDeclaredFields": true,
+    "allPublicConstructors": true
+  },
+  {
+    "name": "com.sun.jna.platform.win32.OaIdl$VARIANT_BOOL",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.OaIdl$VARIANT_BOOLByReference",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.OaIdl$_VARIANT_BOOLByReference",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.Psapi$PERFORMANCE_INFORMATION",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.Variant$VARIANT",
+    "allDeclaredFields": true
+  },
+  {
+    "name": "com.sun.jna.platform.win32.Variant$VARIANT$ByReference",
+    "allDeclaredFields": true
+  },
+  {
+    "name": "com.sun.jna.platform.win32.Variant$VARIANT$_VARIANT",
+    "allDeclaredFields": true,
+    "allPublicConstructors": true
+  },
+  {
+    "name": "com.sun.jna.platform.win32.Variant$VARIANT$_VARIANT$__VARIANT",
+    "allDeclaredFields": true,
+    "allPublicConstructors": true
+  },
+  {
+    "name": "com.sun.jna.platform.win32.Variant$VARIANT$_VARIANT$__VARIANT$BRECORD",
+    "allDeclaredFields": true,
+    "allPublicConstructors": true
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WTypes$BSTR",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WTypes$BSTRByReference",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WTypes$VARTYPE",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinBase$FILETIME",
+    "allDeclaredFields": true,
+    "allPublicFields": true,
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinBase$SYSTEM_INFO",
+    "allDeclaredFields": true,
+    "allPublicFields": true
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinBase$SYSTEM_INFO$PI",
+    "allDeclaredFields": true,
+    "allPublicConstructors": true,
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinBase$SYSTEM_INFO$UNION",
+    "allDeclaredFields": true,
+    "allPublicConstructors": true,
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinDef$BYTE",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinDef$CHAR",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinDef$CHARByReference",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinDef$DWORD",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinDef$DWORDByReference",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinDef$LONG",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinDef$LONGByReference",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinDef$LONGLONG",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinDef$LONGLONGByReference",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinDef$PVOID",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinDef$SCODE",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinDef$SCODEByReference",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinDef$SHORT",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinDef$UINT",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinDef$UINTByReference",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinDef$ULONG",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinDef$ULONGByReference",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinDef$ULONGLONG",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinDef$ULONGLONGByReference",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinDef$USHORT",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinDef$USHORTByReference",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinDef$WORD",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinNT$CACHE_RELATIONSHIP",
+    "allDeclaredFields": true
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinNT$EVENTLOGRECORD",
+    "allDeclaredFields": true
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinNT$GROUP_AFFINITY",
+    "allDeclaredFields": true,
+    "allPublicConstructors": true
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinNT$GROUP_AFFINITY[]"
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinNT$GROUP_RELATIONSHIP",
+    "allDeclaredFields": true
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinNT$HANDLE",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinNT$HANDLEByReference",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinNT$HRESULT",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinNT$LARGE_INTEGER",
+    "allDeclaredFields": true,
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinNT$LARGE_INTEGER$LowHigh",
+    "allDeclaredFields": true,
+    "allPublicConstructors": true,
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinNT$LARGE_INTEGER$UNION",
+    "allDeclaredFields": true,
+    "allPublicConstructors": true,
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinNT$LUID",
+    "allDeclaredFields": true,
+    "allPublicConstructors": true,
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinNT$LUID_AND_ATTRIBUTES",
+    "allDeclaredFields": true,
+    "allPublicConstructors": true,
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinNT$LUID_AND_ATTRIBUTES[]"
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinNT$NUMA_NODE_RELATIONSHIP",
+    "allDeclaredFields": true
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinNT$OSVERSIONINFOEX",
+    "allDeclaredFields": true
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinNT$PROCESSOR_GROUP_INFO",
+    "allDeclaredFields": true,
+    "allPublicConstructors": true
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinNT$PROCESSOR_GROUP_INFO[]"
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinNT$PROCESSOR_RELATIONSHIP",
+    "allDeclaredFields": true
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinNT$SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX",
+    "allDeclaredFields": true
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinNT$TOKEN_PRIVILEGES",
+    "allDeclaredFields": true
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinReg$HKEY",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.WinReg$HKEYByReference",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.ptr.ByteByReference",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.ptr.DoubleByReference",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.ptr.FloatByReference",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.ptr.IntByReference",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.ptr.PointerByReference",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.ptr.ShortByReference",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.win32.DLLCallback"
+  },
+  {
+    "name": "com.sun.jna.platform.win32.Kernel32",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true,
+    "allDeclaredFields": true,
+    "methods": [
+      {
+        "name": "GetDiskFreeSpaceEx",
+        "parameterTypes": [
+          "java.lang.String",
+          "com.sun.jna.platform.win32.WinNT$LARGE_INTEGER",
+          "com.sun.jna.platform.win32.WinNT$LARGE_INTEGER",
+          "com.sun.jna.platform.win32.WinNT$LARGE_INTEGER"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.Advapi32",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true,
+    "allDeclaredFields": true,
+    "methods": [
+      {
+        "name": "GetLengthSid",
+        "parameterTypes": [
+          "com.sun.jna.platform.win32.WinNT$PSID"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.Ole32",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true,
+    "allDeclaredFields": true,
+    "methods": [
+      {
+        "name": "CoCreateInstance",
+        "parameterTypes": [
+          "com.sun.jna.platform.win32.Guid$GUID",
+          "com.sun.jna.Pointer",
+          "int",
+          "com.sun.jna.platform.win32.Guid$GUID",
+          "com.sun.jna.ptr.PointerByReference"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "com.sun.jna.platform.win32.OleAuto",
+    "allDeclaredConstructors": true,
+    "allPublicConstructors": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true,
+    "allDeclaredFields": true,
+    "methods": [
+      {
+        "name": "SafeArrayGetLBound",
+        "parameterTypes": [
+          "com.sun.jna.platform.win32.OaIdl$SAFEARRAY",
+          "com.sun.jna.platform.win32.WinDef$UINT",
+          "com.sun.jna.platform.win32.WinDef$LONGByReference"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "oshi.jna.Struct$CloseablePdhRawCounter",
+    "allDeclaredFields": true,
+    "allPublicFields": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "oshi.jna.Struct$CloseablePerformanceInformation",
+    "allDeclaredFields": true,
+    "allPublicFields": true,
+    "allDeclaredMethods": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "oshi.hardware.platform.windows.WindowsCentralProcessor",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "oshi.hardware.platform.windows.WindowsGlobalMemory",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "oshi.jna.ByRef$CloseableHANDLEByReference",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "oshi.jna.ByRef$CloseableIntByReference",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "oshi.jna.ByRef$CloseableLONGLONGByReference",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "oshi.software.os.windows.WindowsOperatingSystem",
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      }
+    ]
+  },
+  {
+    "name": "top.fatweb.oxygen.api.http.entity.turnstile.SiteverifyResponse",
+    "allDeclaredConstructors": true,
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "top.fatweb.oxygen.api.entity.permission.LoginUser",
+    "allDeclaredConstructors": true,
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "top.fatweb.oxygen.api.settings.BaseSettings",
+    "allDeclaredConstructors": true,
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "top.fatweb.oxygen.api.settings.MailSettings",
+    "allDeclaredConstructors": true,
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "top.fatweb.oxygen.api.settings.SystemSettings",
+    "allDeclaredConstructors": true,
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true
+  },
+  {
+    "name": "top.fatweb.oxygen.api.settings.TwoFactorSettings",
+    "allDeclaredConstructors": true,
+    "allDeclaredFields": true,
+    "allDeclaredMethods": true
+  }
+]

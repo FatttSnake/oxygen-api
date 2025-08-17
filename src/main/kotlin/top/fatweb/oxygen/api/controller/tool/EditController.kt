@@ -2,6 +2,7 @@ package top.fatweb.oxygen.api.controller.tool
 
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.validation.Valid
+import org.springframework.aot.hint.annotation.RegisterReflectionForBinding
 import org.springframework.web.bind.annotation.*
 import top.fatweb.oxygen.api.annotation.BaseController
 import top.fatweb.oxygen.api.annotation.ParamProcessor
@@ -23,6 +24,9 @@ import top.fatweb.oxygen.api.vo.tool.*
  * @see IEditService
  */
 @BaseController(path = ["/tool"], name = "工具编辑", description = "工具编辑相关接口")
+@RegisterReflectionForBinding(
+    PageSortParam::class
+)
 class EditController(
     private val editService: IEditService
 ) {

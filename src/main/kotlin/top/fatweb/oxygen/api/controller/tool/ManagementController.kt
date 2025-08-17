@@ -2,6 +2,7 @@ package top.fatweb.oxygen.api.controller.tool
 
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.validation.Valid
+import org.springframework.aot.hint.annotation.RegisterReflectionForBinding
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import top.fatweb.oxygen.api.annotation.BaseController
@@ -23,6 +24,9 @@ import top.fatweb.oxygen.api.vo.tool.ToolWithSourceVo
  * @see IManagementService
  */
 @BaseController(path = ["/system/tool"], name = "工具管理", description = "工具管理相关接口")
+@RegisterReflectionForBinding(
+    ToolManagementGetParam::class
+)
 class ManagementController(
     private val managementService: IManagementService
 ) {

@@ -2,6 +2,7 @@ package top.fatweb.oxygen.api.controller.permission
 
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.validation.Valid
+import org.springframework.aot.hint.annotation.RegisterReflectionForBinding
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import top.fatweb.oxygen.api.annotation.BaseController
@@ -22,6 +23,9 @@ import top.fatweb.oxygen.api.vo.permission.base.RoleVo
  * @see IRoleService
  */
 @BaseController(path = ["/system/role"], name = "角色管理", description = "角色管理相关接口")
+@RegisterReflectionForBinding(
+    RoleGetParam::class
+)
 class RoleController(
     private val roleService: IRoleService
 ) {

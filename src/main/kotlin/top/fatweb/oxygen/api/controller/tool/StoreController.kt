@@ -2,6 +2,7 @@ package top.fatweb.oxygen.api.controller.tool
 
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.validation.Valid
+import org.springframework.aot.hint.annotation.RegisterReflectionForBinding
 import org.springframework.web.bind.annotation.*
 import top.fatweb.oxygen.api.annotation.BaseController
 import top.fatweb.oxygen.api.annotation.ParamProcessor
@@ -24,6 +25,10 @@ import top.fatweb.oxygen.api.vo.tool.ToolVo
  * @see IStoreService
  */
 @BaseController(path = ["/tool/store"], name = "工具商店", description = "工具商店相关接口")
+@RegisterReflectionForBinding(
+    ToolStoreGetParam::class,
+    PageSortParam::class
+)
 class StoreController(
     private val storeService: IStoreService
 ) {

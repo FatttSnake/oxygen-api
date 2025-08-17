@@ -21,6 +21,7 @@
         <java.version>17</java.version>
         <kotlin.version>2.2.0</kotlin.version>
         <bcprov.version>1.81</bcprov.version>
+        <graal-sdk.version>24.2.2</graal-sdk.version>
         <build.timestamp>${maven.build.timestamp}</build.timestamp>
         <maven.build.timestamp.format>yyyy-MM-dd'T'HH:mm:ss</maven.build.timestamp.format>
         <retrofit.version>3.0.0</retrofit.version>
@@ -141,6 +142,15 @@
                     </algorithms>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.graalvm.buildtools</groupId>
+                <artifactId>native-maven-plugin</artifactId>
+                <configuration>
+                    <buildArgs combine.children="append">
+                        <arg>-H:+AddAllCharsets</arg>
+                    </buildArgs>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
@@ -211,6 +221,12 @@
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.graalvm.sdk</groupId>
+            <artifactId>graal-sdk</artifactId>
+            <version>${graal-sdk.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>

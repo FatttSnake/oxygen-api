@@ -2,6 +2,7 @@ package top.fatweb.oxygen.api.controller.api.v1
 
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.validation.Valid
+import org.springframework.aot.hint.annotation.RegisterReflectionForBinding
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.GetMapping
 import top.fatweb.oxygen.api.annotation.ApiController
@@ -20,6 +21,10 @@ import top.fatweb.oxygen.api.vo.api.v1.avatar.AvatarBase64Vo
  * @see IAvatarService
  */
 @ApiController(value = "avatarControllerV1", path = ["/avatar"], name = "随机头像 V1", description = "随机头像相关接口")
+@RegisterReflectionForBinding(
+    AvatarBaseParam::class,
+    AvatarGitHubParam::class
+)
 class AvatarController(
     private val avatarService: IAvatarService
 ) {

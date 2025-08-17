@@ -2,6 +2,7 @@ package top.fatweb.oxygen.api.controller.system
 
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.validation.Valid
+import org.springframework.aot.hint.annotation.RegisterReflectionForBinding
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.GetMapping
 import top.fatweb.oxygen.api.annotation.BaseController
@@ -21,6 +22,9 @@ import top.fatweb.oxygen.api.vo.system.SysLogVo
  * @see ISysLogService
  */
 @BaseController(path = ["/system/log"], name = "系统日志", description = "系统日志相关接口")
+@RegisterReflectionForBinding(
+    SysLogGetParam::class
+)
 class SysLogController(
     private val sysLogService: ISysLogService
 ) {
