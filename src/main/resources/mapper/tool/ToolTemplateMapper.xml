@@ -59,7 +59,7 @@
         </where>
     </select>
 
-    <resultMap id="toolTemplateMap" type="toolTemplate">
+    <resultMap id="toolTemplateMap" type="top.fatweb.oxygen.api.entity.tool.ToolTemplate">
         <id property="id" column="tool_template_id"/>
         <result property="name" column="tool_template_name"/>
         <result property="baseId" column="tool_template_base_id"/>
@@ -74,12 +74,12 @@
         <result property="version" column="tool_template_version"/>
     </resultMap>
 
-    <resultMap id="toolTemplateWithBaseMap" type="toolTemplate" extends="toolTemplateMap">
+    <resultMap id="toolTemplateWithBaseMap" type="top.fatweb.oxygen.api.entity.tool.ToolTemplate" extends="toolTemplateMap">
         <association property="base"
                      resultMap="top.fatweb.oxygen.api.mapper.tool.ToolBaseMapper.toolBaseWithVersionMap"/>
     </resultMap>
 
-    <resultMap id="toolTemplateWithDataMap" type="toolTemplate" extends="toolTemplateWithBaseMap">
+    <resultMap id="toolTemplateWithDataMap" type="top.fatweb.oxygen.api.entity.tool.ToolTemplate" extends="toolTemplateWithBaseMap">
         <association property="source">
             <id property="id" column="tool_template_source_id"/>
             <result property="data" column="tool_template_source_data"/>

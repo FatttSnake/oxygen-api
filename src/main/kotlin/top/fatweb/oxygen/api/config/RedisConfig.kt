@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import com.fasterxml.jackson.annotation.PropertyAccessor
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.redis.connection.RedisConnectionFactory
@@ -21,16 +20,21 @@ import org.springframework.data.redis.serializer.StringRedisSerializer
 @Configuration
 class RedisConfig {
     @Bean
-    fun redisTemplate(redisConnectionFactory: RedisConnectionFactory): RedisTemplate<*, *> {
+    fun redisTemplate(
+        redisConnectionFactory: RedisConnectionFactory,
+        objectMapper: ObjectMapper
+    ): RedisTemplate<*, *> {
         val redisTemplate = RedisTemplate<String, Any>()
         redisTemplate.connectionFactory = redisConnectionFactory
         val stringRedisSerializer = StringRedisSerializer()
-        val objectMapper = ObjectMapper().registerModules(JavaTimeModule()).apply {
-            setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY)
-            activateDefaultTyping(
-                this.polymorphicTypeValidator, ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY
-            )
-        }
+        val objectMapper = objectMapper
+            .copy()
+            .apply {
+                setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY)
+                activateDefaultTyping(
+                    this.polymorphicTypeValidator, ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY
+                )
+            }
         val anyJackson2JsonRedisSerializer = Jackson2JsonRedisSerializer(objectMapper, Any::class.java)
 
         // Use String Redis Serializer to serialize and deserialize redis key values

@@ -303,7 +303,7 @@
         </where>
     </select>
 
-    <resultMap id="userBaseMap" type="user">
+    <resultMap id="userBaseMap" type="top.fatweb.oxygen.api.entity.permission.User">
         <id property="id" column="user_id"/>
         <result property="username" column="user_username"/>
         <result property="twoFactor" column="user_two_factor"/>
@@ -323,12 +323,12 @@
         <result property="version" column="user_version"/>
     </resultMap>
 
-    <resultMap id="userWithInfoMap" type="user" extends="userBaseMap">
+    <resultMap id="userWithInfoMap" type="top.fatweb.oxygen.api.entity.permission.User" extends="userBaseMap">
         <association property="userInfo"
                      resultMap="top.fatweb.oxygen.api.mapper.permission.UserInfoMapper.userInfoMap"/>
     </resultMap>
 
-    <resultMap id="userWithPowerInfoMap" type="user" extends="userWithInfoMap">
+    <resultMap id="userWithPowerInfoMap" type="top.fatweb.oxygen.api.entity.permission.User" extends="userWithInfoMap">
         <result property="password" column="user_password"/>
         <collection property="modules" resultMap="top.fatweb.oxygen.api.mapper.permission.ModuleMapper.moduleMap"/>
         <collection property="menus" resultMap="top.fatweb.oxygen.api.mapper.permission.MenuMapper.menuMap"/>
@@ -337,7 +337,7 @@
                     resultMap="top.fatweb.oxygen.api.mapper.permission.OperationMapper.operationMap"/>
     </resultMap>
 
-    <resultMap id="userWithRoleInfoMap" type="user" extends="userWithInfoMap">
+    <resultMap id="userWithRoleInfoMap" type="top.fatweb.oxygen.api.entity.permission.User" extends="userWithInfoMap">
         <collection property="roles" resultMap="top.fatweb.oxygen.api.mapper.permission.RoleMapper.roleMap"/>
         <collection property="groups" resultMap="top.fatweb.oxygen.api.mapper.permission.GroupMapper.groupMap"/>
     </resultMap>

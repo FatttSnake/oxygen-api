@@ -5,8 +5,7 @@ import com.baomidou.mybatisplus.extension.kotlin.KtUpdateWrapper
 import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import org.apache.velocity.VelocityContext
-import org.apache.velocity.app.VelocityEngine
+import kotlinx.coroutines.runBlocking
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.security.access.AccessDeniedException
@@ -15,6 +14,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.thymeleaf.TemplateEngine
+import org.thymeleaf.context.Context
 import top.fatweb.oxygen.api.annotation.EventLogRecord
 import top.fatweb.oxygen.api.entity.permission.LoginUser
 import top.fatweb.oxygen.api.entity.permission.User
@@ -37,7 +38,6 @@ import top.fatweb.oxygen.api.vo.permission.LoginVo
 import top.fatweb.oxygen.api.vo.permission.RegisterVo
 import top.fatweb.oxygen.api.vo.permission.TokenVo
 import top.fatweb.oxygen.api.vo.permission.TwoFactorVo
-import java.io.StringWriter
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneOffset
@@ -48,7 +48,7 @@ import java.util.*
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
- * @see VelocityEngine
+ * @see TemplateEngine
  * @see AuthenticationManager
  * @see PasswordEncoder
  * @see RedisUtil
@@ -61,7 +61,7 @@ import java.util.*
  */
 @Service
 class AuthenticationServiceImpl(
-    private val velocityEngine: VelocityEngine,
+    private val templateEngine: TemplateEngine,
     private val authenticationManager: AuthenticationManager,
     private val passwordEncoder: PasswordEncoder,
     private val redisUtil: RedisUtil,
@@ -425,38 +425,37 @@ class AuthenticationServiceImpl(
     }
 
     private fun sendVerifyMail(username: String, code: String, email: String) {
-        val velocityContext = VelocityContext().apply {
-            put("appName", SettingsOperator.getAppValue(BaseSettings::appName, "氧工具"))
-            put("appUrl", SettingsOperator.getAppValue(BaseSettings::appUrl, "http://localhost"))
-            put("username", username)
-            put(
-                "verifyUrl",
-                SettingsOperator.getAppValue(BaseSettings::verifyUrl, "http://localhost/verify?code=\${verifyCode}")
+        val context = Context(
+            Locale.getDefault(),
+            mapOf(
+                "appName" to SettingsOperator.getAppValue(BaseSettings::appName, "氧工具"),
+                "appUrl" to SettingsOperator.getAppValue(BaseSettings::appUrl, "http://localhost"),
+                "username" to username,
+                "verifyUrl" to SettingsOperator.getAppValue(
+                    BaseSettings::verifyUrl,
+                    "http://localhost/verify?code=\${verifyCode}"
+                )
                     .replace(
                         Regex("(?<=([^\\\\]))\\$\\{verifyCode}"), code
                     )
             )
-        }
-        val template = velocityEngine.getTemplate("templates/email-verify-account-cn.vm")
-
-        val stringWriter = StringWriter()
-        template.merge(velocityContext, stringWriter)
-
+        )
+        val emailContent = templateEngine.process("email-verify-account-cn", context)
         MailUtil.sendSimpleMail(
-            "验证您的账号", stringWriter.toString(), true,
+            "验证您的账号", emailContent, true,
             email
         )
     }
 
     private fun sendRetrieveMail(username: String, ip: String, code: String, email: String) {
-        val velocityContext = VelocityContext().apply {
-            put("appName", SettingsOperator.getAppValue(BaseSettings::appName, "氧工具"))
-            put("appUrl", SettingsOperator.getAppValue(BaseSettings::appUrl, "http://localhost"))
-            put("username", username)
-            put("ipAddress", ip)
-            put(
-                "retrieveUrl",
-                SettingsOperator.getAppValue(
+        val context = Context(
+            Locale.getDefault(),
+            mapOf(
+                "appName" to SettingsOperator.getAppValue(BaseSettings::appName, "氧工具"),
+                "appUrl" to SettingsOperator.getAppValue(BaseSettings::appUrl, "http://localhost"),
+                "username" to username,
+                "ipAddress" to ip,
+                "retrieveUrl" to SettingsOperator.getAppValue(
                     BaseSettings::retrieveUrl,
                     "http://localhost/retrieve?code=\${retrieveCode}"
                 )
@@ -464,32 +463,27 @@ class AuthenticationServiceImpl(
                         Regex("(?<=([^\\\\]))\\$\\{retrieveCode}"), code
                     )
             )
-        }
-        val template = velocityEngine.getTemplate("templates/email-retrieve-password-cn.vm")
-
-        val stringWriter = StringWriter()
-        template.merge(velocityContext, stringWriter)
-
+        )
+        val emailContent = templateEngine.process("email-retrieve-password-cn", context)
         MailUtil.sendSimpleMail(
-            "找回您的密码", stringWriter.toString(), true,
+            "找回您的密码", emailContent, true,
             email
         )
     }
 
     private fun sendPasswordChangedMail(username: String, ip: String, email: String) {
-        val velocityContext = VelocityContext().apply {
-            put("appName", SettingsOperator.getAppValue(BaseSettings::appName, "氧工具"))
-            put("appUrl", SettingsOperator.getAppValue(BaseSettings::appUrl, "http://localhost"))
-            put("username", username)
-            put("ipAddress", ip)
-        }
-        val template = velocityEngine.getTemplate("templates/email-password-changed-cn.vm")
-
-        val stringWriter = StringWriter()
-        template.merge(velocityContext, stringWriter)
-
+        val context = Context(
+            Locale.getDefault(),
+            mapOf(
+                "appName" to SettingsOperator.getAppValue(BaseSettings::appName, "氧工具"),
+                "appUrl" to SettingsOperator.getAppValue(BaseSettings::appUrl, "http://localhost"),
+                "username" to username,
+                "ipAddress" to ip
+            )
+        )
+        val emailContent = templateEngine.process("email-password-changed-cn", context)
         MailUtil.sendSimpleMail(
-            "您的密码已更改", stringWriter.toString(), true,
+            "您的密码已更改", emailContent, true,
             email
         )
     }
@@ -572,11 +566,12 @@ class AuthenticationServiceImpl(
 
     private fun verifyCaptcha(captchaCode: String) {
         try {
-            val siteverifyResponse = turnstileApi.siteverify(captchaCode)
+            val siteverifyResponse = runBlocking { turnstileApi.siteverify(captchaCode) }
             if (!siteverifyResponse.success) {
                 throw InvalidCaptchaCodeException()
             }
-        } catch (_: Exception) {
+        } catch (e: Exception) {
+            logger.error("Verify captcha error", e)
             throw InvalidCaptchaCodeException()
         }
     }

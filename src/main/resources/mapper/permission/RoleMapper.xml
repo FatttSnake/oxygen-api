@@ -94,7 +94,7 @@
         where t_s_role.id = #{id}
     </select>
 
-    <resultMap id="roleMap" type="role">
+    <resultMap id="roleMap" type="top.fatweb.oxygen.api.entity.permission.Role">
         <id property="id" column="role_id"/>
         <result property="name" column="role_name"/>
         <result property="enable" column="role_enable"/>
@@ -104,7 +104,7 @@
         <result property="version" column="role_version"/>
     </resultMap>
 
-    <resultMap id="roleWithPowerMap" type="role" extends="roleMap">
+    <resultMap id="roleWithPowerMap" type="top.fatweb.oxygen.api.entity.permission.Role" extends="roleMap">
         <collection property="modules" resultMap="top.fatweb.oxygen.api.mapper.permission.ModuleMapper.moduleMap"/>
         <collection property="menus" resultMap="top.fatweb.oxygen.api.mapper.permission.MenuMapper.menuMap"/>
         <collection property="funcs" resultMap="top.fatweb.oxygen.api.mapper.permission.FuncMapper.funcMap"/>

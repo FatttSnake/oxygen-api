@@ -97,7 +97,7 @@
           and t_b_tool_base.id = #{id}
     </select>
 
-    <select id="selectPageWithVersions" resultMap="toolBaseWithVersionsMap">
+    <select id="selectListWithVersionByIds" resultMap="toolBaseWithVersionsMap">
         select t_b_tool_base.id as tool_base_id,
         t_b_tool_base.name as tool_base_name,
         t_b_tool_base.platform as tool_base_platform,
@@ -111,13 +111,15 @@
         on trtbds.deleted = 0 and trtbds.base_id = t_b_tool_base.id and trtbds.data_type = 'SOURCE' and
         trtbds.base_version != 0
         <where>
-            and t_b_tool_base.deleted = 0
-            <foreach collection="platform" item="item" index="index" open="and t_b_tool_base.platform in ("
-                     separator="," close=")" nullable="true">
+            <foreach collection="ids" item="item" index="index" open="and t_b_tool_base.id in (" separator="," close=")"
+                     nullable="true">
                 #{item}
             </foreach>
         </where>
-        order by trtbds.base_version desc
+        <foreach collection="ids" item="item" index="index" open="order by field(t_b_tool_base.id," separator=","
+                 close="), trtbds.base_version desc" nullable="true">
+            #{item}
+        </foreach>
     </select>
 
     <select id="selectListWithVersion" resultMap="toolBaseWithVersionMap">
@@ -148,7 +150,7 @@
         where temp.rn = 1
     </select>
 
-    <resultMap id="toolBaseMap" type="toolBase">
+    <resultMap id="toolBaseMap" type="top.fatweb.oxygen.api.entity.tool.ToolBase">
         <id property="id" column="tool_base_id"/>
         <result property="name" column="tool_base_name"/>
         <result property="platform" column="tool_base_platform"/>
@@ -158,11 +160,11 @@
         <result property="version" column="tool_base_version"/>
     </resultMap>
 
-    <resultMap id="toolBaseWithVersionMap" type="toolBase" extends="toolBaseMap">
+    <resultMap id="toolBaseWithVersionMap" type="top.fatweb.oxygen.api.entity.tool.ToolBase" extends="toolBaseMap">
         <result property="baseVersion" column="tool_base_base_version"/>
     </resultMap>
 
-    <resultMap id="toolBaseWithSourceMap" type="toolBase" extends="toolBaseWithVersionMap">
+    <resultMap id="toolBaseWithSourceMap" type="top.fatweb.oxygen.api.entity.tool.ToolBase" extends="toolBaseWithVersionMap">
         <association property="source">
             <id property="id" column="tool_base_source_id"/>
             <result property="data" column="tool_base_source_data"/>
@@ -173,7 +175,7 @@
         </association>
     </resultMap>
 
-    <resultMap id="toolBaseWithDistMap" type="toolBase" extends="toolBaseWithVersionMap">
+    <resultMap id="toolBaseWithDistMap" type="top.fatweb.oxygen.api.entity.tool.ToolBase" extends="toolBaseWithVersionMap">
         <association property="dist">
             <id property="id" column="tool_base_dist_id"/>
             <result property="data" column="tool_base_dist_data"/>
@@ -184,7 +186,7 @@
         </association>
     </resultMap>
 
-    <resultMap id="toolBaseWithVersionsMap" type="toolBase" extends="toolBaseMap">
+    <resultMap id="toolBaseWithVersionsMap" type="top.fatweb.oxygen.api.entity.tool.ToolBase" extends="toolBaseMap">
         <collection property="versions" ofType="long">
             <result column="tool_base_base_version"/>
         </collection>
