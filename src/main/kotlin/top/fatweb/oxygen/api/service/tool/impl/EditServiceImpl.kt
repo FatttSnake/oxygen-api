@@ -179,7 +179,7 @@ class EditServiceImpl(
         if (tool.review == Tool.ReviewType.PROCESSING) {
             throw ToolUnderReviewException()
         }
-        if (tool.review == Tool.ReviewType.PASS && tool.publish != 0L) {
+        if (tool.review == Tool.ReviewType.PASS) {
             throw ToolHasBeenPublishedException()
         }
 
@@ -243,7 +243,7 @@ class EditServiceImpl(
         if (originalTool.review == Tool.ReviewType.PROCESSING) {
             throw ToolUnderReviewException()
         }
-        if (originalTool.review != Tool.ReviewType.PASS || originalTool.publish == 0L) {
+        if (originalTool.review == Tool.ReviewType.NONE) {
             throw ToolHasUnpublishedVersionException()
         }
 
