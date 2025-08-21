@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage
 import top.fatweb.oxygen.api.converter.permission.toVoWithInfo
 import top.fatweb.oxygen.api.entity.permission.User
 import top.fatweb.oxygen.api.entity.tool.Tool
+import top.fatweb.oxygen.api.entity.tool.ToolBase
 import top.fatweb.oxygen.api.entity.tool.ToolCategory
 import top.fatweb.oxygen.api.entity.tool.ToolData
 import top.fatweb.oxygen.api.param.tool.ToolUpdateParam
@@ -28,8 +29,7 @@ fun Tool.toVo() = ToolVo(
     icon = this.icon,
     platform = this.platform,
     description = this.description,
-    baseId = this.baseId,
-    baseVersion = this.baseVersion,
+    base = this.base?.let(ToolBase::toVo),
     author = this.author?.let(User::toVoWithInfo),
     ver = this.ver,
     keywords = this.keywords,
@@ -76,8 +76,7 @@ fun Tool.toVoWithSource() = ToolWithSourceVo(
     icon = this.icon,
     platform = this.platform,
     description = this.description,
-    baseId = this.baseId,
-    baseVersion = this.baseVersion,
+    base = this.base?.let(ToolBase::toVo),
     author = this.author?.let(User::toVoWithInfo),
     ver = this.ver,
     keywords = this.keywords,
@@ -107,8 +106,7 @@ fun Tool.toVoWithDist() = ToolWithDistVo(
     icon = this.icon,
     platform = this.platform,
     description = this.description,
-    baseId = this.baseId,
-    baseVersion = this.baseVersion,
+    base = this.base?.let(ToolBase::toVo),
     author = this.author?.let(User::toVoWithInfo),
     ver = this.ver,
     keywords = this.keywords,

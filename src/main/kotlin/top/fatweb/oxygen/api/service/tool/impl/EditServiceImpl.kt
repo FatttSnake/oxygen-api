@@ -269,8 +269,8 @@ class EditServiceImpl(
             icon = originalTool.icon
             platform = originalTool.platform
             description = originalTool.description
-            baseId = originalTool.baseId
-            baseVersion = originalTool.baseVersion
+            baseId = originalTool.base!!.id
+            baseVersion = originalTool.base.version
             authorId = getLoginUserId()!!
             ver = newVersionNumberList.joinToString(".")
             keywords = originalTool.keywords
@@ -297,10 +297,10 @@ class EditServiceImpl(
     @Transactional
     override fun upgradeBase(toolOrTemplateUpgradeBaseParam: ToolOrTemplateUpgradeBaseParam) {
         val tool = queryOrThrowException { this.getOne(toolOrTemplateUpgradeBaseParam.id!!) }
-        if (tool.baseVersion!! >= toolOrTemplateUpgradeBaseParam.baseVersion!!) {
+        if (tool.base!!.version!! >= toolOrTemplateUpgradeBaseParam.baseVersion!!) {
             throw DatabaseUpdateException()
         }
-        toolBaseService.getOne(id = tool.baseId!!, version = toolOrTemplateUpgradeBaseParam.baseVersion)
+        toolBaseService.getOne(id = tool.base.version, version = toolOrTemplateUpgradeBaseParam.baseVersion)
 
         updateOrThrowException {
             this.update(

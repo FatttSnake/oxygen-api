@@ -71,23 +71,13 @@ data class ToolWithSourceVo(
     val description: String?,
 
     /**
-     * Base ID
+     * Base
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.1.0
      */
-    @Schema(description = "基板 ID")
-    @JsonSerialize(using = ToStringSerializer::class)
-    val baseId: Long?,
-
-    /**
-     * Base version
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.1.0
-     */
-    @Schema(description = "基板版本")
-    val baseVersion: Long?,
+    @Schema(description = "基板")
+    val base: ToolBaseVo?,
 
     /**
      * Author
