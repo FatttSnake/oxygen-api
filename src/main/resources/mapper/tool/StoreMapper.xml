@@ -73,7 +73,6 @@
         tbtm.platform as tool_platform,
         tbtm.description as tool_description,
         tbtm.base_id as tool_base_id,
-        tbtm.base_version as tool_base_version,
         tbtm.author_id as tool_author_id,
         tbtm.ver as tool_ver,
         tbtm.keywords as tool_keywords,
@@ -86,6 +85,9 @@
         tbtm.update_time as tool_update_time,
         tbtm.deleted as tool_deleted,
         tbtm.version as tool_version,
+        tbtb.id as tool_base_id,
+        tbtb.name as tool_base_name,
+        tbtm.base_version as tool_base_base_version,
         tsu.id as user_id,
         tsu.username as user_username,
         tsui.id as user_info_id,
@@ -106,6 +108,7 @@
         and t_b_tool_main.publish != 0
         and t_b_tool_main.review = 'PASS'
         ) as tbtm
+        left join t_b_tool_base as tbtb on tbtb.deleted = 0 and tbtb.id = tbtm.base_id
         left join t_s_user as tsu on tsu.deleted = 0 and tsu.id = tbtm.author_id
         left join t_s_user_info as tsui on tsui.deleted = 0 and tsui.user_id = tbtm.author_id
         left join t_r_tool_main_category as trtmc on trtmc.deleted = 0 and tbtm.id = trtmc.tool_id
