@@ -70,5 +70,4 @@ data class ToolBaseWithVersionsVo(
      */
     @Schema(description = "修改时间", example = "1900-01-01T00:00:00.000Z")
     val updateTime: LocalDateTime?
-
 )
