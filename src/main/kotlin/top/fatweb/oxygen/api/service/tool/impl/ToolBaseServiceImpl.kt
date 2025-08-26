@@ -98,7 +98,7 @@ class ToolBaseServiceImpl(
         )
 
         if (basePage.total > 0) {
-            basePage.setRecords(baseMapper.selectListWithVersionByIds(basePage.records.map { it.id!! }))
+            basePage.records = baseMapper.selectListWithVersionByIds(basePage.records.map { it.id!! })
         }
 
         return basePage.toVo()

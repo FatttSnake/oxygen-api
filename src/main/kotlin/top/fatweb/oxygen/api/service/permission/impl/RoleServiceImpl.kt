@@ -51,7 +51,7 @@ class RoleServiceImpl(
 
         val rolePage = Page<Role>(roleIdsPage.current, roleIdsIPage.size, roleIdsIPage.total)
         if (roleIdsIPage.total > 0) {
-            rolePage.setRecords(baseMapper.selectListWithPowerByIds(roleIdsIPage.records))
+            rolePage.records = baseMapper.selectListWithPowerByIds(roleIdsIPage.records)
         }
 
 

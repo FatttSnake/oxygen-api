@@ -48,7 +48,7 @@ class GroupServiceImpl(
             baseMapper.selectPage(groupIdsPage, groupGetParam?.searchName, groupGetParam?.searchRegex ?: false)
         val groupPage = Page<Group>(groupIdsPage.current, groupIdsIPage.size, groupIdsIPage.total)
         if (groupIdsIPage.total > 0) {
-            groupPage.setRecords(baseMapper.selectListWithRoleByIds(groupIdsIPage.records))
+            groupPage.records = baseMapper.selectListWithRoleByIds(groupIdsIPage.records)
         }
 
         return groupPage.toVoWithRole()

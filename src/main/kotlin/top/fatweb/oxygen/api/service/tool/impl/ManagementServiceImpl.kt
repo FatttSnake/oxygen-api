@@ -65,7 +65,7 @@ class ManagementServiceImpl(
             )
         val toolPage = Page<Tool>(toolIdsIPage.current, toolIdsIPage.size, toolIdsIPage.total)
         if (toolIdsIPage.total > 0) {
-            toolPage.setRecords(baseMapper.selectListByIds(toolIdsIPage.records))
+            toolPage.records = baseMapper.selectListByIds(toolIdsIPage.records)
         }
 
         return toolPage.toVo()

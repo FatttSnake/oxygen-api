@@ -146,7 +146,7 @@ class UserServiceImpl(
             )
         val userPage = Page<User>(userIdsIPage.current, userIdsIPage.size, userIdsIPage.total)
         if (userIdsIPage.total > 0) {
-            userPage.setRecords(baseMapper.selectListWithRoleInfoByIds(userIdsIPage.records))
+            userPage.records = baseMapper.selectListWithRoleInfoByIds(userIdsIPage.records)
         }
 
         return userPage.toVoWithRoleInfo()

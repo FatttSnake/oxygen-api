@@ -433,7 +433,7 @@ class AuthenticationServiceImpl(
                 "username" to username,
                 "verifyUrl" to SettingsOperator.getAppValue(
                     BaseSettings::verifyUrl,
-                    "http://localhost/verify?code=\${verifyCode}"
+                    $$"http://localhost/verify?code=${verifyCode}"
                 )
                     .replace(
                         Regex("(?<=([^\\\\]))\\$\\{verifyCode}"), code
@@ -457,7 +457,7 @@ class AuthenticationServiceImpl(
                 "ipAddress" to ip,
                 "retrieveUrl" to SettingsOperator.getAppValue(
                     BaseSettings::retrieveUrl,
-                    "http://localhost/retrieve?code=\${retrieveCode}"
+                    $$"http://localhost/retrieve?code=${retrieveCode}"
                 )
                     .replace(
                         Regex("(?<=([^\\\\]))\\$\\{retrieveCode}"), code
