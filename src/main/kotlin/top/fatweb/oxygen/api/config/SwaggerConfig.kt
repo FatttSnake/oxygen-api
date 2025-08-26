@@ -16,7 +16,7 @@ import top.fatweb.oxygen.api.properties.ServerProperties
 @Configuration
 class SwaggerConfig {
     @Bean
-    fun customOpenAPI(): OpenAPI? {
+    fun customOpenAPI(): OpenAPI {
         val contact = Contact().name("FatttSnake").url("https://fatweb.top").email("fatttsnake@gmail.com")
         return OpenAPI().info(
             Info().title("Oxygen API 文档").description("Oxygen 后端 API 文档，包含各个 Controller 调用信息")

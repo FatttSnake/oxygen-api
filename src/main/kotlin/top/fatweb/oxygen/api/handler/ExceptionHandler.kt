@@ -3,6 +3,7 @@ package top.fatweb.oxygen.api.handler
 import com.auth0.jwt.exceptions.JWTDecodeException
 import com.auth0.jwt.exceptions.SignatureVerificationException
 import com.auth0.jwt.exceptions.TokenExpiredException
+import io.swagger.v3.oas.annotations.Hidden
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.dao.DuplicateKeyException
@@ -29,6 +30,7 @@ import top.fatweb.oxygen.api.exception.*
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
+@Hidden
 @RestControllerAdvice
 class ExceptionHandler {
     private val logger: Logger = LoggerFactory.getLogger(this::class.java)

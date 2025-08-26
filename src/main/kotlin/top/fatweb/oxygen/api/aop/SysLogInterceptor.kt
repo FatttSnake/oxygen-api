@@ -1,5 +1,6 @@
 package top.fatweb.oxygen.api.aop
 
+import io.swagger.v3.oas.annotations.Hidden
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.beans.factory.annotation.Qualifier
@@ -36,6 +37,7 @@ import java.util.concurrent.Executor
  * @see HandlerInterceptor
  * @see ResponseBodyAdvice
  */
+@Hidden
 @ControllerAdvice
 class SysLogInterceptor(
     @param:Qualifier("applicationTaskExecutor") private val customThreadPoolTaskExecutor: Executor,
