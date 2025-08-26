@@ -20,7 +20,7 @@ data class ToolTemplateWithSourceVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.1.0
      */
-    @JsonSerialize(using = ToStringSerializer::class)
+    @field:JsonSerialize(using = ToStringSerializer::class)
     val id: Long?,
 
     /**
@@ -29,7 +29,7 @@ data class ToolTemplateWithSourceVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.1.0
      */
-    @Schema(description = "名称")
+    @field:Schema(description = "名称")
     val name: String?,
 
     /**
@@ -39,7 +39,7 @@ data class ToolTemplateWithSourceVo(
      * @since 1.1.0
      * @see ToolBaseVo
      */
-    @Schema(description = "基板")
+    @field:Schema(description = "基板")
     val base: ToolBaseVo?,
 
     /**
@@ -49,7 +49,7 @@ data class ToolTemplateWithSourceVo(
      * @since 1.1.0
      * @see ToolDataVo
      */
-    @Schema(description = "源码")
+    @field:Schema(description = "源码")
     val source: ToolDataVo?,
 
     /**
@@ -59,7 +59,7 @@ data class ToolTemplateWithSourceVo(
      * @since 1.1.0
      * @see Platform
      */
-    @Schema(description = "平台")
+    @field:Schema(description = "平台")
     val platform: Platform?,
 
     /**
@@ -68,7 +68,7 @@ data class ToolTemplateWithSourceVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.1.0
      */
-    @Schema(description = "入口文件")
+    @field:Schema(description = "入口文件")
     val entryPoint: String?,
 
     /**
@@ -77,7 +77,7 @@ data class ToolTemplateWithSourceVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.1.0
      */
-    @Schema(description = "启用")
+    @field:Schema(description = "启用")
     val enable: Boolean?,
 
     /**
@@ -87,7 +87,7 @@ data class ToolTemplateWithSourceVo(
      * @since 1.1.0
      * @see LocalDateTime
      */
-    @Schema(description = "创建时间", example = "1900-01-01T00:00:00.000Z")
+    @field:Schema(description = "创建时间", example = "1900-01-01T00:00:00.000Z")
     val createTime: LocalDateTime?,
 
     /**
@@ -97,6 +97,6 @@ data class ToolTemplateWithSourceVo(
      * @since 1.1.0
      * @see LocalDateTime
      */
-    @Schema(description = "修改时间", example = "1900-01-01T00:00:00.000Z")
+    @field:Schema(description = "修改时间", example = "1900-01-01T00:00:00.000Z")
     val updateTime: LocalDateTime?
 )

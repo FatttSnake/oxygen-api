@@ -18,7 +18,7 @@ data class ToolFavoriteAddParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "作者 ID", required = true)
+    @field:Schema(description = "作者 ID", required = true)
     @field:NotBlank(message = "AuthorId cannot be blank")
     var authorId: Long?,
 
@@ -28,7 +28,7 @@ data class ToolFavoriteAddParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "工具唯一 ID", required = true)
+    @field:Schema(description = "工具唯一 ID", required = true)
     @field:NotBlank(message = "ToolId cannot be blank")
     @field:Pattern(
         regexp = "^[a-zA-Z-_][0-9a-zA-Z-_]{2,19}$",

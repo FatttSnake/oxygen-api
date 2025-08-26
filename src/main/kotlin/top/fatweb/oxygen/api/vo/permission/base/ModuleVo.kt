@@ -24,6 +24,6 @@ data class ModuleVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "模块名", example = "系统")
+    @field:Schema(description = "模块名", example = "系统")
     val name: String?
 )

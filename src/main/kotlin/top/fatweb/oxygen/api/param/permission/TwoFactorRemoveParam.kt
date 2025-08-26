@@ -17,7 +17,7 @@ data class TwoFactorRemoveParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "验证码")
+    @field:Schema(description = "验证码")
     @field:NotBlank(message = "Code can not be blank")
     val code: String?
 )

@@ -24,7 +24,7 @@ data class OperationVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "操作名", example = "Add User")
+    @field:Schema(description = "操作名", example = "Add User")
     val name: String?,
 
     /**
@@ -33,7 +33,7 @@ data class OperationVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "操作编码", example = "system:user:add")
+    @field:Schema(description = "操作编码", example = "system:user:add")
     val code: String?,
 
     /**
@@ -42,6 +42,6 @@ data class OperationVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "功能 ID")
+    @field:Schema(description = "功能 ID")
     val funcId: Long?
 )

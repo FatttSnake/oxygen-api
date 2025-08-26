@@ -17,7 +17,7 @@ data class AvatarGitHubParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "元素大小", defaultValue = "400")
+    @field:Schema(description = "元素大小", defaultValue = "400")
     @field:Max(1000, message = "Element size must be less than or equal to 1000")
     val elementSize: Int = 400,
 
@@ -27,6 +27,6 @@ data class AvatarGitHubParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "精确度", defaultValue = "5")
+    @field:Schema(description = "精确度", defaultValue = "5")
     val precision: Int = 5
 ) : AvatarBaseParam()

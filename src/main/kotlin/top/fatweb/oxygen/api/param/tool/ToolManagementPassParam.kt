@@ -17,7 +17,7 @@ data class ToolManagementPassParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "产物")
+    @field:Schema(description = "产物")
     @field:NotBlank(message = "Dist can not be blank")
     val dist: String?
 )

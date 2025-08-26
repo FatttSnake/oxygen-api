@@ -21,7 +21,7 @@ data class LoginParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "账户", required = true, example = "test")
+    @field:Schema(description = "账户", required = true, example = "test")
     @field:NotBlank(message = "Account can not be blank")
     var account: String?,
 
@@ -31,7 +31,7 @@ data class LoginParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "密码", required = true)
+    @field:Schema(description = "密码", required = true)
     @field:NotBlank(message = "Password can not be blank")
     val password: String?,
 
@@ -41,6 +41,6 @@ data class LoginParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "双因素验证码")
+    @field:Schema(description = "双因素验证码")
     val twoFactorCode: String?
 ) : CaptchaCodeParam()

@@ -18,11 +18,11 @@ data class ToolTemplateUpdateSourceParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.1.0
      */
-    @Schema(description = "ID", required = true)
+    @field:Schema(description = "ID", required = true)
     @field:NotNull(message = "ID can not be null")
     val id: Long?,
 
-    @Schema(description = "源码")
+    @field:Schema(description = "源码")
     @field:NotBlank(message = "Source can not be blank")
     val source: String?
 )

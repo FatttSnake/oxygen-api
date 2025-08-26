@@ -17,7 +17,7 @@ data class ToolOrTemplateUpgradeBaseParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.1.0
      */
-    @Schema(description = "ID", required = true)
+    @field:Schema(description = "ID", required = true)
     @field:NotNull(message = "ID can not be null")
     val id: Long?,
 
@@ -27,7 +27,7 @@ data class ToolOrTemplateUpgradeBaseParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.1.0
      */
-    @Schema(description = "基板版本")
+    @field:Schema(description = "基板版本")
     @field:NotNull(message = "Base version can not be null")
     val baseVersion: Long?
 )

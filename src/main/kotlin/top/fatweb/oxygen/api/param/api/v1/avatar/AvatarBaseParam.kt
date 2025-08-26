@@ -27,7 +27,7 @@ open class AvatarBaseParam {
      * @since 1.0.0
      */
     @Schema(description = "图像大小", defaultValue = "128")
-    @field:Max(256, message = "Size must be less than or equal to 256")
+    @Max(256, message = "Size must be less than or equal to 256")
     var size: Int? = null
 
     /**
@@ -64,6 +64,6 @@ open class AvatarBaseParam {
      * @since 1.0.0
      */
     @Schema(description = "背景颜色", example = "#FFFFFFAA")
-    @field:Pattern(regexp = "^#[0-9a-fA-F]{6}|#[0-9a-fA-F]{8}$", message = "Background color must be a hex color code")
+    @Pattern(regexp = "^#[0-9a-fA-F]{6}|#[0-9a-fA-F]{8}$", message = "Background color must be a hex color code")
     var background: String? = null
 }

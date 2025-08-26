@@ -19,7 +19,7 @@ data class MailSettingsParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "SMTP 服务器")
+    @field:Schema(description = "SMTP 服务器")
     var host: String?,
 
     /**
@@ -28,7 +28,7 @@ data class MailSettingsParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "端口号")
+    @field:Schema(description = "端口号")
     var port: Int?,
 
     /**
@@ -37,7 +37,7 @@ data class MailSettingsParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "安全类型", allowableValues = ["None", "SSL/TLS", "StartTls"], defaultValue = "None")
+    @field:Schema(description = "安全类型", allowableValues = ["None", "SSL/TLS", "StartTls"], defaultValue = "None")
     val securityType: MailSecurityType = MailSecurityType.NONE,
 
     /**
@@ -46,7 +46,7 @@ data class MailSettingsParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "用户名")
+    @field:Schema(description = "用户名")
     var username: String?,
 
     /**
@@ -55,7 +55,7 @@ data class MailSettingsParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "密码")
+    @field:Schema(description = "密码")
     val password: String?,
 
     /**
@@ -64,7 +64,7 @@ data class MailSettingsParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "发送者")
+    @field:Schema(description = "发送者")
     var from: String?,
 
     /**
@@ -73,6 +73,6 @@ data class MailSettingsParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "发送者名称")
+    @field:Schema(description = "发送者名称")
     var fromName: String?
 )

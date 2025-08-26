@@ -16,6 +16,6 @@ data class AvatarBase64Vo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "base64")
+    @field:Schema(description = "base64")
     val base64: String?
 )

@@ -20,7 +20,7 @@ data class SensitiveWordAddParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "词", required = true)
+    @field:Schema(description = "词", required = true)
     @field:NotBlank(message = "Word can not be blank")
     var word: String?,
 
@@ -31,7 +31,7 @@ data class SensitiveWordAddParam(
      * @since 1.0.0
      * @see SensitiveWord.Use
      */
-    @Schema(description = "用于", allowableValues = ["USERNAME"])
+    @field:Schema(description = "用于", allowableValues = ["USERNAME"])
     val useFor: Set<SensitiveWord.Use> = emptySet(),
 
     /**
@@ -40,6 +40,6 @@ data class SensitiveWordAddParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "启用", allowableValues = ["true", "false"], defaultValue = "true")
+    @field:Schema(description = "启用", allowableValues = ["true", "false"], defaultValue = "true")
     val enable: Boolean = true
 )

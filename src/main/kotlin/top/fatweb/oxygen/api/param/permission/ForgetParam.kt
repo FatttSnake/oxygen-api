@@ -20,7 +20,7 @@ data class ForgetParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "邮箱", required = true, example = "user@email.com")
+    @field:Schema(description = "邮箱", required = true, example = "user@email.com")
     @field:NotBlank(message = "Email can not be blank")
     @field:Pattern(regexp = "^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$", message = "Illegal email address")
     var email: String?

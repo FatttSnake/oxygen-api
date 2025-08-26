@@ -22,7 +22,7 @@ data class ToolUpgradeParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "工具唯一 ID", required = true, example = "tool_a")
+    @field:Schema(description = "工具唯一 ID", required = true, example = "tool_a")
     @field:NotBlank(message = "ToolId can not be blank")
     @field:Pattern(
         regexp = "^[a-zA-Z-_][0-9a-zA-Z-_]{2,19}$",
@@ -37,7 +37,7 @@ data class ToolUpgradeParam(
      * @since 1.0.0
      * @see Platform
      */
-    @Schema(description = "平台")
+    @field:Schema(description = "平台")
     @field:NotNull(message = "Platform can not be null")
     val platform: Platform?,
 
@@ -48,7 +48,7 @@ data class ToolUpgradeParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "版本", required = true, example = "1.0.3")
+    @field:Schema(description = "版本", required = true, example = "1.0.3")
     @field:NotBlank(message = "Ver can not be blank")
     @field:Pattern(regexp = "^\\d+\\.\\d+\\.\\d+$", message = "Ver can only match '<number>.<number>.<number>'")
     val ver: String?

@@ -22,7 +22,7 @@ data class ToolCreateParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "名称", required = true)
+    @field:Schema(description = "名称", required = true)
     @field:NotBlank(message = "Name can not be blank")
     var name: String?,
 
@@ -32,7 +32,7 @@ data class ToolCreateParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "工具唯一 ID", required = true, example = "tool_a")
+    @field:Schema(description = "工具唯一 ID", required = true, example = "tool_a")
     @field:NotBlank(message = "ToolId can not be blank")
     @field:Pattern(
         regexp = "^[a-zA-Z-_][0-9a-zA-Z-_]{2,19}$",
@@ -46,7 +46,7 @@ data class ToolCreateParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "图标", required = true)
+    @field:Schema(description = "图标", required = true)
     @field:NotBlank(message = "Icon can not be blank")
     val icon: String?,
 
@@ -56,7 +56,7 @@ data class ToolCreateParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "简介")
+    @field:Schema(description = "简介")
     val description: String?,
 
     /**
@@ -65,7 +65,7 @@ data class ToolCreateParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "版本", required = true, example = "1.0.3")
+    @field:Schema(description = "版本", required = true, example = "1.0.3")
     @field:NotBlank(message = "Ver can not be blank")
     @field:Pattern(regexp = "^\\d+\\.\\d+\\.\\d+$", message = "Ver can only match '<number>.<number>.<number>'")
     val ver: String?,
@@ -76,7 +76,7 @@ data class ToolCreateParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "模板 ID", required = true)
+    @field:Schema(description = "模板 ID", required = true)
     @field:NotNull(message = "TemplateId can not be null")
     val templateId: Long?,
 
@@ -86,7 +86,7 @@ data class ToolCreateParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "关键词", required = true)
+    @field:Schema(description = "关键词", required = true)
     @field:NotEmpty(message = "Keywords can not be empty")
     val keywords: List<String>?,
 
@@ -96,7 +96,7 @@ data class ToolCreateParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "类别", required = true)
+    @field:Schema(description = "类别", required = true)
     @field:NotEmpty(message = "Categories can not be empty")
     val categories: List<Long>?
 )

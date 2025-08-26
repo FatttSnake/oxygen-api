@@ -20,7 +20,7 @@ data class UserWithPowerInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @JsonSerialize(using = ToStringSerializer::class)
+    @field:JsonSerialize(using = ToStringSerializer::class)
     val id: Long?,
 
     /**
@@ -29,7 +29,7 @@ data class UserWithPowerInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "用户名", example = "User")
+    @field:Schema(description = "用户名", example = "User")
     val username: String?,
 
     /**
@@ -38,7 +38,7 @@ data class UserWithPowerInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "启用双因素验证", example = "true")
+    @field:Schema(description = "启用双因素验证", example = "true")
     val twoFactor: Boolean?,
 
     /**
@@ -47,7 +47,7 @@ data class UserWithPowerInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "已验证", example = "true")
+    @field:Schema(description = "已验证", example = "true")
     val verified: Boolean?,
 
     /**
@@ -56,7 +56,7 @@ data class UserWithPowerInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "是否锁定", example = "false")
+    @field:Schema(description = "是否锁定", example = "false")
     val locking: Boolean?,
 
     /**
@@ -66,7 +66,7 @@ data class UserWithPowerInfoVo(
      * @since 1.0.0
      * @see LocalDateTime
      */
-    @Schema(description = "过期时间", example = "1900-01-01T00:00:00.000Z")
+    @field:Schema(description = "过期时间", example = "1900-01-01T00:00:00.000Z")
     val expiration: LocalDateTime?,
 
     /**
@@ -76,7 +76,7 @@ data class UserWithPowerInfoVo(
      * @since 1.0.0
      * @see LocalDateTime
      */
-    @Schema(description = "认证过期时间", example = "1900-01-01T00:00:00.000Z")
+    @field:Schema(description = "认证过期时间", example = "1900-01-01T00:00:00.000Z")
     val credentialsExpiration: LocalDateTime?,
 
     /**
@@ -85,7 +85,7 @@ data class UserWithPowerInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "是否启用", example = "true")
+    @field:Schema(description = "是否启用", example = "true")
     val enable: Boolean?,
 
     /**
@@ -95,7 +95,7 @@ data class UserWithPowerInfoVo(
      * @since 1.0.0
      * @see LocalDateTime
      */
-    @Schema(description = "当前登录时间", example = "1900-01-01T00:00:00.000Z")
+    @field:Schema(description = "当前登录时间", example = "1900-01-01T00:00:00.000Z")
     val currentLoginTime: LocalDateTime?,
 
     /**
@@ -105,7 +105,7 @@ data class UserWithPowerInfoVo(
      * @since 1.0.0
      * @see LocalDateTime
      */
-    @Schema(description = "当前登录 IP", example = "1.1.1.1")
+    @field:Schema(description = "当前登录 IP", example = "1.1.1.1")
     val currentLoginIp: String?,
 
     /**
@@ -115,7 +115,7 @@ data class UserWithPowerInfoVo(
      * @since 1.0.0
      * @see LocalDateTime
      */
-    @Schema(description = "最后登录时间", example = "1900-01-01T00:00:00.000Z")
+    @field:Schema(description = "最后登录时间", example = "1900-01-01T00:00:00.000Z")
     val lastLoginTime: LocalDateTime?,
 
     /**
@@ -124,7 +124,7 @@ data class UserWithPowerInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "最后登录 IP", example = "1.1.1.1")
+    @field:Schema(description = "最后登录 IP", example = "1.1.1.1")
     val lastLoginIp: String?,
 
     /**
@@ -134,7 +134,7 @@ data class UserWithPowerInfoVo(
      * @since 1.0.0
      * @see LocalDateTime
      */
-    @Schema(description = "创建时间", example = "1900-01-01T00:00:00.000Z")
+    @field:Schema(description = "创建时间", example = "1900-01-01T00:00:00.000Z")
     val createTime: LocalDateTime?,
 
     /**
@@ -144,7 +144,7 @@ data class UserWithPowerInfoVo(
      * @since 1.0.0
      * @see LocalDateTime
      */
-    @Schema(description = "修改时间", example = "1900-01-01T00:00:00.000Z")
+    @field:Schema(description = "修改时间", example = "1900-01-01T00:00:00.000Z")
     val updateTime: LocalDateTime?,
 
     /**
@@ -154,7 +154,7 @@ data class UserWithPowerInfoVo(
      * @since 1.0.0
      * @see UserInfoVo
      */
-    @Schema(description = "用户资料")
+    @field:Schema(description = "用户资料")
     val userInfo: UserInfoVo?,
 
     /**
@@ -163,7 +163,7 @@ data class UserWithPowerInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "模块列表")
+    @field:Schema(description = "模块列表")
     val modules: List<ModuleVo>?,
 
     /**
@@ -172,7 +172,7 @@ data class UserWithPowerInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "菜单列表")
+    @field:Schema(description = "菜单列表")
     val menus: List<MenuVo>?,
 
     /**
@@ -181,7 +181,7 @@ data class UserWithPowerInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "功能列表")
+    @field:Schema(description = "功能列表")
     val funcs: List<FuncVo>?,
 
     /**
@@ -190,6 +190,6 @@ data class UserWithPowerInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "操作列表")
+    @field:Schema(description = "操作列表")
     val operations: List<OperationVo>?
 )
