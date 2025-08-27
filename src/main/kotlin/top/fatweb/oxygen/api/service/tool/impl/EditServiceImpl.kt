@@ -119,7 +119,7 @@ class EditServiceImpl(
         val toolIdsIPage = baseMapper.selectPersonalToolIdPage(toolIdsPage, getLoginUserId()!!)
         val toolPage = Page<Tool>(toolIdsIPage.current, toolIdsIPage.size, toolIdsIPage.total)
         if (toolIdsIPage.total > 0) {
-            toolPage.setRecords(baseMapper.selectListByToolIds(toolIdsIPage.records, getLoginUserId()!!))
+            toolPage.records = baseMapper.selectListByToolIds(toolIdsIPage.records, getLoginUserId()!!)
         }
 
         return toolPage.toVo()

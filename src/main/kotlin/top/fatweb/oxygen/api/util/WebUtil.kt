@@ -90,7 +90,7 @@ fun getRequestIp(request: HttpServletRequest): String {
     return if (!ip.isNullOrBlank() && !"unknown".equals(ip, true)) {
         val index = ip.indexOf(",")
         if (index != -1) {
-            ip.substring(0, index)
+            ip.take(index)
         } else {
             ip
         }

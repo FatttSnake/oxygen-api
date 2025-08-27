@@ -17,6 +17,6 @@ open class CaptchaCodeParam {
      * @since 1.0.0
      */
     @Schema(description = "验证码", required = true)
-    @field:NotBlank(message = "Captcha code can not be blank")
+    @NotBlank(message = "Captcha code can not be blank")
     var captchaCode: String? = null
 }

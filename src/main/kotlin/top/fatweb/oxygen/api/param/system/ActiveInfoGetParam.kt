@@ -18,7 +18,7 @@ data class ActiveInfoGetParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(
+    @field:Schema(
         description = "范围",
         allowableValues = ["WEEK", "MONTH", "QUARTER", "YEAR", "TWO_YEARS", "THREE_YEARS", "FIVE_YEARS", "ALL"],
         defaultValue = "WEEK",

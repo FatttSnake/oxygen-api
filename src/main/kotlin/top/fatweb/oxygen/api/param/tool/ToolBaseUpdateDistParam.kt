@@ -18,7 +18,7 @@ data class ToolBaseUpdateDistParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.1.0
      */
-    @Schema(description = "ID", required = true)
+    @field:Schema(description = "ID", required = true)
     @field:NotNull(message = "ID can not be null")
     val id: Long?,
 
@@ -28,7 +28,7 @@ data class ToolBaseUpdateDistParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.1.0
      */
-    @Schema(description = "产物", required = true)
+    @field:Schema(description = "产物", required = true)
     @field:NotBlank(message = "Dist can not be blank")
     var dist: String?
 )

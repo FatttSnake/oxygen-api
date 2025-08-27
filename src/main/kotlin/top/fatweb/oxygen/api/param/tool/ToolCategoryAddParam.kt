@@ -19,7 +19,7 @@ data class ToolCategoryAddParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "名称", required = true)
+    @field:Schema(description = "名称", required = true)
     @field:NotBlank(message = "Name can not be blank")
     var name: String?,
 
@@ -29,6 +29,6 @@ data class ToolCategoryAddParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "启用", allowableValues = ["true", "false"], defaultValue = "true")
+    @field:Schema(description = "启用", allowableValues = ["true", "false"], defaultValue = "true")
     val enable: Boolean = true
 )

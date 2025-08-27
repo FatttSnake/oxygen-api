@@ -19,7 +19,7 @@ data class UserInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @JsonSerialize(using = ToStringSerializer::class)
+    @field:JsonSerialize(using = ToStringSerializer::class)
     val id: Long?,
 
     /**
@@ -28,8 +28,8 @@ data class UserInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "用户ID")
-    @JsonSerialize(using = ToStringSerializer::class)
+    @field:Schema(description = "用户ID")
+    @field:JsonSerialize(using = ToStringSerializer::class)
     val userId: Long?,
 
     /**
@@ -38,7 +38,7 @@ data class UserInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "昵称", example = "User")
+    @field:Schema(description = "昵称", example = "User")
     val nickname: String?,
 
     /**
@@ -47,7 +47,7 @@ data class UserInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "头像")
+    @field:Schema(description = "头像")
     val avatar: String?,
 
     /**
@@ -56,7 +56,7 @@ data class UserInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "邮箱", example = "user@mail.com")
+    @field:Schema(description = "邮箱", example = "user@mail.com")
     val email: String?,
 
     /**
@@ -66,7 +66,7 @@ data class UserInfoVo(
      * @since 1.0.0
      * @see LocalDateTime
      */
-    @Schema(description = "创建时间", example = "1900-01-01T00:00:00.000Z")
+    @field:Schema(description = "创建时间", example = "1900-01-01T00:00:00.000Z")
     val createTime: LocalDateTime?,
 
     /**
@@ -76,6 +76,6 @@ data class UserInfoVo(
      * @since 1.0.0
      * @see LocalDateTime
      */
-    @Schema(description = "修改时间", example = "1900-01-01T00:00:00.000Z")
+    @field:Schema(description = "修改时间", example = "1900-01-01T00:00:00.000Z")
     val updateTime: LocalDateTime?
 )

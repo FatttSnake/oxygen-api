@@ -22,7 +22,7 @@ data class UserWithRoleInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @JsonSerialize(using = ToStringSerializer::class)
+    @field:JsonSerialize(using = ToStringSerializer::class)
     val id: Long?,
 
     /**
@@ -31,7 +31,7 @@ data class UserWithRoleInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "用户名", example = "User")
+    @field:Schema(description = "用户名", example = "User")
     val username: String?,
 
     /**
@@ -40,7 +40,7 @@ data class UserWithRoleInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "启用双因素", example = "true")
+    @field:Schema(description = "启用双因素", example = "true")
     val twoFactor: Boolean?,
 
     /**
@@ -49,7 +49,7 @@ data class UserWithRoleInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "验证信息")
+    @field:Schema(description = "验证信息")
     val verify: String?,
 
     /**
@@ -58,7 +58,7 @@ data class UserWithRoleInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "是否锁定", example = "false")
+    @field:Schema(description = "是否锁定", example = "false")
     val locking: Boolean?,
 
     /**
@@ -68,7 +68,7 @@ data class UserWithRoleInfoVo(
      * @since 1.0.0
      * @see LocalDateTime
      */
-    @Schema(description = "过期时间", example = "1900-01-01T00:00:00.000Z")
+    @field:Schema(description = "过期时间", example = "1900-01-01T00:00:00.000Z")
     val expiration: LocalDateTime?,
 
     /**
@@ -78,7 +78,7 @@ data class UserWithRoleInfoVo(
      * @since 1.0.0
      * @see LocalDateTime
      */
-    @Schema(description = "认证过期时间", example = "1900-01-01T00:00:00.000Z")
+    @field:Schema(description = "认证过期时间", example = "1900-01-01T00:00:00.000Z")
     val credentialsExpiration: LocalDateTime?,
 
     /**
@@ -87,7 +87,7 @@ data class UserWithRoleInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "是否启用", example = "true")
+    @field:Schema(description = "是否启用", example = "true")
     val enable: Boolean?,
 
     /**
@@ -97,7 +97,7 @@ data class UserWithRoleInfoVo(
      * @since 1.0.0
      * @see LocalDateTime
      */
-    @Schema(description = "当前登录时间", example = "1900-01-01T00:00:00.000Z")
+    @field:Schema(description = "当前登录时间", example = "1900-01-01T00:00:00.000Z")
     val currentLoginTime: LocalDateTime?,
 
     /**
@@ -106,7 +106,7 @@ data class UserWithRoleInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "当前登录 IP", example = "1.1.1.1")
+    @field:Schema(description = "当前登录 IP", example = "1.1.1.1")
     val currentLoginIp: String?,
 
     /**
@@ -116,7 +116,7 @@ data class UserWithRoleInfoVo(
      * @since 1.0.0
      * @see LocalDateTime
      */
-    @Schema(description = "最后登录时间", example = "1900-01-01T00:00:00.000Z")
+    @field:Schema(description = "最后登录时间", example = "1900-01-01T00:00:00.000Z")
     val lastLoginTime: LocalDateTime?,
 
     /**
@@ -125,7 +125,7 @@ data class UserWithRoleInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "最后登录 IP", example = "1.1.1.1")
+    @field:Schema(description = "最后登录 IP", example = "1.1.1.1")
     val lastLoginIp: String?,
 
     /**
@@ -135,7 +135,7 @@ data class UserWithRoleInfoVo(
      * @since 1.0.0
      * @see LocalDateTime
      */
-    @Schema(description = "创建时间", example = "1900-01-01T00:00:00.000Z")
+    @field:Schema(description = "创建时间", example = "1900-01-01T00:00:00.000Z")
     val createTime: LocalDateTime?,
 
     /**
@@ -145,7 +145,7 @@ data class UserWithRoleInfoVo(
      * @since 1.0.0
      * @see LocalDateTime
      */
-    @Schema(description = "修改时间", example = "1900-01-01T00:00:00.000Z")
+    @field:Schema(description = "修改时间", example = "1900-01-01T00:00:00.000Z")
     val updateTime: LocalDateTime?,
 
     /**
@@ -155,7 +155,7 @@ data class UserWithRoleInfoVo(
      * @since 1.0.0
      * @see UserInfoVo
      */
-    @Schema(description = "用户资料")
+    @field:Schema(description = "用户资料")
     val userInfo: UserInfoVo?,
 
     /**
@@ -165,7 +165,7 @@ data class UserWithRoleInfoVo(
      * @since 1.0.0
      * @see RoleVo
      */
-    @Schema(description = "角色列表")
+    @field:Schema(description = "角色列表")
     val roles: List<RoleVo>?,
 
     /**
@@ -175,6 +175,6 @@ data class UserWithRoleInfoVo(
      * @since 1.0.0
      * @see GroupVo
      */
-    @Schema(description = "用户组列表")
+    @field:Schema(description = "用户组列表")
     val groups: List<GroupVo>?
 )

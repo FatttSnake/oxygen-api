@@ -20,7 +20,7 @@ data class ToolTemplateUpdateParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "ID", required = true)
+    @field:Schema(description = "ID", required = true)
     @field:NotNull(message = "ID can not be null")
     val id: Long?,
 
@@ -30,7 +30,7 @@ data class ToolTemplateUpdateParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "名称")
+    @field:Schema(description = "名称")
     @field:NotBlank(message = "Name can not be blank")
     var name: String?,
 
@@ -40,7 +40,7 @@ data class ToolTemplateUpdateParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "入口文件")
+    @field:Schema(description = "入口文件")
     @field:NotBlank(message = "Entry point can not be blank")
     var entryPoint: String?,
 
@@ -50,6 +50,6 @@ data class ToolTemplateUpdateParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "启用", allowableValues = ["true", "false"])
+    @field:Schema(description = "启用", allowableValues = ["true", "false"])
     val enable: Boolean = true
 )

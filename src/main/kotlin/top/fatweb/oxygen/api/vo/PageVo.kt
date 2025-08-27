@@ -16,7 +16,7 @@ data class PageVo<T>(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "总数量", example = "100")
+    @field:Schema(description = "总数量", example = "100")
     val total: Long,
 
     /**
@@ -25,7 +25,7 @@ data class PageVo<T>(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "总页码", example = "10")
+    @field:Schema(description = "总页码", example = "10")
     val pages: Long,
 
     /**
@@ -34,7 +34,7 @@ data class PageVo<T>(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "分页大小", example = "10")
+    @field:Schema(description = "分页大小", example = "10")
     val size: Long,
 
     /**
@@ -43,7 +43,7 @@ data class PageVo<T>(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "当前页码", example = "2")
+    @field:Schema(description = "当前页码", example = "2")
     val current: Long,
 
     /**
@@ -52,6 +52,6 @@ data class PageVo<T>(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "数据")
+    @field:Schema(description = "数据")
     val records: List<T>
 )

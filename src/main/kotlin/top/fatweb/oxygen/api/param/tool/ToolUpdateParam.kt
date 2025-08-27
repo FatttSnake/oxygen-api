@@ -21,7 +21,7 @@ data class ToolUpdateParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "ID", required = true)
+    @field:Schema(description = "ID", required = true)
     @field:NotNull(message = "ID can not be null")
     val id: Long?,
 
@@ -31,7 +31,7 @@ data class ToolUpdateParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "名称")
+    @field:Schema(description = "名称")
     @field:NotBlank(message = "Name can not be blank")
     var name: String?,
 
@@ -41,7 +41,7 @@ data class ToolUpdateParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "图标")
+    @field:Schema(description = "图标")
     @field:NotBlank(message = "Icon can not be blank")
     val icon: String?,
 
@@ -51,7 +51,7 @@ data class ToolUpdateParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "简介")
+    @field:Schema(description = "简介")
     val description: String?,
 
     /**
@@ -60,7 +60,7 @@ data class ToolUpdateParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "关键词")
+    @field:Schema(description = "关键词")
     @field:Size(min = 1, message = "Keywords can not be empty")
     val keywords: List<String>?,
 
@@ -70,7 +70,7 @@ data class ToolUpdateParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "类别")
+    @field:Schema(description = "类别")
     @field:Size(min = 1, message = "Categories can not be empty")
     val categories: List<Long>?
 )

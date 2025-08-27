@@ -20,7 +20,7 @@ data class CpuInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "user")
+    @field:Schema(description = "user")
     val user: Long,
 
     /**
@@ -31,7 +31,7 @@ data class CpuInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "nice")
+    @field:Schema(description = "nice")
     val nice: Long,
 
     /**
@@ -44,7 +44,7 @@ data class CpuInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "system")
+    @field:Schema(description = "system")
     val system: Long,
 
     /**
@@ -55,7 +55,7 @@ data class CpuInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "idle")
+    @field:Schema(description = "idle")
     val idle: Long,
 
     /**
@@ -67,7 +67,7 @@ data class CpuInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "iowait")
+    @field:Schema(description = "iowait")
     val iowait: Long,
 
     /**
@@ -78,7 +78,7 @@ data class CpuInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "irq")
+    @field:Schema(description = "irq")
     val irq: Long,
 
     /**
@@ -89,7 +89,7 @@ data class CpuInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "softirq")
+    @field:Schema(description = "softirq")
     val softirq: Long,
 
     /**
@@ -101,7 +101,7 @@ data class CpuInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "steal")
+    @field:Schema(description = "steal")
     val steal: Long,
 
     /**
@@ -110,7 +110,7 @@ data class CpuInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "total")
+    @field:Schema(description = "total")
     val total: Long,
 
     /**
@@ -119,6 +119,6 @@ data class CpuInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "处理器列表")
+    @field:Schema(description = "处理器列表")
     val processors: List<CpuInfoVo>? = null
 )

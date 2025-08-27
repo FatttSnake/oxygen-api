@@ -20,7 +20,7 @@ data class ToolCategoryUpdateParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "ID", required = true)
+    @field:Schema(description = "ID", required = true)
     @field:NotNull(message = "ID can not be null")
     val id: Long?,
 
@@ -30,7 +30,7 @@ data class ToolCategoryUpdateParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "名称")
+    @field:Schema(description = "名称")
     @field:NotBlank(message = "Name can not be blank")
     var name: String?,
 
@@ -40,6 +40,6 @@ data class ToolCategoryUpdateParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "启用", allowableValues = ["true", "false"])
+    @field:Schema(description = "启用", allowableValues = ["true", "false"])
     val enable: Boolean?
 )

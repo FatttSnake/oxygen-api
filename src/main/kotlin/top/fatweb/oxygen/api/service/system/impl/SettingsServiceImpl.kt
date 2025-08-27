@@ -31,11 +31,11 @@ class SettingsServiceImpl : ISettingsService {
         appUrl = SettingsOperator.getAppValue(BaseSettings::appUrl, "http://localhost"),
         verifyUrl = SettingsOperator.getAppValue(
             BaseSettings::verifyUrl,
-            "http://localhost/verify?code=\${verifyCode}"
+            $$"http://localhost/verify?code=${verifyCode}"
         ),
         retrieveUrl = SettingsOperator.getAppValue(
             BaseSettings::retrieveUrl,
-            "http://localhost/forget?code=\${retrieveCode}"
+            $$"http://localhost/forget?code=${retrieveCode}"
         )
     )
 

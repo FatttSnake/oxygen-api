@@ -140,5 +140,4 @@ class AvatarServiceImpl : IAvatarService {
             Color.WHITE
         }
     }
-
 }

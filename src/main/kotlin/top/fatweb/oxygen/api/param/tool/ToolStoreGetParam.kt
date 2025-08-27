@@ -21,7 +21,7 @@ data class ToolStoreGetParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "查询内容", example = "ToolName")
+    @field:Schema(description = "查询内容", example = "ToolName")
     var searchValue: String?,
 
     /**
@@ -31,6 +31,6 @@ data class ToolStoreGetParam(
      * @since 1.0.0
      * @see Platform
      */
-    @Schema(description = "指定平台", example = "DESKTOP")
+    @field:Schema(description = "指定平台", example = "DESKTOP")
     val platform: Platform?
 ) : PageSortParam()

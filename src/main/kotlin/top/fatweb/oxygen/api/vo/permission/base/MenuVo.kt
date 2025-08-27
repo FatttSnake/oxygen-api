@@ -24,7 +24,7 @@ data class MenuVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "菜单名", example = "System")
+    @field:Schema(description = "菜单名", example = "System")
     val name: String?,
 
     /**
@@ -33,7 +33,7 @@ data class MenuVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "URL", example = "/system")
+    @field:Schema(description = "URL", example = "/system")
     val url: String?,
 
     /**
@@ -42,7 +42,7 @@ data class MenuVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "父 ID")
+    @field:Schema(description = "父 ID")
     val parentId: Long?,
 
     /**
@@ -51,6 +51,6 @@ data class MenuVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "模块 ID")
+    @field:Schema(description = "模块 ID")
     val moduleId: Long?
 )

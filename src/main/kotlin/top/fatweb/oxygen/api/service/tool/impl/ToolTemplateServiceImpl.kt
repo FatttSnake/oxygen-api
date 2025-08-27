@@ -23,6 +23,8 @@ import top.fatweb.oxygen.api.util.updateOrThrowException
 import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.tool.ToolTemplateVo
 import top.fatweb.oxygen.api.vo.tool.ToolTemplateWithSourceVo
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 /**
  * Tool template service implement
@@ -96,6 +98,14 @@ class ToolTemplateServiceImpl(
                     .set(ToolData::data, toolTemplateUpdateSourceParam.source)
             )
         }
+
+        updateOrThrowException {
+            this.update(
+                KtUpdateWrapper(ToolTemplate())
+                    .eq(ToolTemplate::id, toolTemplateUpdateSourceParam.id)
+                    .set(ToolTemplate::updateTime, LocalDateTime.now(ZoneOffset.UTC))
+            )
+        }
     }
 
     @Transactional
@@ -111,6 +121,14 @@ class ToolTemplateServiceImpl(
                 KtUpdateWrapper(ToolTemplate())
                     .eq(ToolTemplate::id, toolOrTemplateUpgradeBaseParam.id)
                     .set(ToolTemplate::baseVersion, toolOrTemplateUpgradeBaseParam.baseVersion)
+            )
+        }
+
+        updateOrThrowException {
+            this.update(
+                KtUpdateWrapper(ToolTemplate())
+                    .eq(ToolTemplate::id, toolOrTemplateUpgradeBaseParam.id)
+                    .set(ToolTemplate::updateTime, LocalDateTime.now(ZoneOffset.UTC))
             )
         }
     }

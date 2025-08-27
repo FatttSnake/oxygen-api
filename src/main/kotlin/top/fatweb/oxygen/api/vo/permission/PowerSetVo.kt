@@ -21,7 +21,7 @@ data class PowerSetVo(
      * @since 1.0.0
      * @see ModuleVo
      */
-    @Schema(description = "模块列表")
+    @field:Schema(description = "模块列表")
     val moduleList: List<ModuleVo>?,
 
     /**
@@ -31,7 +31,7 @@ data class PowerSetVo(
      * @since 1.0.0
      * @see MenuVo
      */
-    @Schema(description = "菜单列表")
+    @field:Schema(description = "菜单列表")
     val menuList: List<MenuVo>?,
 
     /**
@@ -41,7 +41,7 @@ data class PowerSetVo(
      * @since 1.0.0
      * @see FuncVo
      */
-    @Schema(description = "功能列表")
+    @field:Schema(description = "功能列表")
     val funcList: List<FuncVo>?,
 
     /**
@@ -51,6 +51,6 @@ data class PowerSetVo(
      * @since 1.0.0
      * @see OperationVo
      */
-    @Schema(description = "操作列表")
+    @field:Schema(description = "操作列表")
     val operationList: List<OperationVo>?
 )

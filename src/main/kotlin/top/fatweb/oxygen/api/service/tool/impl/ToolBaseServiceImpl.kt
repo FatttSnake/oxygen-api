@@ -28,6 +28,8 @@ import top.fatweb.oxygen.api.vo.tool.ToolBaseVo
 import top.fatweb.oxygen.api.vo.tool.ToolBaseWithDistVo
 import top.fatweb.oxygen.api.vo.tool.ToolBaseWithSourceVo
 import top.fatweb.oxygen.api.vo.tool.ToolBaseWithVersionsVo
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 /**
  * Tool base service implement
@@ -98,7 +100,7 @@ class ToolBaseServiceImpl(
         )
 
         if (basePage.total > 0) {
-            basePage.setRecords(baseMapper.selectListWithVersionByIds(basePage.records.map { it.id!! }))
+            basePage.records = baseMapper.selectListWithVersionByIds(basePage.records.map { it.id!! })
         }
 
         return basePage.toVo()
@@ -185,6 +187,14 @@ class ToolBaseServiceImpl(
                 dataType = RToolBaseData.DataType.DIST
                 baseVersion = compiledBaseVersion
             })
+        }
+
+        updateOrThrowException {
+            this.update(
+                KtUpdateWrapper(ToolBase())
+                    .eq(ToolBase::id, toolBaseUpdateDistParam.id)
+                    .set(ToolBase::updateTime, LocalDateTime.now(ZoneOffset.UTC))
+            )
         }
 
         return compiledBaseVersion

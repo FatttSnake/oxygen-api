@@ -20,7 +20,7 @@ data class ToolTemplateAddParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "名称", required = true)
+    @field:Schema(description = "名称", required = true)
     @field:NotBlank(message = "Name can not be blank")
     var name: String?,
 
@@ -30,7 +30,7 @@ data class ToolTemplateAddParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "Base ID", required = true)
+    @field:Schema(description = "Base ID", required = true)
     @field:NotNull(message = "BaseId can not be null")
     val baseId: Long? = null,
 
@@ -40,7 +40,7 @@ data class ToolTemplateAddParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.1.0
      */
-    @Schema(description = "Base version", required = true)
+    @field:Schema(description = "Base version", required = true)
     @field:NotNull(message = "Base version can not be null")
     val baseVersion: Long? = null,
 
@@ -50,7 +50,7 @@ data class ToolTemplateAddParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "入口文件", required = true)
+    @field:Schema(description = "入口文件", required = true)
     @field:NotBlank(message = "EntryPoint can not be null")
     var entryPoint: String? = null,
 
@@ -60,6 +60,6 @@ data class ToolTemplateAddParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "启用", allowableValues = ["true", "false"], defaultValue = "true")
+    @field:Schema(description = "启用", allowableValues = ["true", "false"], defaultValue = "true")
     val enable: Boolean = true
 )

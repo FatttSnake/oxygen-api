@@ -19,7 +19,7 @@ data class UserInfoUpdateParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "头像")
+    @field:Schema(description = "头像")
     val avatar: String?,
 
     /**
@@ -28,7 +28,7 @@ data class UserInfoUpdateParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "昵称", example = "QwQ")
+    @field:Schema(description = "昵称", example = "QwQ")
     @field:Size(min = 3, max = 20, message = "Nickname must be 3-20 characters")
     var nickname: String?
 )

@@ -24,7 +24,7 @@ data class FuncVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "功能名", example = "AddButton")
+    @field:Schema(description = "功能名", example = "AddButton")
     val name: String?,
 
     /**
@@ -33,7 +33,7 @@ data class FuncVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "父 ID")
+    @field:Schema(description = "父 ID")
     val parentId: Long?,
 
     /**
@@ -42,6 +42,6 @@ data class FuncVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "菜单 ID")
+    @field:Schema(description = "菜单 ID")
     val menuId: Long?
 )

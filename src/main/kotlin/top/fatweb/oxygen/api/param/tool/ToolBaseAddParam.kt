@@ -21,7 +21,7 @@ data class ToolBaseAddParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "名称", required = true)
+    @field:Schema(description = "名称", required = true)
     @field:NotBlank(message = "Name can not be blank")
     var name: String?,
 
@@ -32,7 +32,7 @@ data class ToolBaseAddParam(
      * @since 1.0.0
      * @see Platform
      */
-    @Schema(description = "平台")
+    @field:Schema(description = "平台")
     @field:NotNull(message = "Platform can not be null")
     val platform: Platform?
 )

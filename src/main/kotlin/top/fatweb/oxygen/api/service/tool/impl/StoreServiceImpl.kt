@@ -51,12 +51,10 @@ class StoreServiceImpl(
             )
         val toolPage = Page<Tool>(toolIdsIPage.current, toolIdsIPage.size, toolIdsIPage.total)
         if (toolIdsIPage.total > 0) {
-            toolPage.setRecords(
-                baseMapper.selectListByAuthorToolIds(
-                    toolIdsIPage.records,
-                    getLoginUserId(),
-                    toolStoreGetParam.platform
-                )
+            toolPage.records = baseMapper.selectListByAuthorToolIds(
+                toolIdsIPage.records,
+                getLoginUserId(),
+                toolStoreGetParam.platform
             )
         }
 
@@ -71,7 +69,7 @@ class StoreServiceImpl(
         val toolIdsIPage = baseMapper.selectAuthorToolIdentifierPageByUsername(toolIdsPage, username)
         val toolPage = Page<Tool>(toolIdsIPage.current, toolIdsIPage.size, toolIdsIPage.total)
         if (toolIdsIPage.total > 0) {
-            toolPage.setRecords(baseMapper.selectListByAuthorToolIds(toolIdsIPage.records, getLoginUserId()))
+            toolPage.records = baseMapper.selectListByAuthorToolIds(toolIdsIPage.records, getLoginUserId())
         }
 
         return toolPage.toVo()
@@ -135,16 +133,14 @@ class StoreServiceImpl(
 
         val toolPage = Page<Tool>(toolFavoriteIPage.current, toolFavoriteIPage.size, toolFavoriteIPage.total)
         if (toolFavoriteIPage.total > 0) {
-            toolPage.setRecords(
-                baseMapper.selectListByAuthorToolIds(
-                    toolFavoriteIPage.records.map {
-                        ToolIdentifier().apply {
-                            authorId = it.authorId
-                            toolId = it.toolId
-                        }
-                    },
-                    getLoginUserId()
-                )
+            toolPage.records = baseMapper.selectListByAuthorToolIds(
+                toolFavoriteIPage.records.map {
+                    ToolIdentifier().apply {
+                        authorId = it.authorId
+                        toolId = it.toolId
+                    }
+                },
+                getLoginUserId()
             )
         }
 

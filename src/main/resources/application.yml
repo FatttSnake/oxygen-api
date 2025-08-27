@@ -18,8 +18,6 @@ spring:
           type: com.zaxxer.hikari.HikariDataSource
           driver-class-name: org.sqlite.JDBC
           url: jdbc:sqlite:data/db/sqlite.db
-
-
   jackson:
     date-format: yyyy-MM-dd'T'HH:mm:ss.SSS'Z'
     time-zone: GMT
