@@ -21,7 +21,7 @@ data class ToolVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @JsonSerialize(using = ToStringSerializer::class)
+    @field:JsonSerialize(using = ToStringSerializer::class)
     val id: Long?,
 
     /**
@@ -30,7 +30,7 @@ data class ToolVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "名称")
+    @field:Schema(description = "名称")
     val name: String?,
 
     /**
@@ -39,7 +39,7 @@ data class ToolVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "工具 ID")
+    @field:Schema(description = "工具 ID")
     val toolId: String?,
 
     /**
@@ -48,7 +48,7 @@ data class ToolVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "图标")
+    @field:Schema(description = "图标")
     val icon: String?,
 
     /**
@@ -58,7 +58,7 @@ data class ToolVo(
      * @since 1.0.0
      * @see Platform
      */
-    @Schema(description = "平台")
+    @field:Schema(description = "平台")
     val platform: Platform?,
 
     /**
@@ -67,16 +67,16 @@ data class ToolVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "简介")
+    @field:Schema(description = "简介")
     val description: String?,
 
     /**
      * Base
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
      */
-    @Schema(description = "基板")
+    @field:Schema(description = "基板")
     val base: ToolBaseVo?,
 
     /**
@@ -86,7 +86,7 @@ data class ToolVo(
      * @since 1.0.0
      * @see UserWithInfoVo
      */
-    @Schema(description = "作者")
+    @field:Schema(description = "作者")
     val author: UserWithInfoVo?,
 
     /**
@@ -95,7 +95,7 @@ data class ToolVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "版本")
+    @field:Schema(description = "版本")
     val ver: String?,
 
     /**
@@ -104,7 +104,7 @@ data class ToolVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "关键字")
+    @field:Schema(description = "关键字")
     val keywords: List<String>?,
 
     /**
@@ -114,28 +114,8 @@ data class ToolVo(
      * @since 1.0.0
      * @see ToolCategoryVo
      */
-    @Schema(description = "类别")
+    @field:Schema(description = "类别")
     val categories: List<ToolCategoryVo>?,
-
-    /**
-     * Source
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see ToolDataVo
-     */
-    @Schema(description = "源码")
-    val source: ToolDataVo?,
-
-    /**
-     * Dist
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see ToolDataVo
-     */
-    @Schema(description = "产物")
-    val dist: ToolDataVo?,
 
     /**
      * Entry point
@@ -143,7 +123,7 @@ data class ToolVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "入口文件")
+    @field:Schema(description = "入口文件")
     val entryPoint: String?,
 
     /**
@@ -152,8 +132,8 @@ data class ToolVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @JsonSerialize(using = ToStringSerializer::class)
-    @Schema(description = "发布")
+    @field:Schema(description = "发布")
+    @field:JsonSerialize(using = ToStringSerializer::class)
     val publish: Long?,
 
     /**
@@ -163,7 +143,7 @@ data class ToolVo(
      * @since 1.0.0
      * @see Tool.ReviewType
      */
-    @Schema(description = "审核")
+    @field:Schema(description = "审核")
     val review: Tool.ReviewType?,
 
     /**
@@ -173,7 +153,7 @@ data class ToolVo(
      * @since 1.0.0
      * @see LocalDateTime
      */
-    @Schema(description = "创建时间", example = "1900-01-01T00:00:00.000Z")
+    @field:Schema(description = "创建时间", example = "1900-01-01T00:00:00.000Z")
     val createTime: LocalDateTime?,
 
     /**
@@ -183,7 +163,7 @@ data class ToolVo(
      * @since 1.0.0
      * @see LocalDateTime
      */
-    @Schema(description = "修改时间", example = "1900-01-01T00:00:00.000Z")
+    @field:Schema(description = "修改时间", example = "1900-01-01T00:00:00.000Z")
     val updateTime: LocalDateTime?,
 
     /**
@@ -192,6 +172,6 @@ data class ToolVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "收藏")
+    @field:Schema(description = "收藏")
     val favorite: Boolean?
 )

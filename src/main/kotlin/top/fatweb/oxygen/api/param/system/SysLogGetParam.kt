@@ -2,7 +2,7 @@ package top.fatweb.oxygen.api.param.system
 
 import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.format.annotation.DateTimeFormat
-import top.fatweb.oxygen.api.annotation.Trim
+import top.fatweb.oxygen.api.annotation.ParamProcessor
 import top.fatweb.oxygen.api.param.PageSortParam
 import java.time.LocalDateTime
 
@@ -13,7 +13,7 @@ import java.time.LocalDateTime
  * @since 1.0.0
  * @see PageSortParam
  */
-@Trim
+@ParamProcessor
 @Schema(description = "获取系统日志请求参数")
 data class SysLogGetParam(
     /**
@@ -22,7 +22,7 @@ data class SysLogGetParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(
+    @field:Schema(
         description = "类型过滤(多个使用逗号分隔)",
         allowableValues = ["INFO", "LOGIN", "LOGOUT", "REGISTER", "STATISTICS", "API", "ERROR"],
         example = "INFO"
@@ -35,7 +35,7 @@ data class SysLogGetParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(
+    @field:Schema(
         description = "请求方式过滤(多个使用逗号分隔)",
         allowableValues = ["GET", "POST", "PUT", "PATCH", "DELETE", "DELETE", "OPTIONS"],
         example = "GET,POST"
@@ -48,8 +48,7 @@ data class SysLogGetParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Trim
-    @Schema(description = "查询请求 Url")
+    @field:Schema(description = "查询请求 Url")
     var searchRequestUrl: String?,
 
     /**
@@ -70,8 +69,8 @@ data class SysLogGetParam(
      * @since 1.0.0
      * @see LocalDateTime
      */
-    @Schema(description = "查询开始时间", example = "1900-01-01T00:00:00.000Z")
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    @field:Schema(description = "查询开始时间", example = "1900-01-01T00:00:00.000Z")
+    @field:DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     val searchStartTime: LocalDateTime?,
 
     /**
@@ -81,7 +80,7 @@ data class SysLogGetParam(
      * @since 1.0.0
      * @see LocalDateTime
      */
-    @Schema(description = "查询结束时间", example = "1900-01-01T00:00:00.000Z")
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+    @field:Schema(description = "查询结束时间", example = "1900-01-01T00:00:00.000Z")
+    @field:DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
     val searchEndTime: LocalDateTime?
 ) : PageSortParam()

@@ -10,6 +10,6 @@ import io.swagger.v3.oas.annotations.media.Schema
  */
 @Schema(defaultValue = "敏感词修改请求参数")
 data class SensitiveWordUpdateParam(
-    @Schema(description = "ID 列表")
+    @field:Schema(description = "ID 列表")
     val ids: Set<Long> = emptySet()
 )

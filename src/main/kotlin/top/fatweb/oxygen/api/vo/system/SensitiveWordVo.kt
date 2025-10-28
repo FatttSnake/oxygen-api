@@ -19,7 +19,7 @@ data class SensitiveWordVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @JsonSerialize(using = ToStringSerializer::class)
+    @field:JsonSerialize(using = ToStringSerializer::class)
     val id: Long?,
 
     /**
@@ -28,7 +28,7 @@ data class SensitiveWordVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "词")
+    @field:Schema(description = "词")
     val word: String?,
 
     /**
@@ -38,7 +38,7 @@ data class SensitiveWordVo(
      * @since 1.0.0
      * @see SensitiveWord.Use
      */
-    @Schema(description = "用于")
+    @field:Schema(description = "用于")
     val useFor: Set<SensitiveWord.Use>?,
 
     /**
@@ -47,6 +47,6 @@ data class SensitiveWordVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "启用")
+    @field:Schema(description = "启用")
     val enable: Boolean?
 )

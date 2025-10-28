@@ -14,15 +14,28 @@ import java.time.LocalDateTime
 @Schema(description = "登录返回参数")
 data class LoginVo(
     /**
-     * Token
+     * Refresh Token
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
      */
-    @Schema(
-        description = "Token",
+    @field:Schema(
+        description = "Refresh Token",
         example = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJkYTllYjFkYmVmZDQ0OWRkOThlOGNjNzZlNzZkMDgyNSIsInN1YiI6IjE3MDk5ODYwNTg2Nzk5NzU5MzgiLCJpc3MiOiJGYXRXZWIiLCJpYXQiOjE2OTY1MjgxMTcsImV4cCI6MTY5NjUzNTMxN30.U2ZsyrGk7NbsP-DJfdz9xgWSfect5r2iKQnlEsscAA8"
-    ) val token: String,
+    )
+    val refreshToken: String,
+
+    /**
+     * Access Token
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.1.0
+     */
+    @field:Schema(
+        description = "Access Token",
+        example = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJkYTllYjFkYmVmZDQ0OWRkOThlOGNjNzZlNzZkMDgyNSIsInN1YiI6IjE3MDk5ODYwNTg2Nzk5NzU5MzgiLCJpc3MiOiJGYXRXZWIiLCJpYXQiOjE2OTY1MjgxMTcsImV4cCI6MTY5NjUzNTMxN30.U2ZsyrGk7NbsP-DJfdz9xgWSfect5r2iKQnlEsscAA8"
+    )
+    val accessToken: String,
 
     /**
      * User ID
@@ -30,11 +43,11 @@ data class LoginVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(
+    @field:Schema(
         description = "User ID",
         example = "1709986058679975938"
     )
-    @JsonSerialize(using = ToStringSerializer::class)
+    @field:JsonSerialize(using = ToStringSerializer::class)
     val userId: Long?,
 
     /**
@@ -44,10 +57,11 @@ data class LoginVo(
      * @since 1.0.0
      * @see LocalDateTime
      */
-    @Schema(
+    @field:Schema(
         description = "上次登录时间",
         example = "1900-01-01 00:00:00"
-    ) val lastLoginTime: LocalDateTime?,
+    )
+    val lastLoginTime: LocalDateTime?,
 
     /**
      * Last login IP
@@ -55,8 +69,9 @@ data class LoginVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(
+    @field:Schema(
         description = "上次登录 IP",
         example = "10.0.0.1"
-    ) val lastLoginIp: String?
+    )
+    val lastLoginIp: String?
 )

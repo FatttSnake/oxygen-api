@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="top.fatweb.oxygen.api.mapper.permission.UserInfoMapper">
-    <resultMap id="userInfoMap" type="userInfo">
+    <resultMap id="userInfoMap" type="top.fatweb.oxygen.api.entity.permission.UserInfo">
         <id property="id" column="user_info_id"/>
         <result property="userId" column="user_info_user_id"/>
         <result property="nickname" column="user_info_nickname"/>

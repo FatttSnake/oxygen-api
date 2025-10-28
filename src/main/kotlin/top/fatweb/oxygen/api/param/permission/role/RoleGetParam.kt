@@ -1,7 +1,7 @@
 package top.fatweb.oxygen.api.param.permission.role
 
 import io.swagger.v3.oas.annotations.media.Schema
-import top.fatweb.oxygen.api.annotation.Trim
+import top.fatweb.oxygen.api.annotation.ParamProcessor
 import top.fatweb.oxygen.api.param.PageSortParam
 
 /**
@@ -11,7 +11,7 @@ import top.fatweb.oxygen.api.param.PageSortParam
  * @since 1.0.0
  * @see PageSortParam
  */
-@Trim
+@ParamProcessor
 @Schema(description = "角色查询请求参数")
 data class RoleGetParam(
     /**
@@ -20,8 +20,7 @@ data class RoleGetParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Trim
-    @Schema(description = "查询角色名称", example = "Role_1")
+    @field:Schema(description = "查询角色名称", example = "Role_1")
     var searchName: String?,
 
     /**
@@ -30,7 +29,7 @@ data class RoleGetParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(
+    @field:Schema(
         description = "查询使用正则表达式",
         allowableValues = ["true", "false"],
         defaultValue = "false",

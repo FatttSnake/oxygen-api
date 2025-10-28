@@ -3,6 +3,7 @@ package top.fatweb.oxygen.api.handler
 import com.auth0.jwt.exceptions.JWTDecodeException
 import com.auth0.jwt.exceptions.SignatureVerificationException
 import com.auth0.jwt.exceptions.TokenExpiredException
+import io.swagger.v3.oas.annotations.Hidden
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.dao.DuplicateKeyException
@@ -11,6 +12,8 @@ import org.springframework.jdbc.BadSqlGrammarException
 import org.springframework.jdbc.UncategorizedSQLException
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.authentication.*
+import org.springframework.security.web.csrf.InvalidCsrfTokenException
+import org.springframework.security.web.csrf.MissingCsrfTokenException
 import org.springframework.web.HttpRequestMethodNotSupportedException
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
@@ -27,6 +30,7 @@ import top.fatweb.oxygen.api.exception.*
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
+@Hidden
 @RestControllerAdvice
 class ExceptionHandler {
     private val logger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -57,7 +61,7 @@ class ExceptionHandler {
 
             is MethodArgumentNotValidException -> {
                 logger.debug(e.localizedMessage, e)
-                val errorMessage = e.allErrors.map { error -> error.defaultMessage }.joinToString(". ")
+                val errorMessage = e.allErrors.joinToString(". ") { error -> error.defaultMessage.toString() }
                 ResponseResult.fail(ResponseCode.SYSTEM_ARGUMENT_NOT_VALID, errorMessage, null)
             }
 
@@ -120,6 +124,16 @@ class ExceptionHandler {
                 ResponseResult.fail(ResponseCode.PERMISSION_TOKEN_ILLEGAL, "Token illegal", null)
             }
 
+            is InvalidCsrfTokenException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.PERMISSION_INVALID_CSRF_TOKEN, e.localizedMessage, null)
+            }
+
+            is MissingCsrfTokenException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.PERMISSION_MISSING_CSRF_TOKEN, e.localizedMessage, null)
+            }
+
             is AccessDeniedException -> {
                 logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.PERMISSION_ACCESS_DENIED, "Access Denied", null)
@@ -128,6 +142,16 @@ class ExceptionHandler {
             is UserNotFoundException -> {
                 logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.PERMISSION_USER_NOT_FOUND, e.localizedMessage, null)
+            }
+
+            is LoginFailedException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.PERMISSION_LOGIN_FAILED, e.localizedMessage, null)
+            }
+
+            is TokenRefreshErrorException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.PERMISSION_TOKEN_REFRESH_ERROR, e.localizedMessage, null)
             }
 
             is NoVerificationRequiredException -> {
@@ -185,10 +209,6 @@ class ExceptionHandler {
             }
 
             /* SQL */
-            is DatabaseSelectException -> {
-                logger.debug(e.localizedMessage, e)
-                ResponseResult.databaseFail(ResponseCode.DATABASE_SELECT_FAILED, e.localizedMessage, null)
-            }
 
             is DatabaseInsertException -> {
                 logger.debug(e.localizedMessage, e)
@@ -198,11 +218,6 @@ class ExceptionHandler {
             is DatabaseUpdateException -> {
                 logger.debug(e.localizedMessage, e)
                 ResponseResult.databaseFail(ResponseCode.DATABASE_UPDATE_FAILED, e.localizedMessage, null)
-            }
-
-            is DatabaseDeleteException -> {
-                logger.debug(e.localizedMessage, e)
-                ResponseResult.databaseFail(ResponseCode.DATABASE_DELETE_FAILED, e.localizedMessage, null)
             }
 
             is BadSqlGrammarException -> {
@@ -230,7 +245,7 @@ class ExceptionHandler {
                 ResponseResult.fail(ResponseCode.DATABASE_EXECUTE_ERROR, e.localizedMessage, null)
             }
 
-            is RecordAlreadyExists -> {
+            is RecordAlreadyExistsException -> {
                 logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.DATABASE_RECORD_ALREADY_EXISTS, e.localizedMessage, null)
             }
@@ -266,10 +281,25 @@ class ExceptionHandler {
                 ResponseResult.fail(ResponseCode.TOOL_HAS_BEEN_PUBLISHED, e.localizedMessage, null)
             }
 
+            is ToolBaseHasBeenCompiledException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.TOOL_BASE_HAS_BEEN_COMPILED, e.localizedMessage, null)
+            }
+
+            is ToolHasNotBeenDelisted -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.TOOL_HAS_NOT_BEEN_DELISTED, e.localizedMessage, null)
+            }
+
             /* Other */
             is MatchSensitiveWordException -> {
                 logger.debug(e.localizedMessage, e)
                 ResponseResult.fail(ResponseCode.SYSTEM_MATCH_SENSITIVE_WORD, e.localizedMessage, null)
+            }
+
+            is NoEmailConfigException -> {
+                logger.debug(e.localizedMessage, e)
+                ResponseResult.fail(ResponseCode.SYSTEM_NO_EMAIL_CONFIG, e.localizedMessage, null)
             }
 
             /* API */

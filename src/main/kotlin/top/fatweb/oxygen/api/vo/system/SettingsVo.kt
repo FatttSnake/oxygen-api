@@ -18,6 +18,6 @@ data class SettingsVo(
      * @since 1.0.0
      * @see MailSettingsVo
      */
-    @Schema(description = "邮件设置")
+    @field:Schema(description = "邮件设置")
     val mail: MailSettingsVo?
 )

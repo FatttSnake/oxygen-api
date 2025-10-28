@@ -1,5 +1,6 @@
 package top.fatweb.oxygen.api.aop
 
+import io.swagger.v3.oas.annotations.Hidden
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.beans.factory.annotation.Qualifier
@@ -15,8 +16,10 @@ import top.fatweb.oxygen.api.entity.common.ResponseCode
 import top.fatweb.oxygen.api.entity.common.ResponseResult
 import top.fatweb.oxygen.api.entity.system.SysLog
 import top.fatweb.oxygen.api.service.system.ISysLogService
-import top.fatweb.oxygen.api.util.WebUtil
+import top.fatweb.oxygen.api.util.getLoginUserId
+import top.fatweb.oxygen.api.util.getRequestIp
 import top.fatweb.oxygen.api.vo.permission.LoginVo
+import java.lang.Exception
 import java.net.URI
 import java.time.LocalDateTime
 import java.time.ZoneOffset
@@ -34,9 +37,10 @@ import java.util.concurrent.Executor
  * @see HandlerInterceptor
  * @see ResponseBodyAdvice
  */
+@Hidden
 @ControllerAdvice
 class SysLogInterceptor(
-    @Qualifier("applicationTaskExecutor") private val customThreadPoolTaskExecutor: Executor,
+    @param:Qualifier("applicationTaskExecutor") private val customThreadPoolTaskExecutor: Executor,
     private val sysLogService: ISysLogService
 ) : HandlerInterceptor, ResponseBodyAdvice<Any> {
     private val sysLogThreadLocal = ThreadLocal<SysLog>()
@@ -44,12 +48,12 @@ class SysLogInterceptor(
 
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
         val sysLog = SysLog().apply {
-            operateUserId = WebUtil.getLoginUserId() ?: -1
+            operateUserId = getLoginUserId() ?: -1
             startTime = LocalDateTime.now(ZoneOffset.UTC)
             requestUri = URI(request.requestURI).path
             requestParams = formatParams(request.parameterMap)
             requestMethod = request.method
-            requestIp = WebUtil.getRequestIp(request)
+            requestIp = getRequestIp(request)
             requestServerAddress = "${request.scheme}://${request.serverName}:${request.serverPort}"
             userAgent = request.getHeader("User-Agent")
         }
@@ -60,7 +64,10 @@ class SysLogInterceptor(
     }
 
     override fun afterCompletion(
-        request: HttpServletRequest, response: HttpServletResponse, handler: Any, ex: Exception?
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        handler: Any,
+        ex: Exception?
     ) {
         val sysLog = sysLogThreadLocal.get()
         val result = resultThreadLocal.get()

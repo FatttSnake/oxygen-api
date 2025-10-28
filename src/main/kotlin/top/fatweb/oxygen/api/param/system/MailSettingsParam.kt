@@ -1,7 +1,7 @@
 package top.fatweb.oxygen.api.param.system
 
 import io.swagger.v3.oas.annotations.media.Schema
-import top.fatweb.oxygen.api.annotation.Trim
+import top.fatweb.oxygen.api.annotation.ParamProcessor
 import top.fatweb.oxygen.api.settings.MailSecurityType
 
 /**
@@ -10,7 +10,7 @@ import top.fatweb.oxygen.api.settings.MailSecurityType
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-@Trim
+@ParamProcessor
 @Schema(description = "邮件设置请求参数")
 data class MailSettingsParam(
     /**
@@ -19,8 +19,7 @@ data class MailSettingsParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Trim
-    @Schema(description = "SMTP 服务器")
+    @field:Schema(description = "SMTP 服务器")
     var host: String?,
 
     /**
@@ -29,8 +28,7 @@ data class MailSettingsParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Trim
-    @Schema(description = "端口号")
+    @field:Schema(description = "端口号")
     var port: Int?,
 
     /**
@@ -39,7 +37,7 @@ data class MailSettingsParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "安全类型", allowableValues = ["None", "SSL/TLS", "StartTls"], defaultValue = "None")
+    @field:Schema(description = "安全类型", allowableValues = ["None", "SSL/TLS", "StartTls"], defaultValue = "None")
     val securityType: MailSecurityType = MailSecurityType.NONE,
 
     /**
@@ -48,8 +46,7 @@ data class MailSettingsParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Trim
-    @Schema(description = "用户名")
+    @field:Schema(description = "用户名")
     var username: String?,
 
     /**
@@ -58,7 +55,7 @@ data class MailSettingsParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "密码")
+    @field:Schema(description = "密码")
     val password: String?,
 
     /**
@@ -67,8 +64,7 @@ data class MailSettingsParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Trim
-    @Schema(description = "发送者")
+    @field:Schema(description = "发送者")
     var from: String?,
 
     /**
@@ -77,7 +73,6 @@ data class MailSettingsParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Trim
-    @Schema(description = "发送者名称")
+    @field:Schema(description = "发送者名称")
     var fromName: String?
 )

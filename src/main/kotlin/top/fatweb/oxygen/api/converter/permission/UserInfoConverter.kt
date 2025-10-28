@@ -4,29 +4,20 @@ import top.fatweb.oxygen.api.entity.permission.UserInfo
 import top.fatweb.oxygen.api.vo.permission.base.UserInfoVo
 
 /**
- * User information converter
+ * Convert to UserInfoVo object
  *
+ * @return UserInfoVo object
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.0.0
+ * @since 1.1.0
+ * @see UserInfo
+ * @see UserInfoVo
  */
-object UserInfoConverter {
-    /**
-     * Convert UserInfo object into UserInfoVo object
-     *
-     * @param userInfo UserInfo object
-     * @return UserInfoVo object
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see UserInfo
-     * @see UserInfoVo
-     */
-    fun userInfoToUserInfoVo(userInfo: UserInfo) = UserInfoVo(
-        id = userInfo.id,
-        userId = userInfo.userId,
-        nickname = userInfo.nickname,
-        avatar = userInfo.avatar,
-        email = userInfo.email,
-        createTime = userInfo.createTime,
-        updateTime = userInfo.updateTime
-    )
-}
+fun UserInfo.toVo() = UserInfoVo(
+    id = this.id,
+    userId = this.userId,
+    nickname = this.nickname,
+    avatar = this.avatar,
+    email = this.email,
+    createTime = this.createTime,
+    updateTime = this.updateTime
+)

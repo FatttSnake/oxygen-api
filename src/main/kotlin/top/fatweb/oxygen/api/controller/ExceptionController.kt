@@ -14,6 +14,6 @@ import top.fatweb.oxygen.api.annotation.HiddenController
 class ExceptionController {
     @RequestMapping("/thrown")
     fun thrown(request: HttpServletRequest) {
-        throw request.getAttribute("filter.error") as RuntimeException
+        throw request.getAttribute("filter.error") as Exception
     }
 }

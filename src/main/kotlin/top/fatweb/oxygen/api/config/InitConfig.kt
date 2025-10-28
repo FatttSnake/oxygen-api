@@ -5,6 +5,7 @@ import jakarta.annotation.PostConstruct
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.context.annotation.DependsOn
+import org.springframework.security.core.token.Sha512DigestUtils
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 import top.fatweb.avatargenerator.GitHubAvatar
@@ -13,7 +14,7 @@ import top.fatweb.oxygen.api.entity.permission.UserInfo
 import top.fatweb.oxygen.api.properties.AdminProperties
 import top.fatweb.oxygen.api.service.permission.IUserInfoService
 import top.fatweb.oxygen.api.service.permission.IUserService
-import top.fatweb.oxygen.api.util.StrUtil
+import top.fatweb.oxygen.api.util.generateRandomPassword
 
 /**
  * Application initialization configuration
@@ -40,9 +41,9 @@ class InitConfig(
 
             val rawPassword = AdminProperties.password ?: let {
                 logger.warn("No default administrator password is set, a randomly generated password will be used")
-                StrUtil.getRandomPassword(10)
+                generateRandomPassword(10)
             }
-            val encodedPassword = passwordEncoder.encode(rawPassword)
+            val encodedPassword = passwordEncoder.encode(Sha512DigestUtils.shaHex(rawPassword))
 
             val user = User().apply {
                 id = 0

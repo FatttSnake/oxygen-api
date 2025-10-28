@@ -2,7 +2,7 @@ package top.fatweb.oxygen.api.service.permission.impl
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
 import org.springframework.stereotype.Service
-import top.fatweb.oxygen.api.converter.permission.PowerConverter
+import top.fatweb.oxygen.api.converter.permission.toVo
 import top.fatweb.oxygen.api.entity.permission.Power
 import top.fatweb.oxygen.api.entity.permission.PowerSet
 import top.fatweb.oxygen.api.mapper.permission.PowerMapper
@@ -29,10 +29,10 @@ class PowerServiceImpl(
     private val funcService: IFuncService,
     private val operationService: IOperationService
 ) : ServiceImpl<PowerMapper, Power>(), IPowerService {
-    override fun getList() = PowerConverter.powerSetToPowerSetVo(PowerSet().apply {
+    override fun getList() = PowerSet().apply {
         moduleList = moduleService.list()
         menuList = menuService.list()
         funcList = funcService.list()
         operationList = operationService.list()
-    })
+    }.toVo()
 }

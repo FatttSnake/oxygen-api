@@ -4,26 +4,17 @@ import top.fatweb.oxygen.api.entity.tool.ToolData
 import top.fatweb.oxygen.api.vo.tool.ToolDataVo
 
 /**
- * Tool data converter
+ * Convert to ToolDataVo object
  *
+ * @return ToolDataVo object
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.0.0
+ * @since 1.1.0
+ * @see ToolData
+ * @see ToolDataVo
  */
-object ToolDataConverter {
-    /**
-     * Convert ToolData object into ToolDataVo object
-     *
-     * @param toolData ToolData object
-     * @return ToolDataVo object
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see ToolData
-     * @see ToolDataVo
-     */
-    fun toolDataToToolDataVo(toolData: ToolData) = ToolDataVo(
-        id = toolData.id,
-        data = toolData.data,
-        createTime = toolData.createTime,
-        updateTime = toolData.updateTime
-    )
-}
+fun ToolData.toVo() = ToolDataVo(
+    id = this.id,
+    data = this.data,
+    createTime = this.createTime,
+    updateTime = this.updateTime
+)

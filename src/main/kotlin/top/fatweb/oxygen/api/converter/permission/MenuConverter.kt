@@ -4,27 +4,18 @@ import top.fatweb.oxygen.api.entity.permission.Menu
 import top.fatweb.oxygen.api.vo.permission.base.MenuVo
 
 /**
- * Menu converter
+ * Convert to MenuVo object
  *
+ * @return MenuVo object
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.0.0
+ * @since 1.1.0
+ * @see Menu
+ * @see MenuVo
  */
-object MenuConverter {
-    /**
-     * Convert Menu object into MenuVo object
-     *
-     * @param menu Menu object
-     * @return MenuVo object
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see Menu
-     * @see MenuVo
-     */
-    fun menuToMenuVo(menu: Menu) = MenuVo(
-        id = menu.id,
-        name = menu.name,
-        url = menu.url,
-        parentId = menu.parentId,
-        moduleId = menu.moduleId
-    )
-}
+fun Menu.toVo() = MenuVo(
+    id = this.id,
+    name = this.name,
+    url = this.url,
+    parentId = this.parentId,
+    moduleId = this.moduleId
+)

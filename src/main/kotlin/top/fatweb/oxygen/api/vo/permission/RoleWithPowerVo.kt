@@ -23,7 +23,7 @@ data class RoleWithPowerVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @JsonSerialize(using = ToStringSerializer::class)
+    @field:JsonSerialize(using = ToStringSerializer::class)
     val id: Long?,
 
     /**
@@ -32,7 +32,7 @@ data class RoleWithPowerVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "角色名", example = "Role")
+    @field:Schema(description = "角色名", example = "Role")
     val name: String?,
 
     /**
@@ -41,7 +41,7 @@ data class RoleWithPowerVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "启用", example = "true")
+    @field:Schema(description = "启用", example = "true")
     val enable: Boolean?,
 
     /**
@@ -51,7 +51,7 @@ data class RoleWithPowerVo(
      * @since 1.0.0
      * @see LocalDateTime
      */
-    @Schema(description = "创建时间", example = "1900-01-01T00:00:00.000Z")
+    @field:Schema(description = "创建时间", example = "1900-01-01T00:00:00.000Z")
     val createTime: LocalDateTime?,
 
     /**
@@ -61,7 +61,7 @@ data class RoleWithPowerVo(
      * @since 1.0.0
      * @see LocalDateTime
      */
-    @Schema(description = "修改时间", example = "1900-01-01T00:00:00.000Z")
+    @field:Schema(description = "修改时间", example = "1900-01-01T00:00:00.000Z")
     val updateTime: LocalDateTime?,
 
     /**
@@ -71,7 +71,7 @@ data class RoleWithPowerVo(
      * @since 1.0.0
      * @see ModuleVo
      */
-    @Schema(description = "模块列表")
+    @field:Schema(description = "模块列表")
     val modules: List<ModuleVo>?,
 
     /**
@@ -81,7 +81,7 @@ data class RoleWithPowerVo(
      * @since 1.0.0
      * @see MenuVo
      */
-    @Schema(description = "菜单列表")
+    @field:Schema(description = "菜单列表")
     val menus: List<MenuVo>?,
 
     /**
@@ -91,7 +91,7 @@ data class RoleWithPowerVo(
      * @since 1.0.0
      * @see FuncVo
      */
-    @Schema(description = "功能列表")
+    @field:Schema(description = "功能列表")
     val funcs: List<FuncVo>?,
 
     /**
@@ -101,6 +101,6 @@ data class RoleWithPowerVo(
      * @since 1.0.0
      * @see OperationVo
      */
-    @Schema(description = "操作列表")
+    @field:Schema(description = "操作列表")
     val operations: List<OperationVo>?
 )

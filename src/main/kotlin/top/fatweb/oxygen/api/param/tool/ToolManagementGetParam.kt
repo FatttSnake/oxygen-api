@@ -1,7 +1,7 @@
 package top.fatweb.oxygen.api.param.tool
 
 import io.swagger.v3.oas.annotations.media.Schema
-import top.fatweb.oxygen.api.annotation.Trim
+import top.fatweb.oxygen.api.annotation.ParamProcessor
 import top.fatweb.oxygen.api.param.PageSortParam
 
 /**
@@ -11,7 +11,8 @@ import top.fatweb.oxygen.api.param.PageSortParam
  * @since 1.0.0
  * @see PageSortParam
  */
-@Trim
+@ParamProcessor
+@Schema(description = "工具管理获取列表请求参数")
 data class ToolManagementGetParam(
     /**
      * Type of search
@@ -19,7 +20,7 @@ data class ToolManagementGetParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(
+    @field:Schema(
         description = "搜索类型",
         allowableValues = ["ALL", "NAME", "TOOL_ID", "NICKNAME", "USERNAME", "KEYWORD"],
         defaultValue = "ALL",
@@ -33,8 +34,7 @@ data class ToolManagementGetParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Trim
-    @Schema(description = "查询内容", example = "ToolName")
+    @field:Schema(description = "查询内容", example = "ToolName")
     var searchValue: String?,
 
     /**
@@ -43,7 +43,7 @@ data class ToolManagementGetParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(
+    @field:Schema(
         description = "查询使用正则表达式",
         allowableValues = ["true", "false"],
         defaultValue = "false",
@@ -57,7 +57,7 @@ data class ToolManagementGetParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(
+    @field:Schema(
         description = "审核状态过滤(多个使用逗号分隔)",
         allowableValues = ["NONE", "PROCESSING", "REJECT", "PASS"],
         example = "NONE,PASS"
@@ -70,7 +70,7 @@ data class ToolManagementGetParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(
+    @field:Schema(
         description = "平台过滤(多个使用逗号分隔)",
         allowableValues = ["WEB", "DESKTOP", "ANDROID"],
         example = "WEB"

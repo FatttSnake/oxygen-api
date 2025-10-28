@@ -16,7 +16,7 @@ data class SiteverifyResponse(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @JsonProperty("success")
+    @field:JsonProperty("success")
     val success: Boolean,
 
     /**
@@ -25,7 +25,7 @@ data class SiteverifyResponse(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @JsonProperty("challenge_ts")
+    @field:JsonProperty("challenge_ts")
     val challengeTs: LocalDateTime?,
 
     /**
@@ -34,7 +34,7 @@ data class SiteverifyResponse(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @JsonProperty("hostname")
+    @field:JsonProperty("hostname")
     val hostname: String?,
 
     /**
@@ -43,6 +43,6 @@ data class SiteverifyResponse(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @JsonProperty("error-codes")
+    @field:JsonProperty("error-codes")
     val errorCodes: List<String>?
 )

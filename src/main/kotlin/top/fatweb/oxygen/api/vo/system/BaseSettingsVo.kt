@@ -16,7 +16,7 @@ data class BaseSettingsVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "应用名称")
+    @field:Schema(description = "应用名称")
     val appName: String?,
 
     /**
@@ -25,7 +25,7 @@ data class BaseSettingsVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "应用 URL")
+    @field:Schema(description = "应用 URL")
     val appUrl: String?,
 
     /**
@@ -34,7 +34,7 @@ data class BaseSettingsVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "验证邮箱 URL")
+    @field:Schema(description = "验证邮箱 URL")
     val verifyUrl: String?,
 
     /**
@@ -43,6 +43,6 @@ data class BaseSettingsVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "找回密码 URL")
+    @field:Schema(description = "找回密码 URL")
     val retrieveUrl: String?
 )

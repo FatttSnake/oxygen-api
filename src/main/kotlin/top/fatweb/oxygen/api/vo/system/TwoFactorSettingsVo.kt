@@ -16,7 +16,7 @@ data class TwoFactorSettingsVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "发布者")
+    @field:Schema(description = "发布者")
     val issuer: String?,
 
     /**
@@ -25,6 +25,6 @@ data class TwoFactorSettingsVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "密钥长度")
+    @field:Schema(description = "密钥长度")
     val secretKeyLength: Int?
 )

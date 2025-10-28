@@ -4,26 +4,17 @@ import top.fatweb.oxygen.api.entity.permission.Operation
 import top.fatweb.oxygen.api.vo.permission.base.OperationVo
 
 /**
- * Operation converter
+ * Convert to OperationVo object
  *
+ * @return OperationVo object
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.0.0
+ * @since 1.1.0
+ * @see Operation
+ * @see OperationVo
  */
-object OperationConverter {
-    /**
-     * Convert Operation object into OperationVo object
-     *
-     * @param operation Operation object
-     * @return OperationVo object
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see Operation
-     * @see OperationVo
-     */
-    fun operationToOperationVo(operation: Operation) = OperationVo(
-        id = operation.id,
-        name = operation.name,
-        code = operation.code,
-        funcId = operation.funcId
-    )
-}
+fun Operation.toVo() = OperationVo(
+    id = this.id,
+    name = this.name,
+    code = this.code,
+    funcId = this.funcId
+)

@@ -5,12 +5,12 @@ import top.fatweb.oxygen.api.entity.tool.Platform
 import top.fatweb.oxygen.api.entity.tool.Tool
 import top.fatweb.oxygen.api.param.PageSortParam
 import top.fatweb.oxygen.api.param.tool.ToolCreateParam
+import top.fatweb.oxygen.api.param.tool.ToolOrTemplateUpgradeBaseParam
 import top.fatweb.oxygen.api.param.tool.ToolUpdateParam
+import top.fatweb.oxygen.api.param.tool.ToolUpdateSourceParam
 import top.fatweb.oxygen.api.param.tool.ToolUpgradeParam
 import top.fatweb.oxygen.api.vo.PageVo
-import top.fatweb.oxygen.api.vo.tool.ToolCategoryVo
-import top.fatweb.oxygen.api.vo.tool.ToolTemplateVo
-import top.fatweb.oxygen.api.vo.tool.ToolVo
+import top.fatweb.oxygen.api.vo.tool.*
 
 /**
  * Tool edit service interface
@@ -36,12 +36,12 @@ interface IEditService : IService<Tool> {
      * Get tool template by ID
      *
      * @param id ID
-     * @return ToolTemplateVo object
+     * @return ToolTemplateWithSourceVo object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
-     * @see ToolTemplateVo
+     * @see ToolTemplateWithSourceVo
      */
-    fun getTemplate(id: Long): ToolTemplateVo
+    fun getTemplate(id: Long): ToolTemplateWithSourceVo
 
     /**
      * Get tool category as list
@@ -54,50 +54,66 @@ interface IEditService : IService<Tool> {
     fun getCategory(): List<ToolCategoryVo>
 
     /**
+     * Get tool base dist
+     *
+     * @param id Tool base ID
+     * @param version Tool base version
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.1.0
+     * @see ToolBaseWithDistVo
+     */
+    fun getBaseDist(id: Long, version: Long): ToolBaseWithDistVo
+
+    /**
+     * Get tool base latest version
+     *
+     * @param id Tool base ID
+     * @return Version
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.1.0
+     */
+    fun getBaseLatestVersion(id: Long): Long
+
+    /**
      * Get tool by ID
      *
      * @param id Tool ID
-     * @return ToolVo object
+     * @return ToolWithSourceVo object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see ToolWithSourceVo
      */
-    fun getOne(id: Long): ToolVo
+    fun getOne(id: Long): ToolWithSourceVo
 
     /**
-     * Create tool
+     * Get tool source
      *
-     * @param toolCreateParam Create tool parameters
-     * @return ToolVo object
+     * @param username Username
+     * @param toolId Tool ID
+     * @param ver Version
+     * @param platform Platform
+     * @return ToolWithSourceVo object
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see ToolCreateParam
-     * @see ToolVo
+     * @since 1.1.0
+     * @see Platform
+     * @see ToolWithSourceVo
      */
-    fun create(toolCreateParam: ToolCreateParam): ToolVo
+    fun source(username: String, toolId: String, ver: String, platform: Platform): ToolWithSourceVo
 
     /**
-     * Upgrade tool
+     * Get tool dist
      *
-     * @param toolUpgradeParam Upgrade tool parameters
-     * @return ToolVo object
+     * @param username Username
+     * @param toolId Tool ID
+     * @param ver Version
+     * @param platform Platform
+     * @return ToolWithDistVo object
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see ToolUpgradeParam
-     * @see ToolVo
+     * @since 1.1.0
+     * @see Platform
+     * @see ToolWithDistVo
      */
-    fun upgrade(toolUpgradeParam: ToolUpgradeParam): ToolVo
-
-    /**
-     * Update tool
-     *
-     * @param toolUpdateParam Update tool parameters
-     * @return ToolVo object
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see ToolUpdateParam
-     * @see ToolVo
-     */
-    fun update(toolUpdateParam: ToolUpdateParam): ToolVo
+    fun dist(username: String, toolId: String, ver: String, platform: Platform): ToolWithDistVo
 
     /**
      * Get personal tools
@@ -113,19 +129,60 @@ interface IEditService : IService<Tool> {
     fun getPage(pageSortParam: PageSortParam): PageVo<ToolVo>
 
     /**
-     * Get tool detail
+     * Create tool
      *
-     * @param username Username
-     * @param toolId Tool ID
-     * @param ver Version
-     * @param platform Platform
-     * @return ToolVo object
+     * @param toolCreateParam Create tool parameters
+     * @return ToolWithSourceVo object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
-     * @see Platform
-     * @see ToolVo
+     * @see ToolCreateParam
+     * @see ToolWithSourceVo
      */
-    fun detail(username: String, toolId: String, ver: String, platform: Platform): ToolVo
+    fun create(toolCreateParam: ToolCreateParam): ToolWithSourceVo
+
+    /**
+     * Update tool
+     *
+     * @param toolUpdateParam Update tool parameters
+     * @return ToolWithSourceVo object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see ToolUpdateParam
+     */
+    fun update(toolUpdateParam: ToolUpdateParam)
+
+    /**
+     * Update tool source
+     *
+     * @param toolUpdateSourceParam Update tool source parameters
+     * @return ToolWithSourceVo object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.1.0
+     * @see ToolUpdateSourceParam
+     */
+    fun updateSource(toolUpdateSourceParam: ToolUpdateSourceParam)
+
+    /**
+     * Upgrade tool
+     *
+     * @param toolUpgradeParam Upgrade tool parameters
+     * @return ToolWithSourceVo object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.0.0
+     * @see ToolUpgradeParam
+     * @see ToolWithSourceVo
+     */
+    fun upgrade(toolUpgradeParam: ToolUpgradeParam): ToolWithSourceVo
+
+    /**
+     * Upgrade tool base version
+     *
+     * @param toolOrTemplateUpgradeBaseParam Upgrade tool base version parameters
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.1.0
+     * @see ToolOrTemplateUpgradeBaseParam
+     */
+    fun upgradeBase(toolOrTemplateUpgradeBaseParam: ToolOrTemplateUpgradeBaseParam)
 
     /**
      * Submit tool review

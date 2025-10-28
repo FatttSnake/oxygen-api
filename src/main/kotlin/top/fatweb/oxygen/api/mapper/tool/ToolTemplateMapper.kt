@@ -28,14 +28,17 @@ interface ToolTemplateMapper : BaseMapper<ToolTemplate> {
     fun selectOne(@Param("id") id: Long): ToolTemplate?
 
     /**
-     * Select tool template in list
+     * Select tool template in page
      *
-     * @return List of ToolTemplate object
+     * @param page Pagination
+     * @param platform Platform list
+     * @return ToolTemplate in page
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see IPage
      * @see ToolTemplate
      */
-    fun selectListWithBaseName(
+    fun selectPageWithBase(
         page: IPage<ToolTemplate>,
         @Param("platform") platform: List<String>?
     ): IPage<ToolTemplate>

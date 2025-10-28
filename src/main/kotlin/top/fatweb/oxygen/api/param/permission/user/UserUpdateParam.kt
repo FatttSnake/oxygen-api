@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Pattern
-import top.fatweb.oxygen.api.annotation.Trim
+import top.fatweb.oxygen.api.annotation.ParamProcessor
 import java.time.LocalDateTime
 
 /**
@@ -13,7 +13,7 @@ import java.time.LocalDateTime
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-@Trim
+@ParamProcessor
 @Schema(description = "更新用户请求参数")
 data class UserUpdateParam(
     /**
@@ -22,7 +22,7 @@ data class UserUpdateParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "用户 ID", required = true)
+    @field:Schema(description = "用户 ID", required = true)
     @field:NotNull(message = "ID can not be null")
     val id: Long?,
 
@@ -32,8 +32,7 @@ data class UserUpdateParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Trim
-    @Schema(description = "用户名", required = true, example = "User_1")
+    @field:Schema(description = "用户名", required = true, example = "User_1")
     @field:NotBlank(message = "Username can not be blank")
     var username: String?,
 
@@ -43,7 +42,7 @@ data class UserUpdateParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "是否已验证", allowableValues = ["true", "false"], defaultValue = "false", example = "false")
+    @field:Schema(description = "是否已验证", allowableValues = ["true", "false"], defaultValue = "false", example = "false")
     val verified: Boolean = false,
 
     /**
@@ -52,7 +51,7 @@ data class UserUpdateParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "锁定", allowableValues = ["true", "false"], defaultValue = "false", example = "false")
+    @field:Schema(description = "锁定", allowableValues = ["true", "false"], defaultValue = "false", example = "false")
     val locking: Boolean = false,
 
     /**
@@ -62,7 +61,7 @@ data class UserUpdateParam(
      * @since 1.0.0
      * @see LocalDateTime
      */
-    @Schema(description = "过期时间", example = "1900-01-01T00:00:00.000Z")
+    @field:Schema(description = "过期时间", example = "1900-01-01T00:00:00.000Z")
     val expiration: LocalDateTime?,
 
     /**
@@ -72,7 +71,7 @@ data class UserUpdateParam(
      * @since 1.0.0
      * @see LocalDateTime
      */
-    @Schema(description = "认证过期时间", example = "1900-01-01T00:00:00.000Z")
+    @field:Schema(description = "认证过期时间", example = "1900-01-01T00:00:00.000Z")
     val credentialsExpiration: LocalDateTime?,
 
     /**
@@ -81,7 +80,7 @@ data class UserUpdateParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "启用", allowableValues = ["true", "false"], defaultValue = "true", example = "true")
+    @field:Schema(description = "启用", allowableValues = ["true", "false"], defaultValue = "true", example = "true")
     val enable: Boolean = true,
 
     /**
@@ -90,8 +89,7 @@ data class UserUpdateParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Trim
-    @Schema(description = "昵称", required = true, example = "Nickname_1")
+    @field:Schema(description = "昵称", required = true, example = "Nickname_1")
     @field:NotBlank(message = "Nickname can not be blank")
     var nickname: String?,
 
@@ -101,7 +99,7 @@ data class UserUpdateParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "头像")
+    @field:Schema(description = "头像")
     val avatar: String?,
 
     /**
@@ -110,10 +108,9 @@ data class UserUpdateParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Trim
-    @Schema(description = "邮箱", required = true, example = "user@email.com")
+    @field:Schema(description = "邮箱", required = true, example = "user@email.com")
     @field:NotBlank(message = "Email can not be blank")
-    @field:Pattern(regexp = "^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*\$", message = "Illegal email address")
+    @field:Pattern(regexp = "^\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*$", message = "Illegal email address")
     var email: String?,
 
     /**
@@ -122,7 +119,7 @@ data class UserUpdateParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "角色 ID 列表")
+    @field:Schema(description = "角色 ID 列表")
     val roleIds: List<Long>?,
 
     /**
@@ -131,6 +128,6 @@ data class UserUpdateParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "用户组 ID 列表")
+    @field:Schema(description = "用户组 ID 列表")
     val groupIds: List<Long>?
 )

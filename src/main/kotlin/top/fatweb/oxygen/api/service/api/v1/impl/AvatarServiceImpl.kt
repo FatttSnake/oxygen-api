@@ -9,7 +9,7 @@ import top.fatweb.avatargenerator.layer.background.ColorPaintBackgroundLayer
 import top.fatweb.oxygen.api.param.api.v1.avatar.AvatarBaseParam
 import top.fatweb.oxygen.api.param.api.v1.avatar.AvatarGitHubParam
 import top.fatweb.oxygen.api.service.api.v1.IAvatarService
-import top.fatweb.oxygen.api.util.NumberUtil
+import top.fatweb.oxygen.api.util.getRandomLong
 import top.fatweb.oxygen.api.vo.api.v1.avatar.AvatarBase64Vo
 import java.awt.Color
 import kotlin.io.encoding.Base64
@@ -27,10 +27,10 @@ import kotlin.io.encoding.ExperimentalEncodingApi
 class AvatarServiceImpl : IAvatarService {
     override fun random(avatarBaseParam: AvatarBaseParam?): ByteArray =
         when ((1..4).random()) {
-            1 -> triangle(avatarBaseParam)
-            2 -> square(avatarBaseParam)
-            3 -> identicon(avatarBaseParam)
-            else -> github(AvatarGitHubParam().apply {
+            1 -> this.triangle(avatarBaseParam)
+            2 -> this.square(avatarBaseParam)
+            3 -> this.identicon(avatarBaseParam)
+            else -> this.github(AvatarGitHubParam().apply {
                 seed = avatarBaseParam?.seed
                 size = avatarBaseParam?.size
                 margin = avatarBaseParam?.margin
@@ -41,10 +41,10 @@ class AvatarServiceImpl : IAvatarService {
         }
 
     override fun randomBase64(avatarBaseParam: AvatarBaseParam?): AvatarBase64Vo = when ((1..4).random()) {
-        1 -> triangleBase64(avatarBaseParam)
-        2 -> squareBase64(avatarBaseParam)
-        3 -> identiconBase64(avatarBaseParam)
-        else -> githubBase64(AvatarGitHubParam().apply {
+        1 -> this.triangleBase64(avatarBaseParam)
+        2 -> this.squareBase64(avatarBaseParam)
+        3 -> this.identiconBase64(avatarBaseParam)
+        else -> this.githubBase64(AvatarGitHubParam().apply {
             seed = avatarBaseParam?.seed
             size = avatarBaseParam?.size
             margin = avatarBaseParam?.margin
@@ -68,7 +68,7 @@ class AvatarServiceImpl : IAvatarService {
                 avatarBaseParam?.background?.let { layers(ColorPaintBackgroundLayer(decodeColor(it))) }
             }.build()
 
-        return avatar.createAsPngBytes(avatarBaseParam?.seed ?: NumberUtil.getRandomLong())
+        return avatar.createAsPngBytes(avatarBaseParam?.seed ?: getRandomLong())
     }
 
     override fun triangleBase64(avatarBaseParam: AvatarBaseParam?) =
@@ -88,7 +88,7 @@ class AvatarServiceImpl : IAvatarService {
                 avatarBaseParam?.background?.let { layers(ColorPaintBackgroundLayer(decodeColor(it))) }
             }.build()
 
-        return avatar.createAsPngBytes(avatarBaseParam?.seed ?: NumberUtil.getRandomLong())
+        return avatar.createAsPngBytes(avatarBaseParam?.seed ?: getRandomLong())
     }
 
     override fun squareBase64(avatarBaseParam: AvatarBaseParam?) =
@@ -105,7 +105,7 @@ class AvatarServiceImpl : IAvatarService {
             avatarBaseParam?.background?.let { layers(ColorPaintBackgroundLayer(decodeColor(it))) }
         }.build()
 
-        return avatar.createAsPngBytes(avatarBaseParam?.seed ?: NumberUtil.getRandomLong())
+        return avatar.createAsPngBytes(avatarBaseParam?.seed ?: getRandomLong())
     }
 
     override fun identiconBase64(avatarBaseParam: AvatarBaseParam?) =
@@ -123,7 +123,7 @@ class AvatarServiceImpl : IAvatarService {
             avatarGitHubParam?.background?.let { layers(ColorPaintBackgroundLayer(decodeColor(it))) }
         }.build()
 
-        return avatar.createAsPngBytes(avatarGitHubParam?.seed ?: NumberUtil.getRandomLong())
+        return avatar.createAsPngBytes(avatarGitHubParam?.seed ?: getRandomLong())
     }
 
     override fun githubBase64(avatarGitHubParam: AvatarGitHubParam?) =
@@ -140,5 +140,4 @@ class AvatarServiceImpl : IAvatarService {
             Color.WHITE
         }
     }
-
 }

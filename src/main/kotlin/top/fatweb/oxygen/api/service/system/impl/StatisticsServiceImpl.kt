@@ -70,12 +70,12 @@ class StatisticsServiceImpl(
         cpuLogicalProcessorCount = systemInfo.hardware.processor.logicalProcessorCount,
         microarchitecture = systemInfo.hardware.processor.processorIdentifier.microarchitecture,
         memories = "${ByteUtil.formatByteSize(systemInfo.hardware.memory.total)} (${
-            if (systemInfo.hardware.memory.physicalMemory.size > 0) systemInfo.hardware.memory.physicalMemory.joinToString(
+            if (systemInfo.hardware.memory.physicalMemory.isNotEmpty()) systemInfo.hardware.memory.physicalMemory.joinToString(
                 " + "
             ) { ByteUtil.formatByteSize(it.capacity) }
             else "Unknown"
         })",
-        disks = if (systemInfo.hardware.diskStores.size > 0) "${ByteUtil.formatByteSize(systemInfo.hardware.diskStores.sumOf { it.size })} (${
+        disks = if (systemInfo.hardware.diskStores.isNotEmpty()) "${ByteUtil.formatByteSize(systemInfo.hardware.diskStores.sumOf { it.size })} (${
             systemInfo.hardware.diskStores.joinToString(
                 " + "
             ) { ByteUtil.formatByteSize(it.size) }
@@ -195,9 +195,9 @@ class StatisticsServiceImpl(
         }
 
         return OnlineInfoVo(
-            current = redisUtil.keys("${SecurityProperties.jwtIssuer}_login_*")
+            current = redisUtil.keys("${SecurityProperties.tokenIssuer}_access_*")
                 .distinctBy {
-                    Regex("${SecurityProperties.jwtIssuer}_login_(.*):.*").matchEntire(it)?.groupValues?.getOrNull(
+                    Regex("${SecurityProperties.tokenIssuer}_access_(.*?)_.*:.*").matchEntire(it)?.groupValues?.getOrNull(
                         1
                     )
                 }.size.toLong(),

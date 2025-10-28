@@ -16,6 +16,6 @@ data class TwoFactorVo (
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "二维码 SVG Base64")
+    @field:Schema(description = "二维码 SVG Base64")
     val qrCodeSVGBase64: String?
 )

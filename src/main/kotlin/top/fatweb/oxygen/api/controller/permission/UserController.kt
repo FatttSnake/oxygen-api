@@ -5,14 +5,14 @@ import jakarta.validation.Valid
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import top.fatweb.oxygen.api.annotation.BaseController
-import top.fatweb.oxygen.api.annotation.Trim
+import top.fatweb.oxygen.api.annotation.ParamProcessor
+import top.fatweb.oxygen.api.annotation.ProcessParam
 import top.fatweb.oxygen.api.entity.common.ResponseCode
 import top.fatweb.oxygen.api.entity.common.ResponseResult
 import top.fatweb.oxygen.api.param.permission.user.*
 import top.fatweb.oxygen.api.service.permission.IUserService
 import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.permission.UserWithInfoVo
-import top.fatweb.oxygen.api.vo.permission.UserWithPasswordRoleInfoVo
 import top.fatweb.oxygen.api.vo.permission.UserWithPowerInfoVo
 import top.fatweb.oxygen.api.vo.permission.UserWithRoleInfoVo
 
@@ -40,7 +40,7 @@ class UserController(
     @GetMapping("/info")
     fun getInfo(): ResponseResult<UserWithPowerInfoVo> =
         ResponseResult.databaseSuccess(data = userService.getInfo())
-    
+
     /**
      * Get basic user information
      *
@@ -51,11 +51,10 @@ class UserController(
      * @see ResponseResult
      * @see UserWithPowerInfoVo
      */
-    @Trim
     @Operation(summary = "获取指定用户基本信息")
     @GetMapping("/info/{username}")
-    fun getBasicInfo(@PathVariable username: String): ResponseResult<UserWithInfoVo> =
-        ResponseResult.databaseSuccess(data = userService.getBasicInfo(username.trim()))
+    fun getBasicInfo(@ProcessParam @ParamProcessor @PathVariable username: String): ResponseResult<UserWithInfoVo> =
+        ResponseResult.databaseSuccess(data = userService.getBasicInfo(username))
 
     /**
      * Update current user information
@@ -67,12 +66,13 @@ class UserController(
      * @see UserInfoUpdateParam
      * @see ResponseResult
      */
-    @Trim
     @Operation(summary = "更新当前用户信息")
     @PatchMapping("info")
-    fun updateInfo(@RequestBody @Valid userInfoUpdateParam: UserInfoUpdateParam): ResponseResult<Nothing> =
-        if (userService.updateInfo(userInfoUpdateParam)) ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
-        else ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_FAILED)
+    fun updateInfo(@ProcessParam @RequestBody @Valid userInfoUpdateParam: UserInfoUpdateParam): ResponseResult<Unit> {
+        userService.updateInfo(userInfoUpdateParam)
+
+        return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
+    }
 
     /**
      * Change password
@@ -86,7 +86,7 @@ class UserController(
      */
     @Operation(summary = "更改密码")
     @PostMapping("info")
-    fun password(@RequestBody @Valid userChangePasswordParam: UserChangePasswordParam): ResponseResult<Nothing> {
+    fun password(@RequestBody @Valid userChangePasswordParam: UserChangePasswordParam): ResponseResult<Unit> {
         userService.password(userChangePasswordParam)
 
         return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
@@ -119,11 +119,10 @@ class UserController(
      * @see ResponseResult
      * @see UserWithRoleInfoVo
      */
-    @Trim
     @Operation(summary = "获取用户")
     @GetMapping
     @PreAuthorize("hasAnyAuthority('system:user:query:all')")
-    fun get(@Valid userGetParam: UserGetParam?): ResponseResult<PageVo<UserWithRoleInfoVo>> =
+    fun get(@ProcessParam @Valid userGetParam: UserGetParam?): ResponseResult<PageVo<UserWithRoleInfoVo>> =
         ResponseResult.databaseSuccess(
             data = userService.getPage(userGetParam)
         )
@@ -137,13 +136,12 @@ class UserController(
      * @since 1.0.0
      * @see UserAddParam
      * @see ResponseResult
-     * @see UserWithPasswordRoleInfoVo
+     * @see UserWithRoleInfoVo
      */
-    @Trim
     @Operation(summary = "添加用户")
     @PostMapping
     @PreAuthorize("hasAnyAuthority('system:user:add:one')")
-    fun add(@Valid @RequestBody userAddParam: UserAddParam): ResponseResult<UserWithPasswordRoleInfoVo> =
+    fun add(@ProcessParam @Valid @RequestBody userAddParam: UserAddParam): ResponseResult<UserWithRoleInfoVo> =
         ResponseResult.databaseSuccess(
             ResponseCode.DATABASE_INSERT_SUCCESS, data = userService.add(userAddParam)
         )
@@ -159,14 +157,14 @@ class UserController(
      * @see ResponseResult
      * @see UserWithRoleInfoVo
      */
-    @Trim
     @Operation(summary = "修改用户")
     @PutMapping
     @PreAuthorize("hasAnyAuthority('system:user:modify:one')")
-    fun update(@Valid @RequestBody userUpdateParam: UserUpdateParam): ResponseResult<UserWithRoleInfoVo> =
-        ResponseResult.databaseSuccess(
-            ResponseCode.DATABASE_UPDATE_SUCCESS, data = userService.update(userUpdateParam)
-        )
+    fun update(@ProcessParam @Valid @RequestBody userUpdateParam: UserUpdateParam): ResponseResult<Unit> {
+        userService.update(userUpdateParam)
+
+        return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
+    }
 
     /**
      * Update user password
@@ -181,8 +179,9 @@ class UserController(
     @Operation(summary = "修改密码")
     @PatchMapping
     @PreAuthorize("hasAnyAuthority('system:user:modify:password')")
-    fun password(@Valid @RequestBody userUpdatePasswordParam: UserUpdatePasswordParam): ResponseResult<Nothing> {
+    fun password(@Valid @RequestBody userUpdatePasswordParam: UserUpdatePasswordParam): ResponseResult<Unit> {
         userService.password(userUpdatePasswordParam)
+
         return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
     }
 
@@ -198,8 +197,9 @@ class UserController(
     @Operation(summary = "删除用户")
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('system:user:delete:one')")
-    fun delete(@PathVariable id: Long): ResponseResult<Nothing> {
+    fun delete(@PathVariable id: Long): ResponseResult<Unit> {
         userService.deleteOne(id)
+
         return ResponseResult.databaseSuccess(ResponseCode.DATABASE_DELETE_SUCCESS)
     }
 
@@ -216,8 +216,9 @@ class UserController(
     @Operation(summary = "批量删除用户")
     @DeleteMapping
     @PreAuthorize("hasAnyAuthority('system:user:delete:multiple')")
-    fun deleteList(@Valid @RequestBody userDeleteParam: UserDeleteParam): ResponseResult<Nothing> {
+    fun deleteList(@Valid @RequestBody userDeleteParam: UserDeleteParam): ResponseResult<Unit> {
         userService.delete(userDeleteParam)
+
         return ResponseResult.databaseSuccess(ResponseCode.DATABASE_DELETE_SUCCESS)
     }
 }

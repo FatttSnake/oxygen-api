@@ -28,8 +28,8 @@ class StatisticsCron(
     fun onlineUserCount() {
         statisticsLogService.save(StatisticsLog().apply {
             key = StatisticsLog.KeyItem.ONLINE_USERS_COUNT
-            value = redisUtil.keys("${SecurityProperties.jwtIssuer}_login_*")
-                .distinctBy { Regex("${SecurityProperties.jwtIssuer}_login_(.*):.*").matchEntire(it)?.groupValues?.getOrNull(1) }.size.toString()
+            value = redisUtil.keys("${SecurityProperties.tokenIssuer}_access_*")
+                .distinctBy { Regex("${SecurityProperties.tokenIssuer}_access_(.*?)_.*:.*").matchEntire(it)?.groupValues?.getOrNull(1) }.size.toString()
         })
     }
 }

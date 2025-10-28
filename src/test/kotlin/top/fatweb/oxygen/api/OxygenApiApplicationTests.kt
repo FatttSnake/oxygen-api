@@ -9,8 +9,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension
 import top.fatweb.oxygen.api.properties.SecurityProperties
 import top.fatweb.oxygen.api.util.ByteUtil
 import top.fatweb.oxygen.api.util.JwtUtil
-import top.fatweb.oxygen.api.util.StrUtil
-
+import top.fatweb.oxygen.api.util.underToUpperLetter
+import top.fatweb.oxygen.api.util.upperToUnderLetter
+import java.util.concurrent.TimeUnit
 
 @ExtendWith(SpringExtension::class)
 class OxygenApiApplicationTests {
@@ -23,17 +24,9 @@ class OxygenApiApplicationTests {
 
     @Test
     fun jwtTest() {
-        val jwt = JwtUtil.createJwt("User")
+        val jwt = JwtUtil.generateAccessToken("User")
         assertEquals("User", jwt?.let { JwtUtil.parseJwt(it).subject })
     }
-
-    /*
-        @Test
-        fun generatePassword() {
-            val passwordEncoder = BCryptPasswordEncoder()
-            logger.info(passwordEncoder.encode("admin@dev"))
-        }
-    */
 
     @Test
     fun byteUtilTest() {
@@ -44,11 +37,16 @@ class OxygenApiApplicationTests {
 
     @Test
     fun upperToUnderLetterTest() {
-        assertEquals("create_time", StrUtil.upperToUnderLetter("createTime"))
+        assertEquals("create_time", upperToUnderLetter("createTime"))
     }
 
     @Test
     fun underToUpperLetterTest() {
-        assertEquals("createTime", StrUtil.underToUpperLetter("create_time"))
+        assertEquals("createTime", underToUpperLetter("create_time"))
+    }
+
+    @Test
+    fun timeUnitTest() {
+        assertEquals(60000, TimeUnit.MINUTES.toMillis(1))
     }
 }

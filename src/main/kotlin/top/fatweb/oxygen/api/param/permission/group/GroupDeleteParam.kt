@@ -17,7 +17,7 @@ data class GroupDeleteParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "用户组 ID 列表", required = true)
-    @field: NotEmpty(message = "Ids can not be empty")
+    @field:Schema(description = "用户组 ID 列表", required = true)
+    @field:NotEmpty(message = "Ids can not be empty")
     val ids: List<Long>?
 )

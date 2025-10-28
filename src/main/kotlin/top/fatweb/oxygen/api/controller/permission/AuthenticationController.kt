@@ -2,18 +2,15 @@ package top.fatweb.oxygen.api.controller.permission
 
 import io.swagger.v3.oas.annotations.Operation
 import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import jakarta.validation.Valid
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.*
 import top.fatweb.oxygen.api.annotation.BaseController
-import top.fatweb.oxygen.api.annotation.Trim
+import top.fatweb.oxygen.api.annotation.ProcessParam
 import top.fatweb.oxygen.api.entity.common.ResponseCode
 import top.fatweb.oxygen.api.entity.common.ResponseResult
 import top.fatweb.oxygen.api.param.permission.*
 import top.fatweb.oxygen.api.service.permission.IAuthenticationService
-import top.fatweb.oxygen.api.util.WebUtil
 import top.fatweb.oxygen.api.vo.permission.LoginVo
 import top.fatweb.oxygen.api.vo.permission.RegisterVo
 import top.fatweb.oxygen.api.vo.permission.TokenVo
@@ -41,15 +38,19 @@ class AuthenticationController(
      * @see ResponseResult
      * @see RegisterVo
      */
-    @Trim
     @Operation(summary = "注册")
     @PostMapping("/register")
     fun register(
         request: HttpServletRequest,
+        response: HttpServletResponse,
         @Valid @RequestBody registerParam: RegisterParam
     ): ResponseResult<RegisterVo> = ResponseResult.success(
-        ResponseCode.PERMISSION_REGISTER_SUCCESS,
-        data = authenticationService.register(request, registerParam)
+        code = ResponseCode.PERMISSION_REGISTER_SUCCESS,
+        data = authenticationService.register(
+            request = request,
+            response = response,
+            registerParam = registerParam
+        )
     )
 
 
@@ -63,7 +64,7 @@ class AuthenticationController(
      */
     @Operation(summary = "发送验证邮件")
     @PostMapping("/resend")
-    fun resend(): ResponseResult<Nothing> {
+    fun resend(): ResponseResult<Unit> {
         authenticationService.resend()
 
         return ResponseResult.success(ResponseCode.PERMISSION_RESEND_SUCCESS)
@@ -79,10 +80,9 @@ class AuthenticationController(
      * @see VerifyParam
      * @see ResponseResult
      */
-    @Trim
     @Operation(summary = "验证邮箱")
     @PostMapping("/verify")
-    fun verify(@Valid @RequestBody verifyParam: VerifyParam): ResponseResult<Nothing> {
+    fun verify(@ProcessParam @Valid @RequestBody verifyParam: VerifyParam): ResponseResult<Unit> {
         authenticationService.verify(verifyParam)
 
         return ResponseResult.success(ResponseCode.PERMISSION_VERIFY_SUCCESS)
@@ -100,11 +100,13 @@ class AuthenticationController(
      * @see ForgetParam
      * @see ResponseResult
      */
-    @Trim
     @Operation(summary = "忘记密码")
     @PostMapping("/forget")
-    fun forget(request: HttpServletRequest, @Valid @RequestBody forgetParam: ForgetParam): ResponseResult<Nothing> {
-        authenticationService.forget(request, forgetParam)
+    fun forget(request: HttpServletRequest, @Valid @RequestBody forgetParam: ForgetParam): ResponseResult<Unit> {
+        authenticationService.forget(
+            request = request,
+            forgetParam = forgetParam
+        )
 
         return ResponseResult.success(ResponseCode.PERMISSION_FORGET_SUCCESS)
     }
@@ -126,8 +128,11 @@ class AuthenticationController(
     fun retrieve(
         request: HttpServletRequest,
         @Valid @RequestBody retrieveParam: RetrieveParam
-    ): ResponseResult<Nothing> {
-        authenticationService.retrieve(request, retrieveParam)
+    ): ResponseResult<Unit> {
+        authenticationService.retrieve(
+            request = request,
+            retrieveParam = retrieveParam
+        )
 
         return ResponseResult.success(ResponseCode.PERMISSION_RETRIEVE_SUCCESS)
     }
@@ -145,14 +150,21 @@ class AuthenticationController(
      * @see ResponseResult
      * @see LoginVo
      */
-    @Trim
     @Operation(summary = "登录")
     @PostMapping("/login")
-    fun login(request: HttpServletRequest, @Valid @RequestBody loginParam: LoginParam): ResponseResult<LoginVo> =
+    fun login(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        @ProcessParam @Valid @RequestBody loginParam: LoginParam
+    ): ResponseResult<LoginVo> =
         ResponseResult.success(
-            ResponseCode.PERMISSION_LOGIN_SUCCESS,
-            "Login success",
-            authenticationService.login(request, loginParam)
+            code = ResponseCode.PERMISSION_LOGIN_SUCCESS,
+            msg = "Login success",
+            data = authenticationService.login(
+                request = request,
+                response = response,
+                loginParam = loginParam
+            )
         )
 
     /**
@@ -177,7 +189,7 @@ class AuthenticationController(
      */
     @Operation(summary = "验证双因素")
     @PostMapping("/two-factor")
-    fun validateTwoFactor(@RequestBody @Valid twoFactorValidateParam: TwoFactorValidateParam): ResponseResult<Nothing> =
+    fun validateTwoFactor(@RequestBody @Valid twoFactorValidateParam: TwoFactorValidateParam): ResponseResult<Unit> =
         if (authenticationService.validateTwoFactor(twoFactorValidateParam)) ResponseResult.success()
         else ResponseResult.fail()
 
@@ -189,7 +201,7 @@ class AuthenticationController(
      */
     @Operation(summary = "移除双因素")
     @DeleteMapping("/two-factor")
-    fun removeTwoFactor(@RequestBody @Valid twoFactorRemoveParam: TwoFactorRemoveParam): ResponseResult<Nothing> =
+    fun removeTwoFactor(@RequestBody @Valid twoFactorRemoveParam: TwoFactorRemoveParam): ResponseResult<Unit> =
         if (authenticationService.removeTwoFactor(twoFactorRemoveParam)) ResponseResult.success()
         else ResponseResult.fail()
 
@@ -206,28 +218,48 @@ class AuthenticationController(
      */
     @Operation(summary = "登出")
     @PostMapping("/logout")
-    fun logout(request: HttpServletRequest): ResponseResult<Nothing> =
-        when (authenticationService.logout(WebUtil.getToken(request))) {
-            true -> ResponseResult.success(ResponseCode.PERMISSION_LOGOUT_SUCCESS, "Logout success", null)
-            false -> ResponseResult.fail(ResponseCode.PERMISSION_LOGOUT_FAILED, "Logout failed", null)
+    fun logout(request: HttpServletRequest, response: HttpServletResponse): ResponseResult<Unit> =
+        when (authenticationService.logout(request = request, response = response)) {
+            true -> ResponseResult.success(
+                code = ResponseCode.PERMISSION_LOGOUT_SUCCESS,
+                msg = "Logout success",
+                data = null
+            )
+
+            false -> ResponseResult.fail(
+                code = ResponseCode.PERMISSION_LOGOUT_FAILED,
+                msg = "Logout failed",
+                data = null
+            )
         }
 
     /**
-     * Renew token
+     * Refresh token
      *
      * @param request
+     * @param response
      * @return Response object includes new token
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see HttpServletRequest
+     * @see HttpServletResponse
      * @see ResponseResult
      * @see TokenVo
      */
     @Operation(summary = "更新 Token")
-    @GetMapping("/token")
-    fun renewToken(request: HttpServletRequest): ResponseResult<TokenVo> = ResponseResult.success(
-        ResponseCode.PERMISSION_TOKEN_RENEW_SUCCESS,
-        "Token renew success",
-        authenticationService.renewToken(WebUtil.getToken(request))
+    @PostMapping("/token")
+    fun refreshToken(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        @CookieValue("refresh_token") cookieRefreshToken: String?,
+        @RequestParam("refreshToken") queryRefreshToken: String?
+    ): ResponseResult<TokenVo> = ResponseResult.success(
+        code = ResponseCode.PERMISSION_TOKEN_REFRESH_SUCCESS,
+        msg = "Token refresh success",
+        data = authenticationService.refreshToken(
+            request = request,
+            response = response,
+            refreshToken = cookieRefreshToken ?: queryRefreshToken
+        )
     )
 }

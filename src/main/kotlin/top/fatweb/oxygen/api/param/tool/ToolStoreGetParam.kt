@@ -1,7 +1,7 @@
 package top.fatweb.oxygen.api.param.tool
 
 import io.swagger.v3.oas.annotations.media.Schema
-import top.fatweb.oxygen.api.annotation.Trim
+import top.fatweb.oxygen.api.annotation.ParamProcessor
 import top.fatweb.oxygen.api.entity.tool.Platform
 import top.fatweb.oxygen.api.param.PageSortParam
 
@@ -12,7 +12,8 @@ import top.fatweb.oxygen.api.param.PageSortParam
  * @since 1.0.0
  * @see PageSortParam
  */
-@Trim
+@ParamProcessor
+@Schema(description = "工具商店获取列表请求参数")
 data class ToolStoreGetParam(
     /**
      * Value to search for
@@ -20,8 +21,7 @@ data class ToolStoreGetParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Trim
-    @Schema(description = "查询内容", example = "ToolName")
+    @field:Schema(description = "查询内容", example = "ToolName")
     var searchValue: String?,
 
     /**
@@ -31,6 +31,6 @@ data class ToolStoreGetParam(
      * @since 1.0.0
      * @see Platform
      */
-    @Schema(description = "指定平台", example = "DESKTOP")
+    @field:Schema(description = "指定平台", example = "DESKTOP")
     val platform: Platform?
 ) : PageSortParam()

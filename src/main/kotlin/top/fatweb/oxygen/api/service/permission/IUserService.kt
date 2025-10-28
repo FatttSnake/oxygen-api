@@ -5,7 +5,6 @@ import top.fatweb.oxygen.api.entity.permission.User
 import top.fatweb.oxygen.api.param.permission.user.*
 import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.permission.UserWithInfoVo
-import top.fatweb.oxygen.api.vo.permission.UserWithPasswordRoleInfoVo
 import top.fatweb.oxygen.api.vo.permission.UserWithPowerInfoVo
 import top.fatweb.oxygen.api.vo.permission.UserWithRoleInfoVo
 
@@ -53,16 +52,20 @@ interface IUserService : IService<User> {
     /**
      * Update user information
      *
+     * @param userInfoUpdateParam Update user information parameters
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see UserInfoUpdateParam
      */
-    fun updateInfo(userInfoUpdateParam: UserInfoUpdateParam): Boolean
+    fun updateInfo(userInfoUpdateParam: UserInfoUpdateParam)
 
     /**
      * Change password
      *
+     * @param userChangePasswordParam Change password parameters
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see UserChangePasswordParam
      */
     fun password(userChangePasswordParam: UserChangePasswordParam)
 
@@ -104,25 +107,23 @@ interface IUserService : IService<User> {
      * Add user
      *
      * @param userAddParam Add user parameters
-     * @return UserWithPasswordRoleInfoVo object
+     * @return UserWithRoleInfoVo object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see UserAddParam
-     * @see UserWithPasswordRoleInfoVo
+     * @see UserWithRoleInfoVo
      */
-    fun add(userAddParam: UserAddParam): UserWithPasswordRoleInfoVo
+    fun add(userAddParam: UserAddParam): UserWithRoleInfoVo
 
     /**
      * Update user
      *
      * @param userUpdateParam Update user parameters
-     * @return UserWithRoleInfoVo object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see UserUpdateParam
-     * @see UserWithRoleInfoVo
      */
-    fun update(userUpdateParam: UserUpdateParam): UserWithRoleInfoVo
+    fun update(userUpdateParam: UserUpdateParam)
 
     /**
      * Update user password

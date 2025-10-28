@@ -4,26 +4,17 @@ import top.fatweb.oxygen.api.entity.permission.Func
 import top.fatweb.oxygen.api.vo.permission.base.FuncVo
 
 /**
- * Function converter
+ * Convert to FuncVo object
  *
+ * @return FuncVo object
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.0.0
+ * @since 1.1.0
+ * @see Func
+ * @see FuncVo
  */
-object FuncConverter {
-    /**
-     * Convert Func object into FuncVo object
-     *
-     * @param func Func object
-     * @return FuncVo object
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see Func
-     * @see FuncVo
-     */
-    fun funcToFuncVo(func: Func) = FuncVo(
-        id = func.id,
-        name = func.name,
-        parentId = func.parentId,
-        menuId = func.menuId
-    )
-}
+fun Func.toVo() = FuncVo(
+    id = this.id,
+    name = this.name,
+    parentId = this.parentId,
+    menuId = this.menuId
+)

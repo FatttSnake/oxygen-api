@@ -5,7 +5,7 @@ import jakarta.validation.Valid
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import top.fatweb.oxygen.api.annotation.BaseController
-import top.fatweb.oxygen.api.annotation.Trim
+import top.fatweb.oxygen.api.annotation.ProcessParam
 import top.fatweb.oxygen.api.entity.common.ResponseCode
 import top.fatweb.oxygen.api.entity.common.ResponseResult
 import top.fatweb.oxygen.api.param.permission.role.*
@@ -52,11 +52,10 @@ class RoleController(
      * @see ResponseResult
      * @see RoleWithPowerVo
      */
-    @Trim
     @Operation(summary = "获取角色")
     @GetMapping
     @PreAuthorize("hasAnyAuthority('system:role:query:all')")
-    fun get(roleGetParam: RoleGetParam?): ResponseResult<PageVo<RoleWithPowerVo>> =
+    fun get(@ProcessParam roleGetParam: RoleGetParam?): ResponseResult<PageVo<RoleWithPowerVo>> =
         ResponseResult.databaseSuccess(
             data = roleService.getPage(roleGetParam)
         )
@@ -90,11 +89,10 @@ class RoleController(
      * @see ResponseResult
      * @see RoleVo
      */
-    @Trim
     @Operation(summary = "添加角色")
     @PostMapping
     @PreAuthorize("hasAnyAuthority('system:role:add:one')")
-    fun add(@Valid @RequestBody roleAddParam: RoleAddParam): ResponseResult<RoleVo> =
+    fun add(@ProcessParam @Valid @RequestBody roleAddParam: RoleAddParam): ResponseResult<RoleVo> =
         ResponseResult.databaseSuccess(
             ResponseCode.DATABASE_INSERT_SUCCESS, data = roleService.add(roleAddParam)
         )
@@ -110,14 +108,14 @@ class RoleController(
      * @see ResponseResult
      * @see RoleVo
      */
-    @Trim
     @Operation(summary = "修改角色")
     @PutMapping
     @PreAuthorize("hasAnyAuthority('system:role:modify:one')")
-    fun update(@Valid @RequestBody roleUpdateParam: RoleUpdateParam): ResponseResult<RoleVo> =
-        ResponseResult.databaseSuccess(
-            ResponseCode.DATABASE_UPDATE_SUCCESS, data = roleService.update(roleUpdateParam)
-        )
+    fun update(@ProcessParam @Valid @RequestBody roleUpdateParam: RoleUpdateParam): ResponseResult<Unit> {
+        roleService.update(roleUpdateParam)
+
+        return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
+    }
 
     /**
      * Update status of role
@@ -132,8 +130,9 @@ class RoleController(
     @Operation(summary = "修改角色状态")
     @PatchMapping
     @PreAuthorize("hasAnyAuthority('system:role:modify:status')")
-    fun status(@Valid @RequestBody roleUpdateStatusParam: RoleUpdateStatusParam): ResponseResult<Nothing> {
+    fun status(@Valid @RequestBody roleUpdateStatusParam: RoleUpdateStatusParam): ResponseResult<Unit> {
         roleService.status(roleUpdateStatusParam)
+
         return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
     }
 
@@ -149,8 +148,9 @@ class RoleController(
     @Operation(summary = "删除角色")
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('system:role:delete:one')")
-    fun delete(@PathVariable id: Long): ResponseResult<Nothing> {
+    fun delete(@PathVariable id: Long): ResponseResult<Unit> {
         roleService.deleteOne(id)
+
         return ResponseResult.databaseSuccess(ResponseCode.DATABASE_DELETE_SUCCESS)
     }
 
@@ -167,8 +167,9 @@ class RoleController(
     @Operation(summary = "批量删除角色")
     @DeleteMapping
     @PreAuthorize("hasAnyAuthority('system:role:delete:multiple')")
-    fun deleteList(@Valid @RequestBody roleDeleteParam: RoleDeleteParam): ResponseResult<Nothing> {
+    fun deleteList(@Valid @RequestBody roleDeleteParam: RoleDeleteParam): ResponseResult<Unit> {
         roleService.delete(roleDeleteParam)
+
         return ResponseResult.databaseSuccess(ResponseCode.DATABASE_DELETE_SUCCESS)
     }
 }

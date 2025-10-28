@@ -2,216 +2,166 @@ package top.fatweb.oxygen.api.converter.permission
 
 import com.baomidou.mybatisplus.core.metadata.IPage
 import top.fatweb.avatargenerator.GitHubAvatar
-import top.fatweb.oxygen.api.entity.permission.Group
-import top.fatweb.oxygen.api.entity.permission.Role
-import top.fatweb.oxygen.api.entity.permission.User
-import top.fatweb.oxygen.api.entity.permission.UserInfo
+import top.fatweb.oxygen.api.entity.permission.*
 import top.fatweb.oxygen.api.param.permission.user.UserAddParam
 import top.fatweb.oxygen.api.param.permission.user.UserUpdateParam
 import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.permission.UserWithInfoVo
-import top.fatweb.oxygen.api.vo.permission.UserWithPasswordRoleInfoVo
 import top.fatweb.oxygen.api.vo.permission.UserWithPowerInfoVo
 import top.fatweb.oxygen.api.vo.permission.UserWithRoleInfoVo
 
 /**
- * User converter
+ * Convert to UserWithPowerInfoVo object
  *
+ * @return UserWithPowerInfoVo object
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.0.0
+ * @since 1.1.0
+ * @see User
+ * @see UserWithPowerInfoVo
  */
-object UserConverter {
-    /**
-     * Convert User object into UserWithPowerInfoVo object
-     *
-     * @param user User object
-     * @return UserWithPowerInfoVo object
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see User
-     * @see UserWithPowerInfoVo
-     */
-    fun userToUserWithPowerInfoVo(user: User) = UserWithPowerInfoVo(
-        id = user.id,
-        username = user.username,
-        twoFactor = !user.twoFactor.isNullOrBlank() && !user.twoFactor!!.endsWith("?"),
-        verified = user.verify.isNullOrBlank(),
-        locking = user.locking?.let { it == 1 },
-        expiration = user.expiration,
-        credentialsExpiration = user.credentialsExpiration,
-        enable = user.enable?.let { it == 1 },
-        currentLoginTime = user.currentLoginTime,
-        currentLoginIp = user.currentLoginIp,
-        lastLoginTime = user.lastLoginTime,
-        lastLoginIp = user.lastLoginIp,
-        createTime = user.createTime,
-        updateTime = user.updateTime,
-        userInfo = user.userInfo?.let(UserInfoConverter::userInfoToUserInfoVo),
-        modules = user.modules?.map(ModuleConverter::moduleToModuleVo),
-        menus = user.menus?.map(MenuConverter::menuToMenuVo),
-        funcs = user.funcs?.map(FuncConverter::funcToFuncVo),
-        operations = user.operations?.map(OperationConverter::operationToOperationVo)
-    )
+fun User.toVoWithPowerInfo() = UserWithPowerInfoVo(
+    id = this.id,
+    username = this.username,
+    twoFactor = !this.twoFactor.isNullOrBlank() && !this.twoFactor!!.endsWith("?"),
+    verified = this.verify.isNullOrBlank(),
+    locking = this.locking?.let { it == 1 },
+    expiration = this.expiration,
+    credentialsExpiration = this.credentialsExpiration,
+    enable = this.enable?.let { it == 1 },
+    currentLoginTime = this.currentLoginTime,
+    currentLoginIp = this.currentLoginIp,
+    lastLoginTime = this.lastLoginTime,
+    lastLoginIp = this.lastLoginIp,
+    createTime = this.createTime,
+    updateTime = this.updateTime,
+    userInfo = this.userInfo?.let(UserInfo::toVo),
+    modules = this.modules?.map(Module::toVo),
+    menus = this.menus?.map(Menu::toVo),
+    funcs = this.funcs?.map(Func::toVo),
+    operations = this.operations?.map(Operation::toVo)
+)
 
-    /**
-     * Convert User object into UserWithRoleInfoVo object
-     *
-     * @param user User object
-     * @return UserWithRoleInfoVo object
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see User
-     * @see UserWithRoleInfoVo
-     */
-    fun userToUserWithRoleInfoVo(user: User) = UserWithRoleInfoVo(
-        id = user.id,
-        username = user.username,
-        twoFactor = !user.twoFactor.isNullOrBlank() && !user.twoFactor!!.endsWith("?"),
-        verify = user.verify,
-        locking = user.locking?.let { it == 1 },
-        expiration = user.expiration,
-        credentialsExpiration = user.credentialsExpiration,
-        enable = user.enable?.let { it == 1 },
-        currentLoginTime = user.currentLoginTime,
-        currentLoginIp = user.currentLoginIp,
-        lastLoginTime = user.lastLoginTime,
-        lastLoginIp = user.lastLoginIp,
-        createTime = user.createTime,
-        updateTime = user.updateTime,
-        userInfo = user.userInfo?.let(UserInfoConverter::userInfoToUserInfoVo),
-        roles = user.roles?.map(RoleConverter::roleToRoleVo),
-        groups = user.groups?.map(GroupConverter::groupToGroupVo)
-    )
+/**
+ * Convert to UserWithRoleInfoVo object
+ *
+ * @return UserWithRoleInfoVo object
+ * @author FatttSnake, fatttsnake@gmail.com
+ * @since 1.1.0
+ * @see User
+ * @see UserWithRoleInfoVo
+ */
+fun User.toVoWithRoleInfo() = UserWithRoleInfoVo(
+    id = this.id,
+    username = this.username,
+    twoFactor = !this.twoFactor.isNullOrBlank() && !this.twoFactor!!.endsWith("?"),
+    verify = this.verify,
+    locking = this.locking?.let { it == 1 },
+    expiration = this.expiration,
+    credentialsExpiration = this.credentialsExpiration,
+    enable = this.enable?.let { it == 1 },
+    currentLoginTime = this.currentLoginTime,
+    currentLoginIp = this.currentLoginIp,
+    lastLoginTime = this.lastLoginTime,
+    lastLoginIp = this.lastLoginIp,
+    createTime = this.createTime,
+    updateTime = this.updateTime,
+    userInfo = this.userInfo?.let(UserInfo::toVo),
+    roles = this.roles?.map(Role::toVo),
+    groups = this.groups?.map(Group::toVo)
+)
 
-    /**
-     * Convert User object into UserWithInfoVo object
-     *
-     * @param user User object
-     * @return UserWithInfoVo object
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see User
-     * @see UserWithInfoVo
-     */
-    fun userToUserWithInfoVo(user: User) = UserWithInfoVo(
-        id = user.id,
-        username = user.username,
-        twoFactor = !user.twoFactor.isNullOrBlank() && !user.twoFactor!!.endsWith("?"),
-        verified = user.verify.isNullOrBlank(),
-        locking = user.locking?.let { it == 1 },
-        expiration = user.expiration,
-        credentialsExpiration = user.credentialsExpiration,
-        enable = user.enable?.let { it == 1 },
-        currentLoginTime = user.currentLoginTime,
-        currentLoginIp = user.currentLoginIp,
-        lastLoginTime = user.lastLoginTime,
-        lastLoginIp = user.lastLoginIp,
-        createTime = user.createTime,
-        updateTime = user.updateTime,
-        userInfo = user.userInfo?.let(UserInfoConverter::userInfoToUserInfoVo)
-    )
+/**
+ * Convert to UserWithInfoVo object
+ *
+ * @return UserWithInfoVo object
+ * @author FatttSnake, fatttsnake@gmail.com
+ * @since 1.1.0
+ * @see User
+ * @see UserWithInfoVo
+ */
+fun User.toVoWithInfo() = UserWithInfoVo(
+    id = this.id,
+    username = this.username,
+    twoFactor = !this.twoFactor.isNullOrBlank() && !this.twoFactor!!.endsWith("?"),
+    verified = this.verify.isNullOrBlank(),
+    locking = this.locking?.let { it == 1 },
+    expiration = this.expiration,
+    credentialsExpiration = this.credentialsExpiration,
+    enable = this.enable?.let { it == 1 },
+    currentLoginTime = this.currentLoginTime,
+    currentLoginIp = this.currentLoginIp,
+    lastLoginTime = this.lastLoginTime,
+    lastLoginIp = this.lastLoginIp,
+    createTime = this.createTime,
+    updateTime = this.updateTime,
+    userInfo = this.userInfo?.let(UserInfo::toVo)
+)
 
-    /**
-     * Convert User object into UserWithPasswordRoleInfoVo object
-     *
-     * @param user User object
-     * @return UserWithPasswordRoleInfoVo object
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see User
-     * @see UserWithPasswordRoleInfoVo
-     */
-    fun userToUserWithPasswordRoleInfoVo(user: User) = UserWithPasswordRoleInfoVo(
-        id = user.id,
-        username = user.username,
-        password = user.password,
-        twoFactor = !user.twoFactor.isNullOrBlank() && !user.twoFactor!!.endsWith("?"),
-        verify = user.verify,
-        locking = user.locking?.let { it == 1 },
-        expiration = user.expiration,
-        credentialsExpiration = user.credentialsExpiration,
-        enable = user.enable?.let { it == 1 },
-        currentLoginTime = user.currentLoginTime,
-        currentLoginIp = user.currentLoginIp,
-        lastLoginTime = user.lastLoginTime,
-        lastLoginIp = user.lastLoginIp,
-        createTime = user.createTime,
-        updateTime = user.updateTime,
-        userInfo = user.userInfo?.let(UserInfoConverter::userInfoToUserInfoVo),
-        roles = user.roles?.map(RoleConverter::roleToRoleVo),
-        groups = user.groups?.map(GroupConverter::groupToGroupVo)
-    )
-
-    /**
-     * Convert UserAddParam object into User object
-     *
-     * @param userAddParam UserAddParam object
-     * @return User object
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see UserAddParam
-     * @see User
-     */
-    fun userAddParamToUser(userAddParam: UserAddParam) = User().apply {
-        username = userAddParam.username
-        password = userAddParam.password
-        locking = if (userAddParam.locking) 1 else 0
-        expiration = userAddParam.expiration
-        credentialsExpiration = userAddParam.credentialsExpiration
-        enable = if (userAddParam.enable) 1 else 0
-        userInfo = UserInfo().apply {
-            nickname = userAddParam.nickname ?: userAddParam.username
-            avatar = userAddParam.avatar ?: GitHubAvatar.newAvatarBuilder().build()
-                .createAsBase64((Long.MIN_VALUE..Long.MAX_VALUE).random())
-            email = userAddParam.email
-        }
-        roles = userAddParam.roleIds?.map { Role().apply { id = it } }
-        groups = userAddParam.groupIds?.map { Group().apply { id = it } }
+/**
+ * Convert to User object
+ *
+ * @return User object
+ * @author FatttSnake, fatttsnake@gmail.com
+ * @since 1.1.0
+ * @see UserAddParam
+ * @see User
+ */
+fun UserAddParam.toEntity() = User().apply {
+    username = this@toEntity.username
+    password = this@toEntity.password
+    locking = if (this@toEntity.locking) 1 else 0
+    expiration = this@toEntity.expiration
+    credentialsExpiration = this@toEntity.credentialsExpiration
+    enable = if (this@toEntity.enable) 1 else 0
+    userInfo = UserInfo().apply {
+        nickname = this@toEntity.nickname ?: this@toEntity.username
+        avatar = this@toEntity.avatar ?: GitHubAvatar.newAvatarBuilder().build()
+            .createAsBase64((Long.MIN_VALUE..Long.MAX_VALUE).random())
+        email = this@toEntity.email
     }
-
-    /**
-     * Convert UserUpdateParam object into User object
-     *
-     * @param userUpdateParam UserUpdateParam object
-     * @return User object
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see UserUpdateParam
-     * @see User
-     */
-    fun userUpdateParamToUser(userUpdateParam: UserUpdateParam) = User().apply {
-        id = userUpdateParam.id
-        username = userUpdateParam.username
-        locking = if (userUpdateParam.locking && userUpdateParam.id != 0L) 1 else 0
-        expiration = if (userUpdateParam.id != 0L) userUpdateParam.expiration else null
-        credentialsExpiration = userUpdateParam.credentialsExpiration
-        enable = if (userUpdateParam.enable || userUpdateParam.id == 0L) 1 else 0
-        userInfo = UserInfo().apply {
-            nickname = userUpdateParam.nickname
-            avatar = userUpdateParam.avatar
-            email = userUpdateParam.email
-        }
-        roles = if (userUpdateParam.id != 0L) userUpdateParam.roleIds?.map { Role().apply { id = it } } else null
-        groups = if (userUpdateParam.id != 0L) userUpdateParam.groupIds?.map { Group().apply { id = it } } else null
-    }
-
-    /**
-     * Convert IPage<User> object into PageVo<UserWithRoleInfoVo> object
-     *
-     * @param userPage IPage<User> object
-     * @return PageVo<UserWithRoleInfoVo> object
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see IPage
-     * @see User
-     * @see PageVo
-     * @see UserWithRoleInfoVo
-     */
-    fun userPageToUserWithRoleInfoPageVo(userPage: IPage<User>) = PageVo(
-        total = userPage.total,
-        pages = userPage.pages,
-        size = userPage.size,
-        current = userPage.current,
-        records = userPage.records.map(::userToUserWithRoleInfoVo)
-    )
+    roles = this@toEntity.roleIds?.map { Role().apply { id = it } }
+    groups = this@toEntity.groupIds?.map { Group().apply { id = it } }
 }
+
+/**
+ * Convert to User object
+ *
+ * @return User object
+ * @author FatttSnake, fatttsnake@gmail.com
+ * @since 1.1.0
+ * @see UserUpdateParam
+ * @see User
+ */
+fun UserUpdateParam.toEntity() = User().apply {
+    id = this@toEntity.id
+    username = this@toEntity.username
+    locking = if (this@toEntity.locking && this@toEntity.id != 0L) 1 else 0
+    expiration = if (this@toEntity.id != 0L) this@toEntity.expiration else null
+    credentialsExpiration = this@toEntity.credentialsExpiration
+    enable = if (this@toEntity.enable || this@toEntity.id == 0L) 1 else 0
+    userInfo = UserInfo().apply {
+        nickname = this@toEntity.nickname
+        avatar = this@toEntity.avatar
+        email = this@toEntity.email
+    }
+    roles = if (this@toEntity.id != 0L) this@toEntity.roleIds?.map { Role().apply { id = it } } else null
+    groups = if (this@toEntity.id != 0L) this@toEntity.groupIds?.map { Group().apply { id = it } } else null
+}
+
+/**
+ * Convert to PageVo<UserWithRoleInfoVo> object
+ *
+ * @return PageVo<UserWithRoleInfoVo> object
+ * @author FatttSnake, fatttsnake@gmail.com
+ * @since 1.1.0
+ * @see IPage
+ * @see User
+ * @see PageVo
+ */
+fun IPage<User>.toVoWithRoleInfo() = PageVo(
+    total = this.total,
+    pages = this.pages,
+    size = this.size,
+    current = this.current,
+    records = this.records.map(User::toVoWithRoleInfo)
+)

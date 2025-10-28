@@ -17,7 +17,7 @@ data class MailSettingsVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "SMTP 服务器")
+    @field:Schema(description = "SMTP 服务器")
     val host: String?,
 
     /**
@@ -26,7 +26,7 @@ data class MailSettingsVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "端口")
+    @field:Schema(description = "端口")
     val port: Int?,
 
     /**
@@ -35,7 +35,7 @@ data class MailSettingsVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "安全类型")
+    @field:Schema(description = "安全类型")
     val securityType: MailSecurityType?,
 
     /**
@@ -44,7 +44,7 @@ data class MailSettingsVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "用户名")
+    @field:Schema(description = "用户名")
     val username: String?,
 
     /**
@@ -53,7 +53,7 @@ data class MailSettingsVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "密码")
+    @field:Schema(description = "密码")
     val password: String?,
 
     /**
@@ -62,7 +62,7 @@ data class MailSettingsVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "发送者")
+    @field:Schema(description = "发送者")
     val from: String?,
 
     /**
@@ -71,6 +71,6 @@ data class MailSettingsVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "发送者名称")
+    @field:Schema(description = "发送者名称")
     val fromName: String?
 )

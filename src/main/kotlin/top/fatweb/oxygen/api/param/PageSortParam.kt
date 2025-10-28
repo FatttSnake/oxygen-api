@@ -17,7 +17,7 @@ open class PageSortParam {
      * @since 1.0.0
      */
     @Schema(description = "分页页码", defaultValue = "1", example = "1")
-    @field:Min(1, message = "Pagination page number must be a positive integer")
+    @Min(1, message = "Pagination page number must be a positive integer")
     var currentPage: Long = 1
 
     /**
@@ -27,7 +27,7 @@ open class PageSortParam {
      * @since 1.0.0
      */
     @Schema(description = "分页大小", defaultValue = "20", example = "20")
-    @field:Min(1, message = "The number of data per page must be a positive integer")
+    @Min(1, message = "The number of data per page must be a positive integer")
     var pageSize: Long = 20
 
     /**

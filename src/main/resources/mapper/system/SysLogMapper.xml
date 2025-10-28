@@ -38,7 +38,7 @@
         </where>
     </select>
 
-    <resultMap id="sysLogMap" type="sysLog">
+    <resultMap id="sysLogMap" type="top.fatweb.oxygen.api.entity.system.SysLog">
         <id property="id" column="sys_log_id"/>
         <result property="logType" column="sys_log_log_type"/>
         <result property="operateUserId" column="sys_log_operate_user_id"/>

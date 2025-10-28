@@ -5,20 +5,17 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import top.fatweb.oxygen.api.converter.permission.GroupConverter
+import top.fatweb.oxygen.api.converter.permission.toEntity
+import top.fatweb.oxygen.api.converter.permission.toVo
+import top.fatweb.oxygen.api.converter.permission.toVoWithRole
 import top.fatweb.oxygen.api.entity.permission.Group
 import top.fatweb.oxygen.api.entity.permission.RRoleGroup
-import top.fatweb.oxygen.api.exception.DatabaseInsertException
-import top.fatweb.oxygen.api.exception.DatabaseUpdateException
-import top.fatweb.oxygen.api.exception.NoRecordFoundException
 import top.fatweb.oxygen.api.mapper.permission.GroupMapper
 import top.fatweb.oxygen.api.param.permission.group.*
 import top.fatweb.oxygen.api.service.permission.IGroupService
 import top.fatweb.oxygen.api.service.permission.IRRoleGroupService
 import top.fatweb.oxygen.api.service.permission.IUserService
-import top.fatweb.oxygen.api.util.PageUtil
-import top.fatweb.oxygen.api.util.RedisUtil
-import top.fatweb.oxygen.api.util.WebUtil
+import top.fatweb.oxygen.api.util.*
 import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.permission.GroupWithRoleVo
 import top.fatweb.oxygen.api.vo.permission.base.GroupVo
@@ -45,51 +42,49 @@ class GroupServiceImpl(
     override fun getPage(groupGetParam: GroupGetParam?): PageVo<GroupWithRoleVo> {
         val groupIdsPage = Page<Long>(groupGetParam?.currentPage ?: 1, groupGetParam?.pageSize ?: 20)
 
-        PageUtil.setPageSort(groupGetParam, groupIdsPage)
+        setPageSort(groupGetParam, groupIdsPage)
 
         val groupIdsIPage =
             baseMapper.selectPage(groupIdsPage, groupGetParam?.searchName, groupGetParam?.searchRegex ?: false)
         val groupPage = Page<Group>(groupIdsPage.current, groupIdsIPage.size, groupIdsIPage.total)
         if (groupIdsIPage.total > 0) {
-            groupPage.setRecords(baseMapper.selectListWithRoleByIds(groupIdsIPage.records))
+            groupPage.records = baseMapper.selectListWithRoleByIds(groupIdsIPage.records)
         }
 
-        return GroupConverter.groupPageToGroupWithRolePageVo(groupPage)
+        return groupPage.toVoWithRole()
     }
 
     override fun getOne(id: Long): GroupWithRoleVo =
-        baseMapper.selectOneById(id)?.let(GroupConverter::groupToGroupWithRoleVo) ?: throw NoRecordFoundException()
+        queryOrThrowException { baseMapper.selectOneById(id) }.let(Group::toVoWithRole)
 
-    override fun getList(): List<GroupVo> = this.list().map(GroupConverter::groupToGroupVo)
+    override fun getList(): List<GroupVo> = this.list().map(Group::toVo)
 
     @Transactional
     override fun add(groupAddParam: GroupAddParam): GroupVo {
-        val group = GroupConverter.groupAddParamToGroup(groupAddParam)
-        if (baseMapper.insert(group) != 1) {
-            throw DatabaseInsertException()
-        }
+        val group = groupAddParam.toEntity()
+        saveOrThrowException { this.save(group) }
 
         if (group.roles.isNullOrEmpty()) {
-            return GroupConverter.groupToGroupVo(group)
+            return group.toVo()
         }
 
-        rRoleGroupService.saveBatch(group.roles!!.map {
-            RRoleGroup().apply {
-                groupId = group.id
-                roleId = it.id
-            }
-        })
+        saveOrThrowException {
+            rRoleGroupService.saveBatch(group.roles!!.map {
+                RRoleGroup().apply {
+                    groupId = group.id
+                    roleId = it.id
+                }
+            })
+        }
 
-        return GroupConverter.groupToGroupVo(group)
+        return group.toVo()
     }
 
     @Transactional
-    override fun update(groupUpdateParam: GroupUpdateParam): GroupVo {
-        val group = GroupConverter.groupUpdateParamToGroup(groupUpdateParam)
+    override fun update(groupUpdateParam: GroupUpdateParam) {
+        val group = groupUpdateParam.toEntity()
 
-        if (baseMapper.updateById(group) != 1) {
-            throw DatabaseUpdateException()
-        }
+        updateOrThrowException { this.updateById(group) }
 
         val oldRoleList = rRoleGroupService.list(
             KtQueryWrapper(RRoleGroup()).select(RRoleGroup::roleId).eq(RRoleGroup::groupId, groupUpdateParam.id)
@@ -112,22 +107,20 @@ class GroupServiceImpl(
         }
 
         addRoleIds.forEach {
-            rRoleGroupService.save(RRoleGroup().apply {
-                groupId = groupUpdateParam.id
-                roleId = it
-            })
+            saveOrThrowException {
+                rRoleGroupService.save(RRoleGroup().apply {
+                    groupId = groupUpdateParam.id
+                    roleId = it
+                })
+            }
         }
 
         groupUpdateParam.id?.let { offlineUser(it) }
-
-        return GroupConverter.groupToGroupVo(group)
     }
 
     override fun status(groupUpdateStatusParam: GroupUpdateStatusParam) {
-        updateById(GroupConverter.groupUpdateStatusParamToGroup(groupUpdateStatusParam)).let {
-            if (!it) {
-                throw DatabaseUpdateException()
-            }
+        updateById(groupUpdateStatusParam.toEntity()).let {
+            updateOrThrowException { it }
 
             if (!groupUpdateStatusParam.enable) {
                 groupUpdateStatusParam.id?.let { id -> offlineUser(id) }
@@ -142,13 +135,13 @@ class GroupServiceImpl(
 
     @Transactional
     override fun delete(groupDeleteParam: GroupDeleteParam) {
-        baseMapper.deleteBatchIds(groupDeleteParam.ids)
+        this.removeBatchByIds(groupDeleteParam.ids)
         rRoleGroupService.remove(KtQueryWrapper(RRoleGroup()).`in`(RRoleGroup::groupId, groupDeleteParam.ids))
         offlineUser(*groupDeleteParam.ids!!.toLongArray())
     }
 
     private fun offlineUser(vararg groupIds: Long) {
         val userIds = userService.getIdsByGroupIds(groupIds.toList())
-        WebUtil.offlineUser(redisUtil, *userIds.toLongArray())
+        offlineUser(redisUtil, *userIds.toLongArray())
     }
 }

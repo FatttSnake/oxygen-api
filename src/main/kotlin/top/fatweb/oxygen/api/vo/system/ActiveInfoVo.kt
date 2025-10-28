@@ -1,7 +1,6 @@
 package top.fatweb.oxygen.api.vo.system
 
 import io.swagger.v3.oas.annotations.media.Schema
-import top.fatweb.oxygen.api.vo.system.ActiveInfoVo.HistoryVo
 import java.time.LocalDate
 
 /**
@@ -18,7 +17,7 @@ data class ActiveInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "注册用户数量历史")
+    @field:Schema(description = "注册用户数量历史")
     val registerHistory: List<HistoryVo>,
 
     /**
@@ -28,7 +27,7 @@ data class ActiveInfoVo(
      * @since 1.0.0
      * @see HistoryVo
      */
-    @Schema(description = "登录用户数量历史")
+    @field:Schema(description = "登录用户数量历史")
     val loginHistory: List<HistoryVo>,
 
     /**
@@ -37,7 +36,7 @@ data class ActiveInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "验证用户数量历史")
+    @field:Schema(description = "验证用户数量历史")
     val verifyHistory: List<HistoryVo>
 ) {
     data class HistoryVo(
@@ -48,7 +47,7 @@ data class ActiveInfoVo(
          * @since 1.0.0
          * @see LocalDate
          */
-        @Schema(description = "记录时间", example = "1900-01-01")
+        @field:Schema(description = "记录时间", example = "1900-01-01")
         val time: LocalDate,
 
         /**
@@ -57,7 +56,7 @@ data class ActiveInfoVo(
          * @author FatttSnake, fatttsnake@gmail.com
          * @since 1.0.0
          */
-        @Schema(description = "数量")
+        @field:Schema(description = "数量")
         val count: Int
     )
 }

@@ -18,7 +18,7 @@ data class FileStoreInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "挂载点")
+    @field:Schema(description = "挂载点")
     val mount: String,
 
     /**
@@ -27,7 +27,7 @@ data class FileStoreInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "总容量")
+    @field:Schema(description = "总容量")
     val total: Long,
 
     /**
@@ -38,6 +38,6 @@ data class FileStoreInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @Schema(description = "空闲容量")
+    @field:Schema(description = "空闲容量")
     val free: Long
 )

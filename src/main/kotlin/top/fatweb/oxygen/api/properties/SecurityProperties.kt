@@ -30,50 +30,50 @@ object SecurityProperties {
     var tokenPrefix = "Bearer "
 
     /**
-     * TTL of JWT
+     * Secret to generate token
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
      */
-    var jwtTtl = 2L
+    var tokenSecret = "Oxygen"
 
     /**
-     * TTL unit of JWT
+     * Issuer of token
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
      */
-    var jwtTtlUnit = TimeUnit.HOURS
+    var tokenIssuer = "Oxygen"
 
     /**
-     * Key of JWT
+     * Life of access token
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
      */
-    var jwtKey = "Oxygen"
+    var accessTokenTtl = 2L
 
     /**
-     * Issuer of JWT
+     * Life util of access token
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
      */
-    var jwtIssuer = "Oxygen"
+    var accessTokenTtlUnit = TimeUnit.HOURS
 
     /**
-     * TTL of redis
+     * Life of refresh token
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
      */
-    var redisTtl = 20L
+    var refreshTokenTtl = 128L
 
     /**
-     * TTL unit of redis
+     * Life util of refresh token
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.1.0
      */
-    var redisTtlUnit = TimeUnit.MINUTES
+    var refreshTokenTtlUnit = TimeUnit.DAYS
 }
