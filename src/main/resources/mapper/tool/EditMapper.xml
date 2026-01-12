@@ -56,6 +56,7 @@
     </select>
 
     <select id="selectSource" resultMap="top.fatweb.oxygen.api.mapper.tool.ManagementMapper.toolWithSourceMap">
+        select * from (
         select t_b_tool_main.id as tool_id,
         t_b_tool_main.name as tool_name,
         t_b_tool_main.tool_id as tool_tool_id,
@@ -75,7 +76,6 @@
         t_b_tool_main.update_time as tool_update_time,
         t_b_tool_main.deleted as tool_deleted,
         t_b_tool_main.version as tool_version,
-        tbtb.id as tool_base_id,
         tbtb.name as tool_base_name,
         t_b_tool_main.base_version as tool_base_base_version,
         tsu.id as user_id,
@@ -94,7 +94,8 @@
         tbtc.create_time as tool_category_create_time,
         tbtc.update_time as tool_category_update_time,
         tbtc.deleted as tool_category_deleted,
-        tbtc.version as tool_category_version
+        tbtc.version as tool_category_version,
+        dense_rank() over (order by t_b_tool_main.id desc) as rn
         from t_b_tool_main
         left join t_b_tool_base as tbtb on tbtb.deleted = 0 and tbtb.id = t_b_tool_main.base_id
         left join t_s_user as tsu on tsu.deleted = 0 and tsu.id = t_b_tool_main.author_id
@@ -129,11 +130,12 @@
                 </otherwise>
             </choose>
         </where>
-        order by t_b_tool_main.id desc
-        limit 1
+        ) t
+        where rn = 1
     </select>
 
     <select id="selectDist" resultMap="top.fatweb.oxygen.api.mapper.tool.ManagementMapper.toolWithDistMap">
+        select * from (
         select t_b_tool_main.id as tool_id,
         t_b_tool_main.name as tool_name,
         t_b_tool_main.tool_id as tool_tool_id,
@@ -153,7 +155,6 @@
         t_b_tool_main.update_time as tool_update_time,
         t_b_tool_main.deleted as tool_deleted,
         t_b_tool_main.version as tool_version,
-        tbtb.id as tool_base_id,
         tbtb.name as tool_base_name,
         t_b_tool_main.base_version as tool_base_base_version,
         tsu.id as user_id,
@@ -172,7 +173,8 @@
         tbtc.create_time as tool_category_create_time,
         tbtc.update_time as tool_category_update_time,
         tbtc.deleted as tool_category_deleted,
-        tbtc.version as tool_category_version
+        tbtc.version as tool_category_version,
+        dense_rank() over (order by t_b_tool_main.id desc) as rn
         from t_b_tool_main
         left join t_b_tool_base as tbtb on tbtb.deleted = 0 and tbtb.id = t_b_tool_main.base_id
         left join t_s_user as tsu on tsu.deleted = 0 and tsu.id = t_b_tool_main.author_id
@@ -207,8 +209,8 @@
                 </otherwise>
             </choose>
         </where>
-        order by t_b_tool_main.id desc
-        limit 1
+        ) t
+        where rn = 1
     </select>
 
     <select id="selectPersonalToolIdPage" resultType="string">
