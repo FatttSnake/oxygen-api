@@ -121,13 +121,6 @@ class ToolTemplateServiceImpl(
                 KtUpdateWrapper(ToolTemplate())
                     .eq(ToolTemplate::id, toolOrTemplateUpgradeBaseParam.id)
                     .set(ToolTemplate::baseVersion, toolOrTemplateUpgradeBaseParam.baseVersion)
-            )
-        }
-
-        updateOrThrowException {
-            this.update(
-                KtUpdateWrapper(ToolTemplate())
-                    .eq(ToolTemplate::id, toolOrTemplateUpgradeBaseParam.id)
                     .set(ToolTemplate::updateTime, LocalDateTime.now(ZoneOffset.UTC))
             )
         }

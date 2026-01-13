@@ -20,6 +20,8 @@ import top.fatweb.oxygen.api.service.tool.*
 import top.fatweb.oxygen.api.util.*
 import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.tool.*
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 /**
  * Tool edit service implement
@@ -300,13 +302,14 @@ class EditServiceImpl(
         if (tool.base!!.version!! >= toolOrTemplateUpgradeBaseParam.baseVersion!!) {
             throw DatabaseUpdateException()
         }
-        toolBaseService.getOne(id = tool.base.version, version = toolOrTemplateUpgradeBaseParam.baseVersion)
+        toolBaseService.getOne(id = tool.base.id!!, version = toolOrTemplateUpgradeBaseParam.baseVersion)
 
         updateOrThrowException {
             this.update(
                 KtUpdateWrapper(Tool())
                     .eq(Tool::id, toolOrTemplateUpgradeBaseParam.id)
                     .set(Tool::baseVersion, toolOrTemplateUpgradeBaseParam.baseVersion)
+                    .set(Tool::updateTime, LocalDateTime.now(ZoneOffset.UTC))
             )
         }
     }
