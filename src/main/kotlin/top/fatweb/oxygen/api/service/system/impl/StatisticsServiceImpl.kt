@@ -45,6 +45,7 @@ class StatisticsServiceImpl(
     private val runtime: Runtime = Runtime.getRuntime()
 
     override fun software() = SoftwareInfoVo(
+        serviceVersion = ServerProperties.version,
         os = systemInfo.operatingSystem.toString(),
         bitness = systemInfo.operatingSystem.bitness,
         javaVersion = systemProperties.getProperty("java.version"),
