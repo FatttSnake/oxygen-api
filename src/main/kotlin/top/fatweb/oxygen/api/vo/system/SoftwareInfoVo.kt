@@ -12,6 +12,15 @@ import java.time.LocalDateTime
 @Schema(description = "软甲信息返回参数")
 data class SoftwareInfoVo(
     /**
+     * Service version
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.1.2
+     */
+    @field:Schema(description = "服务版本")
+    val serviceVersion: String,
+
+    /**
      * Operating system
      *
      * @author FatttSnake, fatttsnake@gmail.com
@@ -62,6 +71,7 @@ data class SoftwareInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Deprecated("Will be removed in the next minor version")
     @field:Schema(description = "Java 运行时")
     val javaRuntime: String,
 
@@ -71,6 +81,7 @@ data class SoftwareInfoVo(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
+    @Deprecated("Will be removed in the next minor version")
     @field:Schema(description = "Java 运行时版本")
     val javaRuntimeVersion: String,
 
