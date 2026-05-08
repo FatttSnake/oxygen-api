@@ -18,7 +18,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import top.fatweb.oxygen.api.filter.JwtAuthenticationTokenFilter
 import top.fatweb.oxygen.api.handler.JwtAccessDeniedHandler
 import top.fatweb.oxygen.api.handler.JwtAuthenticationEntryPointHandler
-import top.fatweb.oxygen.api.util.CookieWithHeaderCsrfTokenRepository
+import top.fatweb.oxygen.api.component.security.CookieWithHeaderCsrfTokenRepository
 
 /**
  * Spring Security configuration

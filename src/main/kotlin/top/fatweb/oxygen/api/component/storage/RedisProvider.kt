@@ -1,4 +1,4 @@
-package top.fatweb.oxygen.api.util
+package top.fatweb.oxygen.api.component.storage
 
 import org.springframework.data.redis.core.BoundSetOperations
 import org.springframework.data.redis.core.RedisTemplate
@@ -6,14 +6,16 @@ import org.springframework.stereotype.Component
 import java.util.concurrent.TimeUnit
 
 /**
- * Redis util
+ * Redis provider
  *
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.0.0
+ * @since 1.2.0
  */
 @Suppress("UNCHECKED_CAST")
 @Component
-class RedisUtil(private val redisTemplate: RedisTemplate<String, Any>) {
+class RedisProvider(
+    private val redisTemplate: RedisTemplate<String, Any>
+) {
     /**
      * Set valid time
      *
@@ -22,8 +24,8 @@ class RedisUtil(private val redisTemplate: RedisTemplate<String, Any>) {
      * @param timeUnit Unit of timeout
      * @return true=Success；false=Fail
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see TimeUnit
+     * @since 1.2.0
+     * @see java.util.concurrent.TimeUnit
      */
     fun setExpire(key: String, timeout: Long, timeUnit: TimeUnit = TimeUnit.SECONDS): Boolean =
         redisTemplate.expire(key, timeout, timeUnit)
@@ -35,7 +37,7 @@ class RedisUtil(private val redisTemplate: RedisTemplate<String, Any>) {
      * @param timeUnit Unit of time
      * @return Valid time
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.2.0
      */
     fun getExpire(key: String, timeUnit: TimeUnit = TimeUnit.SECONDS): Long = redisTemplate.getExpire(key, timeUnit)
 
@@ -45,7 +47,7 @@ class RedisUtil(private val redisTemplate: RedisTemplate<String, Any>) {
      * @param key Cache key
      * @return true=exist; false=not exist
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.2.0
      */
     fun hasKey(key: String): Boolean = redisTemplate.hasKey(key)
 
@@ -55,7 +57,7 @@ class RedisUtil(private val redisTemplate: RedisTemplate<String, Any>) {
      * @param pattern Pattern of key
      * @return List of key
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.2.0
      */
     fun keys(pattern: String): Set<String> = redisTemplate.keys(pattern)
 
@@ -65,7 +67,7 @@ class RedisUtil(private val redisTemplate: RedisTemplate<String, Any>) {
      * @param key   Cache key
      * @param value Cache object
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.2.0
      */
     fun setObject(key: String, value: Any) = redisTemplate.opsForValue().set(key, value)
 
@@ -77,7 +79,7 @@ class RedisUtil(private val redisTemplate: RedisTemplate<String, Any>) {
      * @param timeout Timeout
      * @param timeUnit Unit of timeout
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.2.0
      */
     fun setObject(key: String, value: Any, timeout: Long, timeUnit: TimeUnit = TimeUnit.SECONDS) =
         redisTemplate.opsForValue().set(key, value, timeout, timeUnit)
@@ -89,7 +91,7 @@ class RedisUtil(private val redisTemplate: RedisTemplate<String, Any>) {
      * @param key cache key
      * @return Cached object
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.2.0
      */
     fun <T> getObject(key: String): T? = redisTemplate.opsForValue().get(key) as? T
 
@@ -99,7 +101,7 @@ class RedisUtil(private val redisTemplate: RedisTemplate<String, Any>) {
      * @param key Cache key
      * @return true=success; false=fail
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.2.0
      */
     fun delObject(key: String): Boolean = redisTemplate.delete(key)
 
@@ -109,7 +111,7 @@ class RedisUtil(private val redisTemplate: RedisTemplate<String, Any>) {
      * @param collection List of cache key
      * @return Number of deleted objects
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.2.0
      */
     fun delObject(collection: Collection<String>): Long = redisTemplate.delete(collection)
 
@@ -120,7 +122,7 @@ class RedisUtil(private val redisTemplate: RedisTemplate<String, Any>) {
      * @param dataList List of objects
      * @return Number of cached objects
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.2.0
      */
     fun setList(key: String, dataList: List<Any>): Long? = redisTemplate.opsForList().rightPushAll(key, dataList)
 
@@ -130,7 +132,7 @@ class RedisUtil(private val redisTemplate: RedisTemplate<String, Any>) {
      * @param key Cache key
      * @return List of cached objects
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.2.0
      */
     fun <T> getList(key: String): List<T>? = redisTemplate.opsForList().range(key, 0, -1) as? List<T>
 
@@ -141,7 +143,7 @@ class RedisUtil(private val redisTemplate: RedisTemplate<String, Any>) {
      * @param dataSet Set of objects
      * @return Bound set operations
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.2.0
      */
     fun setSet(key: String, dataSet: Set<Any>): BoundSetOperations<String, Any> {
         val boundSetOps: BoundSetOperations<String, Any> = redisTemplate.boundSetOps(key)
@@ -157,7 +159,7 @@ class RedisUtil(private val redisTemplate: RedisTemplate<String, Any>) {
      * @param key Cache key
      * @return Set of cached object
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.2.0
      */
     fun <T> getSet(key: String): Set<T>? = redisTemplate.opsForSet().members(key) as? Set<T>
 
@@ -167,7 +169,7 @@ class RedisUtil(private val redisTemplate: RedisTemplate<String, Any>) {
      * @param key Cache key
      * @param dataMap Map of objects
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.2.0
      */
     fun setMap(key: String, dataMap: Map<String, Any>) = redisTemplate.opsForHash<String, Any>().putAll(key, dataMap)
 
@@ -177,7 +179,7 @@ class RedisUtil(private val redisTemplate: RedisTemplate<String, Any>) {
      * @param key Cache key
      * @return Map of cached objects
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.2.0
      */
     fun <T> getMap(key: String): Map<String, T>? =
         redisTemplate.opsForHash<String, Any>().entries(key) as? Map<String, T>
@@ -189,7 +191,7 @@ class RedisUtil(private val redisTemplate: RedisTemplate<String, Any>) {
      * @param hKey Map key
      * @param value Value in map
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.2.0
      */
     fun setMapValue(key: String, hKey: String, value: Any) =
         redisTemplate.opsForHash<String, Any>().put(key, hKey, value)
@@ -201,7 +203,7 @@ class RedisUtil(private val redisTemplate: RedisTemplate<String, Any>) {
      * @param hKey Map key
      * @return Value in map
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.2.0
      */
     fun <T> getMapValue(key: String, hKey: String) = redisTemplate.opsForHash<String, T>().get(key, hKey)
 
@@ -212,7 +214,7 @@ class RedisUtil(private val redisTemplate: RedisTemplate<String, Any>) {
      * @param hKey Map key
      * @return Number of deleted value
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.2.0
      */
     fun delMapValue(key: String, hKey: String): Long = redisTemplate.opsForHash<String, Any>().delete(key, hKey)
 
@@ -223,7 +225,7 @@ class RedisUtil(private val redisTemplate: RedisTemplate<String, Any>) {
      * @param hKeys List of map key
      * @return HashMap object
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.2.0
      */
     fun <T> getMultiMapValue(key: String, hKeys: Collection<String>): List<T> =
         redisTemplate.opsForHash<String, T>().multiGet(key, hKeys)

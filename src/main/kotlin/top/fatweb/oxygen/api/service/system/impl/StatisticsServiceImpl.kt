@@ -9,13 +9,12 @@ import top.fatweb.oxygen.api.entity.system.EventLog
 import top.fatweb.oxygen.api.entity.system.StatisticsLog
 import top.fatweb.oxygen.api.param.system.ActiveInfoGetParam
 import top.fatweb.oxygen.api.param.system.OnlineInfoGetParam
-import top.fatweb.oxygen.api.properties.SecurityProperties
 import top.fatweb.oxygen.api.properties.ServerProperties
 import top.fatweb.oxygen.api.service.system.IEventLogService
 import top.fatweb.oxygen.api.service.system.IStatisticsLogService
 import top.fatweb.oxygen.api.service.system.IStatisticsService
 import top.fatweb.oxygen.api.util.ByteUtil
-import top.fatweb.oxygen.api.util.RedisUtil
+import top.fatweb.oxygen.api.component.storage.RedisProvider
 import top.fatweb.oxygen.api.vo.system.*
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -29,14 +28,16 @@ import java.util.concurrent.TimeUnit
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
- * @see RedisUtil
+ * @see ServerProperties
+ * @see RedisProvider
  * @see IStatisticsLogService
  * @see IEventLogService
  * @see IStatisticsService
  */
 @Service
 class StatisticsServiceImpl(
-    private val redisUtil: RedisUtil,
+    private val serverProperties: ServerProperties,
+    private val redisProvider: RedisProvider,
     private val statisticsLogService: IStatisticsLogService,
     private val eventLogService: IEventLogService
 ) : IStatisticsService {
@@ -45,7 +46,7 @@ class StatisticsServiceImpl(
     private val runtime: Runtime = Runtime.getRuntime()
 
     override fun software() = SoftwareInfoVo(
-        serviceVersion = ServerProperties.version,
+        serviceVersion = serverProperties.version,
         os = systemInfo.operatingSystem.toString(),
         bitness = systemInfo.operatingSystem.bitness,
         javaVersion = systemProperties.getProperty("java.version"),
@@ -59,7 +60,7 @@ class StatisticsServiceImpl(
         jvmVendor = systemProperties.getProperty("java.vm.vendor"),
         javaClassVersion = systemProperties.getProperty("java.class.version"),
         osBootTime = LocalDateTime.ofEpochSecond(systemInfo.operatingSystem.systemBootTime, 0, ZoneOffset.UTC),
-        serverStartupTime = ServerProperties.startupTime
+        serverStartupTime = serverProperties.startupTime
     )
 
     override fun hardware() = HardwareInfoVo(
@@ -196,9 +197,9 @@ class StatisticsServiceImpl(
         }
 
         return OnlineInfoVo(
-            current = redisUtil.keys("${SecurityProperties.tokenIssuer}_access_*")
+            current = redisProvider.keys("${serverProperties.security.tokenIssuer}_access_*")
                 .distinctBy {
-                    Regex("${SecurityProperties.tokenIssuer}_access_(.*?)_.*:.*").matchEntire(it)?.groupValues?.getOrNull(
+                    Regex("${serverProperties.security.tokenIssuer}_access_(.*?)_.*:.*").matchEntire(it)?.groupValues?.getOrNull(
                         1
                     )
                 }.size.toLong(),

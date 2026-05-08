@@ -3,19 +3,23 @@ package top.fatweb.oxygen.api.cron
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
 import top.fatweb.oxygen.api.entity.system.StatisticsLog
-import top.fatweb.oxygen.api.properties.SecurityProperties
+import top.fatweb.oxygen.api.properties.ServerProperties
 import top.fatweb.oxygen.api.service.system.IStatisticsLogService
-import top.fatweb.oxygen.api.util.RedisUtil
+import top.fatweb.oxygen.api.component.storage.RedisProvider
 
 /**
  * Statistics scheduled tasks
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see ServerProperties
+ * @see RedisProvider
+ * @see IStatisticsLogService
  */
 @Component
 class StatisticsCron(
-    private val redisUtil: RedisUtil,
+    private val serverProperties: ServerProperties,
+    private val redisProvider: RedisProvider,
     private val statisticsLogService: IStatisticsLogService
 ) {
     /**
@@ -28,8 +32,8 @@ class StatisticsCron(
     fun onlineUserCount() {
         statisticsLogService.save(StatisticsLog().apply {
             key = StatisticsLog.KeyItem.ONLINE_USERS_COUNT
-            value = redisUtil.keys("${SecurityProperties.tokenIssuer}_access_*")
-                .distinctBy { Regex("${SecurityProperties.tokenIssuer}_access_(.*?)_.*:.*").matchEntire(it)?.groupValues?.getOrNull(1) }.size.toString()
+            value = redisProvider.keys("${serverProperties.security.tokenIssuer}_access_*")
+                .distinctBy { Regex("${serverProperties.security.tokenIssuer}_access_(.*?)_.*:.*").matchEntire(it)?.groupValues?.getOrNull(1) }.size.toString()
         })
     }
 }

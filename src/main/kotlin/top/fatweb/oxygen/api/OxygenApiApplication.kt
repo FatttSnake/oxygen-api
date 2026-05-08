@@ -2,6 +2,7 @@ package top.fatweb.oxygen.api
 
 import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan
 import org.springframework.boot.runApplication
 import org.springframework.scheduling.annotation.EnableScheduling
 import org.springframework.transaction.annotation.EnableTransactionManagement
@@ -17,6 +18,7 @@ import java.util.*
 @SpringBootApplication
 @EnableTransactionManagement
 @EnableScheduling
+@ConfigurationPropertiesScan("top.fatweb.oxygen.api.properties")
 class OxygenApiApplication
 
 /**

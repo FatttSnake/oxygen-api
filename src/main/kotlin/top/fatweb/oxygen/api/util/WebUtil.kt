@@ -2,8 +2,9 @@ package top.fatweb.oxygen.api.util
 
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.security.core.context.SecurityContextHolder
+import top.fatweb.oxygen.api.component.storage.RedisProvider
 import top.fatweb.oxygen.api.entity.permission.LoginUser
-import top.fatweb.oxygen.api.properties.SecurityProperties
+import top.fatweb.oxygen.api.properties.ServerProperties
 
 /**
  * Get the user currently calling api
@@ -38,38 +39,56 @@ fun getLoginUsername(): String? = getLoginUser()?.user?.username
 /**
  * Get token of the user currently calling api
  *
+ * @param serverProperties Server properties
+ * @param tokenWithPrefix Original token
  * @return Token
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see ServerProperties
  */
-fun getToken(tokenWithPrefix: String): String = tokenWithPrefix.removePrefix(SecurityProperties.tokenPrefix)
+fun getToken(serverProperties: ServerProperties, tokenWithPrefix: String): String =
+    tokenWithPrefix.removePrefix(serverProperties.security.tokenPrefix)
 
 /**
  * Get token of the user currently calling api
  *
+ * @param serverProperties Server properties
+ * @param request Request object
  * @return Token
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see ServerProperties
+ * @see HttpServletRequest
  */
-fun getToken(request: HttpServletRequest): String = getToken(request.getHeader(SecurityProperties.headerKey))
+fun getToken(serverProperties: ServerProperties, request: HttpServletRequest): String =
+    getToken(
+        serverProperties = serverProperties,
+        tokenWithPrefix = request.getHeader(serverProperties.security.headerKey)
+    )
 
 /**
  * Offline user
  *
- * @param redisUtil RedisUtil object
+ * @param serverProperties Server properties
+ * @param redisProvider RedisProvider object
  * @param userIds List of user IDs
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
- * @see RedisUtil
+ * @see ServerProperties
+ * @see RedisProvider
  */
-fun offlineUser(redisUtil: RedisUtil, vararg userIds: Long) {
+fun offlineUser(
+    serverProperties: ServerProperties,
+    redisProvider: RedisProvider,
+    vararg userIds: Long
+) {
     val keys = HashSet<String>()
     userIds.forEach {
-        keys.addAll(redisUtil.keys("${SecurityProperties.tokenIssuer}_token_${it}:*"))
-        keys.addAll(redisUtil.keys("${SecurityProperties.tokenIssuer}_access_${it}_*:*"))
+        keys.addAll(redisProvider.keys("${serverProperties.security.tokenIssuer}_token_${it}:*"))
+        keys.addAll(redisProvider.keys("${serverProperties.security.tokenIssuer}_access_${it}_*:*"))
     }
 
-    redisUtil.delObject(keys)
+    redisProvider.delObject(keys)
 }
 
 /**

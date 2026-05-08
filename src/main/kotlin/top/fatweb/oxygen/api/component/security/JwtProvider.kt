@@ -1,66 +1,71 @@
-package top.fatweb.oxygen.api.util
+package top.fatweb.oxygen.api.component.security
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.interfaces.DecodedJWT
-import top.fatweb.oxygen.api.properties.SecurityProperties
-import java.util.*
+import org.springframework.stereotype.Component
+import top.fatweb.oxygen.api.properties.ServerProperties
+import java.util.Date
+import java.util.UUID
 import java.util.concurrent.TimeUnit
 
 /**
- * Jwt util
+ * Jwt provider
  *
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.0.0
+ * @since 1.2.0
  */
-object JwtUtil {
+@Component
+class JwtProvider(
+    private val serverProperties: ServerProperties
+) {
     private fun getUUID() = UUID.randomUUID().toString().replace("-", "")
 
-    private fun algorithm(): Algorithm = Algorithm.HMAC256(SecurityProperties.tokenSecret)
+    private fun algorithm(): Algorithm = Algorithm.HMAC256(serverProperties.security.tokenSecret)
 
     /**
      * Generate access token
      *
-     * @param subject Data stored in token (json format)
+     * @param subject Data stored in token (JSON format)
      * @return Access token
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.1.0
+     * @since 1.2.0
      */
     fun generateAccessToken(
         subject: String
     ) = generateJwt(
         subject = subject,
-        ttl = SecurityProperties.accessTokenTtl,
-        ttlUnit = SecurityProperties.accessTokenTtlUnit
+        ttl = serverProperties.security.accessTokenTtl,
+        ttlUnit = serverProperties.security.accessTokenTtlUnit
     )
 
     /**
      * Generate refresh token
      *
-     * @param subject Data stored in token (json format)
+     * @param subject Data stored in token (JSON format)
      * @return Refresh token
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.1.0
+     * @since 1.2.0
      */
     fun generateRefreshToken(
         subject: String
     ) = generateJwt(
         subject = subject,
-        ttl = SecurityProperties.refreshTokenTtl,
-        ttlUnit = SecurityProperties.refreshTokenTtlUnit
+        ttl = serverProperties.security.refreshTokenTtl,
+        ttlUnit = serverProperties.security.refreshTokenTtlUnit
     )
 
     /**
      * Generate jwt token
      *
-     * @param subject Data stored in token (json format)
+     * @param subject Data stored in token (JSON format)
      * @param ttl Life of token
      * @param ttlUnit Life util of token
      * @param uuid UUID
      * @return JWT token
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.1.0
-     * @see TimeUnit
+     * @since 1.2.0
+     * @see java.util.concurrent.TimeUnit
      */
     private fun generateJwt(
         subject: String,
@@ -71,7 +76,7 @@ object JwtUtil {
         val nowMillis = System.currentTimeMillis()
         val expMillis = nowMillis + ttlUnit.toMillis(ttl)
 
-        return JWT.create().withJWTId(uuid).withSubject(subject).withIssuer(SecurityProperties.tokenIssuer)
+        return JWT.create().withJWTId(uuid).withSubject(subject).withIssuer(serverProperties.security.tokenIssuer)
             .withIssuedAt(Date(nowMillis)).withExpiresAt(Date(expMillis)).sign(algorithm())
     }
 
@@ -81,8 +86,8 @@ object JwtUtil {
      * @param jwt JWT token
      * @return Parsed content
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see DecodedJWT
+     * @since 1.2.0
+     * @see com.auth0.jwt.interfaces.DecodedJWT
      */
     fun parseJwt(jwt: String): DecodedJWT = JWT.require(algorithm()).build().verify(jwt)
 }
