@@ -10,9 +10,9 @@ import org.springframework.util.StringUtils
 import org.springframework.web.filter.OncePerRequestFilter
 import top.fatweb.oxygen.api.entity.permission.LoginUser
 import top.fatweb.oxygen.api.exception.TokenHasExpiredException
-import top.fatweb.oxygen.api.properties.SecurityProperties
-import top.fatweb.oxygen.api.util.JwtUtil
-import top.fatweb.oxygen.api.util.RedisUtil
+import top.fatweb.oxygen.api.properties.ServerProperties
+import top.fatweb.oxygen.api.component.security.JwtProvider
+import top.fatweb.oxygen.api.component.storage.RedisProvider
 import top.fatweb.oxygen.api.util.getToken
 
 /**
@@ -20,31 +20,37 @@ import top.fatweb.oxygen.api.util.getToken
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
- * @see RedisUtil
+ * @see ServerProperties
+ * @see RedisProvider
+ * @see JwtProvider
  * @see OncePerRequestFilter
  */
 @Component
-class JwtAuthenticationTokenFilter(private val redisUtil: RedisUtil) : OncePerRequestFilter() {
+class JwtAuthenticationTokenFilter(
+    private val serverProperties: ServerProperties,
+    private val redisProvider: RedisProvider,
+    private val jwtProvider: JwtProvider
+) : OncePerRequestFilter() {
     override fun doFilterInternal(
         request: HttpServletRequest, response: HttpServletResponse, filterChain: FilterChain
     ) {
-        val tokenWithPrefix = request.getHeader(SecurityProperties.headerKey)
+        val tokenWithPrefix = request.getHeader(serverProperties.security.headerKey)
 
         if (!StringUtils.hasText(tokenWithPrefix) || "/error/thrown" == request.servletPath) {
             filterChain.doFilter(request, response)
             return
         }
 
-        val token = getToken(tokenWithPrefix)
-        JwtUtil.parseJwt(token)
+        val token = getToken(serverProperties, tokenWithPrefix)
+        jwtProvider.parseJwt(token)
 
-        val redisKeyPattern = "${SecurityProperties.tokenIssuer}_access_*:${token}"
-        val redisKeys = redisUtil.keys(redisKeyPattern)
+        val redisKeyPattern = "${serverProperties.security.tokenIssuer}_access_*:${token}"
+        val redisKeys = redisProvider.keys(redisKeyPattern)
         if (redisKeys.isEmpty()) {
             throw TokenHasExpiredException()
         }
 
-        val loginUser = redisUtil.getObject<LoginUser>(redisKeys.first()) ?: throw TokenHasExpiredException()
+        val loginUser = redisProvider.getObject<LoginUser>(redisKeys.first()) ?: throw TokenHasExpiredException()
 
         val authenticationToken = UsernamePasswordAuthenticationToken(loginUser, null, loginUser.authorities)
         SecurityContextHolder.getContext().authentication = authenticationToken

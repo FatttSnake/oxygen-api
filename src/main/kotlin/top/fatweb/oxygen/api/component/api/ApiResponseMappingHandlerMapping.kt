@@ -1,4 +1,4 @@
-package top.fatweb.oxygen.api.util
+package top.fatweb.oxygen.api.component.api
 
 import org.springframework.web.servlet.mvc.condition.RequestCondition
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping
@@ -9,7 +9,7 @@ import java.lang.reflect.Method
  * Api response mapping handler mapping
  *
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.0.0
+ * @since 1.2.0
  */
 class ApiResponseMappingHandlerMapping : RequestMappingHandlerMapping() {
 

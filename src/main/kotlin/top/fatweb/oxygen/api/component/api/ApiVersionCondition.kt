@@ -1,4 +1,4 @@
-package top.fatweb.oxygen.api.util
+package top.fatweb.oxygen.api.component.api
 
 import jakarta.servlet.http.HttpServletRequest
 import org.springframework.web.servlet.mvc.condition.RequestCondition
@@ -7,7 +7,7 @@ import org.springframework.web.servlet.mvc.condition.RequestCondition
  * Api version condition
  *
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.0.0
+ * @since 1.2.0
  */
 class ApiVersionCondition(private val apiVersion: Int) : RequestCondition<ApiVersionCondition> {
     private val versionPrefixRegex = Regex("/api/v(\\d+)/.*")

@@ -17,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.context.Context
 import top.fatweb.oxygen.api.annotation.EventLogRecord
+import top.fatweb.oxygen.api.component.security.JwtProvider
+import top.fatweb.oxygen.api.component.storage.RedisProvider
 import top.fatweb.oxygen.api.entity.permission.LoginUser
 import top.fatweb.oxygen.api.entity.permission.User
 import top.fatweb.oxygen.api.entity.permission.UserInfo
@@ -24,7 +26,7 @@ import top.fatweb.oxygen.api.entity.system.EventLog
 import top.fatweb.oxygen.api.exception.*
 import top.fatweb.oxygen.api.http.TurnstileApi
 import top.fatweb.oxygen.api.param.permission.*
-import top.fatweb.oxygen.api.properties.SecurityProperties
+import top.fatweb.oxygen.api.properties.ServerProperties
 import top.fatweb.oxygen.api.service.api.v1.IAvatarService
 import top.fatweb.oxygen.api.service.permission.IAuthenticationService
 import top.fatweb.oxygen.api.service.permission.IUserInfoService
@@ -48,10 +50,12 @@ import java.util.*
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see ServerProperties
  * @see TemplateEngine
  * @see AuthenticationManager
  * @see PasswordEncoder
- * @see RedisUtil
+ * @see RedisProvider
+ * @see JwtProvider
  * @see TurnstileApi
  * @see IUserService
  * @see IUserInfoService
@@ -61,10 +65,12 @@ import java.util.*
  */
 @Service
 class AuthenticationServiceImpl(
+    private val serverProperties: ServerProperties,
     private val templateEngine: TemplateEngine,
     private val authenticationManager: AuthenticationManager,
     private val passwordEncoder: PasswordEncoder,
-    private val redisUtil: RedisUtil,
+    private val redisProvider: RedisProvider,
+    private val jwtProvider: JwtProvider,
     private val turnstileApi: TurnstileApi,
     private val userService: IUserService,
     private val userInfoService: IUserInfoService,
@@ -243,7 +249,7 @@ class AuthenticationServiceImpl(
             )
         }
 
-        offlineUser(redisUtil, user.id!!)
+        offlineUser(serverProperties = serverProperties, redisProvider =  redisProvider, user.id!!)
 
         sendPasswordChangedMail(user.username!!, getRequestIp(request), userInfo.email!!)
     }
@@ -335,25 +341,25 @@ class AuthenticationServiceImpl(
 
     @EventLogRecord(EventLog.Event.LOGOUT)
     override fun logout(request: HttpServletRequest, response: HttpServletResponse): Boolean {
-        val token = getToken(request)
+        val token = getToken(serverProperties = serverProperties, request = request)
 
-        var redisKeyPattern = "${SecurityProperties.tokenIssuer}_access_*:${token}"
-        var redisKeys = redisUtil.keys(redisKeyPattern)
+        var redisKeyPattern = "${serverProperties.security.tokenIssuer}_access_*:${token}"
+        var redisKeys = redisProvider.keys(redisKeyPattern)
         if (redisKeys.isEmpty()) {
             return false
         }
-        redisUtil.delObject(redisKeys)
+        redisProvider.delObject(redisKeys)
 
         val refreshToken =
-            Regex("${SecurityProperties.tokenIssuer}_access_.*?_(.*):.*").matchEntire(redisKeys.first())?.groupValues?.getOrNull(
+            Regex("${serverProperties.security.tokenIssuer}_access_.*?_(.*):.*").matchEntire(redisKeys.first())?.groupValues?.getOrNull(
                 1
             )
-        redisKeyPattern = "${SecurityProperties.tokenIssuer}_token_*:${refreshToken}"
-        redisKeys = redisUtil.keys(redisKeyPattern)
+        redisKeyPattern = "${serverProperties.security.tokenIssuer}_token_*:${refreshToken}"
+        redisKeys = redisProvider.keys(redisKeyPattern)
         if (redisKeys.isEmpty()) {
             return false
         }
-        redisUtil.delObject(redisKeys)
+        redisProvider.delObject(redisKeys)
 
         val cookie = Cookie("refresh_token", null).apply {
             isHttpOnly = true
@@ -375,32 +381,32 @@ class AuthenticationServiceImpl(
         refreshToken: String?
     ): TokenVo {
         refreshToken ?: throw TokenRefreshErrorException()
-        JwtUtil.parseJwt(refreshToken)
+        jwtProvider.parseJwt(refreshToken)
 
-        var redisKeyPattern = "${SecurityProperties.tokenIssuer}_token_*:${refreshToken}"
-        var redisKeys = redisUtil.keys(redisKeyPattern)
+        var redisKeyPattern = "${serverProperties.security.tokenIssuer}_token_*:${refreshToken}"
+        var redisKeys = redisProvider.keys(redisKeyPattern)
         if (redisKeys.isEmpty()) {
             throw TokenHasExpiredException()
         }
 
-        val loginUser = redisUtil.getObject<LoginUser>(redisKeys.first()) ?: throw TokenHasExpiredException()
+        val loginUser = redisProvider.getObject<LoginUser>(redisKeys.first()) ?: throw TokenHasExpiredException()
         val userId = loginUser.user.id.toString()
-        val newRefreshToken = JwtUtil.generateRefreshToken(userId) ?: throw TokenRefreshErrorException()
-        val newAccessToken = JwtUtil.generateAccessToken(userId) ?: throw TokenRefreshErrorException()
+        val newRefreshToken = jwtProvider.generateRefreshToken(userId) ?: throw TokenRefreshErrorException()
+        val newAccessToken = jwtProvider.generateAccessToken(userId) ?: throw TokenRefreshErrorException()
 
-        var redisKey = "${SecurityProperties.tokenIssuer}_token_${userId}:${newRefreshToken}"
-        redisUtil.setObject(
+        var redisKey = "${serverProperties.security.tokenIssuer}_token_${userId}:${newRefreshToken}"
+        redisProvider.setObject(
             key = redisKey,
             value = loginUser,
-            timeout = SecurityProperties.refreshTokenTtl,
-            timeUnit = SecurityProperties.refreshTokenTtlUnit
+            timeout = serverProperties.security.refreshTokenTtl,
+            timeUnit = serverProperties.security.refreshTokenTtlUnit
         )
-        redisKey = "${SecurityProperties.tokenIssuer}_access_${userId}_${newRefreshToken}:${newAccessToken}"
-        redisUtil.setObject(
+        redisKey = "${serverProperties.security.tokenIssuer}_access_${userId}_${newRefreshToken}:${newAccessToken}"
+        redisProvider.setObject(
             key = redisKey,
             value = loginUser,
-            timeout = SecurityProperties.accessTokenTtl,
-            timeUnit = SecurityProperties.accessTokenTtlUnit
+            timeout = serverProperties.security.accessTokenTtl,
+            timeUnit = serverProperties.security.accessTokenTtlUnit
         )
 
         val cookie = Cookie("refresh_token", newRefreshToken).apply {
@@ -408,15 +414,15 @@ class AuthenticationServiceImpl(
             secure = request.scheme.lowercase() == "https"
             domain = request.serverName
             path = "/token"
-            maxAge = SecurityProperties.refreshTokenTtlUnit.toSeconds(SecurityProperties.refreshTokenTtl).toInt()
+            maxAge = serverProperties.security.refreshTokenTtlUnit.toSeconds(serverProperties.security.refreshTokenTtl).toInt()
             setAttribute("SameSite", "Lax")
         }
         response.addCookie(cookie)
 
-        redisUtil.delObject(redisKeys)
-        redisKeyPattern = "${SecurityProperties.tokenIssuer}_access_*_${refreshToken}:*"
-        redisKeys = redisUtil.keys(redisKeyPattern)
-        redisUtil.delObject(redisKeys)
+        redisProvider.delObject(redisKeys)
+        redisKeyPattern = "${serverProperties.security.tokenIssuer}_access_*_${refreshToken}:*"
+        redisKeys = redisProvider.keys(redisKeyPattern)
+        redisProvider.delObject(redisKeys)
 
         return TokenVo(
             refreshToken = newRefreshToken,
@@ -527,22 +533,22 @@ class AuthenticationServiceImpl(
         }
 
         val userId = loginUser.user.id.toString()
-        val refreshToken = JwtUtil.generateRefreshToken(userId) ?: throw LoginFailedException()
-        val accessToken = JwtUtil.generateAccessToken(userId) ?: throw LoginFailedException()
+        val refreshToken = jwtProvider.generateRefreshToken(userId) ?: throw LoginFailedException()
+        val accessToken = jwtProvider.generateAccessToken(userId) ?: throw LoginFailedException()
 
-        var redisKey = "${SecurityProperties.tokenIssuer}_token_${userId}:${refreshToken}"
-        redisUtil.setObject(
+        var redisKey = "${serverProperties.security.tokenIssuer}_token_${userId}:${refreshToken}"
+        redisProvider.setObject(
             key = redisKey,
             value = loginUser,
-            timeout = SecurityProperties.refreshTokenTtl,
-            timeUnit = SecurityProperties.refreshTokenTtlUnit
+            timeout = serverProperties.security.refreshTokenTtl,
+            timeUnit = serverProperties.security.refreshTokenTtlUnit
         )
-        redisKey = "${SecurityProperties.tokenIssuer}_access_${userId}_${refreshToken}:${accessToken}"
-        redisUtil.setObject(
+        redisKey = "${serverProperties.security.tokenIssuer}_access_${userId}_${refreshToken}:${accessToken}"
+        redisProvider.setObject(
             key = redisKey,
             value = loginUser,
-            timeout = SecurityProperties.accessTokenTtl,
-            timeUnit = SecurityProperties.accessTokenTtlUnit
+            timeout = serverProperties.security.accessTokenTtl,
+            timeUnit = serverProperties.security.accessTokenTtlUnit
         )
 
         val cookie = Cookie("refresh_token", refreshToken).apply {
@@ -550,7 +556,7 @@ class AuthenticationServiceImpl(
             secure = request.scheme.lowercase() == "https"
             domain = request.serverName
             path = "/token"
-            maxAge = SecurityProperties.refreshTokenTtlUnit.toSeconds(SecurityProperties.refreshTokenTtl).toInt()
+            maxAge = serverProperties.security.refreshTokenTtlUnit.toSeconds(serverProperties.security.refreshTokenTtl).toInt()
             setAttribute("SameSite", "Lax")
         }
         response.addCookie(cookie)
@@ -566,7 +572,7 @@ class AuthenticationServiceImpl(
 
     private fun verifyCaptcha(captchaCode: String) {
         try {
-            val siteverifyResponse = runBlocking { turnstileApi.siteverify(captchaCode) }
+            val siteverifyResponse = runBlocking { turnstileApi.siteverify(captchaCode, serverProperties.turnstileSecretKey) }
             if (!siteverifyResponse.success) {
                 throw InvalidCaptchaCodeException()
             }

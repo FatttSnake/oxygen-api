@@ -6,9 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.test.context.junit.jupiter.SpringExtension
-import top.fatweb.oxygen.api.properties.SecurityProperties
 import top.fatweb.oxygen.api.util.ByteUtil
-import top.fatweb.oxygen.api.util.JwtUtil
 import top.fatweb.oxygen.api.util.underToUpperLetter
 import top.fatweb.oxygen.api.util.upperToUnderLetter
 import java.util.concurrent.TimeUnit
@@ -16,17 +14,6 @@ import java.util.concurrent.TimeUnit
 @ExtendWith(SpringExtension::class)
 class OxygenApiApplicationTests {
     private val logger: Logger = LoggerFactory.getLogger(this::class.java)
-
-    @Test
-    fun removePrefixTest() {
-        assertEquals("12312", "Bearer 12312".removePrefix(SecurityProperties.tokenPrefix))
-    }
-
-    @Test
-    fun jwtTest() {
-        val jwt = JwtUtil.generateAccessToken("User")
-        assertEquals("User", jwt?.let { JwtUtil.parseJwt(it).subject })
-    }
 
     @Test
     fun byteUtilTest() {

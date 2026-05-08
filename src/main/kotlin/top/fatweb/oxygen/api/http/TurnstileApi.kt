@@ -24,6 +24,6 @@ interface TurnstileApi {
     @POST("siteverify")
     suspend fun siteverify(
         @Field("response") captchaCode: String,
-        @Field("secret") secret: String = ServerProperties.turnstileSecretKey
+        @Field("secret") secret: String
     ): SiteverifyResponse
 }

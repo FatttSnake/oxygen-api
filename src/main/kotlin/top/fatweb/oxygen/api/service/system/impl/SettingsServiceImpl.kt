@@ -22,10 +22,13 @@ import top.fatweb.oxygen.api.vo.system.TwoFactorSettingsVo
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see ServerProperties
  * @see ISettingsService
  */
 @Service
-class SettingsServiceImpl : ISettingsService {
+class SettingsServiceImpl(
+    private val serverProperties: ServerProperties
+) : ISettingsService {
     override fun getBase() = BaseSettingsVo(
         appName = SettingsOperator.getAppValue(BaseSettings::appName, "氧工具"),
         appUrl = SettingsOperator.getAppValue(BaseSettings::appUrl, "http://localhost"),
@@ -75,7 +78,7 @@ class SettingsServiceImpl : ISettingsService {
     override fun sendMail(mailSendParam: MailSendParam) {
         mailSendParam.to?.let {
             MailUtil.sendSimpleMail(
-                "${ServerProperties.appName} Test Message",
+                "${serverProperties.appName} Test Message",
                 "This is a test email sent when testing the system email sending service.",
                 false,
                 it

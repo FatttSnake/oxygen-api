@@ -1,7 +1,7 @@
 app:
   app-name: Oxygen Toolbox # Application name
   turnstile-secret-key: 1x0000000000000000000000000000000AA # Turnstile secret key
-  admin:
+#  admin:
 #    username: admin # Username of administrator
 #    password: admin # Default password of administrator
 #    nickname: Administrator # Nickname of administrator
@@ -16,7 +16,7 @@ app:
 #    refresh-token-ttl: 128 # Life of refresh token
 #    refresh-token-ttl-unit: days # Life util of refresh token [nanoseconds, microseconds, milliseconds, seconds, minutes, hours, days]
 
-server:
+#server:
 #  port: 8080 # Server port
 
 spring:
@@ -27,7 +27,7 @@ spring:
           url: jdbc:mysql://localhost # MySQL url
           username: root # MySQL username
           password: root # MySQL password
-    hikari:
+#    hikari:
 #      pool-name: HikariCP # Connection pool name
 #      minimum-idle: 5 # Minimum number of connection in pool
 #      idle-timeout: 600000 # The lifetime of connection when idle
@@ -38,8 +38,8 @@ spring:
 #      connection-test-query: select 1 # Test query then connect
 
 
-  data:
-    redis:
+#  data:
+#    redis:
 #      database: 0 # Redis database (default: 0)
 #      host: localhost # Redis host (default: localhost)
 #      port: 6379 # Redis port (default: 6379)
@@ -57,8 +57,8 @@ logging:
     root: info # Logging level
   file:
     name: data/log/fat-api.log # Logging path and name
-  logback:
-    rollingpolicy:
+#  logback:
+#    rollingpolicy:
 #      max-file-size: 10MB # Maximum log file size
 #      max-history: 7 # Maximum number of archive log files to keep
 
