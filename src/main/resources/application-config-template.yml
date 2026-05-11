@@ -56,7 +56,7 @@ logging:
   level:
     root: info # Logging level
   file:
-    name: data/log/fat-api.log # Logging path and name
+    name: data/log/oxygen-api.log # Logging path and name
 #  logback:
 #    rollingpolicy:
 #      max-file-size: 10MB # Maximum log file size
