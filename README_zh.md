@@ -23,7 +23,7 @@
 
 # 环境要求
 
-- Java 17+
+- Java 25+
 - MySQL
 - Redis
 
