@@ -11,6 +11,7 @@ import org.springframework.security.web.csrf.CsrfTokenRepository
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.2.0
+ * @see CsrfTokenRepository
  */
 class CookieWithHeaderCsrfTokenRepository : CsrfTokenRepository {
     private val delegate = CookieCsrfTokenRepository.withHttpOnlyFalse().apply {

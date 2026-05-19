@@ -14,6 +14,7 @@ import java.util.concurrent.TimeUnit
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.2.0
+ * @see ServerProperties
  */
 @Component
 class JwtProvider(
@@ -65,7 +66,7 @@ class JwtProvider(
      * @return JWT token
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.2.0
-     * @see java.util.concurrent.TimeUnit
+     * @see TimeUnit
      */
     private fun generateJwt(
         subject: String,
@@ -87,7 +88,7 @@ class JwtProvider(
      * @return Parsed content
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.2.0
-     * @see com.auth0.jwt.interfaces.DecodedJWT
+     * @see DecodedJWT
      */
     fun parseJwt(jwt: String): DecodedJWT = JWT.require(algorithm()).build().verify(jwt)
 }

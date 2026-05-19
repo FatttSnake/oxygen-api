@@ -29,6 +29,7 @@ import top.fatweb.oxygen.api.vo.tool.ToolVo
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see IToolFavoriteService
  * @see ServiceImpl
  * @see StoreMapper
  * @see Tool

@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.2.0
+ * @see RedisTemplate
  */
 @Suppress("UNCHECKED_CAST")
 @Component
@@ -22,10 +23,10 @@ class RedisProvider(
      * @param key Cache key
      * @param timeout Timeout
      * @param timeUnit Unit of timeout
-     * @return true=Success；false=Fail
+     * @return true=success; false=fail
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.2.0
-     * @see java.util.concurrent.TimeUnit
+     * @see TimeUnit
      */
     fun setExpire(key: String, timeout: Long, timeUnit: TimeUnit = TimeUnit.SECONDS): Boolean =
         redisTemplate.expire(key, timeout, timeUnit)
