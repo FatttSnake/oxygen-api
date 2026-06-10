@@ -30,10 +30,14 @@ class AuthenticationController(
     /**
      * Register
      *
+     * @see request Request information
+     * @see response Response information
      * @param registerParam Register parameters
      * @return Response object includes user ID
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see HttpServletRequest
+     * @see HttpServletResponse
      * @see RegisterParam
      * @see ResponseResult
      * @see RegisterVo
@@ -57,7 +61,7 @@ class AuthenticationController(
     /**
      * Send verify email
      *
-     * @return Response object includes resend result
+     * @return Response object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see ResponseResult
@@ -74,7 +78,7 @@ class AuthenticationController(
      * Verify email
      *
      * @param verifyParam Verify parameters
-     * @return Response object includes verify result
+     * @return Response object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see VerifyParam
@@ -91,9 +95,9 @@ class AuthenticationController(
     /**
      * Forget password
      *
-     * @param request
+     * @param request Request information
      * @param forgetParam Forget parameters
-     * @return Response object includes forget result
+     * @return Response object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see HttpServletRequest
@@ -114,9 +118,9 @@ class AuthenticationController(
     /**
      * Retrieve password
      *
-     * @param request
+     * @param request Request information
      * @param retrieveParam Retrieve parameters
-     * @return Response object includes retrieve result
+     * @return Response object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see HttpServletRequest
@@ -140,12 +144,14 @@ class AuthenticationController(
     /**
      * Login
      *
-     * @param request
+     * @param request Request information
+     * @param response Response information
      * @param loginParam Login parameters
-     * @return Response object includes login result
+     * @return Response object includes login information
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see HttpServletRequest
+     * @see HttpServletResponse
      * @see LoginParam
      * @see ResponseResult
      * @see LoginVo
@@ -184,8 +190,12 @@ class AuthenticationController(
     /**
      * Validate two-factor
      *
+     * @param twoFactorValidateParam Validate two-factor parameters
+     * @return Response object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see TwoFactorValidateParam
+     * @see ResponseResult
      */
     @Operation(summary = "验证双因素")
     @PostMapping("/two-factor")
@@ -196,8 +206,12 @@ class AuthenticationController(
     /**
      * Remove two-factor
      *
+     * @param twoFactorRemoveParam Remove two-factor parameters
+     * @return Response object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see TwoFactorRemoveParam
+     * @see ResponseResult
      */
     @Operation(summary = "移除双因素")
     @DeleteMapping("/two-factor")
@@ -209,11 +223,13 @@ class AuthenticationController(
     /**
      * Logout
      *
-     * @param request
-     * @return Response object includes logout result
+     * @param request Request information
+     * @param response Response information
+     * @return Response object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see HttpServletRequest
+     * @see HttpServletResponse
      * @see ResponseResult
      */
     @Operation(summary = "登出")
@@ -236,8 +252,8 @@ class AuthenticationController(
     /**
      * Refresh token
      *
-     * @param request
-     * @param response
+     * @param request Request information
+     * @param response Response information
      * @return Response object includes new token
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0

@@ -54,16 +54,24 @@ interface IStatisticsService {
     /**
      * Get the history of online users information
      *
+     * @param onlineInfoGetParam Get online information parameters
+     * @return OnlineInfoVo object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see OnlineInfoGetParam
+     * @see OnlineInfoVo
      */
     fun online(onlineInfoGetParam: OnlineInfoGetParam?): OnlineInfoVo
 
     /**
      * Get the history of active information
      *
+     * @param activeInfoGetParam Get active information parameters
+     * @return ActiveInfoVo object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see ActiveInfoGetParam
+     * @see ActiveInfoVo
      */
     fun active(activeInfoGetParam: ActiveInfoGetParam?): ActiveInfoVo
 }

@@ -11,6 +11,8 @@ import top.fatweb.oxygen.api.vo.system.SensitiveWordVo
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see IService
+ * @see SensitiveWord
  */
 interface ISensitiveWordService : IService<SensitiveWord> {
     /**

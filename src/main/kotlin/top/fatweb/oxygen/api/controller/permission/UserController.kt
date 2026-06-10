@@ -49,7 +49,7 @@ class UserController(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see ResponseResult
-     * @see UserWithPowerInfoVo
+     * @see UserWithInfoVo
      */
     @Operation(summary = "获取指定用户基本信息")
     @GetMapping("/info/{username}")
@@ -67,7 +67,7 @@ class UserController(
      * @see ResponseResult
      */
     @Operation(summary = "更新当前用户信息")
-    @PatchMapping("info")
+    @PatchMapping("/info")
     fun updateInfo(@ProcessParam @RequestBody @Valid userInfoUpdateParam: UserInfoUpdateParam): ResponseResult<Unit> {
         userService.updateInfo(userInfoUpdateParam)
 
@@ -85,7 +85,7 @@ class UserController(
      * @see ResponseResult
      */
     @Operation(summary = "更改密码")
-    @PostMapping("info")
+    @PostMapping("/info")
     fun password(@RequestBody @Valid userChangePasswordParam: UserChangePasswordParam): ResponseResult<Unit> {
         userService.password(userChangePasswordParam)
 
@@ -117,6 +117,7 @@ class UserController(
      * @since 1.0.0
      * @see UserGetParam
      * @see ResponseResult
+     * @see PageVo
      * @see UserWithRoleInfoVo
      */
     @Operation(summary = "获取用户")
@@ -150,12 +151,11 @@ class UserController(
      * Update user
      *
      * @param userUpdateParam Update user parameters
-     * @return Response object includes user information
+     * @return Response object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see UserUpdateParam
      * @see ResponseResult
-     * @see UserWithRoleInfoVo
      */
     @Operation(summary = "修改用户")
     @PutMapping

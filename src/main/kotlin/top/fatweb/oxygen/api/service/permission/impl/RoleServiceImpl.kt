@@ -99,7 +99,7 @@ class RoleServiceImpl(
 
         val oldPowerList = rPowerRoleService.list(
             KtQueryWrapper(RPowerRole()).select(RPowerRole::powerId).eq(RPowerRole::roleId, roleUpdateParam.id)
-        ).map { it.powerId }
+        ).map(RPowerRole::powerId)
         val addPowerIds = HashSet<Long>()
         val removePowerIds = HashSet<Long>()
         fullPowerIds?.forEach(addPowerIds::add)

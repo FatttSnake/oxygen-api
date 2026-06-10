@@ -47,7 +47,7 @@ class SysLogServiceImpl(
         )
 
         if (sysLogIPage.records.isNotEmpty()) {
-            val userIds = sysLogIPage.records.map { it.operateUserId }
+            val userIds = sysLogIPage.records.map(SysLog::operateUserId)
 
             userService.list(KtQueryWrapper(User()).select(User::id, User::username).`in`(User::id, userIds))
                 .forEach { user ->
