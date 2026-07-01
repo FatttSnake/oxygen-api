@@ -130,20 +130,22 @@ class ToolTemplate : Serializable {
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see ToolBase
      */
     @TableField(exist = false)
     var base: ToolBase? = null
 
     /**
-     * Source
+     * Source file list
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.2.0
+     * @see ToolSource
      */
     @TableField(exist = false)
-    var source: ToolData? = null
+    var sources: List<ToolSource>? = null
 
     override fun toString(): String {
-        return "ToolTemplate(id=$id, name=$name, baseId=$baseId, baseVersion=$baseVersion, sourceId=$sourceId, platform=$platform, entryPoint=$entryPoint, enable=$enable, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version, base=$base, source=$source)"
+        return "ToolTemplate(id=$id, name=$name, baseId=$baseId, baseVersion=$baseVersion, sourceId=$sourceId, platform=$platform, entryPoint=$entryPoint, enable=$enable, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version, base=$base, sources=$sources)"
     }
 }

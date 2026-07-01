@@ -10,17 +10,32 @@
                t_b_tool_base.deleted     as tool_base_deleted,
                t_b_tool_base.version     as tool_base_version,
                trtbds.base_version       as tool_base_base_version,
-               tbtds.id                  as tool_base_source_id,
-               tbtds.data                as tool_base_source_data,
-               tbtds.create_time         as tool_base_source_create_time,
-               tbtds.update_time         as tool_base_source_update_time,
-               tbtds.deleted             as tool_base_source_delete,
-               tbtds.version             as tool_base_source_version
+               tbts.id                   as tool_source_id,
+               tbts.root_id              as tool_source_root_id,
+               tbts.parent_id            as tool_source_parent_id,
+               tbts.file_name            as tool_source_file_name,
+               tbts.root_node            as tool_source_root_node,
+               tbts.dir_node             as tool_source_dir_node,
+               tbts.create_time          as tool_source_create_time,
+               tbts.update_time          as tool_source_update_time,
+               tbts.version              as tool_source_version,
+               tbtfv.id                  as tool_file_version_id,
+               tbtfv.node_id             as tool_file_version_node_id,
+               tbtfv.ver                 as tool_file_version_ver,
+               tbtfv.file_hash           as tool_file_version_file_hash,
+               tbtfv.file_size           as tool_file_version_file_size,
+               tbtfv.create_time         as tool_file_version_create_time,
+               tbtfv.update_time         as tool_file_version_update_time,
+               tbtfv.version             as tool_file_version_version
         from t_b_tool_base
                  left join t_r_tool_base_data as trtbds
                            on trtbds.deleted = 0 and trtbds.base_id = t_b_tool_base.id and
                               trtbds.data_type = 'SOURCE' and trtbds.base_version = #{version}
-                 left join t_b_tool_data as tbtds on tbtds.deleted = 0 and tbtds.id = trtbds.data_id
+                 left join t_b_tool_source as tbts on tbts.root_id = trtbds.data_id
+                 left join t_b_tool_file_version as tbtfv on tbtfv.node_id = tbts.id and
+                                                             tbtfv.ver = (select max(temp.ver)
+                                                                          from t_b_tool_file_version temp
+                                                                          where temp.node_id = tbts.id)
         where t_b_tool_base.deleted = 0
           and t_b_tool_base.id = #{id}
     </select>
@@ -34,34 +49,44 @@
                tool_base_deleted,
                tool_base_version,
                tool_base_base_version,
-               tool_base_source_id,
-               tool_base_source_data,
-               tool_base_source_create_time,
-               tool_base_source_update_time,
-               tool_base_source_delete,
-               tool_base_source_version
-        from (select t_b_tool_base.id                                  as tool_base_id,
-                     t_b_tool_base.name                                as tool_base_name,
-                     t_b_tool_base.platform                            as tool_base_platform,
-                     t_b_tool_base.create_time                         as tool_base_create_time,
-                     t_b_tool_base.update_time                         as tool_base_update_time,
-                     t_b_tool_base.deleted                             as tool_base_deleted,
-                     t_b_tool_base.version                             as tool_base_version,
-                     trtbds.base_version                               as tool_base_base_version,
-                     tbtds.id                                          as tool_base_source_id,
-                     tbtds.data                                        as tool_base_source_data,
-                     tbtds.create_time                                 as tool_base_source_create_time,
-                     tbtds.update_time                                 as tool_base_source_update_time,
-                     tbtds.deleted                                     as tool_base_source_delete,
-                     tbtds.version                                     as tool_base_source_version,
+               tbts.id           as tool_source_id,
+               tool_source_root_id,
+               tbts.parent_id    as tool_source_parent_id,
+               tbts.file_name     as tool_source_file_name,
+               tbts.root_node    as tool_source_root_node,
+               tbts.dir_node     as tool_source_dir_node,
+               tbts.create_time  as tool_source_create_time,
+               tbts.update_time  as tool_source_update_time,
+               tbts.version      as tool_source_version,
+               tbtfv.id          as tool_file_version_id,
+               tbtfv.node_id     as tool_file_version_node_id,
+               tbtfv.ver         as tool_file_version_ver,
+               tbtfv.file_hash   as tool_file_version_file_hash,
+               tbtfv.file_size   as tool_file_version_file_size,
+               tbtfv.create_time as tool_file_version_create_time,
+               tbtfv.update_time as tool_file_version_update_time,
+               tbtfv.version     as tool_file_version_version
+        from (select t_b_tool_base.id                                                          as tool_base_id,
+                     t_b_tool_base.name                                                        as tool_base_name,
+                     t_b_tool_base.platform                                                    as tool_base_platform,
+                     t_b_tool_base.create_time                                                 as tool_base_create_time,
+                     t_b_tool_base.update_time                                                 as tool_base_update_time,
+                     t_b_tool_base.deleted                                                     as tool_base_deleted,
+                     t_b_tool_base.version                                                     as tool_base_version,
+                     trtbds.base_version                                                       as tool_base_base_version,
+                     trtbds.data_id                                                            as tool_source_root_id,
                      row_number() over (partition by t_b_tool_base.id order by trtbds.id desc) as rn
               from t_b_tool_base
                        left join t_r_tool_base_data as trtbds
                                  on trtbds.deleted = 0 and trtbds.base_id = t_b_tool_base.id and
                                     trtbds.data_type = 'SOURCE' and trtbds.base_version != 0
-                       left join t_b_tool_data as tbtds on tbtds.deleted = 0 and tbtds.id = trtbds.data_id
               where t_b_tool_base.deleted = 0
                 and t_b_tool_base.id = #{id}) temp
+                 left join t_b_tool_source as tbts on tbts.root_id = temp.tool_source_root_id
+                 left join t_b_tool_file_version as tbtfv on tbtfv.node_id = tbts.id and
+                                                             tbtfv.ver = (select max(temp.ver)
+                                                                          from t_b_tool_file_version temp
+                                                                          where temp.node_id = tbts.id)
         where temp.rn = 1
     </select>
 
@@ -87,12 +112,17 @@
                t_b_tool_base.deleted     as tool_base_deleted,
                t_b_tool_base.version     as tool_base_version,
                trtbdd.base_version       as tool_base_base_version,
-               tbtdd.data                as tool_base_dist_data
+               tbtd.id                   as tool_dist_id,
+               tbtd.file_hash            as tool_dist_file_hash,
+               tbtd.file_size            as tool_dist_file_size,
+               tbtd.create_time          as tool_dist_create_time,
+               tbtd.update_time          as tool_dist_update_time,
+               tbtd.version              as tool_dist_version
         from t_b_tool_base
                  left join t_r_tool_base_data as trtbdd
-                           on trtbdd.deleted = 0 and trtbdd.base_id = t_b_tool_base.id and trtbdd.data_type = 'DIST' and
-                              trtbdd.base_version = #{version}
-                 left join t_b_tool_data as tbtdd on tbtdd.deleted = 0 and tbtdd.id = trtbdd.data_id
+                           on trtbdd.deleted = 0 and trtbdd.base_id = t_b_tool_base.id and
+                              trtbdd.data_type = 'DIST' and trtbdd.base_version = #{version}
+                 left join t_b_tool_dist as tbtd on tbtd.id = trtbdd.data_id
         where t_b_tool_base.deleted = 0
           and t_b_tool_base.id = #{id}
     </select>
@@ -164,26 +194,15 @@
         <result property="baseVersion" column="tool_base_base_version"/>
     </resultMap>
 
-    <resultMap id="toolBaseWithSourceMap" type="top.fatweb.oxygen.api.entity.tool.ToolBase" extends="toolBaseWithVersionMap">
-        <association property="source">
-            <id property="id" column="tool_base_source_id"/>
-            <result property="data" column="tool_base_source_data"/>
-            <result property="createTime" column="tool_base_source_create_time"/>
-            <result property="updateTime" column="tool_base_source_update_time"/>
-            <result property="deleted" column="tool_base_source_deleted"/>
-            <result property="version" column="tool_base_source_version"/>
-        </association>
+    <resultMap id="toolBaseWithSourceMap" type="top.fatweb.oxygen.api.entity.tool.ToolBase"
+               extends="toolBaseWithVersionMap">
+        <collection property="sources"
+                    resultMap="top.fatweb.oxygen.api.mapper.tool.ToolSourceMapper.toolSourceWithLatestFileVersionMap"/>
     </resultMap>
 
-    <resultMap id="toolBaseWithDistMap" type="top.fatweb.oxygen.api.entity.tool.ToolBase" extends="toolBaseWithVersionMap">
-        <association property="dist">
-            <id property="id" column="tool_base_dist_id"/>
-            <result property="data" column="tool_base_dist_data"/>
-            <result property="createTime" column="tool_base_dist_create_time"/>
-            <result property="updateTime" column="tool_base_dist_update_time"/>
-            <result property="deleted" column="tool_base_dist_deleted"/>
-            <result property="version" column="tool_base_dist_version"/>
-        </association>
+    <resultMap id="toolBaseWithDistMap" type="top.fatweb.oxygen.api.entity.tool.ToolBase"
+               extends="toolBaseWithVersionMap">
+        <association property="dist" resultMap="top.fatweb.oxygen.api.mapper.tool.ToolDistMapper.toolDistMap"/>
     </resultMap>
 
     <resultMap id="toolBaseWithVersionsMap" type="top.fatweb.oxygen.api.entity.tool.ToolBase" extends="toolBaseMap">

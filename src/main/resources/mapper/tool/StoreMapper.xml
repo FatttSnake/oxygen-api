@@ -113,7 +113,7 @@
         left join t_s_user_info as tsui on tsui.deleted = 0 and tsui.user_id = tbtm.author_id
         left join t_r_tool_main_category as trtmc on trtmc.deleted = 0 and tbtm.id = trtmc.tool_id
         left join t_b_tool_category as tbtc on tbtc.deleted = 0 and tbtc.enable = 1 and tbtc.id = trtmc.category_id
-        left join t_b_tool_favorite as tbtf on tbtf.deleted = 0 and tbtf.user_id = #{operator} and tbtf.author_id =
+        left join t_b_tool_favorite as tbtf on tbtf.user_id = #{operator} and tbtf.author_id =
         tbtm.author_id and tbtf.tool_id = tbtm.tool_id
         <where>
             and tbtm.rn = 1

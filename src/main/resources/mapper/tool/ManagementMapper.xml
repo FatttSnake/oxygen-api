@@ -9,10 +9,11 @@
                t_b_tool_main.platform     as tool_platform,
                t_b_tool_main.description  as tool_description,
                t_b_tool_main.base_id      as tool_base_id,
+               t_b_tool_main.base_version as tool_base_base_version,
                t_b_tool_main.author_id    as tool_author_id,
                t_b_tool_main.ver          as tool_ver,
                t_b_tool_main.keywords     as tool_keywords,
-               t_b_tool_main.source_id    as tool_source_id,
+               t_b_tool_main.source_id    as tool_source_root_id,
                t_b_tool_main.dist_id      as tool_dist_id,
                t_b_tool_main.entry_point  as tool_entry_point,
                t_b_tool_main.publish      as tool_publish,
@@ -23,18 +24,29 @@
                t_b_tool_main.version      as tool_version,
                tbtb.id                    as tool_base_id,
                tbtb.name                  as tool_base_name,
-               t_b_tool_main.base_version as tool_base_base_version,
                tsu.id                     as user_id,
                tsu.username               as user_username,
                tsui.id                    as user_info_id,
                tsui.nickname              as user_info_nickname,
                tsui.avatar                as user_info_avatar,
                tsui.email                 as user_info_email,
-               tbts.data                  as tool_source_data,
+               tbts.root_id               as tool_source_root_id,
+               tbts.id                    as tool_source_id,
+               tbts.parent_id             as tool_source_parent_id,
+               tbts.file_name             as tool_source_file_name,
+               tbts.root_node             as tool_source_root_node,
+               tbts.dir_node              as tool_source_dir_node,
                tbts.create_time           as tool_source_create_time,
                tbts.update_time           as tool_source_update_time,
-               tbts.deleted               as tool_source_deleted,
                tbts.version               as tool_source_version,
+               tbtfv.id                   as tool_file_version_id,
+               tbtfv.node_id              as tool_file_version_node_id,
+               tbtfv.ver                  as tool_file_version_ver,
+               tbtfv.file_hash            as tool_file_version_file_hash,
+               tbtfv.file_size            as tool_file_version_file_size,
+               tbtfv.create_time          as tool_file_version_create_time,
+               tbtfv.update_time          as tool_file_version_update_time,
+               tbtfv.version              as tool_file_version_version,
                tbtc.id                    as tool_category_id,
                tbtc.name                  as tool_category_name,
                tbtc.enable                as tool_category_enable,
@@ -46,7 +58,11 @@
                  left join t_b_tool_base as tbtb on tbtb.deleted = 0 and tbtb.id = t_b_tool_main.base_id
                  left join t_s_user as tsu on tsu.deleted = 0 and tsu.id = t_b_tool_main.author_id
                  left join t_s_user_info as tsui on tsui.deleted = 0 and tsui.user_id = t_b_tool_main.author_id
-                 left join t_b_tool_data as tbts on tbts.deleted = 0 and tbts.id = t_b_tool_main.source_id
+                 left join t_b_tool_source as tbts on tbts.root_id = t_b_tool_main.source_id
+                 left join t_b_tool_file_version as tbtfv on tbtfv.node_id = tbts.id and
+                                                             tbtfv.ver = (select max(temp.ver)
+                                                                          from t_b_tool_file_version temp
+                                                                          where temp.node_id = tbts.id)
                  left join t_r_tool_main_category as trtmc on trtmc.deleted = 0 and t_b_tool_main.id = trtmc.tool_id
                  left join t_b_tool_category as tbtc
                            on tbtc.deleted = 0 and tbtc.enable = 1 and tbtc.id = trtmc.category_id
@@ -155,6 +171,7 @@
         t_b_tool_main.platform as tool_platform,
         t_b_tool_main.description as tool_description,
         t_b_tool_main.base_id as tool_base_id,
+        t_b_tool_main.base_version as tool_base_base_version,
         t_b_tool_main.author_id as tool_author_id,
         t_b_tool_main.ver as tool_ver,
         t_b_tool_main.keywords as tool_keywords,
@@ -169,7 +186,6 @@
         t_b_tool_main.version as tool_version,
         tbtb.id as tool_base_id,
         tbtb.name as tool_base_name,
-        t_b_tool_main.base_version as tool_base_base_version,
         tsu.id as user_id,
         tsu.username as user_username,
         tsui.id as user_info_id,
@@ -209,6 +225,7 @@
         <result property="platform" column="tool_platform"/>
         <result property="description" column="tool_description"/>
         <result property="baseId" column="tool_base_id"/>
+        <result property="baseVersion" column="tool_base_base_version"/>
         <result property="authorId" column="tool_author_id"/>
         <result property="ver" column="tool_ver"/>
         <result property="keywords" column="tool_keywords"
@@ -222,12 +239,18 @@
         <result property="updateTime" column="tool_update_time"/>
         <result property="deleted" column="tool_deleted"/>
         <result property="version" column="tool_version"/>
-        <result property="favorite" column="tool_favorite"/>
+    </resultMap>
+
+    <resultMap id="toolWithCategoriesMap" type="top.fatweb.oxygen.api.entity.tool.Tool" extends="toolMap">
         <collection property="categories"
                     resultMap="top.fatweb.oxygen.api.mapper.tool.ToolCategoryMapper.toolCategoryMap"/>
     </resultMap>
 
-    <resultMap id="toolWithBaseMap" type="top.fatweb.oxygen.api.entity.tool.Tool" extends="toolMap">
+    <resultMap id="toolWithFavoriteMap" type="top.fatweb.oxygen.api.entity.tool.Tool" extends="toolWithCategoriesMap">
+        <result property="favorite" column="tool_favorite"/>
+    </resultMap>
+
+    <resultMap id="toolWithBaseMap" type="top.fatweb.oxygen.api.entity.tool.Tool" extends="toolWithFavoriteMap">
         <association property="base"
                      resultMap="top.fatweb.oxygen.api.mapper.tool.ToolBaseMapper.toolBaseWithVersionMap"/>
     </resultMap>
@@ -237,24 +260,11 @@
     </resultMap>
 
     <resultMap id="toolWithSourceMap" type="top.fatweb.oxygen.api.entity.tool.Tool" extends="toolWithAuthorMap">
-        <association property="source">
-            <id property="id" column="tool_source_id"/>
-            <result property="data" column="tool_source_data"/>
-            <result property="createTime" column="tool_source_create_time"/>
-            <result property="updateTime" column="tool_source_update_time"/>
-            <result property="deleted" column="tool_source_deleted"/>
-            <result property="version" column="tool_source_version"/>
-        </association>
+        <collection property="sources"
+                    resultMap="top.fatweb.oxygen.api.mapper.tool.ToolSourceMapper.toolSourceWithLatestFileVersionMap"/>
     </resultMap>
 
     <resultMap id="toolWithDistMap" type="top.fatweb.oxygen.api.entity.tool.Tool" extends="toolWithAuthorMap">
-        <association property="dist">
-            <id property="id" column="tool_dist_id"/>
-            <result property="data" column="tool_dist_data"/>
-            <result property="createTime" column="tool_dist_create_time"/>
-            <result property="updateTime" column="tool_dist_update_time"/>
-            <result property="deleted" column="tool_dist_deleted"/>
-            <result property="version" column="tool_dist_version"/>
-        </association>
+        <association property="dist" resultMap="top.fatweb.oxygen.api.mapper.tool.ToolDistMapper.toolDistMap"/>
     </resultMap>
 </mapper>

@@ -1,40 +1,40 @@
-package top.fatweb.oxygen.api.entity.tool
+package top.fatweb.oxygen.api.entity.system
 
 import com.baomidou.mybatisplus.annotation.*
 import java.io.Serializable
 import java.time.LocalDateTime
 
 /**
- * Tool data entity
+ * Storage blob entity
  *
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.0.0
+ * @since 1.2.0
  */
-@TableName("t_b_tool_data")
-class ToolData : Serializable {
+@TableName("t_s_storage_blob")
+class StorageBlob : Serializable {
     /**
-     * ID
+     * Original file SHA-256 key
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.2.0
      */
-    @TableId("id")
-    var id: Long? = null
+    @TableId("file_hash")
+    var fileHash: String? = null
 
     /**
-     * Data
+     * Blob reference count
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.2.0
      */
-    @TableField("data")
-    var data: String? = null
+    @TableField("reference_count")
+    var referenceCount: Long? = null
 
     /**
      * Create time
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.2.0
      * @see LocalDateTime
      */
     @TableField("create_time", fill = FieldFill.INSERT)
@@ -44,33 +44,23 @@ class ToolData : Serializable {
      * Update time
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.2.0
      * @see LocalDateTime
      */
     @TableField("update_time", fill = FieldFill.INSERT_UPDATE)
     var updateTime: LocalDateTime? = null
 
     /**
-     * Deleted
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     */
-    @TableField("deleted")
-    @TableLogic
-    var deleted: Long? = null
-
-    /**
      * Version
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.2.0
      */
     @TableField("version")
     @Version
     var version: Int? = null
 
     override fun toString(): String {
-        return "ToolData(id=$id, data=$data, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version)"
+        return "StorageBlob(fileHash=$fileHash, referenceCount=$referenceCount, createTime=$createTime, updateTime=$updateTime, version=$version)"
     }
 }

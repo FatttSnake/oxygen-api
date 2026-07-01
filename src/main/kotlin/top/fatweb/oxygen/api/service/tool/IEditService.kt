@@ -4,11 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService
 import top.fatweb.oxygen.api.entity.tool.Platform
 import top.fatweb.oxygen.api.entity.tool.Tool
 import top.fatweb.oxygen.api.param.PageSortParam
-import top.fatweb.oxygen.api.param.tool.ToolCreateParam
-import top.fatweb.oxygen.api.param.tool.ToolOrTemplateUpgradeBaseParam
-import top.fatweb.oxygen.api.param.tool.ToolUpdateParam
-import top.fatweb.oxygen.api.param.tool.ToolUpdateSourceParam
-import top.fatweb.oxygen.api.param.tool.ToolUpgradeParam
+import top.fatweb.oxygen.api.param.tool.*
 import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.tool.*
 
@@ -24,6 +20,7 @@ interface IEditService : IService<Tool> {
     /**
      * Get tool template as list by platform
      *
+     * @param platform Platform
      * @return List of ToolTemplateVo object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
@@ -84,6 +81,21 @@ interface IEditService : IService<Tool> {
      * @see ToolWithSourceVo
      */
     fun getOne(id: Long): ToolWithSourceVo
+
+    /**
+     * Get tool source original object
+     *
+     * @param username Username
+     * @param toolId Tool ID
+     * @param ver Version
+     * @param platform Platform
+     * @return ToolWithSourceVo object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.2.0
+     * @see Platform
+     * @see Tool
+     */
+    fun originalSource(username: String, toolId: String, ver: String, platform: Platform): Tool
 
     /**
      * Get tool source
@@ -152,15 +164,59 @@ interface IEditService : IService<Tool> {
     fun update(toolUpdateParam: ToolUpdateParam)
 
     /**
-     * Update tool source
+     * Update tool source - add file/directory
      *
-     * @param toolUpdateSourceParam Update tool source parameters
-     * @return ToolWithSourceVo object
+     * @param id Tool ID
+     * @param toolCommonUpdateSourceAddParam Update source - add file/directory parameters
+     * @return New node ID
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.1.0
-     * @see ToolUpdateSourceParam
+     * @since 1.2.0
+     * @see ToolCommonUpdateSourceAddParam
      */
-    fun updateSource(toolUpdateSourceParam: ToolUpdateSourceParam)
+    fun updateSourceAdd(id: Long, toolCommonUpdateSourceAddParam: ToolCommonUpdateSourceAddParam): String
+
+    /**
+     * Update tool source - rename file/directory
+     *
+     * @param id Tool ID
+     * @param nodeId Source node ID
+     * @param fileName New file name
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.2.0
+     */
+    fun updateSourceRename(id: Long, nodeId: Long, fileName: String)
+
+    /**
+     * Update tool source - move file/directory
+     *
+     * @param id Tool ID
+     * @param nodeId Source node ID
+     * @param newParentId New parent node ID
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.2.0
+     */
+    fun updateSourceMove(id: Long, nodeId: Long, newParentId: Long)
+
+    /**
+     * Update tool source - update content
+     *
+     * @param id Tool ID
+     * @param nodeId Source node ID
+     * @param content New content
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.2.0
+     */
+    fun updateSourceContent(id: Long, nodeId: Long, content: String)
+
+    /**
+     * Update tool source - remove file/directory
+     *
+     * @param id Tool ID
+     * @param nodeId Source node ID
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.2.0
+     */
+    fun updateSourceRemove(id: Long, nodeId: Long)
 
     /**
      * Upgrade tool

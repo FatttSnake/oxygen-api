@@ -81,22 +81,24 @@ class ToolBase : Serializable {
     var version: Int? = null
 
     /**
-     * Source
+     * Source file list
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.2.0
+     * @see ToolSource
      */
     @TableField(exist = false)
-    var source: ToolData? = null
+    var sources: List<ToolSource>? = null
 
     /**
-     * Dist
+     * Dist file
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.2.0
+     * @see ToolDist
      */
     @TableField(exist = false)
-    var dist: ToolData? = null
+    var dist: ToolDist? = null
 
     /**
      * Version list
@@ -117,6 +119,6 @@ class ToolBase : Serializable {
     var baseVersion: Long? = null
 
     override fun toString(): String {
-        return "ToolBase(id=$id, name=$name, platform=$platform, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version, source=$source, dist=$dist, versions=$versions, baseVersion=$baseVersion)"
+        return "ToolBase(id=$id, name=$name, platform=$platform, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version, sources=$sources, dist=$dist, versions=$versions, baseVersion=$baseVersion)"
     }
 }

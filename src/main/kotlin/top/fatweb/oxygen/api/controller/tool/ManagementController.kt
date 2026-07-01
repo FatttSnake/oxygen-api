@@ -1,7 +1,6 @@
 package top.fatweb.oxygen.api.controller.tool
 
 import io.swagger.v3.oas.annotations.Operation
-import jakarta.validation.Valid
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import top.fatweb.oxygen.api.annotation.BaseController
@@ -9,7 +8,6 @@ import top.fatweb.oxygen.api.annotation.ProcessParam
 import top.fatweb.oxygen.api.entity.common.ResponseCode
 import top.fatweb.oxygen.api.entity.common.ResponseResult
 import top.fatweb.oxygen.api.param.tool.ToolManagementGetParam
-import top.fatweb.oxygen.api.param.tool.ToolManagementPassParam
 import top.fatweb.oxygen.api.service.tool.IManagementService
 import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.tool.ToolVo
@@ -64,11 +62,10 @@ class ManagementController(
      * Pass tool review
      *
      * @param id Tool ID
-     * @param toolManagementPassParam Pass tool parameters in tool management
+     * @param dist Dist
      * @return Response object
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see ToolManagementPassParam
+     * @since 1.2.0
      * @see ResponseResult
      */
     @Operation(summary = "通过审核")
@@ -76,9 +73,9 @@ class ManagementController(
     @PreAuthorize("hasAnyAuthority('system:tool:modify:tool')")
     fun pass(
         @PathVariable id: Long,
-        @RequestBody @Valid toolManagementPassParam: ToolManagementPassParam
+        @RequestBody dist: String
     ): ResponseResult<Unit> {
-        managementService.pass(id, toolManagementPassParam)
+        managementService.pass(id = id, dist = dist)
 
         return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
     }

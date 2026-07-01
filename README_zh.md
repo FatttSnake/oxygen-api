@@ -24,7 +24,7 @@
 # 环境要求
 
 - Java 25+
-- MySQL
+- MySQL 8.0.19+
 - Redis
 
 # 关联项目

@@ -8,13 +8,13 @@ import org.springframework.transaction.annotation.Transactional
 import top.fatweb.oxygen.api.converter.tool.toEntity
 import top.fatweb.oxygen.api.converter.tool.toVo
 import top.fatweb.oxygen.api.converter.tool.toVoWithSource
-import top.fatweb.oxygen.api.entity.tool.ToolData
 import top.fatweb.oxygen.api.entity.tool.ToolTemplate
 import top.fatweb.oxygen.api.exception.DatabaseUpdateException
 import top.fatweb.oxygen.api.mapper.tool.ToolTemplateMapper
 import top.fatweb.oxygen.api.param.tool.*
+import top.fatweb.oxygen.api.service.system.IStorageBlobService
 import top.fatweb.oxygen.api.service.tool.IToolBaseService
-import top.fatweb.oxygen.api.service.tool.IToolDataService
+import top.fatweb.oxygen.api.service.tool.IToolSourceService
 import top.fatweb.oxygen.api.service.tool.IToolTemplateService
 import top.fatweb.oxygen.api.util.queryOrThrowException
 import top.fatweb.oxygen.api.util.saveOrThrowException
@@ -31,7 +31,8 @@ import java.time.ZoneOffset
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
- * @see IToolDataService
+ * @see IStorageBlobService
+ * @see IToolSourceService
  * @see IToolBaseService
  * @see ServiceImpl
  * @see ToolTemplateMapper
@@ -40,13 +41,23 @@ import java.time.ZoneOffset
  */
 @Service
 class ToolTemplateServiceImpl(
-    private val toolDataService: IToolDataService,
+    private val storageBlobService: IStorageBlobService,
+    private val toolSourceService: IToolSourceService,
     private val toolBaseService: IToolBaseService
 ) : ServiceImpl<ToolTemplateMapper, ToolTemplate>(), IToolTemplateService {
-    override fun getOne(id: Long): ToolTemplateWithSourceVo =
+    override fun getOriginalOne(id: Long): ToolTemplate =
         queryOrThrowException {
             baseMapper.selectOne(id)
-        }.let(ToolTemplate::toVoWithSource)
+        }.apply {
+            sources?.forEach { source ->
+                source.latestFileVersion?.apply {
+                    fileContent = storageBlobService.loadFile(fileHash!!)?.toString(Charsets.UTF_8)
+                }
+            }
+        }
+
+    override fun getOne(id: Long): ToolTemplateWithSourceVo =
+        this.getOriginalOne(id).let(ToolTemplate::toVoWithSource)
 
     override fun get(toolTemplateGetParam: ToolTemplateGetParam?): PageVo<ToolTemplateVo> {
         val templatePage =
@@ -66,12 +77,9 @@ class ToolTemplateServiceImpl(
     override fun add(toolTemplateAddParam: ToolTemplateAddParam): ToolTemplateWithSourceVo {
         val toolBase = toolBaseService.getOne(toolTemplateAddParam.baseId!!, toolTemplateAddParam.baseVersion!!)
 
-        val newSource = ToolData().apply { data = "" }
-
-        saveOrThrowException { toolDataService.save(newSource) }
-
+        val newNodeId = toolSourceService.generateEmptySource()
         val toolTemplate = toolTemplateAddParam.toEntity().apply {
-            sourceId = newSource.id
+            sourceId = newNodeId
             platform = toolBase.platform
         }
 
@@ -88,24 +96,63 @@ class ToolTemplateServiceImpl(
     }
 
     @Transactional
-    override fun updateSource(toolTemplateUpdateSourceParam: ToolTemplateUpdateSourceParam) {
-        val toolTemplate = queryOrThrowException { this.getById(toolTemplateUpdateSourceParam.id) }
-
-        updateOrThrowException {
-            toolDataService.update(
-                KtUpdateWrapper(ToolData())
-                    .eq(ToolData::id, toolTemplate.sourceId)
-                    .set(ToolData::data, toolTemplateUpdateSourceParam.source)
-            )
+    override fun updateSourceAdd(id: Long, toolCommonUpdateSourceAddParam: ToolCommonUpdateSourceAddParam): String {
+        val toolTemplate = queryOrThrowException {
+            this.getById(id)
         }
+        return toolSourceService.addNode(
+            rootId = toolTemplate.sourceId!!,
+            parentId = toolCommonUpdateSourceAddParam.parentNode!!,
+            fileName = toolCommonUpdateSourceAddParam.fileName!!,
+            dirNode = toolCommonUpdateSourceAddParam.dirNode!!
+        ).toString()
+    }
 
-        updateOrThrowException {
-            this.update(
-                KtUpdateWrapper(ToolTemplate())
-                    .eq(ToolTemplate::id, toolTemplateUpdateSourceParam.id)
-                    .set(ToolTemplate::updateTime, LocalDateTime.now(ZoneOffset.UTC))
-            )
+    @Transactional
+    override fun updateSourceRename(id: Long, nodeId: Long, fileName: String) {
+        val toolTemplate = queryOrThrowException {
+            this.getById(id)
         }
+        toolSourceService.renameNode(
+            rootId = toolTemplate.sourceId!!,
+            nodeId = nodeId,
+            fileName = fileName
+        )
+    }
+
+    @Transactional
+    override fun updateSourceMove(id: Long, nodeId: Long, newParentId: Long) {
+        val toolTemplate = queryOrThrowException {
+            this.getById(id)
+        }
+        toolSourceService.moveNode(
+            rootId = toolTemplate.sourceId!!,
+            nodeId = nodeId,
+            newParentId = newParentId,
+        )
+    }
+
+    @Transactional
+    override fun updateSourceContent(id: Long, nodeId: Long, content: String) {
+        val toolTemplate = queryOrThrowException {
+            this.getById(id)
+        }
+        toolSourceService.updateNode(
+            rootId = toolTemplate.sourceId!!,
+            nodeId = nodeId,
+            content = content.toByteArray()
+        )
+    }
+
+    @Transactional
+    override fun updateSourceRemove(id: Long, nodeId: Long) {
+        val toolTemplate = queryOrThrowException {
+            this.getById(id)
+        }
+        toolSourceService.removeNode(
+            rootId = toolTemplate.sourceId!!,
+            nodeId = nodeId,
+        )
     }
 
     @Transactional
@@ -127,10 +174,6 @@ class ToolTemplateServiceImpl(
     }
 
     @Transactional
-    override fun delete(id: Long): Boolean {
-        val toolTemplate = this.getById(id)
-
-        return toolDataService.removeById(toolTemplate.sourceId)
-                && this.removeById(id)
-    }
+    override fun delete(id: Long): Boolean =
+        this.removeById(id)
 }

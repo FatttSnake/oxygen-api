@@ -3,7 +3,6 @@ package top.fatweb.oxygen.api.service.tool
 import com.baomidou.mybatisplus.extension.service.IService
 import top.fatweb.oxygen.api.entity.tool.Tool
 import top.fatweb.oxygen.api.param.tool.ToolManagementGetParam
-import top.fatweb.oxygen.api.param.tool.ToolManagementPassParam
 import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.tool.ToolVo
 import top.fatweb.oxygen.api.vo.tool.ToolWithSourceVo
@@ -45,12 +44,11 @@ interface IManagementService : IService<Tool> {
      * Pass tool review
      *
      * @param id Tool ID
-     * @param toolManagementPassParam Pass tool review parameters in tool management
+     * @param dist Dist
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     * @see ToolManagementPassParam
+     * @since 1.2.0
      */
-    fun pass(id: Long, toolManagementPassParam: ToolManagementPassParam)
+    fun pass(id: Long, dist: String)
 
     /**
      * Reject tool review

@@ -98,25 +98,70 @@ interface IToolBaseService : IService<ToolBase> {
     fun update(toolBaseUpdateParam: ToolBaseUpdateParam)
 
     /**
-     * Update tool base source
+     * Update tool base source - add file/directory
      *
-     * @param toolBaseUpdateSourceParam Update tool base source parameters
+     * @param id Tool base ID
+     * @param toolCommonUpdateSourceAddParam Update source - add file/directory parameters
+     * @return New node ID
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.1.0
-     * @see ToolBaseUpdateSourceParam
+     * @since 1.2.0
+     * @see ToolCommonUpdateSourceAddParam
      */
-    fun updateSource(toolBaseUpdateSourceParam: ToolBaseUpdateSourceParam)
+    fun updateSourceAdd(id: Long, toolCommonUpdateSourceAddParam: ToolCommonUpdateSourceAddParam): String
+
+    /**
+     * Update tool base source - rename file/directory
+     *
+     * @param id Tool base ID
+     * @param nodeId Source node ID
+     * @param fileName New file name
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.2.0
+     */
+    fun updateSourceRename(id: Long, nodeId: Long, fileName: String)
+
+    /**
+     * Update tool base source - move file/directory
+     *
+     * @param id Tool base ID
+     * @param nodeId Source node ID
+     * @param newParentId New parent node ID
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.2.0
+     */
+    fun updateSourceMove(id: Long, nodeId: Long, newParentId: Long)
+
+    /**
+     * Update tool base source - update content
+     *
+     * @param id Tool base ID
+     * @param nodeId Source node ID
+     * @param content New content
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.2.0
+     */
+    fun updateSourceContent(id: Long, nodeId: Long, content: String)
+
+    /**
+     * Update tool base source - remove file/directory
+     *
+     * @param id Tool base ID
+     * @param nodeId Source node ID
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.2.0
+     */
+    fun updateSourceRemove(id: Long, nodeId: Long)
 
     /**
      * Update tool base dist
      *
-     * @param toolBaseUpdateDistParam Update tool base dist parameters
+     * @param id Tool base ID
+     * @param dist Dist
      * @return Version
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.1.0
-     * @see ToolBaseUpdateDistParam
      */
-    fun updateDist(toolBaseUpdateDistParam: ToolBaseUpdateDistParam): Long
+    fun updateDist(id: Long, dist: String): Long
 
     /**
      * Delete tool base

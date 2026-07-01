@@ -2,11 +2,7 @@ package top.fatweb.oxygen.api.service.tool
 
 import com.baomidou.mybatisplus.extension.service.IService
 import top.fatweb.oxygen.api.entity.tool.ToolTemplate
-import top.fatweb.oxygen.api.param.tool.ToolTemplateAddParam
-import top.fatweb.oxygen.api.param.tool.ToolTemplateGetParam
-import top.fatweb.oxygen.api.param.tool.ToolTemplateUpdateParam
-import top.fatweb.oxygen.api.param.tool.ToolTemplateUpdateSourceParam
-import top.fatweb.oxygen.api.param.tool.ToolOrTemplateUpgradeBaseParam
+import top.fatweb.oxygen.api.param.tool.*
 import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.tool.ToolTemplateVo
 import top.fatweb.oxygen.api.vo.tool.ToolTemplateWithSourceVo
@@ -21,6 +17,17 @@ import top.fatweb.oxygen.api.vo.tool.ToolTemplateWithSourceVo
  */
 interface IToolTemplateService : IService<ToolTemplate> {
     /**
+     * Get tool template original object by ID
+     *
+     * @param id ID
+     * @return ToolTemplate object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.2.0
+     * @see ToolTemplate
+     */
+    fun getOriginalOne(id: Long): ToolTemplate
+
+    /**
      * Get tool template by ID
      *
      * @param id ID
@@ -34,6 +41,7 @@ interface IToolTemplateService : IService<ToolTemplate> {
     /**
      * Get tool template in page
      *
+     * @param toolTemplateGetParam Get tool template parameters
      * @return Page of ToolTemplateVo object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
@@ -67,14 +75,59 @@ interface IToolTemplateService : IService<ToolTemplate> {
     fun update(toolTemplateUpdateParam: ToolTemplateUpdateParam)
 
     /**
-     * Update tool template source
+     * Update tool template source - add file/directory
      *
-     * @param toolTemplateUpdateSourceParam Update tool template source parameters
+     * @param id Tool template ID
+     * @param toolCommonUpdateSourceAddParam Update source - add file/directory parameters
+     * @return New node ID
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.1.0
-     * @see ToolTemplateUpdateSourceParam
+     * @since 1.2.0
+     * @see ToolCommonUpdateSourceAddParam
      */
-    fun updateSource(toolTemplateUpdateSourceParam: ToolTemplateUpdateSourceParam)
+    fun updateSourceAdd(id: Long, toolCommonUpdateSourceAddParam: ToolCommonUpdateSourceAddParam): String
+
+    /**
+     * Update tool template source - rename file/directory
+     *
+     * @param id Tool template ID
+     * @param nodeId Source node ID
+     * @param fileName New file name
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.2.0
+     */
+    fun updateSourceRename(id: Long, nodeId: Long, fileName: String)
+
+    /**
+     * Update tool template source - move file/directory
+     *
+     * @param id Tool template ID
+     * @param nodeId Source node ID
+     * @param newParentId New parent node ID
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.2.0
+     */
+    fun updateSourceMove(id: Long, nodeId: Long, newParentId: Long)
+
+    /**
+     * Update tool template source - update content
+     *
+     * @param id Tool template ID
+     * @param nodeId Source node ID
+     * @param content New content
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.2.0
+     */
+    fun updateSourceContent(id: Long, nodeId: Long, content: String)
+
+    /**
+     * Update tool template source - remove file/directory
+     *
+     * @param id Tool template ID
+     * @param nodeId Source node ID
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.2.0
+     */
+    fun updateSourceRemove(id: Long, nodeId: Long)
 
     /**
      * Upgrade tool template base version

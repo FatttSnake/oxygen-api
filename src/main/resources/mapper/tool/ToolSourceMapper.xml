@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.fatweb.oxygen.api.mapper.tool.ToolSourceMapper">
+    <select id="getDescendantNodeIds" resultType="long">
+        with recursive node_tree as (select id
+                                     from t_b_tool_source
+                                     where id = #{nodeId}
+                                       and root_id = #{rootId}
+                                     union all
+                                     select tbts.id
+                                     from t_b_tool_source tbts
+                                              inner join node_tree on tbts.parent_id = node_tree.id
+                                     where tbts.root_id = #{rootId})
+        select id
+        from node_tree
+    </select>
+
+    <resultMap id="toolSourceMap" type="top.fatweb.oxygen.api.entity.tool.ToolSource">
+        <id property="id" column="tool_source_id"/>
+        <result property="rootId" column="tool_source_root_id"/>
+        <result property="parentId" column="tool_source_parent_id"/>
+        <result property="fileName" column="tool_source_file_name"/>
+        <result property="rootNode" column="tool_source_root_node"/>
+        <result property="dirNode" column="tool_source_dir_node"/>
+        <result property="createTime" column="tool_source_create_time"/>
+        <result property="updateTime" column="tool_source_update_time"/>
+        <result property="version" column="tool_source_version"/>
+    </resultMap>
+
+    <resultMap id="toolSourceWithLatestFileVersionMap" type="top.fatweb.oxygen.api.entity.tool.ToolSource"
+               extends="toolSourceMap">
+        <association property="latestFileVersion"
+                     resultMap="top.fatweb.oxygen.api.mapper.tool.ToolFileVersionMapper.toolFileVersionMap"/>
+    </resultMap>
+</mapper>

@@ -6,36 +6,46 @@ import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDateTime
 
 /**
- * Tool data value object
+ * Tool dist value object
  *
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.0.0
+ * @since 1.2.0
  */
-@Schema(description = "工具数据返回参数")
-data class ToolDataVo(
+@Schema(description = "工具产物返回参数")
+data class ToolDistVo(
     /**
      * ID
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.2.0
      */
     @field:JsonSerialize(using = ToStringSerializer::class)
     val id: Long?,
 
     /**
-     * Data
+     * File content
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.2.0
      */
-    @field:Schema(description = "数据")
-    val data: String?,
+    @field:Schema(description = "文件内容")
+    val fileContent: String?,
+
+    /**
+     * File size
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.2.0
+     */
+    @field:Schema(description = "文件大小")
+    @field:JsonSerialize(using = ToStringSerializer::class)
+    val fileSize: Long?,
 
     /**
      * Create time
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.2.0
      * @see LocalDateTime
      */
     @field:Schema(description = "创建时间", example = "1900-01-01T00:00:00.000Z")
@@ -45,7 +55,7 @@ data class ToolDataVo(
      * Update time
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.2.0
      * @see LocalDateTime
      */
     @field:Schema(description = "修改时间", example = "1900-01-01T00:00:00.000Z")
