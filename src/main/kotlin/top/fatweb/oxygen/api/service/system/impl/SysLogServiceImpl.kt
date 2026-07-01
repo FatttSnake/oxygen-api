@@ -41,7 +41,7 @@ class SysLogServiceImpl(
             sysLogPage,
             sysLogGetParam?.logType?.split(","),
             sysLogGetParam?.requestMethod?.split(","),
-            sysLogGetParam?.searchRequestUrl,
+            sysLogGetParam?.searchRequestUrl?.let { "%$it%" },
             sysLogGetParam?.searchStartTime,
             sysLogGetParam?.searchEndTime
         )
