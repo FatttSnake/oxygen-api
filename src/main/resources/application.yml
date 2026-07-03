@@ -35,6 +35,8 @@ mybatis-plus:
       id-type: assign_id
 
 logging:
+  pattern:
+    level: "%5p [%X{traceId:-}]"
   level:
     root: info
   file:

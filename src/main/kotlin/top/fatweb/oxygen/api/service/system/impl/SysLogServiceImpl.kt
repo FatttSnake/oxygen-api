@@ -38,12 +38,13 @@ class SysLogServiceImpl(
         setPageSort(sysLogGetParam, sysLogPage, OrderItem.desc("start_time"))
 
         val sysLogIPage = baseMapper.selectPage(
-            sysLogPage,
-            sysLogGetParam?.logType?.split(","),
-            sysLogGetParam?.requestMethod?.split(","),
-            sysLogGetParam?.searchRequestUrl?.let { "%$it%" },
-            sysLogGetParam?.searchStartTime,
-            sysLogGetParam?.searchEndTime
+            page = sysLogPage,
+            logType = sysLogGetParam?.logType?.split(","),
+            traceId = sysLogGetParam?.searchTraceId,
+            requestMethod = sysLogGetParam?.requestMethod?.split(","),
+            searchRequestUrl = sysLogGetParam?.searchRequestUrl?.let { "%$it%" },
+            searchStartTime = sysLogGetParam?.searchStartTime,
+            searchEndTime = sysLogGetParam?.searchEndTime
         )
 
         if (sysLogIPage.records.isNotEmpty()) {

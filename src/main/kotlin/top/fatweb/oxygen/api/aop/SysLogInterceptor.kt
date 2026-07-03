@@ -16,6 +16,7 @@ import top.fatweb.oxygen.api.entity.common.ResponseCode
 import top.fatweb.oxygen.api.entity.common.ResponseResult
 import top.fatweb.oxygen.api.entity.system.SysLog
 import top.fatweb.oxygen.api.service.system.ISysLogService
+import top.fatweb.oxygen.api.util.TraceIdUtil
 import top.fatweb.oxygen.api.util.getLoginUserId
 import top.fatweb.oxygen.api.util.getRequestIp
 import top.fatweb.oxygen.api.vo.permission.LoginVo
@@ -49,6 +50,7 @@ class SysLogInterceptor(
 
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
         val sysLog = SysLog().apply {
+            traceId = TraceIdUtil.get()
             operateUserId = getLoginUserId() ?: -1
             startTime = LocalDateTime.now(ZoneOffset.UTC)
             requestUri = URI(request.requestURI).path
