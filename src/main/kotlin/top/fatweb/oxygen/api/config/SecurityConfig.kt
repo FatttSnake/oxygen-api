@@ -2,7 +2,6 @@ package top.fatweb.oxygen.api.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
-import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity
@@ -11,14 +10,11 @@ import org.springframework.security.crypto.argon2.Argon2PasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
-import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler
-import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher
 import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import top.fatweb.oxygen.api.filter.JwtAuthenticationTokenFilter
 import top.fatweb.oxygen.api.handler.JwtAccessDeniedHandler
 import top.fatweb.oxygen.api.handler.JwtAuthenticationEntryPointHandler
-import top.fatweb.oxygen.api.component.security.CookieWithHeaderCsrfTokenRepository
 
 /**
  * Spring Security configuration
@@ -49,10 +45,10 @@ class SecurityConfig(
             registerCorsConfiguration("/**", CorsConfiguration().apply {
                 allowedOriginPatterns = listOf("*")
                 allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
-                allowedHeaders = listOf("Authorization", "Content-Type", "X-XSRF-TOKEN")
+                allowedHeaders = listOf("Authorization", "Content-Type", "X-CSRF-TOKEN", "X-Requested-With")
                 allowCredentials = true
                 maxAge = 3600L
-                exposedHeaders = listOf("X-XSRF-TOKEN")
+                exposedHeaders = listOf("X-CSRF-TOKEN")
             })
         }
     }
@@ -65,14 +61,7 @@ class SecurityConfig(
             )
         }
 
-        .csrf {
-            it.csrfTokenRepository(CookieWithHeaderCsrfTokenRepository())
-            it.csrfTokenRequestHandler(CsrfTokenRequestAttributeHandler())
-            it.requireCsrfProtectionMatcher { request ->
-                PathPatternRequestMatcher.withDefaults().matcher(HttpMethod.POST, "/token").matches(request) &&
-                        request.getParameter("refreshToken").isNullOrBlank()
-            }
-        }
+        .csrf { it.disable() }
 
         .authorizeHttpRequests {
             it

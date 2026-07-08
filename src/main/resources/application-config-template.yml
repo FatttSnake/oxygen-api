@@ -29,6 +29,8 @@ app:
 
 #server:
 #  port: 8080 # Server port
+#  compression:
+#    enabled: false
 
 spring:
   datasource:

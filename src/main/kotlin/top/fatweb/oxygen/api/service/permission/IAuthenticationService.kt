@@ -139,7 +139,8 @@ interface IAuthenticationService {
      *
      * @param request Request information
      * @param response Response information
-     * @param refreshToken  Refresh token
+     * @param refreshToken Refresh token
+     * @param csrfToken CSRF token for cross-origin protection
      * @return TokenVo object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.1.0
@@ -147,5 +148,10 @@ interface IAuthenticationService {
      * @see HttpServletResponse
      * @see TokenVo
      */
-    fun refreshToken(request: HttpServletRequest, response: HttpServletResponse, refreshToken: String?): TokenVo
+    fun refreshToken(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        refreshToken: String?,
+        csrfToken: String? = null
+    ): TokenVo
 }

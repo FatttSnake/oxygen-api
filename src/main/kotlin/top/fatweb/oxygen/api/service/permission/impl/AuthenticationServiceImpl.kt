@@ -12,11 +12,14 @@ import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.web.csrf.DefaultCsrfToken
+import org.springframework.security.web.csrf.InvalidCsrfTokenException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.context.Context
 import top.fatweb.oxygen.api.annotation.EventLogRecord
+import top.fatweb.oxygen.api.component.security.CsrfTokenManager
 import top.fatweb.oxygen.api.component.security.JwtProvider
 import top.fatweb.oxygen.api.component.storage.RedisProvider
 import top.fatweb.oxygen.api.entity.permission.LoginUser
@@ -56,6 +59,7 @@ import java.util.*
  * @see PasswordEncoder
  * @see RedisProvider
  * @see JwtProvider
+ * @see CsrfTokenManager
  * @see TurnstileApi
  * @see IUserService
  * @see IUserInfoService
@@ -71,6 +75,7 @@ class AuthenticationServiceImpl(
     private val passwordEncoder: PasswordEncoder,
     private val redisProvider: RedisProvider,
     private val jwtProvider: JwtProvider,
+    private val csrfTokenManager: CsrfTokenManager,
     private val turnstileApi: TurnstileApi,
     private val userService: IUserService,
     private val userInfoService: IUserInfoService,
@@ -122,7 +127,8 @@ class AuthenticationServiceImpl(
         return RegisterVo(
             refreshToken = loginVo.refreshToken,
             accessToken = loginVo.accessToken,
-            userId = loginVo.userId
+            userId = loginVo.userId,
+            csrfToken = loginVo.csrfToken
         )
     }
 
@@ -361,13 +367,23 @@ class AuthenticationServiceImpl(
         }
         redisProvider.delObject(redisKeys)
 
+        val userIdKey = redisKeys.first().let { key ->
+            Regex("${serverProperties.security.tokenIssuer}_token_(\\d+):.*").find(key)?.groupValues?.getOrNull(1)
+        }
+        userIdKey?.let {
+            try {
+                csrfTokenManager.removeToken(it.toLong())
+            } catch (_: Exception) {
+            }
+        }
+
         val cookie = Cookie("refresh_token", null).apply {
             isHttpOnly = true
-            secure = request.scheme.lowercase() == "https"
+            secure = true
             domain = request.serverName
             path = "/token"
             maxAge = 0
-            setAttribute("SameSite", "Lax")
+            setAttribute("SameSite", "None")
         }
 
         response.addCookie(cookie)
@@ -378,7 +394,8 @@ class AuthenticationServiceImpl(
     override fun refreshToken(
         request: HttpServletRequest,
         response: HttpServletResponse,
-        refreshToken: String?
+        refreshToken: String?,
+        csrfToken: String?
     ): TokenVo {
         refreshToken ?: throw TokenRefreshErrorException()
         jwtProvider.parseJwt(refreshToken)
@@ -390,18 +407,27 @@ class AuthenticationServiceImpl(
         }
 
         val loginUser = redisProvider.getObject<LoginUser>(redisKeys.first()) ?: throw TokenHasExpiredException()
-        val userId = loginUser.user.id.toString()
-        val newRefreshToken = jwtProvider.generateRefreshToken(userId) ?: throw TokenRefreshErrorException()
-        val newAccessToken = jwtProvider.generateAccessToken(userId) ?: throw TokenRefreshErrorException()
+        val userId = loginUser.user.id!!
 
-        var redisKey = "${serverProperties.security.tokenIssuer}_token_${userId}:${newRefreshToken}"
+        if (csrfToken.isNullOrBlank() || !csrfTokenManager.validateToken(userId, csrfToken)) {
+            throw InvalidCsrfTokenException(
+                DefaultCsrfToken("X-CSRF-TOKEN", "_csrf", csrfToken ?: ""),
+                "CSRF token validation failed"
+            )
+        }
+
+        val userIdStr = userId.toString()
+        val newRefreshToken = jwtProvider.generateRefreshToken(userIdStr) ?: throw TokenRefreshErrorException()
+        val newAccessToken = jwtProvider.generateAccessToken(userIdStr) ?: throw TokenRefreshErrorException()
+
+        var redisKey = "${serverProperties.security.tokenIssuer}_token_${userIdStr}:${newRefreshToken}"
         redisProvider.setObject(
             key = redisKey,
             value = loginUser,
             timeout = serverProperties.security.refreshTokenTtl,
             timeUnit = serverProperties.security.refreshTokenTtlUnit
         )
-        redisKey = "${serverProperties.security.tokenIssuer}_access_${userId}_${newRefreshToken}:${newAccessToken}"
+        redisKey = "${serverProperties.security.tokenIssuer}_access_${userIdStr}_${newRefreshToken}:${newAccessToken}"
         redisProvider.setObject(
             key = redisKey,
             value = loginUser,
@@ -411,11 +437,11 @@ class AuthenticationServiceImpl(
 
         val cookie = Cookie("refresh_token", newRefreshToken).apply {
             isHttpOnly = true
-            secure = request.scheme.lowercase() == "https"
+            secure = true
             domain = request.serverName
             path = "/token"
             maxAge = serverProperties.security.refreshTokenTtlUnit.toSeconds(serverProperties.security.refreshTokenTtl).toInt()
-            setAttribute("SameSite", "Lax")
+            setAttribute("SameSite", "None")
         }
         response.addCookie(cookie)
 
@@ -424,9 +450,12 @@ class AuthenticationServiceImpl(
         redisKeys = redisProvider.keys(redisKeyPattern)
         redisProvider.delObject(redisKeys)
 
+        val newCsrfToken = csrfTokenManager.generateToken(userId)
+
         return TokenVo(
             refreshToken = newRefreshToken,
             accessToken = newAccessToken,
+            csrfToken = newCsrfToken
         )
     }
 
@@ -553,20 +582,23 @@ class AuthenticationServiceImpl(
 
         val cookie = Cookie("refresh_token", refreshToken).apply {
             isHttpOnly = true
-            secure = request.scheme.lowercase() == "https"
+            secure = true
             domain = request.serverName
             path = "/token"
             maxAge = serverProperties.security.refreshTokenTtlUnit.toSeconds(serverProperties.security.refreshTokenTtl).toInt()
-            setAttribute("SameSite", "Lax")
+            setAttribute("SameSite", "None")
         }
         response.addCookie(cookie)
+
+        val csrfToken = csrfTokenManager.generateToken(loginUser.user.id!!)
 
         return LoginVo(
             refreshToken = refreshToken,
             accessToken = accessToken,
             userId = loginUser.user.id,
             lastLoginTime = loginUser.user.currentLoginTime,
-            lastLoginIp = loginUser.user.currentLoginIp
+            lastLoginIp = loginUser.user.currentLoginIp,
+            csrfToken = csrfToken
         )
     }
 

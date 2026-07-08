@@ -73,5 +73,17 @@ data class LoginVo(
         description = "上次登录 IP",
         example = "10.0.0.1"
     )
-    val lastLoginIp: String?
+    val lastLoginIp: String?,
+
+    /**
+     * CSRF Token
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.2.0
+     */
+    @field:Schema(
+        description = "CSRF Token",
+        example = "a1b2c3d4e5f6g7h8"
+    )
+    val csrfToken: String
 )
