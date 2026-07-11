@@ -22,7 +22,7 @@ interface IToolTemplateService : IService<ToolTemplate> {
      * @param id ID
      * @return ToolTemplate object
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see ToolTemplate
      */
     fun getOriginalOne(id: Long): ToolTemplate
@@ -81,7 +81,7 @@ interface IToolTemplateService : IService<ToolTemplate> {
      * @param toolCommonUpdateSourceAddParam Update source - add file/directory parameters
      * @return New node ID
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see ToolCommonUpdateSourceAddParam
      */
     fun updateSourceAdd(id: Long, toolCommonUpdateSourceAddParam: ToolCommonUpdateSourceAddParam): String
@@ -93,7 +93,7 @@ interface IToolTemplateService : IService<ToolTemplate> {
      * @param nodeId Source node ID
      * @param fileName New file name
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     fun updateSourceRename(id: Long, nodeId: Long, fileName: String)
 
@@ -104,7 +104,7 @@ interface IToolTemplateService : IService<ToolTemplate> {
      * @param nodeId Source node ID
      * @param newParentId New parent node ID
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     fun updateSourceMove(id: Long, nodeId: Long, newParentId: Long)
 
@@ -115,7 +115,7 @@ interface IToolTemplateService : IService<ToolTemplate> {
      * @param nodeId Source node ID
      * @param content New content
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     fun updateSourceContent(id: Long, nodeId: Long, content: String)
 
@@ -125,7 +125,7 @@ interface IToolTemplateService : IService<ToolTemplate> {
      * @param id Tool template ID
      * @param nodeId Source node ID
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     fun updateSourceRemove(id: Long, nodeId: Long)
 

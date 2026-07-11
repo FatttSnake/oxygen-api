@@ -19,7 +19,7 @@ import kotlin.io.encoding.Base64
  * Database migrate
  *
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.2.0
+ * @since 1.3.0
  * @see ObjectMapper
  * @see FileStorageProvider
  * @see BaseJavaMigration

@@ -12,7 +12,7 @@ import java.time.LocalDateTime
  * Tool dist entity
  *
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.2.0
+ * @since 1.3.0
  */
 @TableName("t_b_tool_dist")
 class ToolDist : Serializable {
@@ -20,7 +20,7 @@ class ToolDist : Serializable {
      * ID
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @TableId("id")
     var id: Long? = null
@@ -29,7 +29,7 @@ class ToolDist : Serializable {
      * File SHA-256 key
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @TableField("file_hash")
     var fileHash: String? = null
@@ -38,7 +38,7 @@ class ToolDist : Serializable {
      * File size
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @TableField("file_size")
     var fileSize: Long? = null
@@ -47,7 +47,7 @@ class ToolDist : Serializable {
      * Create time
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see LocalDateTime
      */
     @TableField("create_time", fill = FieldFill.INSERT)
@@ -57,7 +57,7 @@ class ToolDist : Serializable {
      * Update time
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see LocalDateTime
      */
     @TableField("update_time", fill = FieldFill.INSERT_UPDATE)
@@ -67,7 +67,7 @@ class ToolDist : Serializable {
      * Version
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @TableField("version")
     @Version
@@ -77,7 +77,7 @@ class ToolDist : Serializable {
      * File content
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @TableField(exist = false)
     var fileContent: String? = null

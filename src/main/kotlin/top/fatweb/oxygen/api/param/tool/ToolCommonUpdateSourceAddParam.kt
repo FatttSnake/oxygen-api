@@ -11,7 +11,7 @@ import top.fatweb.oxygen.api.annotation.ParamProcessor
  * Update source - add file/directory parameters
  *
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.2.0
+ * @since 1.3.0
  */
 @ParamProcessor
 @Schema(description = "更新源码-新增文件(目录)请求参数")
@@ -20,7 +20,7 @@ data class ToolCommonUpdateSourceAddParam(
      * Parent node ID
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @field:Schema(description = "父节点 ID", required = true)
     @field:NotNull(message = "Parent node ID can not be null")
@@ -30,7 +30,7 @@ data class ToolCommonUpdateSourceAddParam(
      * File/directory name
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @field:Schema(description = "文件(目录)名", required = true)
     @field:NotBlank(message = "File/directory name can not be blank")
@@ -44,7 +44,7 @@ data class ToolCommonUpdateSourceAddParam(
      * Is directory node
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @field:Schema(description = "是否为目录节点", required = true)
     @field:NotNull(message = "Is directory name can not be null")

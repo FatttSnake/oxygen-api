@@ -12,7 +12,7 @@ import java.time.LocalDateTime
  * Tool file version entity
  *
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.2.0
+ * @since 1.3.0
  */
 @TableName("t_b_tool_file_version")
 class ToolFileVersion : Serializable {
@@ -20,7 +20,7 @@ class ToolFileVersion : Serializable {
      * ID
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @TableId("id")
     var id: Long? = null
@@ -29,7 +29,7 @@ class ToolFileVersion : Serializable {
      * Source node ID
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @TableField("node_id")
     var nodeId: Long? = null
@@ -38,7 +38,7 @@ class ToolFileVersion : Serializable {
      * File version
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @TableField("ver")
     var ver: Int? = null
@@ -47,7 +47,7 @@ class ToolFileVersion : Serializable {
      * File SHA-256 key
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @TableField("file_hash")
     var fileHash: String? = null
@@ -56,7 +56,7 @@ class ToolFileVersion : Serializable {
      * File size
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @TableField("file_size")
     var fileSize: Long? = null
@@ -65,7 +65,7 @@ class ToolFileVersion : Serializable {
      * Create time
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see LocalDateTime
      */
     @TableField("create_time", fill = FieldFill.INSERT)
@@ -75,7 +75,7 @@ class ToolFileVersion : Serializable {
      * Update time
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see LocalDateTime
      */
     @TableField("update_time", fill = FieldFill.INSERT_UPDATE)
@@ -85,7 +85,7 @@ class ToolFileVersion : Serializable {
      * Version
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @TableField("version")
     @Version
@@ -95,7 +95,7 @@ class ToolFileVersion : Serializable {
      * File content
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @TableField(exist = false)
     var fileContent: String? = null

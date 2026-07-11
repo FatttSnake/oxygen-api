@@ -36,7 +36,7 @@ data class ToolBaseWithDistVo(
      * Dist
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see ToolDistVo
      */
     @field:Schema(description = "产物")

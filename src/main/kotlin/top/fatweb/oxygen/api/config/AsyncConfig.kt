@@ -13,7 +13,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor
  * so that Trace ID (and other MDC values) are carried over to async threads.
  *
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.2.0
+ * @since 1.3.0
  */
 @Configuration
 class AsyncConfig {
@@ -22,7 +22,7 @@ class AsyncConfig {
      *
      * @return ThreadPoolTaskExecutor
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see ThreadPoolTaskExecutor
      */
     @Bean("applicationTaskExecutor")
@@ -43,7 +43,7 @@ class AsyncConfig {
      * and restores the original context after execution.
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see TaskDecorator
      */
     class MdcTaskDecorator : TaskDecorator {

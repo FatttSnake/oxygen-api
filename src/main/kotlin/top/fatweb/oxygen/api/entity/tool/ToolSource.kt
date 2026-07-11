@@ -10,7 +10,7 @@ import java.time.LocalDateTime
  * Tool source entity
  *
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.2.0
+ * @since 1.3.0
  */
 @TableName("t_b_tool_source")
 class ToolSource : Serializable {
@@ -37,7 +37,7 @@ class ToolSource : Serializable {
          *   - When the list is non-empty but contains zero or more than one root node
          *   - When a file node (where `dirNode == 0`) lacks the latest file version
          * @author FatttSnake, fatttsnake@gmail.com
-         * @since 1.2.0
+         * @since 1.3.0
          * @see ToolSource
          * @see ToolFileVersion
          */
@@ -105,7 +105,7 @@ class ToolSource : Serializable {
      * ID
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @TableId("id")
     var id: Long? = null
@@ -114,7 +114,7 @@ class ToolSource : Serializable {
      * Root node ID
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @TableField("root_id")
     var rootId: Long? = null
@@ -123,7 +123,7 @@ class ToolSource : Serializable {
      * Parent node ID
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @TableField("parent_id")
     var parentId: Long? = null
@@ -132,7 +132,7 @@ class ToolSource : Serializable {
      * File name
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @TableField("file_name")
     var fileName: String? = null
@@ -141,7 +141,7 @@ class ToolSource : Serializable {
      *  Is root node
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @TableField("root_node")
     var rootNode: Int? = null
@@ -150,7 +150,7 @@ class ToolSource : Serializable {
      * Is directory node
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @TableField("dir_node")
     var dirNode: Int? = null
@@ -159,7 +159,7 @@ class ToolSource : Serializable {
      * Create time
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see LocalDateTime
      */
     @TableField("create_time", fill = FieldFill.INSERT)
@@ -169,7 +169,7 @@ class ToolSource : Serializable {
      * Update time
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see LocalDateTime
      */
     @TableField("update_time", fill = FieldFill.INSERT_UPDATE)
@@ -179,7 +179,7 @@ class ToolSource : Serializable {
      * Version
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @TableField("version")
     @Version
@@ -189,7 +189,7 @@ class ToolSource : Serializable {
      * Latest file version
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see ToolFileVersion
      */
     @TableField(exist = false)

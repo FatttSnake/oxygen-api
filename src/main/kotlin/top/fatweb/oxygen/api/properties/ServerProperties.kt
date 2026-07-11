@@ -63,7 +63,7 @@ data class ServerProperties(
      * Admin properties
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see AdminProperties
      */
     @field:Valid val admin: AdminProperties = AdminProperties(),
@@ -72,7 +72,7 @@ data class ServerProperties(
      * Security properties
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see SecurityProperties
      */
     @field:Valid val security: SecurityProperties = SecurityProperties(),
@@ -81,7 +81,7 @@ data class ServerProperties(
      * Storage properties
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see StorageProperties
      */
     @field:Valid val storage: StorageProperties = StorageProperties()

@@ -9,7 +9,7 @@ import java.time.LocalDateTime
  * Tool file version value object
  *
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.2.0
+ * @since 1.3.0
  */
 @Schema(description = "工具文件版本返回参数")
 data class ToolFileVersionVo(
@@ -17,7 +17,7 @@ data class ToolFileVersionVo(
      * ID
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @field:JsonSerialize(using = ToStringSerializer::class)
     val id: Long?,
@@ -26,7 +26,7 @@ data class ToolFileVersionVo(
      * Node ID
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @field:Schema(description = "节点 ID")
     @field:JsonSerialize(using = ToStringSerializer::class)
@@ -36,7 +36,7 @@ data class ToolFileVersionVo(
      * File version
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @field:Schema(description = "文件版本")
     val ver: Int?,
@@ -45,7 +45,7 @@ data class ToolFileVersionVo(
      * File content
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @field:Schema(description = "文件内容")
     val fileContent: String?,
@@ -54,7 +54,7 @@ data class ToolFileVersionVo(
      * File size
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @field:Schema(description = "文件大小")
     @field:JsonSerialize(using = ToStringSerializer::class)
@@ -64,7 +64,7 @@ data class ToolFileVersionVo(
      * Create time
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see LocalDateTime
      */
     @field:Schema(description = "创建时间", example = "1900-01-01T00:00:00.000Z")
@@ -74,7 +74,7 @@ data class ToolFileVersionVo(
      * Update time
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see LocalDateTime
      */
     @field:Schema(description = "修改时间", example = "1900-01-01T00:00:00.000Z")

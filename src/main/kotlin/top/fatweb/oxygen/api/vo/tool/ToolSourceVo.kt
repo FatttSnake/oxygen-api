@@ -9,7 +9,7 @@ import java.time.LocalDateTime
  * Tool source value object
  *
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.2.0
+ * @since 1.3.0
  */
 @Schema(description = "工具源码返回参数")
 data class ToolSourceVo(
@@ -17,7 +17,7 @@ data class ToolSourceVo(
      * ID
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @field:JsonSerialize(using = ToStringSerializer::class)
     val id: Long?,
@@ -26,7 +26,7 @@ data class ToolSourceVo(
      * Root node ID
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @field:Schema(description = "根节点 ID")
     @field:JsonSerialize(using = ToStringSerializer::class)
@@ -36,7 +36,7 @@ data class ToolSourceVo(
      * Parent node ID
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @field:Schema(description = "父节点 ID")
     @field:JsonSerialize(using = ToStringSerializer::class)
@@ -46,7 +46,7 @@ data class ToolSourceVo(
      * Filename
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @field:Schema(description = "文件名")
     val fileName: String?,
@@ -55,7 +55,7 @@ data class ToolSourceVo(
      * Is root node
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @field:Schema(description = "是否为根节点")
     val rootNode: Boolean?,
@@ -64,7 +64,7 @@ data class ToolSourceVo(
      * Is directory node
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @field:Schema(description = "是否为目录节点")
     val dirNode: Boolean?,
@@ -73,7 +73,7 @@ data class ToolSourceVo(
      * Create time
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see LocalDateTime
      */
     @field:Schema(description = "创建时间", example = "1900-01-01T00:00:00.000Z")
@@ -83,7 +83,7 @@ data class ToolSourceVo(
      * Update time
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see LocalDateTime
      */
     @field:Schema(description = "修改时间", example = "1900-01-01T00:00:00.000Z")
@@ -93,7 +93,7 @@ data class ToolSourceVo(
      * Lastest file version value object
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see ToolFileVersionVo
      */
     @field:Schema(description = "最新文件版本")

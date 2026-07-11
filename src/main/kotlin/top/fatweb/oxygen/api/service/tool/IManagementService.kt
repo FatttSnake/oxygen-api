@@ -46,7 +46,7 @@ interface IManagementService : IService<Tool> {
      * @param id Tool ID
      * @param dist Dist
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     fun pass(id: Long, dist: String)
 

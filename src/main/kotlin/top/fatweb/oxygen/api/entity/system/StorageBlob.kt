@@ -8,7 +8,7 @@ import java.time.LocalDateTime
  * Storage blob entity
  *
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.2.0
+ * @since 1.3.0
  */
 @TableName("t_s_storage_blob")
 class StorageBlob : Serializable {
@@ -16,7 +16,7 @@ class StorageBlob : Serializable {
      * Original file SHA-256 key
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @TableId("file_hash")
     var fileHash: String? = null
@@ -25,7 +25,7 @@ class StorageBlob : Serializable {
      * Blob reference count
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @TableField("reference_count")
     var referenceCount: Long? = null
@@ -34,7 +34,7 @@ class StorageBlob : Serializable {
      * Create time
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see LocalDateTime
      */
     @TableField("create_time", fill = FieldFill.INSERT)
@@ -44,7 +44,7 @@ class StorageBlob : Serializable {
      * Update time
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see LocalDateTime
      */
     @TableField("update_time", fill = FieldFill.INSERT_UPDATE)
@@ -54,7 +54,7 @@ class StorageBlob : Serializable {
      * Version
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @TableField("version")
     @Version

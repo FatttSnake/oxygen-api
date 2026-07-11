@@ -13,7 +13,7 @@ import java.util.UUID
  * Used for cross-origin CSRF protection on token refresh endpoint.
  *
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.2.0
+ * @since 1.3.0
  * @see RedisProvider
  * @see ServerProperties
  */
@@ -30,7 +30,7 @@ class CsrfTokenManager(
      * @param userId User ID to associate the token with
      * @return Generated CSRF token
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     fun generateToken(userId: Long): String {
         val token = secureRandom.nextLong().let { UUID(it, it).toString().replace("-", "") }
@@ -51,7 +51,7 @@ class CsrfTokenManager(
      * @param token Token to validate
      * @return true if valid, false otherwise
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     fun validateToken(userId: Long, token: String): Boolean {
         val key = redisKey(userId)
@@ -64,7 +64,7 @@ class CsrfTokenManager(
      *
      * @param userId User ID to remove token for
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     fun removeToken(userId: Long) {
         redisProvider.delObject(redisKey(userId))

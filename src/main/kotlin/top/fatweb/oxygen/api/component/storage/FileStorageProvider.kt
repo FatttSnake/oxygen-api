@@ -4,7 +4,7 @@ package top.fatweb.oxygen.api.component.storage
  * File storage provider interface
  *
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.2.0
+ * @since 1.3.0
  */
 interface FileStorageProvider {
     /**
@@ -13,7 +13,7 @@ interface FileStorageProvider {
      * @param content File
      * @return File SHA-256 key
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see ByteArray
      */
     fun save(content: ByteArray): String
@@ -24,7 +24,7 @@ interface FileStorageProvider {
      * @param content String
      * @return File SHA-256 key
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     fun save(content: String): String
 
@@ -34,7 +34,7 @@ interface FileStorageProvider {
      * @param key File SHA-256 key
      * @return File
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see ByteArray
      */
     fun load(key: String): ByteArray?
@@ -45,7 +45,7 @@ interface FileStorageProvider {
      * @param key File SHA-256 key
      * @return true=exist; false=not exist
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     fun exists(key: String): Boolean
 
@@ -55,7 +55,7 @@ interface FileStorageProvider {
      * @param key File SHA-256 key
      * @return true=success; false=fail
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     fun delete(key: String): Boolean
 
@@ -65,7 +65,7 @@ interface FileStorageProvider {
      * @param key File SHA-256 key
      * @return File size in bytes
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     fun size(key: String): Long?
 }

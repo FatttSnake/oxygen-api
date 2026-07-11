@@ -7,7 +7,7 @@ import top.fatweb.oxygen.api.entity.tool.ToolDist
  * Tool dist service interface
  *
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.2.0
+ * @since 1.3.0
  * @see IService
  * @see ToolDist
  */
@@ -18,7 +18,7 @@ interface IToolDistService : IService<ToolDist> {
      * @param dist Dist
      * @return Dist record ID
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     fun generateNewDist(dist: String): Long
 
@@ -28,7 +28,7 @@ interface IToolDistService : IService<ToolDist> {
      * @param id Dist record ID
      * @param dist content
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     fun updateContent(id: Long, dist: String)
 }

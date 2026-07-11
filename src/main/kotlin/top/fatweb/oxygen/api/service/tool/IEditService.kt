@@ -91,7 +91,7 @@ interface IEditService : IService<Tool> {
      * @param platform Platform
      * @return ToolWithSourceVo object
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see Platform
      * @see Tool
      */
@@ -170,7 +170,7 @@ interface IEditService : IService<Tool> {
      * @param toolCommonUpdateSourceAddParam Update source - add file/directory parameters
      * @return New node ID
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see ToolCommonUpdateSourceAddParam
      */
     fun updateSourceAdd(id: Long, toolCommonUpdateSourceAddParam: ToolCommonUpdateSourceAddParam): String
@@ -182,7 +182,7 @@ interface IEditService : IService<Tool> {
      * @param nodeId Source node ID
      * @param fileName New file name
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     fun updateSourceRename(id: Long, nodeId: Long, fileName: String)
 
@@ -193,7 +193,7 @@ interface IEditService : IService<Tool> {
      * @param nodeId Source node ID
      * @param newParentId New parent node ID
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     fun updateSourceMove(id: Long, nodeId: Long, newParentId: Long)
 
@@ -204,7 +204,7 @@ interface IEditService : IService<Tool> {
      * @param nodeId Source node ID
      * @param content New content
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     fun updateSourceContent(id: Long, nodeId: Long, content: String)
 
@@ -214,7 +214,7 @@ interface IEditService : IService<Tool> {
      * @param id Tool ID
      * @param nodeId Source node ID
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     fun updateSourceRemove(id: Long, nodeId: Long)
 

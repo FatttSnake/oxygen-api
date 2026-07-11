@@ -9,7 +9,7 @@ import java.time.LocalDateTime
  * Tool dist value object
  *
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.2.0
+ * @since 1.3.0
  */
 @Schema(description = "工具产物返回参数")
 data class ToolDistVo(
@@ -17,7 +17,7 @@ data class ToolDistVo(
      * ID
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @field:JsonSerialize(using = ToStringSerializer::class)
     val id: Long?,
@@ -26,7 +26,7 @@ data class ToolDistVo(
      * File content
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @field:Schema(description = "文件内容")
     val fileContent: String?,
@@ -35,7 +35,7 @@ data class ToolDistVo(
      * File size
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @field:Schema(description = "文件大小")
     @field:JsonSerialize(using = ToStringSerializer::class)
@@ -45,7 +45,7 @@ data class ToolDistVo(
      * Create time
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see LocalDateTime
      */
     @field:Schema(description = "创建时间", example = "1900-01-01T00:00:00.000Z")
@@ -55,7 +55,7 @@ data class ToolDistVo(
      * Update time
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see LocalDateTime
      */
     @field:Schema(description = "修改时间", example = "1900-01-01T00:00:00.000Z")

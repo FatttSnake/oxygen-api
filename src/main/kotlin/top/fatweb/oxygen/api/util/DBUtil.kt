@@ -42,7 +42,7 @@ fun <T : Page<*>> setPageSort(pageSortParam: PageSortParam?, page: T, defaultOrd
  * @param exception Exception to throw
  * @param func Database exists query operation function
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.2.0
+ * @since 1.3.0
  * @see RuntimeException
  */
 fun existsOrThrowException(exception: RuntimeException = NoRecordFoundException(), func: () -> Boolean) {

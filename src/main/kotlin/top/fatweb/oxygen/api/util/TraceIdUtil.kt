@@ -7,7 +7,7 @@ import java.util.UUID
  * Trace ID utility
  *
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.2.0
+ * @since 1.3.0
  */
 object TraceIdUtil {
     const val TRACE_ID_HEADER = "X-Trace-Id"
@@ -18,7 +18,7 @@ object TraceIdUtil {
      *
      * @return 32-character hex string
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     fun generate(): String = UUID.randomUUID().toString().replace("-", "")
 
@@ -27,7 +27,7 @@ object TraceIdUtil {
      *
      * @param traceId Trace ID
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     fun set(traceId: String) = MDC.put(MDC_KEY, traceId)
 
@@ -36,7 +36,7 @@ object TraceIdUtil {
      *
      * @return Trace ID or null
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     fun get(): String? = MDC.get(MDC_KEY)
 
@@ -44,7 +44,7 @@ object TraceIdUtil {
      * Clear MDC context
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     fun clear() = MDC.clear()
 }

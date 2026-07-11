@@ -184,7 +184,7 @@ object ByteUtil {
  *
  * @return A new [ByteArray] containing the SHA-256 hash (32 bytes)
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.2.0
+ * @since 1.3.0
  * @see ByteArray
  */
 fun ByteArray.sha256(): ByteArray =
@@ -195,7 +195,7 @@ fun ByteArray.sha256(): ByteArray =
  *
  * @return A [String] representing the SHA-256 hash in lowercase hexadecimal format (64 characters)
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.2.0
+ * @since 1.3.0
  * @see ByteArray
  */
 fun ByteArray.sha256HexString(): String =
@@ -211,7 +211,7 @@ fun ByteArray.sha256HexString(): String =
  * @param streamFactory A function that wraps an [OutputStream] with compression logic
  * @return A new [ByteArray] containing the compressed data
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.2.0
+ * @since 1.3.0
  * @see ByteArray
  * @see OutputStream
  */
@@ -234,7 +234,7 @@ fun ByteArray.compress(streamFactory: (OutputStream) -> OutputStream): ByteArray
  * @param streamFactory A function that wraps an [InputStream] with decompression logic
  * @return A new [ByteArray] containing the decompressed data
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.2.0
+ * @since 1.3.0
  * @see ByteArray
  * @see InputStream
  */
@@ -266,7 +266,7 @@ fun ByteArray.decompress(streamFactory: (InputStream) -> InputStream): ByteArray
  *        If `null`, the raw bytes are written without compression
  * @return The [Path] to the saved file
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.2.0
+ * @since 1.3.0
  * @see ByteArray
  * @see OutputStream
  * @see Path
@@ -313,7 +313,7 @@ fun ByteArray.saveToFile(
  *        If `null`, the raw bytes are written without compression
  * @return A [Result] containing the [Path] of the saved file, or a failure if an error occurred
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.2.0
+ * @since 1.3.0
  * @see saveToFile
  * @see ByteArray
  * @see OutputStream
@@ -338,7 +338,7 @@ fun ByteArray.saveToFileSafe(
  *        If `null`, the raw bytes are returned without decompression.
  * @return A [ByteArray] containing the (possibly decompressed) file contents
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.2.0
+ * @since 1.3.0
  * @see Path
  * @see InputStream
  * @see ByteArray
@@ -361,7 +361,7 @@ fun Path.readFile(
  * @param decompressStreamFactory Optional factory for decompressing the data after reading
  * @return A [Result] containing the file contents as a [ByteArray], or a failure if an error occurred
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.2.0
+ * @since 1.3.0
  * @see readFile
  * @see Path
  * @see InputStream

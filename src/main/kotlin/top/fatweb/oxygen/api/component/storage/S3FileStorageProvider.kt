@@ -21,7 +21,7 @@ import java.net.URI
  * S3 file storage provider
  *
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.2.0
+ * @since 1.3.0
  * @see ServerProperties
  * @see FileStorageProvider
  */

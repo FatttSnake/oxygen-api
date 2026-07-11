@@ -38,7 +38,7 @@ data class TokenVo(
      * CSRF Token
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @field:Schema(
         description = "CSRF Token",

@@ -16,7 +16,7 @@ import top.fatweb.oxygen.api.util.updateOrThrowException
  * Tool dist service implement
  *
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.2.0
+ * @since 1.3.0
  * @see ServiceImpl
  * @see ToolDistMapper
  * @see ToolDist

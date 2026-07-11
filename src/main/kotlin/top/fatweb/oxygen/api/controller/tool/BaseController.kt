@@ -127,7 +127,7 @@ class BaseController(
      * @param toolCommonUpdateSourceAddParam Update source - add file/directory parameters
      * @return Response object includes new node ID
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see ToolCommonUpdateSourceAddParam
      * @see ResponseResult
      */
@@ -154,7 +154,7 @@ class BaseController(
      * @param fileName New file name
      * @return Response object
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see ResponseResult
      */
     @Operation(summary = "更新基板源码-重命名文件(目录)")
@@ -178,7 +178,7 @@ class BaseController(
      * @param newParentId New parent node ID
      * @return Response object
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see ResponseResult
      */
     @Operation(summary = "更新基板源码-移动文件(目录)")
@@ -202,7 +202,7 @@ class BaseController(
      * @param content New content
      * @return Response object
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see ResponseResult
      */
     @Operation(summary = "更新基板源码-更新文件")
@@ -225,7 +225,7 @@ class BaseController(
      * @param nodeId Source node ID
      * @return Response object
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see ResponseResult
      */
     @Operation(summary = "更新基板源码-删除文件(目录)")

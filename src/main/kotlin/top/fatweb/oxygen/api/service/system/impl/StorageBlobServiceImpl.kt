@@ -13,7 +13,7 @@ import top.fatweb.oxygen.api.service.system.IStorageBlobService
  * Storage blob service implement
  *
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.2.0
+ * @since 1.3.0
  * @see ServiceImpl
  * @see StorageBlobMapper
  * @see StorageBlob

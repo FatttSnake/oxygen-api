@@ -84,7 +84,7 @@ class ToolBase : Serializable {
      * Source file list
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see ToolSource
      */
     @TableField(exist = false)
@@ -94,7 +94,7 @@ class ToolBase : Serializable {
      * Dist file
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see ToolDist
      */
     @TableField(exist = false)

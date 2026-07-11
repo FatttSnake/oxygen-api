@@ -7,7 +7,7 @@ import top.fatweb.oxygen.api.entity.tool.ToolSource
  * Tool source service interface
  *
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.2.0
+ * @since 1.3.0
  * @see IService
  * @see ToolSource
  */
@@ -17,7 +17,7 @@ interface IToolSourceService : IService<ToolSource> {
      *
      * @return Root node ID
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     fun generateEmptySource(): Long
 
@@ -30,7 +30,7 @@ interface IToolSourceService : IService<ToolSource> {
      * @param dirNode Is directory node
      * @return New node ID
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     fun addNode(rootId: Long, parentId: Long, fileName: String, dirNode: Boolean): Long
 
@@ -41,7 +41,7 @@ interface IToolSourceService : IService<ToolSource> {
      * @param nodeId Node ID
      * @param fileName New file name
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     fun renameNode(rootId: Long, nodeId: Long, fileName: String)
 
@@ -52,7 +52,7 @@ interface IToolSourceService : IService<ToolSource> {
      * @param nodeId Node ID
      * @param newParentId New parent node ID
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     fun moveNode(rootId: Long, nodeId: Long, newParentId: Long)
 
@@ -63,7 +63,7 @@ interface IToolSourceService : IService<ToolSource> {
      * @param nodeId Node ID
      * @param content New content
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     fun updateNode(rootId: Long, nodeId: Long, content: ByteArray)
 
@@ -73,7 +73,7 @@ interface IToolSourceService : IService<ToolSource> {
      * @param rootId Root node ID
      * @param nodeId Node ID
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     fun removeNode(rootId: Long, nodeId: Long)
 
@@ -84,7 +84,7 @@ interface IToolSourceService : IService<ToolSource> {
      * @param nodeId Node ID
      * @return List of descendant node(s)
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     fun getDescendantNodeIds(rootId: Long, nodeId: Long): List<Long>
 }

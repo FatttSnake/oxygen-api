@@ -104,7 +104,7 @@ interface IToolBaseService : IService<ToolBase> {
      * @param toolCommonUpdateSourceAddParam Update source - add file/directory parameters
      * @return New node ID
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see ToolCommonUpdateSourceAddParam
      */
     fun updateSourceAdd(id: Long, toolCommonUpdateSourceAddParam: ToolCommonUpdateSourceAddParam): String
@@ -116,7 +116,7 @@ interface IToolBaseService : IService<ToolBase> {
      * @param nodeId Source node ID
      * @param fileName New file name
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     fun updateSourceRename(id: Long, nodeId: Long, fileName: String)
 
@@ -127,7 +127,7 @@ interface IToolBaseService : IService<ToolBase> {
      * @param nodeId Source node ID
      * @param newParentId New parent node ID
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     fun updateSourceMove(id: Long, nodeId: Long, newParentId: Long)
 
@@ -138,7 +138,7 @@ interface IToolBaseService : IService<ToolBase> {
      * @param nodeId Source node ID
      * @param content New content
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     fun updateSourceContent(id: Long, nodeId: Long, content: String)
 
@@ -148,7 +148,7 @@ interface IToolBaseService : IService<ToolBase> {
      * @param id Tool base ID
      * @param nodeId Source node ID
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     fun updateSourceRemove(id: Long, nodeId: Long)
 

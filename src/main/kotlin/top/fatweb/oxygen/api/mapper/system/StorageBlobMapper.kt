@@ -9,7 +9,7 @@ import top.fatweb.oxygen.api.entity.system.StorageBlob
  * Storage blob mapper
  *
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.2.0
+ * @since 1.3.0
  * @see BaseMapper
  * @see StorageBlob
  */
@@ -20,7 +20,7 @@ interface StorageBlobMapper : BaseMapper<StorageBlob> {
      *
      * @param fileHash File SHA-256 key
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     fun increaseReferenceCount(@Param("fileHash") fileHash: String)
 }

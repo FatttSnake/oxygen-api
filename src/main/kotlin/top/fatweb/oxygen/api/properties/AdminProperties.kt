@@ -7,7 +7,7 @@ import org.springframework.validation.annotation.Validated
  * Admin properties
  *
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.2.0
+ * @since 1.3.0
  */
 @Validated
 data class AdminProperties(
@@ -15,7 +15,7 @@ data class AdminProperties(
      * Username
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @field:NotBlank val username: String = "admin",
 
@@ -23,7 +23,7 @@ data class AdminProperties(
      * Password
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     val password: String? = null,
 
@@ -31,7 +31,7 @@ data class AdminProperties(
      * Nickname
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @field:NotBlank val nickname: String = "Administrator",
 
@@ -39,7 +39,7 @@ data class AdminProperties(
      * Email
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @field:NotBlank val email: String = "admin@mail.com"
 )

@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit
  * Security properties
  *
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.2.0
+ * @since 1.3.0
  */
 @Validated
 data class SecurityProperties(
@@ -16,7 +16,7 @@ data class SecurityProperties(
      * Key to get authentication from header
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @field:NotBlank val headerKey: String = "Authorization",
 
@@ -24,7 +24,7 @@ data class SecurityProperties(
      * Prefix of token
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @field:NotBlank val tokenPrefix: String = "Bearer ",
 
@@ -32,7 +32,7 @@ data class SecurityProperties(
      * Secret to generate token
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @field:NotBlank val tokenSecret: String = "Oxygen",
 
@@ -40,7 +40,7 @@ data class SecurityProperties(
      * Issuer of token
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @field:NotBlank val tokenIssuer: String = "Oxygen",
 
@@ -48,7 +48,7 @@ data class SecurityProperties(
      * Life of access token
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     val accessTokenTtl: Long = 2L,
 
@@ -56,7 +56,7 @@ data class SecurityProperties(
      * Life util of access token
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see TimeUnit
      */
     val accessTokenTtlUnit: TimeUnit = TimeUnit.HOURS,
@@ -65,7 +65,7 @@ data class SecurityProperties(
      * Life of refresh token
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     val refreshTokenTtl: Long = 128L,
 
@@ -73,7 +73,7 @@ data class SecurityProperties(
      * Life util of refresh token
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see TimeUnit
      */
     val refreshTokenTtlUnit: TimeUnit = TimeUnit.DAYS

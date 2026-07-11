@@ -52,7 +52,7 @@ class SysLog : Serializable {
      * Trace ID
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @TableField("trace_id")
     var traceId: String? = null

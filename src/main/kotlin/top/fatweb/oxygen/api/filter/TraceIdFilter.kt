@@ -15,7 +15,7 @@ import top.fatweb.oxygen.api.util.TraceIdUtil
  * Propagates the Trace ID back via the response header.
  *
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.2.0
+ * @since 1.3.0
  * @see OncePerRequestFilter
  */
 @Component

@@ -36,7 +36,7 @@ data class SysLogVo(
      * Trace ID
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @field:Schema(description = "Trace ID")
     val traceId: String?,

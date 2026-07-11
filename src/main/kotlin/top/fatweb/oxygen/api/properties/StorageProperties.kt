@@ -11,7 +11,7 @@ import top.fatweb.oxygen.api.component.storage.FileStorageMode
  * File storage properties
  *
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.2.0
+ * @since 1.3.0
  */
 @Validated
 data class StorageProperties(
@@ -19,7 +19,7 @@ data class StorageProperties(
      * File storage mode
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see FileStorageMode
      */
     val mode: FileStorageMode = FileStorageMode.Local,
@@ -28,7 +28,7 @@ data class StorageProperties(
      * Local storage properties
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see LocalStorageProperties
      */
     @field:Valid val local: LocalStorageProperties = LocalStorageProperties(),
@@ -37,7 +37,7 @@ data class StorageProperties(
      * S3 storage properties
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      * @see S3StorageProperties
      */
     @field:Valid val s3: S3StorageProperties? = null
@@ -46,14 +46,14 @@ data class StorageProperties(
      * Local storage properties
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     data class LocalStorageProperties(
         /**
          * File storage root path
          *
          * @author FatttSnake, fatttsnake@gmail.com
-         * @since 1.2.0
+         * @since 1.3.0
          */
         @field:NotBlank val root: String = "data/objects",
     )
@@ -63,7 +63,7 @@ data class StorageProperties(
          * S3 endpoint
          *
          * @author FatttSnake, fatttsnake@gmail.com
-         * @since 1.2.0
+         * @since 1.3.0
          */
         @field:NotBlank val endpoint: String = "",
 
@@ -71,7 +71,7 @@ data class StorageProperties(
          * S3 access key
          *
          * @author FatttSnake, fatttsnake@gmail.com
-         * @since 1.2.0
+         * @since 1.3.0
          */
         @field:NotBlank val accessKey: String = "",
 
@@ -79,7 +79,7 @@ data class StorageProperties(
          * S3 secret key
          *
          * @author FatttSnake, fatttsnake@gmail.com
-         * @since 1.2.0
+         * @since 1.3.0
          */
         @field:NotBlank val secretKey: String = "",
 
@@ -87,7 +87,7 @@ data class StorageProperties(
          * S3 region
          *
          * @author FatttSnake, fatttsnake@gmail.com
-         * @since 1.2.0
+         * @since 1.3.0
          */
         @field:NotBlank val region: String = "",
 
@@ -95,7 +95,7 @@ data class StorageProperties(
          * S3 bucket
          *
          * @author FatttSnake, fatttsnake@gmail.com
-         * @since 1.2.0
+         * @since 1.3.0
          */
         @field:NotBlank val bucket: String = "",
 
@@ -103,7 +103,7 @@ data class StorageProperties(
          * S3 storage path prefix
          *
          * @author FatttSnake, fatttsnake@gmail.com
-         * @since 1.2.0
+         * @since 1.3.0
          */
         @field:NotNull val prefix: String = "",
     )
@@ -112,7 +112,7 @@ data class StorageProperties(
      * Check s3 properties
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
      */
     @AssertTrue(message = "S3 configuration must be added")
     fun isS3(): Boolean =
