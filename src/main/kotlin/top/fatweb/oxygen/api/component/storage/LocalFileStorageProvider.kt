@@ -61,7 +61,7 @@ class LocalFileStorageProvider(
         this.save(content.toByteArray())
 
     override fun load(key: String): ByteArray? {
-        if (!exists(key)) {
+        if (!this.exists(key)) {
             return null
         }
 
