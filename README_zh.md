@@ -23,8 +23,8 @@
 
 # 环境要求
 
-- Java 17+
-- MySQL
+- Java 25+
+- MySQL 8.0.19+
 - Redis
 
 # 关联项目

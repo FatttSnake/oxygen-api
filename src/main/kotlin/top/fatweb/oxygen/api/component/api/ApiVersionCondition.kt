@@ -7,7 +7,9 @@ import org.springframework.web.servlet.mvc.condition.RequestCondition
  * Api version condition
  *
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.2.0
+ * @since 1.3.0
+ * @see RequestCondition
+ * @see ApiVersionCondition
  */
 class ApiVersionCondition(private val apiVersion: Int) : RequestCondition<ApiVersionCondition> {
     private val versionPrefixRegex = Regex("/api/v(\\d+)/.*")

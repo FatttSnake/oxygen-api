@@ -5,6 +5,7 @@ import jakarta.validation.Valid
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import top.fatweb.oxygen.api.annotation.BaseController
+import top.fatweb.oxygen.api.annotation.ParamProcessor
 import top.fatweb.oxygen.api.annotation.ProcessParam
 import top.fatweb.oxygen.api.entity.common.ResponseCode
 import top.fatweb.oxygen.api.entity.common.ResponseResult
@@ -99,20 +100,121 @@ class TemplateController(
     }
 
     /**
-     * Update tool template source
+     * Update tool template source - add file/directory
      *
-     * @param toolTemplateUpdateSourceParam Update tool template source parameters
-     * @return Response object
+     * @param id Tool template ID
+     * @param toolCommonUpdateSourceAddParam Update source - add file/directory parameters
+     * @return Response object includes new node ID
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.1.0
-     * @see ToolTemplateUpdateSourceParam
+     * @since 1.3.0
+     * @see ToolCommonUpdateSourceAddParam
      * @see ResponseResult
      */
-    @Operation(summary = "更新模板源码")
-    @PatchMapping("/source")
+    @Operation(summary = "更新模板源码-新增文件(目录)")
+    @PatchMapping("/source/{id}/add")
     @PreAuthorize("hasAnyAuthority('system:tool:modify:template')")
-    fun updateSource(@RequestBody @Valid toolTemplateUpdateSourceParam: ToolTemplateUpdateSourceParam): ResponseResult<Unit> {
-        toolTemplateService.updateSource(toolTemplateUpdateSourceParam)
+    fun updateSourceAdd(
+        @PathVariable id: Long,
+        @ProcessParam @RequestBody @Valid toolCommonUpdateSourceAddParam: ToolCommonUpdateSourceAddParam
+    ): ResponseResult<String> =
+        ResponseResult.databaseSuccess(
+            code = ResponseCode.DATABASE_UPDATE_SUCCESS,
+            data = toolTemplateService.updateSourceAdd(
+                id = id,
+                toolCommonUpdateSourceAddParam = toolCommonUpdateSourceAddParam
+            )
+        )
+
+    /**
+     * Update tool template source - rename file/directory
+     *
+     * @param id Tool template ID
+     * @param nodeId Source node ID
+     * @param fileName New file name
+     * @return Response object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.3.0
+     * @see ResponseResult
+     */
+    @Operation(summary = "更新模板源码-重命名文件(目录)")
+    @PatchMapping("/source/{id}/rename/{nodeId}")
+    @PreAuthorize("hasAnyAuthority('system:tool:modify:template')")
+    fun updateSourceRename(
+        @PathVariable id: Long,
+        @PathVariable nodeId: Long,
+        @ProcessParam @ParamProcessor @RequestBody fileName: String
+    ): ResponseResult<Unit> {
+        toolTemplateService.updateSourceRename(id = id, nodeId = nodeId, fileName = fileName)
+
+        return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
+    }
+
+    /**
+     * Update tool template source - move file/directory
+     *
+     * @param id Tool template ID
+     * @param nodeId Source node ID
+     * @param newParentId New parent node ID
+     * @return Response object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.3.0
+     * @see ResponseResult
+     */
+    @Operation(summary = "更新模板源码-移动文件(目录)")
+    @PatchMapping("/source/{id}/move/{nodeId}")
+    @PreAuthorize("hasAnyAuthority('system:tool:modify:template')")
+    fun updateSourceMove(
+        @PathVariable id: Long,
+        @PathVariable nodeId: Long,
+        @RequestBody newParentId: Long
+    ): ResponseResult<Unit> {
+        toolTemplateService.updateSourceMove(id = id, nodeId = nodeId, newParentId = newParentId)
+
+        return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
+    }
+
+    /**
+     * Update tool template source - update content
+     *
+     * @param id Tool template ID
+     * @param nodeId Source node ID
+     * @param content New content
+     * @return Response object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.3.0
+     * @see ResponseResult
+     */
+    @Operation(summary = "更新模板源码-更新文件")
+    @PatchMapping("/source/{id}/content/{nodeId}")
+    @PreAuthorize("hasAnyAuthority('system:tool:modify:template')")
+    fun updateSourceContent(
+        @PathVariable id: Long,
+        @PathVariable nodeId: Long,
+        @RequestBody content: String = ""
+    ): ResponseResult<Unit> {
+        toolTemplateService.updateSourceContent(id = id, nodeId = nodeId, content = content)
+
+        return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
+    }
+
+    /**
+     * Update tool template source - remove file/directory
+     *
+     * @param id Tool template ID
+     * @param nodeId Source node ID
+     * @return Response object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.3.0
+     * @see ResponseResult
+     */
+    @Operation(summary = "更新模板源码-删除文件(目录)")
+    @PatchMapping("/source/{id}/remove/{nodeId}")
+    @PreAuthorize("hasAnyAuthority('system:tool:modify:template')")
+    fun updateSourceRemove(
+        @PathVariable id: Long,
+        @PathVariable nodeId: Long
+    ): ResponseResult<Unit> {
+        toolTemplateService.updateSourceRemove(id = id, nodeId = nodeId)
 
         return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
     }

@@ -12,17 +12,16 @@ import top.fatweb.oxygen.api.converter.tool.toVoWithDist
 import top.fatweb.oxygen.api.converter.tool.toVoWithSource
 import top.fatweb.oxygen.api.entity.tool.RToolBaseData
 import top.fatweb.oxygen.api.entity.tool.ToolBase
-import top.fatweb.oxygen.api.entity.tool.ToolData
+import top.fatweb.oxygen.api.entity.tool.ToolSource.Companion.copy
 import top.fatweb.oxygen.api.exception.ToolBaseHasBeenCompiledException
 import top.fatweb.oxygen.api.mapper.tool.ToolBaseMapper
-import top.fatweb.oxygen.api.param.tool.*
-import top.fatweb.oxygen.api.service.tool.IRToolBaseDataService
-import top.fatweb.oxygen.api.service.tool.IToolBaseService
-import top.fatweb.oxygen.api.service.tool.IToolDataService
-import top.fatweb.oxygen.api.util.queryOrThrowException
-import top.fatweb.oxygen.api.util.saveOrThrowException
-import top.fatweb.oxygen.api.util.setPageSort
-import top.fatweb.oxygen.api.util.updateOrThrowException
+import top.fatweb.oxygen.api.param.tool.ToolBaseAddParam
+import top.fatweb.oxygen.api.param.tool.ToolBaseGetParam
+import top.fatweb.oxygen.api.param.tool.ToolBaseUpdateParam
+import top.fatweb.oxygen.api.param.tool.ToolCommonUpdateSourceAddParam
+import top.fatweb.oxygen.api.service.system.IStorageBlobService
+import top.fatweb.oxygen.api.service.tool.*
+import top.fatweb.oxygen.api.util.*
 import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.tool.ToolBaseVo
 import top.fatweb.oxygen.api.vo.tool.ToolBaseWithDistVo
@@ -36,8 +35,11 @@ import java.time.ZoneOffset
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see IStorageBlobService
  * @see IRToolBaseDataService
- * @see IToolDataService
+ * @see IToolSourceService
+ * @see IToolFileVersionService
+ * @see IToolDistService
  * @see ServiceImpl
  * @see ToolBaseMapper
  * @see ToolBase
@@ -45,37 +47,53 @@ import java.time.ZoneOffset
  */
 @Service
 class ToolBaseServiceImpl(
+    private val storageBlobService: IStorageBlobService,
     private val rToolBaseDataService: IRToolBaseDataService,
-    private val toolDataService: IToolDataService
+    private val toolSourceService: IToolSourceService,
+    private val toolFileVersionService: IToolFileVersionService,
+    private val toolDistService: IToolDistService
 ) : ServiceImpl<ToolBaseMapper, ToolBase>(), IToolBaseService {
     @Transactional
     override fun getOne(id: Long, version: Long): ToolBaseWithSourceVo =
         queryOrThrowException {
             baseMapper.selectOne(id = id, version = version)?.let {
-                if (it.source !== null) {
+                if (it.sources !== null) {
                     return@let it
                 }
                 if (version != 0L) {
                     return@let null
                 }
                 val latestVersion = queryOrThrowException { baseMapper.selectLatestVersionInfo(id) }
-                val newSource = ToolData().apply { data = latestVersion.source!!.data }
-                saveOrThrowException { toolDataService.save(newSource) }
+
+                val (newRootId, newSources, newFileVersions) = latestVersion.sources!!.copy()
+
+                saveOrThrowException { toolFileVersionService.saveBatch(newFileVersions) }
+                saveOrThrowException { toolSourceService.saveBatch(newSources) }
 
                 val rToolBaseSource = RToolBaseData().apply {
                     baseId = id
-                    dataId = newSource.id
+                    dataId = newRootId
                     dataType = RToolBaseData.DataType.SOURCE
                 }
                 saveOrThrowException { rToolBaseDataService.save(rToolBaseSource) }
 
                 baseMapper.selectOne(id = id, version = version)
             }
+        }.apply {
+            sources?.forEach { source ->
+                source.latestFileVersion?.apply {
+                    fileContent = storageBlobService.loadFile(fileHash!!)?.toString(Charsets.UTF_8)
+                }
+            }
         }.let(ToolBase::toVoWithSource)
 
     override fun getDist(id: Long, version: Long): ToolBaseWithDistVo =
         queryOrThrowException {
             baseMapper.selectDist(id = id, version = version)
+        }.apply {
+            dist?.apply {
+                fileContent = storageBlobService.loadFile(fileHash!!)?.toString(Charsets.UTF_8)
+            }
         }.let(ToolBase::toVoWithDist)
 
     override fun getLatestVersion(id: Long): Long =
@@ -111,19 +129,16 @@ class ToolBaseServiceImpl(
 
     @Transactional
     override fun add(toolBaseAddParam: ToolBaseAddParam): ToolBaseVo {
-        val newSource = ToolData().apply { data = "" }
-        saveOrThrowException { toolDataService.save(newSource) }
-
         val toolBase = ToolBase().apply {
             name = toolBaseAddParam.name
             platform = toolBaseAddParam.platform
-            source = newSource
         }
         saveOrThrowException { this.save(toolBase) }
 
+        val newNodeId = toolSourceService.generateEmptySource()
         val rToolBaseSource = RToolBaseData().apply {
             baseId = toolBase.id
-            dataId = newSource.id
+            dataId = newNodeId
             dataType = RToolBaseData.DataType.SOURCE
         }
         saveOrThrowException { rToolBaseDataService.save(rToolBaseSource) }
@@ -139,33 +154,62 @@ class ToolBaseServiceImpl(
     }
 
     @Transactional
-    override fun updateSource(toolBaseUpdateSourceParam: ToolBaseUpdateSourceParam) {
-        queryOrThrowException { this.getById(toolBaseUpdateSourceParam.id) }
-        val rToolBaseSource = queryOrThrowException(ToolBaseHasBeenCompiledException()) {
-            rToolBaseDataService.getOne(
-                KtQueryWrapper(RToolBaseData())
-                    .eq(RToolBaseData::baseId, toolBaseUpdateSourceParam.id)
-                    .eq(RToolBaseData::dataType, RToolBaseData.DataType.SOURCE)
-                    .eq(RToolBaseData::baseVersion, 0L)
-            )
-        }
-
-        updateOrThrowException {
-            toolDataService.update(
-                KtUpdateWrapper(ToolData())
-                    .eq(ToolData::id, rToolBaseSource.dataId)
-                    .set(ToolData::data, toolBaseUpdateSourceParam.source)
-            )
-        }
+    override fun updateSourceAdd(id: Long, toolCommonUpdateSourceAddParam: ToolCommonUpdateSourceAddParam): String {
+        val rToolBaseSource = checkAndGetRToolBaseSource(id)
+        return toolSourceService.addNode(
+            rootId = rToolBaseSource.dataId!!,
+            parentId = toolCommonUpdateSourceAddParam.parentNode!!,
+            fileName = toolCommonUpdateSourceAddParam.fileName!!,
+            dirNode = toolCommonUpdateSourceAddParam.dirNode!!
+        ).toString()
     }
 
     @Transactional
-    override fun updateDist(toolBaseUpdateDistParam: ToolBaseUpdateDistParam): Long {
-        queryOrThrowException { this.getById(toolBaseUpdateDistParam.id) }
+    override fun updateSourceRename(id: Long, nodeId: Long, fileName: String) {
+        val rToolBaseSource = checkAndGetRToolBaseSource(id)
+        toolSourceService.renameNode(
+            rootId = rToolBaseSource.dataId!!,
+            nodeId = nodeId,
+            fileName = fileName,
+        )
+    }
+
+    @Transactional
+    override fun updateSourceMove(id: Long, nodeId: Long, newParentId: Long) {
+        val rToolBaseSource = checkAndGetRToolBaseSource(id)
+        toolSourceService.moveNode(
+            rootId = rToolBaseSource.dataId!!,
+            nodeId = nodeId,
+            newParentId = newParentId
+        )
+    }
+
+    @Transactional
+    override fun updateSourceContent(id: Long, nodeId: Long, content: String) {
+        val rToolBaseSource = checkAndGetRToolBaseSource(id)
+        toolSourceService.updateNode(
+            rootId = rToolBaseSource.dataId!!,
+            nodeId = nodeId,
+            content = content.toByteArray()
+        )
+    }
+
+    @Transactional
+    override fun updateSourceRemove(id: Long, nodeId: Long) {
+        val rToolBaseSource = checkAndGetRToolBaseSource(id)
+        toolSourceService.removeNode(
+            rootId = rToolBaseSource.dataId!!,
+            nodeId = nodeId
+        )
+    }
+
+    @Transactional
+    override fun updateDist(id: Long, dist: String): Long {
+        queryOrThrowException { this.getById(id) }
         val rToolBaseSource = queryOrThrowException(ToolBaseHasBeenCompiledException()) {
             rToolBaseDataService.getOne(
                 KtQueryWrapper(RToolBaseData())
-                    .eq(RToolBaseData::baseId, toolBaseUpdateDistParam.id)
+                    .eq(RToolBaseData::baseId, id)
                     .eq(RToolBaseData::dataType, RToolBaseData.DataType.SOURCE)
                     .eq(RToolBaseData::baseVersion, 0L)
             )
@@ -178,12 +222,11 @@ class ToolBaseServiceImpl(
                 })
         }
 
-        val newDist = ToolData().apply { data = toolBaseUpdateDistParam.dist }
-        updateOrThrowException { toolDataService.save(newDist) }
+        val newDistId = toolDistService.generateNewDist(dist)
         updateOrThrowException {
             rToolBaseDataService.save(RToolBaseData().apply {
-                baseId = toolBaseUpdateDistParam.id
-                dataId = newDist.id
+                baseId = id
+                dataId = newDistId
                 dataType = RToolBaseData.DataType.DIST
                 baseVersion = compiledBaseVersion
             })
@@ -192,7 +235,7 @@ class ToolBaseServiceImpl(
         updateOrThrowException {
             this.update(
                 KtUpdateWrapper(ToolBase())
-                    .eq(ToolBase::id, toolBaseUpdateDistParam.id)
+                    .eq(ToolBase::id, id)
                     .set(ToolBase::updateTime, LocalDateTime.now(ZoneOffset.UTC))
             )
         }
@@ -202,13 +245,31 @@ class ToolBaseServiceImpl(
 
     @Transactional
     override fun delete(id: Long): Boolean {
-        val rToolBaseDataList = rToolBaseDataService.list(
+        rToolBaseDataService.remove(
             KtQueryWrapper(RToolBaseData())
                 .eq(RToolBaseData::baseId, id)
         )
-        toolDataService.removeBatchByIds(rToolBaseDataList.map { it.dataId })
-        rToolBaseDataService.removeBatchByIds(rToolBaseDataList.map { it.id })
+
+        // TODO: keep source & dist, add manual cleanup method later
 
         return this.removeById(id)
+    }
+
+    private fun checkAndGetRToolBaseSource(toolBaseId: Long): RToolBaseData {
+        existsOrThrowException {
+            this.exists(
+                KtQueryWrapper(ToolBase())
+                    .eq(ToolBase::id, toolBaseId)
+            )
+        }
+
+        return queryOrThrowException(ToolBaseHasBeenCompiledException()) {
+            rToolBaseDataService.getOne(
+                KtQueryWrapper(RToolBaseData())
+                    .eq(RToolBaseData::baseId, toolBaseId)
+                    .eq(RToolBaseData::dataType, RToolBaseData.DataType.SOURCE)
+                    .eq(RToolBaseData::baseVersion, 0L)
+            )
+        }
     }
 }

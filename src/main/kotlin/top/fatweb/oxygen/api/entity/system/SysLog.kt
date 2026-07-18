@@ -49,6 +49,15 @@ class SysLog : Serializable {
     var logType: LogType? = null
 
     /**
+     * Trace ID
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.3.0
+     */
+    @TableField("trace_id")
+    var traceId: String? = null
+
+    /**
      * Operate user ID
      *
      * @author FatttSnake, fatttsnake@gmail.com
@@ -181,6 +190,6 @@ class SysLog : Serializable {
     var operateUsername: String? = null
 
     override fun toString(): String {
-        return "SysLog(id=$id, logType=$logType, operateUserId=$operateUserId, operateTime=$operateTime, requestUri=$requestUri, requestMethod=$requestMethod, requestParams=$requestParams, requestIp=$requestIp, requestServerAddress=$requestServerAddress, exception=$exception, exceptionInfo=$exceptionInfo, startTime=$startTime, endTime=$endTime, executeTime=$executeTime, userAgent=$userAgent, operateUsername=$operateUsername)"
+        return "SysLog(id=$id, logType=$logType, traceId=$traceId, operateUserId=$operateUserId, operateTime=$operateTime, requestUri=$requestUri, requestMethod=$requestMethod, requestParams=$requestParams, requestIp=$requestIp, requestServerAddress=$requestServerAddress, exception=$exception, exceptionInfo=$exceptionInfo, startTime=$startTime, endTime=$endTime, executeTime=$executeTime, userAgent=$userAgent, operateUsername=$operateUsername)"
     }
 }

@@ -33,14 +33,14 @@ data class ToolBaseWithSourceVo(
     val name: String?,
 
     /**
-     * Source
+     * Source file list
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.1.0
-     * @see ToolDataVo
+     * @since 1.3.0
+     * @see ToolSourceVo
      */
     @field:Schema(description = "源码")
-    val source: ToolDataVo?,
+    val sources: List<ToolSourceVo>?,
 
     /**
      * Platform

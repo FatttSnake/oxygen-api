@@ -4,6 +4,7 @@
     <select id="selectPage" resultMap="sysLogMap">
         select t_l_sys_log.id as sys_log_id,
         t_l_sys_log.log_type as sys_log_log_type,
+        t_l_sys_log.trace_id as sys_log_trace_id,
         t_l_sys_log.operate_user_id as sys_log_operate_user_id,
         t_l_sys_log.operate_time as sys_log_operate_time,
         t_l_sys_log.request_uri as sys_log_request_uri,
@@ -23,6 +24,9 @@
                      close=")" nullable="true">
                 #{item}
             </foreach>
+            <if test="traceId != null and traceId != ''">
+                and t_l_sys_log.trace_id like #{traceId}
+            </if>
             <foreach collection="requestMethod" item="item" index="index" open="and t_l_sys_log.request_method in ("
                      separator="," close=")" nullable="true">
                 #{item}
@@ -41,6 +45,7 @@
     <resultMap id="sysLogMap" type="top.fatweb.oxygen.api.entity.system.SysLog">
         <id property="id" column="sys_log_id"/>
         <result property="logType" column="sys_log_log_type"/>
+        <result property="traceId" column="sys_log_trace_id"/>
         <result property="operateUserId" column="sys_log_operate_user_id"/>
         <result property="operateTime" column="sys_log_operate_time"/>
         <result property="requestUri" column="sys_log_request_uri"/>

@@ -29,9 +29,11 @@ class EditController(
     /**
      * Get tool template list
      *
+     * @param platform Platform
      * @return Response object includes tool template list
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see Platform
      * @see ResponseResult
      * @see ToolTemplateVo
      */
@@ -77,6 +79,8 @@ class EditController(
      * @return Response object includes tool base with dist
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.1.0
+     * @see ResponseResult
+     * @see ToolBaseWithDistVo
      */
     @Operation(summary = "获取基板产物")
     @GetMapping("/base/{id}/{version}")
@@ -103,6 +107,7 @@ class EditController(
      * @param username Username
      * @param toolId Tool ID
      * @param ver Version
+     * @param platform Platform
      * @return Response object includes tool source
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.1.0
@@ -129,6 +134,7 @@ class EditController(
      * @param username Username
      * @param toolId Tool ID
      * @param ver Version
+     * @param platform Platform
      * @return Response object includes tool dist
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.1.0
@@ -192,7 +198,7 @@ class EditController(
      * Update tool
      *
      * @param toolUpdateParam Update tool parameters
-     * @return Response object includes tool information
+     * @return Response object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see ToolUpdateParam
@@ -207,19 +213,116 @@ class EditController(
     }
 
     /**
-     * Update tool source
+     * Update tool source - add file/directory
      *
-     * @param toolUpdateSourceParam Update tool source parameters
-     * @return Response object includes tool information
+     * @param id Tool ID
+     * @param toolCommonUpdateSourceAddParam Update source - add file/directory parameters
+     * @return Response object includes new node ID
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.1.0
-     * @see ToolUpdateSourceParam
+     * @since 1.3.0
+     * @see ToolCommonUpdateSourceAddParam
      * @see ResponseResult
      */
-    @Operation(summary = "更新工具源码")
-    @PatchMapping("/source")
-    fun updateSource(@ProcessParam @RequestBody @Valid toolUpdateSourceParam: ToolUpdateSourceParam): ResponseResult<Unit> {
-        editService.updateSource(toolUpdateSourceParam)
+    @Operation(summary = "更新工具源码-新增文件(目录)")
+    @PatchMapping("/source/{id}/add")
+    fun updateSourceAdd(
+        @PathVariable id: Long,
+        @ProcessParam @RequestBody @Valid toolCommonUpdateSourceAddParam: ToolCommonUpdateSourceAddParam
+    ): ResponseResult<String> =
+        ResponseResult.databaseSuccess(
+            code = ResponseCode.DATABASE_UPDATE_SUCCESS,
+            data = editService.updateSourceAdd(
+                id = id,
+                toolCommonUpdateSourceAddParam = toolCommonUpdateSourceAddParam
+            )
+        )
+
+    /**
+     * Update tool source - rename file/directory
+     *
+     * @param id Tool ID
+     * @param nodeId Source node ID
+     * @param fileName New file name
+     * @return Response object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.3.0
+     * @see ResponseResult
+     */
+    @Operation(summary = "更新工具源码-重命名文件(目录)")
+    @PatchMapping("/source/{id}/rename/{nodeId}")
+    fun updateSourceRename(
+        @PathVariable id: Long,
+        @PathVariable nodeId: Long,
+        @ProcessParam @ParamProcessor @RequestBody fileName: String
+    ): ResponseResult<Unit> {
+        editService.updateSourceRename(id = id, nodeId = nodeId, fileName = fileName)
+
+        return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
+    }
+
+    /**
+     * Update tool source - move file/directory
+     *
+     * @param id Tool ID
+     * @param nodeId Source node ID
+     * @param newParentId New parent node ID
+     * @return Response object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.3.0
+     * @see ResponseResult
+     */
+    @Operation(summary = "更新工具源码-移动文件(目录)")
+    @PatchMapping("/source/{id}/move/{nodeId}")
+    fun updateSourceMove(
+        @PathVariable id: Long,
+        @PathVariable nodeId: Long,
+        @RequestBody newParentId: Long
+    ): ResponseResult<Unit> {
+        editService.updateSourceMove(id = id, nodeId = nodeId, newParentId = newParentId)
+
+        return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
+    }
+
+    /**
+     * Update tool source - update content
+     *
+     * @param id Tool ID
+     * @param nodeId Source node ID
+     * @param content New content
+     * @return Response object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.3.0
+     * @see ResponseResult
+     */
+    @Operation(summary = "更新工具源码-更新文件")
+    @PatchMapping("/source/{id}/content/{nodeId}")
+    fun updateSourceContent(
+        @PathVariable id: Long,
+        @PathVariable nodeId: Long,
+        @RequestBody content: String = ""
+    ): ResponseResult<Unit> {
+        editService.updateSourceContent(id = id, nodeId = nodeId, content = content)
+
+        return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
+    }
+
+    /**
+     * Update tool source - remove file/directory
+     *
+     * @param id Tool ID
+     * @param nodeId Source node ID
+     * @return Response object
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.3.0
+     * @see ResponseResult
+     */
+    @Operation(summary = "更新工具源码-删除文件(目录)")
+    @PatchMapping("/source/{id}/remove/{nodeId}")
+    fun updateSourceRemove(
+        @PathVariable id: Long,
+        @PathVariable nodeId: Long
+    ): ResponseResult<Unit> {
+        editService.updateSourceRemove(id = id, nodeId = nodeId)
 
         return ResponseResult.databaseSuccess(ResponseCode.DATABASE_UPDATE_SUCCESS)
     }

@@ -9,10 +9,10 @@ import java.lang.reflect.Method
  * Api response mapping handler mapping
  *
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.2.0
+ * @since 1.3.0
+ * @see RequestMappingHandlerMapping
  */
 class ApiResponseMappingHandlerMapping : RequestMappingHandlerMapping() {
-
     private fun createCondition(clazz: Class<*>): RequestCondition<ApiVersionCondition>? =
         clazz.getAnnotation(ApiController::class.java)?.version?.let { ApiVersionCondition(it) }
 

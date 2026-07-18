@@ -239,22 +239,24 @@ class Tool : Serializable {
     var categories: List<ToolCategory>? = null
 
     /**
-     * Source
+     * Source file list
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.3.0
+     * @see ToolSource
      */
     @TableField(exist = false)
-    var source: ToolData? = null
+    var sources: List<ToolSource>? = null
 
     /**
      * Dist
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see ToolDist
      */
     @TableField(exist = false)
-    var dist: ToolData? = null
+    var dist: ToolDist? = null
 
     /**
      * Favorite
@@ -266,6 +268,6 @@ class Tool : Serializable {
     var favorite: Int? = null
 
     override fun toString(): String {
-        return "Tool(id=$id, name=$name, toolId=$toolId, icon=$icon, platform=$platform, description=$description, baseId=$baseId, baseVersion=$baseVersion, authorId=$authorId, ver=$ver, keywords=$keywords, sourceId=$sourceId, distId=$distId, entryPoint=$entryPoint, publish=$publish, review=$review, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version, base=$base, author=$author, categories=$categories, source=$source, dist=$dist, favorite=$favorite)"
+        return "Tool(id=$id, name=$name, toolId=$toolId, icon=$icon, platform=$platform, description=$description, baseId=$baseId, baseVersion=$baseVersion, authorId=$authorId, ver=$ver, keywords=$keywords, sourceId=$sourceId, distId=$distId, entryPoint=$entryPoint, publish=$publish, review=$review, createTime=$createTime, updateTime=$updateTime, deleted=$deleted, version=$version, base=$base, author=$author, categories=$categories, sources=$sources, dist=$dist, favorite=$favorite)"
     }
 }

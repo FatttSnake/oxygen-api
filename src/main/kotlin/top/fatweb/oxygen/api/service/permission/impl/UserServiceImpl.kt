@@ -209,7 +209,7 @@ class UserServiceImpl(
             KtQueryWrapper(RUserRole())
                 .select(RUserRole::roleId)
                 .eq(RUserRole::userId, userUpdateParam.id)
-        ).map { it.roleId }
+        ).map(RUserRole::roleId)
         val addRoleIds = HashSet<Long>()
         val removeRoleIds = HashSet<Long>()
         userUpdateParam.roleIds?.forEach(addRoleIds::add)
@@ -223,7 +223,7 @@ class UserServiceImpl(
             KtQueryWrapper(RUserGroup())
                 .select(RUserGroup::groupId)
                 .eq(RUserGroup::userId, userUpdateParam.id)
-        ).map { it.groupId }
+        ).map(RUserGroup::groupId)
         val addGroupIds = HashSet<Long>()
         val removeGroupIds = HashSet<Long>()
         userUpdateParam.groupIds?.forEach(addGroupIds::add)

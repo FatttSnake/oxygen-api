@@ -36,11 +36,11 @@ data class ToolBaseWithDistVo(
      * Dist
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.1.0
-     * @see ToolDataVo
+     * @since 1.3.0
+     * @see ToolDistVo
      */
     @field:Schema(description = "产物")
-    val dist: ToolDataVo?,
+    val dist: ToolDistVo?,
 
     /**
      * Platform

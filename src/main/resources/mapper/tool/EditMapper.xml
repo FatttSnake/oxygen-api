@@ -9,10 +9,11 @@
                t_b_tool_main.platform     as tool_platform,
                t_b_tool_main.description  as tool_description,
                t_b_tool_main.base_id      as tool_base_id,
+               t_b_tool_main.base_version as tool_base_base_version,
                t_b_tool_main.author_id    as tool_author_id,
                t_b_tool_main.ver          as tool_ver,
                t_b_tool_main.keywords     as tool_keywords,
-               t_b_tool_main.source_id    as tool_source_id,
+               t_b_tool_main.source_id    as tool_source_root_id,
                t_b_tool_main.dist_id      as tool_dist_id,
                t_b_tool_main.entry_point  as tool_entry_point,
                t_b_tool_main.publish      as tool_publish,
@@ -23,18 +24,29 @@
                t_b_tool_main.version      as tool_version,
                tbtb.id                    as tool_base_id,
                tbtb.name                  as tool_base_name,
-               t_b_tool_main.base_version as tool_base_base_version,
                tsu.id                     as user_id,
                tsu.username               as user_username,
                tsui.id                    as user_info_id,
                tsui.nickname              as user_info_nickname,
                tsui.avatar                as user_info_avatar,
                tsui.email                 as user_info_email,
-               tbts.data                  as tool_source_data,
+               tbts.root_id               as tool_source_root_id,
+               tbts.id                    as tool_source_id,
+               tbts.parent_id             as tool_source_parent_id,
+               tbts.file_name             as tool_source_file_name,
+               tbts.root_node             as tool_source_root_node,
+               tbts.dir_node              as tool_source_dir_node,
                tbts.create_time           as tool_source_create_time,
                tbts.update_time           as tool_source_update_time,
-               tbts.deleted               as tool_source_deleted,
                tbts.version               as tool_source_version,
+               tbtfv.id                   as tool_file_version_id,
+               tbtfv.node_id              as tool_file_version_node_id,
+               tbtfv.ver                  as tool_file_version_ver,
+               tbtfv.file_hash            as tool_file_version_file_hash,
+               tbtfv.file_size            as tool_file_version_file_size,
+               tbtfv.create_time          as tool_file_version_create_time,
+               tbtfv.update_time          as tool_file_version_update_time,
+               tbtfv.version              as tool_file_version_version,
                tbtc.id                    as tool_category_id,
                tbtc.name                  as tool_category_name,
                tbtc.enable                as tool_category_enable,
@@ -46,7 +58,11 @@
                  left join t_b_tool_base as tbtb on tbtb.deleted = 0 and tbtb.id = t_b_tool_main.base_id
                  left join t_s_user as tsu on tsu.deleted = 0 and tsu.id = t_b_tool_main.author_id
                  left join t_s_user_info as tsui on tsui.deleted = 0 and tsui.user_id = t_b_tool_main.author_id
-                 left join t_b_tool_data as tbts on tbts.deleted = 0 and tbts.id = t_b_tool_main.source_id
+                 left join t_b_tool_source as tbts on tbts.root_id = t_b_tool_main.source_id
+                 left join t_b_tool_file_version as tbtfv on tbtfv.node_id = tbts.id and
+                                                             tbtfv.ver = (select max(temp.ver)
+                                                                          from t_b_tool_file_version temp
+                                                                          where temp.node_id = tbts.id)
                  left join t_r_tool_main_category as trtmc on trtmc.deleted = 0 and t_b_tool_main.id = trtmc.tool_id
                  left join t_b_tool_category as tbtc
                            on tbtc.deleted = 0 and tbtc.enable = 1 and tbtc.id = trtmc.category_id
@@ -56,14 +72,63 @@
     </select>
 
     <select id="selectSource" resultMap="top.fatweb.oxygen.api.mapper.tool.ManagementMapper.toolWithSourceMap">
-        select * from (
-        select t_b_tool_main.id as tool_id,
+        select t.tool_id as tool_id,
+        t.tool_name as tool_name,
+        t.tool_tool_id as tool_tool_id,
+        t.tool_icon as tool_icon,
+        t.tool_platform as tool_platform,
+        t.tool_description as tool_description,
+        t.tool_base_id as tool_base_id,
+        t.tool_base_base_version as tool_base_base_version,
+        t.tool_author_id as tool_author_id,
+        t.tool_ver as tool_ver,
+        t.tool_keywords as tool_keywords,
+        t.tool_source_id as tool_source_root_id,
+        t.tool_dist_id as tool_dist_id,
+        t.tool_entry_point as tool_entry_point,
+        t.tool_publish as tool_publish,
+        t.tool_review as tool_review,
+        t.tool_create_time as tool_create_time,
+        t.tool_update_time as tool_update_time,
+        t.tool_deleted as tool_deleted,
+        t.tool_version as tool_version,
+        t.user_id as user_id,
+        t.user_username as user_username,
+        tsui.id as user_info_id,
+        tsui.nickname as user_info_nickname,
+        tsui.avatar as user_info_avatar,
+        tbtb.name as tool_base_name,
+        tbts.id as tool_source_id,
+        tbts.parent_id as tool_source_parent_id,
+        tbts.file_name as tool_source_file_name,
+        tbts.root_node as tool_source_root_node,
+        tbts.dir_node as tool_source_dir_node,
+        tbts.create_time as tool_source_create_time,
+        tbts.update_time as tool_source_update_time,
+        tbts.version as tool_source_version,
+        tbtfv.id as tool_file_version_id,
+        tbtfv.node_id as tool_file_version_node_id,
+        tbtfv.ver as tool_file_version_ver,
+        tbtfv.file_hash as tool_file_version_file_hash,
+        tbtfv.file_size as tool_file_version_file_size,
+        tbtfv.create_time as tool_file_version_create_time,
+        tbtfv.update_time as tool_file_version_update_time,
+        tbtfv.version as tool_file_version_version,
+        tbtc.id as tool_category_id,
+        tbtc.name as tool_category_name,
+        tbtc.enable as tool_category_enable,
+        tbtc.create_time as tool_category_create_time,
+        tbtc.update_time as tool_category_update_time,
+        tbtc.deleted as tool_category_deleted,
+        tbtc.version as tool_category_version
+        from (select t_b_tool_main.id as tool_id,
         t_b_tool_main.name as tool_name,
         t_b_tool_main.tool_id as tool_tool_id,
         t_b_tool_main.icon as tool_icon,
         t_b_tool_main.platform as tool_platform,
         t_b_tool_main.description as tool_description,
         t_b_tool_main.base_id as tool_base_id,
+        t_b_tool_main.base_version as tool_base_base_version,
         t_b_tool_main.author_id as tool_author_id,
         t_b_tool_main.ver as tool_ver,
         t_b_tool_main.keywords as tool_keywords,
@@ -76,33 +141,11 @@
         t_b_tool_main.update_time as tool_update_time,
         t_b_tool_main.deleted as tool_deleted,
         t_b_tool_main.version as tool_version,
-        tbtb.name as tool_base_name,
-        t_b_tool_main.base_version as tool_base_base_version,
         tsu.id as user_id,
         tsu.username as user_username,
-        tsui.id as user_info_id,
-        tsui.nickname as user_info_nickname,
-        tsui.avatar as user_info_avatar,
-        tbts.data as tool_source_data,
-        tbts.create_time as tool_source_create_time,
-        tbts.update_time as tool_source_update_time,
-        tbts.deleted as tool_source_deleted,
-        tbts.version as tool_source_version,
-        tbtc.id as tool_category_id,
-        tbtc.name as tool_category_name,
-        tbtc.enable as tool_category_enable,
-        tbtc.create_time as tool_category_create_time,
-        tbtc.update_time as tool_category_update_time,
-        tbtc.deleted as tool_category_deleted,
-        tbtc.version as tool_category_version,
-        dense_rank() over (order by t_b_tool_main.id desc) as rn
+        row_number() over (order by t_b_tool_main.id desc) as rn
         from t_b_tool_main
-        left join t_b_tool_base as tbtb on tbtb.deleted = 0 and tbtb.id = t_b_tool_main.base_id
         left join t_s_user as tsu on tsu.deleted = 0 and tsu.id = t_b_tool_main.author_id
-        left join t_s_user_info as tsui on tsui.deleted = 0 and tsui.user_id = t_b_tool_main.author_id
-        left join t_b_tool_data as tbts on tbts.deleted = 0 and tbts.id = t_b_tool_main.source_id
-        left join t_r_tool_main_category as trtmc on trtmc.deleted = 0 and t_b_tool_main.id = trtmc.tool_id
-        left join t_b_tool_category as tbtc on tbtc.deleted = 0 and tbtc.enable = 1 and tbtc.id = trtmc.category_id
         <where>
             and t_b_tool_main.deleted = 0
             and t_b_tool_main.tool_id = #{toolId}
@@ -131,41 +174,49 @@
             </choose>
         </where>
         ) t
-        where rn = 1
+        left join t_b_tool_base as tbtb on tbtb.deleted = 0 and tbtb.id = t.tool_base_id
+        left join t_s_user_info as tsui on tsui.deleted = 0 and tsui.user_id = t.tool_author_id
+        left join t_b_tool_source as tbts on tbts.root_id = t.tool_source_id
+        left join t_b_tool_file_version as tbtfv on tbtfv.node_id = tbts.id and
+        tbtfv.ver = (select max(temp.ver)
+        from t_b_tool_file_version temp
+        where temp.node_id = tbts.id)
+        left join t_r_tool_main_category as trtmc on trtmc.deleted = 0 and t.tool_id = trtmc.tool_id
+        left join t_b_tool_category as tbtc on tbtc.deleted = 0 and tbtc.enable = 1 and tbtc.id = trtmc.category_id
+        where t.rn = 1
     </select>
 
     <select id="selectDist" resultMap="top.fatweb.oxygen.api.mapper.tool.ManagementMapper.toolWithDistMap">
-        select * from (
-        select t_b_tool_main.id as tool_id,
-        t_b_tool_main.name as tool_name,
-        t_b_tool_main.tool_id as tool_tool_id,
-        t_b_tool_main.icon as tool_icon,
-        t_b_tool_main.platform as tool_platform,
-        t_b_tool_main.description as tool_description,
-        t_b_tool_main.base_id as tool_base_id,
-        t_b_tool_main.author_id as tool_author_id,
-        t_b_tool_main.ver as tool_ver,
-        t_b_tool_main.keywords as tool_keywords,
-        t_b_tool_main.source_id as tool_source_id,
-        t_b_tool_main.dist_id as tool_dist_id,
-        t_b_tool_main.entry_point as tool_entry_point,
-        t_b_tool_main.publish as tool_publish,
-        t_b_tool_main.review as tool_review,
-        t_b_tool_main.create_time as tool_create_time,
-        t_b_tool_main.update_time as tool_update_time,
-        t_b_tool_main.deleted as tool_deleted,
-        t_b_tool_main.version as tool_version,
-        tbtb.name as tool_base_name,
-        t_b_tool_main.base_version as tool_base_base_version,
-        tsu.id as user_id,
-        tsu.username as user_username,
+        select t.tool_id as tool_id,
+        t.tool_name as tool_name,
+        t.tool_tool_id as tool_tool_id,
+        t.tool_icon as tool_icon,
+        t.tool_platform as tool_platform,
+        t.tool_description as tool_description,
+        t.tool_base_id as tool_base_id,
+        t.tool_base_base_version as tool_base_base_version,
+        t.tool_author_id as tool_author_id,
+        t.tool_ver as tool_ver,
+        t.tool_keywords as tool_keywords,
+        t.tool_source_id as tool_source_id,
+        t.tool_dist_id as tool_dist_id,
+        t.tool_entry_point as tool_entry_point,
+        t.tool_publish as tool_publish,
+        t.tool_review as tool_review,
+        t.tool_create_time as tool_create_time,
+        t.tool_update_time as tool_update_time,
+        t.tool_deleted as tool_deleted,
+        t.tool_version as tool_version,
+        t.user_id as user_id,
+        t.user_username as user_username,
         tsui.id as user_info_id,
         tsui.nickname as user_info_nickname,
         tsui.avatar as user_info_avatar,
-        tbtd.data as tool_dist_data,
+        tbtb.name as tool_base_name,
+        tbtd.file_hash as tool_dist_file_hash,
+        tbtd.file_size as tool_dist_file_size,
         tbtd.create_time as tool_dist_create_time,
         tbtd.update_time as tool_dist_update_time,
-        tbtd.deleted as tool_dist_deleted,
         tbtd.version as tool_dist_version,
         tbtc.id as tool_category_id,
         tbtc.name as tool_category_name,
@@ -173,15 +224,32 @@
         tbtc.create_time as tool_category_create_time,
         tbtc.update_time as tool_category_update_time,
         tbtc.deleted as tool_category_deleted,
-        tbtc.version as tool_category_version,
-        dense_rank() over (order by t_b_tool_main.id desc) as rn
+        tbtc.version as tool_category_version
+        from (select t_b_tool_main.id as tool_id,
+        t_b_tool_main.name as tool_name,
+        t_b_tool_main.tool_id as tool_tool_id,
+        t_b_tool_main.icon as tool_icon,
+        t_b_tool_main.platform as tool_platform,
+        t_b_tool_main.description as tool_description,
+        t_b_tool_main.base_id as tool_base_id,
+        t_b_tool_main.base_version as tool_base_base_version,
+        t_b_tool_main.author_id as tool_author_id,
+        t_b_tool_main.ver as tool_ver,
+        t_b_tool_main.keywords as tool_keywords,
+        t_b_tool_main.source_id as tool_source_id,
+        t_b_tool_main.dist_id as tool_dist_id,
+        t_b_tool_main.entry_point as tool_entry_point,
+        t_b_tool_main.publish as tool_publish,
+        t_b_tool_main.review as tool_review,
+        t_b_tool_main.create_time as tool_create_time,
+        t_b_tool_main.update_time as tool_update_time,
+        t_b_tool_main.deleted as tool_deleted,
+        t_b_tool_main.version as tool_version,
+        tsu.id as user_id,
+        tsu.username as user_username,
+        row_number() over (order by t_b_tool_main.id desc) as rn
         from t_b_tool_main
-        left join t_b_tool_base as tbtb on tbtb.deleted = 0 and tbtb.id = t_b_tool_main.base_id
         left join t_s_user as tsu on tsu.deleted = 0 and tsu.id = t_b_tool_main.author_id
-        left join t_s_user_info as tsui on tsui.deleted = 0 and tsui.user_id = t_b_tool_main.author_id
-        left join t_b_tool_data as tbtd on tbtd.deleted = 0 and tbtd.id = t_b_tool_main.dist_id
-        left join t_r_tool_main_category as trtmc on trtmc.deleted = 0 and t_b_tool_main.id = trtmc.tool_id
-        left join t_b_tool_category as tbtc on tbtc.deleted = 0 and tbtc.enable = 1 and tbtc.id = trtmc.category_id
         <where>
             and t_b_tool_main.deleted = 0
             and t_b_tool_main.tool_id = #{toolId}
@@ -210,7 +278,12 @@
             </choose>
         </where>
         ) t
-        where rn = 1
+        left join t_b_tool_base as tbtb on tbtb.deleted = 0 and tbtb.id = t.tool_base_id
+        left join t_s_user_info as tsui on tsui.deleted = 0 and tsui.user_id = t.tool_author_id
+        left join t_b_tool_dist as tbtd on tbtd.id = t.tool_dist_id
+        left join t_r_tool_main_category as trtmc on trtmc.deleted = 0 and t.tool_id = trtmc.tool_id
+        left join t_b_tool_category as tbtc on tbtc.deleted = 0 and tbtc.enable = 1 and tbtc.id = trtmc.category_id
+        where t.rn = 1
     </select>
 
     <select id="selectPersonalToolIdPage" resultType="string">
@@ -233,6 +306,7 @@
         t_b_tool_main.platform as tool_platform,
         t_b_tool_main.description as tool_description,
         t_b_tool_main.base_id as tool_base_id,
+        t_b_tool_main.base_version as tool_base_base_version,
         t_b_tool_main.author_id as tool_author_id,
         t_b_tool_main.ver as tool_ver,
         t_b_tool_main.keywords as tool_keywords,
@@ -247,7 +321,6 @@
         t_b_tool_main.version as tool_version,
         tbtb.id as tool_base_id,
         tbtb.name as tool_base_name,
-        t_b_tool_main.base_version as tool_base_base_version,
         tbtc.id as tool_category_id,
         tbtc.name as tool_category_name,
         tbtc.enable as tool_category_enable,

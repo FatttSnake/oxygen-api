@@ -61,7 +61,7 @@ interface ISettingsService {
      * @param mailSendParam Send mail parameters
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
-     * @see MailSettingsParam
+     * @see MailSendParam
      */
     fun sendMail(mailSendParam: MailSendParam)
 

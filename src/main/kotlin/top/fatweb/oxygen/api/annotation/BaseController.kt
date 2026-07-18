@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see Tag
  * @see RequestMapping
  * @see RestController
  */

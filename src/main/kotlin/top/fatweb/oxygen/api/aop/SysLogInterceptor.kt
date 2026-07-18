@@ -12,14 +12,16 @@ import org.springframework.http.server.ServerHttpResponse
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.servlet.HandlerInterceptor
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice
+import top.fatweb.oxygen.api.component.security.JwtProvider
 import top.fatweb.oxygen.api.entity.common.ResponseCode
 import top.fatweb.oxygen.api.entity.common.ResponseResult
 import top.fatweb.oxygen.api.entity.system.SysLog
 import top.fatweb.oxygen.api.service.system.ISysLogService
+import top.fatweb.oxygen.api.util.TraceIdUtil
 import top.fatweb.oxygen.api.util.getLoginUserId
 import top.fatweb.oxygen.api.util.getRequestIp
 import top.fatweb.oxygen.api.vo.permission.LoginVo
-import java.lang.Exception
+import top.fatweb.oxygen.api.vo.permission.TokenVo
 import java.net.URI
 import java.time.LocalDateTime
 import java.time.ZoneOffset
@@ -32,6 +34,7 @@ import java.util.concurrent.Executor
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see Hidden
  * @see Executor
  * @see ISysLogService
  * @see HandlerInterceptor
@@ -41,6 +44,7 @@ import java.util.concurrent.Executor
 @ControllerAdvice
 class SysLogInterceptor(
     @param:Qualifier("applicationTaskExecutor") private val customThreadPoolTaskExecutor: Executor,
+    private val jwtProvider: JwtProvider,
     private val sysLogService: ISysLogService
 ) : HandlerInterceptor, ResponseBodyAdvice<Any> {
     private val sysLogThreadLocal = ThreadLocal<SysLog>()
@@ -48,6 +52,7 @@ class SysLogInterceptor(
 
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
         val sysLog = SysLog().apply {
+            traceId = TraceIdUtil.get()
             operateUserId = getLoginUserId() ?: -1
             startTime = LocalDateTime.now(ZoneOffset.UTC)
             requestUri = URI(request.requestURI).path
@@ -90,6 +95,13 @@ class SysLogInterceptor(
                 }
                 if (result.data is LoginVo) {
                     sysLog.operateUserId = result.data.userId ?: -1
+                }
+                if (result.data is TokenVo) {
+                    try {
+                        val jwt = jwtProvider.parseJwt(result.data.refreshToken)
+                        sysLog.operateUserId = jwt.subject.toLong()
+                    } catch (_: Exception) {
+                    }
                 }
             } else {
                 sysLog.apply {

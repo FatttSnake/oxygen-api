@@ -14,16 +14,24 @@ interface IAvatarService {
     /**
      * Generate random avatar
      *
+     * @see avatarBaseParam Avatar base parameters
+     * @return Avatar byte array
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see AvatarBaseParam
+     * @see ByteArray
      */
     fun random(avatarBaseParam: AvatarBaseParam?): ByteArray
 
     /**
      * Generate random avatar as base64
      *
+     * @param avatarBaseParam Avatar base parameters
+     * @return AvatarBase64Vo object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see AvatarBaseParam
+     * @see AvatarBase64Vo
      */
     fun randomBase64(avatarBaseParam: AvatarBaseParam?): AvatarBase64Vo
 
@@ -106,7 +114,7 @@ interface IAvatarService {
      * @return Avatar byte array
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
-     * @see AvatarBaseParam
+     * @see AvatarGitHubParam
      * @see ByteArray
      */
     fun github(avatarGitHubParam: AvatarGitHubParam?): ByteArray
@@ -118,7 +126,7 @@ interface IAvatarService {
      * @return AvatarBase64Vo object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
-     * @see AvatarBaseParam
+     * @see AvatarGitHubParam
      * @see AvatarBase64Vo
      */
     fun githubBase64(avatarGitHubParam: AvatarGitHubParam?): AvatarBase64Vo

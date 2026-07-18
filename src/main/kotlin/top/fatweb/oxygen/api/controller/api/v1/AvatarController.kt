@@ -50,7 +50,7 @@ class AvatarController(
      * @see AvatarBase64Vo
      */
     @Operation(summary = "获取随机头像 Base64")
-    @GetMapping("base64")
+    @GetMapping("/base64")
     fun getRandomBase64(
         @Valid avatarBaseParam: AvatarBaseParam?
     ): ResponseResult<AvatarBase64Vo> =

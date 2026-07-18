@@ -23,8 +23,8 @@ This project is the backend API of Oxygen Toolbox. Provides tool store, tool man
 
 # Requires
 
-- Java 17+
-- MySQL
+- Java 25+
+- MySQL 8.0.19+
 - Redis
 
 # Related projects

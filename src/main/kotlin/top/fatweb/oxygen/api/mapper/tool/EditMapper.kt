@@ -35,6 +35,7 @@ interface EditMapper : BaseMapper<Tool> {
      * @param username Username
      * @param toolId Tool ID
      * @param ver Tool version
+     * @param platform Platform
      * @param operator Operator username
      * @return List of tool object
      * @author FatttSnake, fatttsnake@gmail.com
@@ -56,6 +57,7 @@ interface EditMapper : BaseMapper<Tool> {
      * @param username Username
      * @param toolId Tool ID
      * @param ver Tool version
+     * @param platform Platform
      * @param operator Operator username
      * @return List of tool object
      * @author FatttSnake, fatttsnake@gmail.com

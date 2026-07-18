@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="top.fatweb.oxygen.api.mapper.tool.ToolTemplateMapper">
-    <select id="selectOne" resultMap="toolTemplateWithDataMap">
+    <select id="selectOne" resultMap="toolTemplateWithSourceMap">
         select t_b_tool_template.id           as tool_template_id,
                t_b_tool_template.name         as tool_template_name,
                t_b_tool_template.base_id      as tool_template_base_id,
@@ -17,16 +17,31 @@
                tbtb.id                        as tool_base_id,
                tbtb.name                      as tool_base_name,
                t_b_tool_template.base_version as tool_base_base_version,
-               tbtds.data                     as tool_template_source_data,
-               tbtds.create_time              as tool_template_source_create_time,
-               tbtds.update_time              as tool_template_source_update_time,
-               tbtds.deleted                  as tool_template_source_delete,
-               tbtds.version                  as tool_template_source_version
+               tbts.id                        as tool_source_id,
+               tbts.root_id                   as tool_source_root_id,
+               tbts.parent_id                 as tool_source_parent_id,
+               tbts.file_name                 as tool_source_file_name,
+               tbts.root_node                 as tool_source_root_node,
+               tbts.dir_node                  as tool_source_dir_node,
+               tbts.create_time               as tool_source_create_time,
+               tbts.update_time               as tool_source_update_time,
+               tbts.version                   as tool_source_version,
+               tbtfv.id                       as tool_file_version_id,
+               tbtfv.node_id                  as tool_file_version_node_id,
+               tbtfv.ver                      as tool_file_version_ver,
+               tbtfv.file_hash                as tool_file_version_file_hash,
+               tbtfv.file_size                as tool_file_version_file_size,
+               tbtfv.create_time              as tool_file_version_create_time,
+               tbtfv.update_time              as tool_file_version_update_time,
+               tbtfv.version                  as tool_file_version_version
         from t_b_tool_template
                  left join t_b_tool_base as tbtb
                            on tbtb.deleted = 0 and tbtb.id = t_b_tool_template.base_id
-                 left join t_b_tool_data as tbtds
-                           on tbtds.deleted = 0 and tbtds.id = t_b_tool_template.source_id
+                 left join t_b_tool_source as tbts on tbts.root_id = t_b_tool_template.source_id
+                 left join t_b_tool_file_version as tbtfv on tbtfv.node_id = tbts.id and
+                                                             tbtfv.ver = (select max(temp.ver)
+                                                                          from t_b_tool_file_version temp
+                                                                          where temp.node_id = tbts.id)
         where t_b_tool_template.deleted = 0
           and t_b_tool_template.id = #{id}
     </select>
@@ -74,19 +89,15 @@
         <result property="version" column="tool_template_version"/>
     </resultMap>
 
-    <resultMap id="toolTemplateWithBaseMap" type="top.fatweb.oxygen.api.entity.tool.ToolTemplate" extends="toolTemplateMap">
+    <resultMap id="toolTemplateWithBaseMap" type="top.fatweb.oxygen.api.entity.tool.ToolTemplate"
+               extends="toolTemplateMap">
         <association property="base"
                      resultMap="top.fatweb.oxygen.api.mapper.tool.ToolBaseMapper.toolBaseWithVersionMap"/>
     </resultMap>
 
-    <resultMap id="toolTemplateWithDataMap" type="top.fatweb.oxygen.api.entity.tool.ToolTemplate" extends="toolTemplateWithBaseMap">
-        <association property="source">
-            <id property="id" column="tool_template_source_id"/>
-            <result property="data" column="tool_template_source_data"/>
-            <result property="createTime" column="tool_template_source_create_time"/>
-            <result property="updateTime" column="tool_template_source_update_time"/>
-            <result property="deleted" column="tool_template_source_deleted"/>
-            <result property="version" column="tool_template_source_version"/>
-        </association>
+    <resultMap id="toolTemplateWithSourceMap" type="top.fatweb.oxygen.api.entity.tool.ToolTemplate"
+               extends="toolTemplateWithBaseMap">
+        <association property="sources"
+                     resultMap="top.fatweb.oxygen.api.mapper.tool.ToolSourceMapper.toolSourceWithLatestFileVersionMap"/>
     </resultMap>
 </mapper>

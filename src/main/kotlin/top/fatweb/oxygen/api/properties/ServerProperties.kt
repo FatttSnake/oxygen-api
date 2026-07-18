@@ -1,5 +1,6 @@
 package top.fatweb.oxygen.api.properties
 
+import jakarta.validation.Valid
 import jakarta.validation.constraints.NotBlank
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.validation.annotation.Validated
@@ -7,7 +8,6 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
-import java.util.concurrent.TimeUnit
 
 /**
  * Server properties
@@ -57,133 +57,35 @@ data class ServerProperties(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @field:NotBlank val turnstileSecretKey: String,
+    @field:NotBlank val turnstileSecretKey: String = "",
 
     /**
      * Admin properties
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
-     * @see Admin
+     * @since 1.3.0
+     * @see AdminProperties
      */
-    val admin: Admin = Admin(),
+    @field:Valid val admin: AdminProperties = AdminProperties(),
 
     /**
      * Security properties
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
-     * @see Security
+     * @since 1.3.0
+     * @see SecurityProperties
      */
-    val security: Security = Security()
-) {
+    @field:Valid val security: SecurityProperties = SecurityProperties(),
+
     /**
-     * Admin properties
+     * Storage properties
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.2.0
+     * @since 1.3.0
+     * @see StorageProperties
      */
-    data class Admin(
-        /**
-         * Username
-         *
-         * @author FatttSnake, fatttsnake@gmail.com
-         * @since 1.2.0
-         */
-        @field:NotBlank val username: String = "admin",
-
-        /**
-         * Password
-         *
-         * @author FatttSnake, fatttsnake@gmail.com
-         * @since 1.2.0
-         */
-        val password: String? = null,
-
-        /**
-         * Nickname
-         *
-         * @author FatttSnake, fatttsnake@gmail.com
-         * @since 1.2.0
-         */
-        @field:NotBlank val nickname: String = "Administrator",
-
-        /**
-         * Email
-         *
-         * @author FatttSnake, fatttsnake@gmail.com
-         * @since 1.2.0
-         */
-        @field:NotBlank val email: String = "admin@mail.com"
-    )
-
-    data class Security(
-        /**
-         * Key to get authentication from header
-         *
-         * @author FatttSnake, fatttsnake@gmail.com
-         * @since 1.2.0
-         */
-        @field:NotBlank val headerKey: String = "Authorization",
-
-        /**
-         * Prefix of token
-         *
-         * @author FatttSnake, fatttsnake@gmail.com
-         * @since 1.2.0
-         */
-        @field:NotBlank val tokenPrefix: String = "Bearer ",
-
-        /**
-         * Secret to generate token
-         *
-         * @author FatttSnake, fatttsnake@gmail.com
-         * @since 1.2.0
-         */
-        @field:NotBlank val tokenSecret: String = "Oxygen",
-
-        /**
-         * Issuer of token
-         *
-         * @author FatttSnake, fatttsnake@gmail.com
-         * @since 1.2.0
-         */
-        @field:NotBlank val tokenIssuer: String = "Oxygen",
-
-        /**
-         * Life of access token
-         *
-         * @author FatttSnake, fatttsnake@gmail.com
-         * @since 1.2.0
-         */
-        val accessTokenTtl: Long = 2L,
-
-        /**
-         * Life util of access token
-         *
-         * @author FatttSnake, fatttsnake@gmail.com
-         * @since 1.2.0
-         * @see TimeUnit
-         */
-        val accessTokenTtlUnit: TimeUnit = TimeUnit.HOURS,
-
-        /**
-         * Life of refresh token
-         *
-         * @author FatttSnake, fatttsnake@gmail.com
-         * @since 1.2.0
-         */
-        val refreshTokenTtl: Long = 128L,
-
-        /**
-         * Life util of refresh token
-         *
-         * @author FatttSnake, fatttsnake@gmail.com
-         * @since 1.2.0
-         * @see TimeUnit
-         */
-        val refreshTokenTtlUnit: TimeUnit = TimeUnit.DAYS
-    )
+    @field:Valid val storage: StorageProperties = StorageProperties()
+) {
 
     fun buildZoneDateTime(zoneId: ZoneId = ZoneId.systemDefault()): ZonedDateTime =
         LocalDateTime.parse(buildTime).atZone(ZoneId.of("UTC")).withZoneSameInstant(zoneId)

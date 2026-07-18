@@ -44,5 +44,17 @@ data class RegisterVo(
      */
     @field:Schema(description = "User ID", example = "1709986058679975938")
     @field:JsonSerialize(using = ToStringSerializer::class)
-    val userId: Long?
+    val userId: Long?,
+
+    /**
+     * CSRF Token
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.3.0
+     */
+    @field:Schema(
+        description = "CSRF Token",
+        example = "a1b2c3d4e5f6g7h8"
+    )
+    val csrfToken: String
 )

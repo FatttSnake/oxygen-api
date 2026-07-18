@@ -15,9 +15,22 @@ app:
 #    access-token-ttl-unit: hours # Life util of access token [nanoseconds, microseconds, milliseconds, seconds, minutes, hours, days]
 #    refresh-token-ttl: 128 # Life of refresh token
 #    refresh-token-ttl-unit: days # Life util of refresh token [nanoseconds, microseconds, milliseconds, seconds, minutes, hours, days]
+  storage:
+    mode: local # File storage mode [local, s3]
+#    local:
+#      root: data/objects # File storage root path
+#    s3:
+#      endpoint: http://localhost:9000 # S3 endpoint
+#      accessKey: xxxxxx # S3 access key
+#      secretKey: xxxxxx # S3 secret key
+#      region: auto # S3 region
+#      bucket: xxx # S3 bucket
+#      prefix: # S3 storage path prefix
 
 #server:
 #  port: 8080 # Server port
+#  compression:
+#    enabled: false
 
 spring:
   datasource:
@@ -56,7 +69,7 @@ logging:
   level:
     root: info # Logging level
   file:
-    name: data/log/fat-api.log # Logging path and name
+    name: data/log/oxygen-api.log # Logging path and name
 #  logback:
 #    rollingpolicy:
 #      max-file-size: 10MB # Maximum log file size

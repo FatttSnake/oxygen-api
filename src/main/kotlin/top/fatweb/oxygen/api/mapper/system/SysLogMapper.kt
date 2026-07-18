@@ -22,6 +22,7 @@ interface SysLogMapper : BaseMapper<SysLog> {
      *
      * @param page Pagination
      * @param logType List of log types
+     * @param traceId Trace ID
      * @param requestMethod List of request methods
      * @param searchRequestUrl Request URL to search for
      * @param searchStartTime Start time to search for
@@ -30,12 +31,13 @@ interface SysLogMapper : BaseMapper<SysLog> {
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see IPage
-     * @see SysLog
      * @see LocalDateTime
+     * @see SysLog
      */
     fun selectPage(
         page: IPage<SysLog>,
         @Param("logType") logType: List<String>?,
+        @Param("traceId") traceId: String?,
         @Param("requestMethod") requestMethod: List<String>?,
         @Param("searchRequestUrl") searchRequestUrl: String?,
         @Param("searchStartTime") searchStartTime: LocalDateTime?,

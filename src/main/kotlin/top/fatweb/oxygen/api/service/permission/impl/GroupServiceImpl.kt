@@ -92,7 +92,7 @@ class GroupServiceImpl(
 
         val oldRoleList = rRoleGroupService.list(
             KtQueryWrapper(RRoleGroup()).select(RRoleGroup::roleId).eq(RRoleGroup::groupId, groupUpdateParam.id)
-        ).map { it.roleId }
+        ).map(RRoleGroup::roleId)
         val addRoleIds = HashSet<Long>()
         val removeRoleIds = HashSet<Long>()
         groupUpdateParam.roleIds?.forEach(addRoleIds::add)

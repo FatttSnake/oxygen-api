@@ -2,7 +2,6 @@ package top.fatweb.oxygen.api.service.permission
 
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import top.fatweb.oxygen.api.entity.permission.User
 import top.fatweb.oxygen.api.param.permission.*
 import top.fatweb.oxygen.api.vo.permission.LoginVo
 import top.fatweb.oxygen.api.vo.permission.RegisterVo
@@ -19,8 +18,8 @@ interface IAuthenticationService {
     /**
      * Register
      *
-     * @param request
-     * @param response
+     * @param request Request information
+     * @param response Response information
      * @param registerParam Register parameters
      * @return RegisterVo object
      * @author FatttSnake, fatttsnake@gmail.com
@@ -53,7 +52,7 @@ interface IAuthenticationService {
     /**
      * Forget password
      *
-     * @param request
+     * @param request Request information
      * @param forgetParam Forget parameters
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
@@ -65,7 +64,7 @@ interface IAuthenticationService {
     /**
      * Retrieve password
      *
-     * @param request
+     * @param request Request information
      * @param retrieveParam Retrieve parameters
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
@@ -77,15 +76,15 @@ interface IAuthenticationService {
     /**
      * Login
      *
-     * @param request
-     * @param response
+     * @param request Request information
+     * @param response Response information
      * @param loginParam Login parameters
      * @return LoginVo object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see HttpServletRequest
      * @see HttpServletResponse
-     * @see User
+     * @see LoginParam
      * @see LoginVo
      */
     fun login(request: HttpServletRequest, response: HttpServletResponse, loginParam: LoginParam): LoginVo
@@ -125,8 +124,8 @@ interface IAuthenticationService {
     /**
      * Logout
      *
-     * @param request
-     * @param response
+     * @param request Request information
+     * @param response Response information
      * @return Logout result
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.1.0
@@ -138,9 +137,10 @@ interface IAuthenticationService {
     /**
      * Refresh token
      *
-     * @param request
-     * @param response
-     * @param refreshToken  Refresh token
+     * @param request Request information
+     * @param response Response information
+     * @param refreshToken Refresh token
+     * @param csrfToken CSRF token for cross-origin protection
      * @return TokenVo object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.1.0
@@ -148,5 +148,10 @@ interface IAuthenticationService {
      * @see HttpServletResponse
      * @see TokenVo
      */
-    fun refreshToken(request: HttpServletRequest, response: HttpServletResponse, refreshToken: String?): TokenVo
+    fun refreshToken(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        refreshToken: String?,
+        csrfToken: String? = null
+    ): TokenVo
 }
