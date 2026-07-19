@@ -42,6 +42,7 @@ class S3FileStorageProvider(
                 )
             )
         )
+        .forcePathStyle(serverProperties.storage.s3!!.pathStyle == S3PathStyle.Path)
         .build()
 
     private fun String.splitFileName() =
