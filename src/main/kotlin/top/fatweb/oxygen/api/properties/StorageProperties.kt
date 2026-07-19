@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import org.springframework.validation.annotation.Validated
 import top.fatweb.oxygen.api.component.storage.FileStorageMode
+import top.fatweb.oxygen.api.component.storage.S3PathStyle
 
 /**
  * File storage properties
@@ -92,6 +93,15 @@ data class StorageProperties(
         @field:NotBlank val region: String = "",
 
         /**
+         * S3 path style
+         *
+         * @author FatttSnake, fatttsnake@gmail.com
+         * @since 1.3.0
+         * @see S3PathStyle
+         */
+        @field:NotNull val pathStyle: S3PathStyle = S3PathStyle.Path,
+
+        /**
          * S3 bucket
          *
          * @author FatttSnake, fatttsnake@gmail.com
@@ -105,7 +115,7 @@ data class StorageProperties(
          * @author FatttSnake, fatttsnake@gmail.com
          * @since 1.3.0
          */
-        @field:NotNull val prefix: String = "",
+        @field:NotNull val prefix: String = ""
     )
 
     /**

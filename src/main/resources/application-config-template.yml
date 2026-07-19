@@ -24,6 +24,7 @@ app:
 #      accessKey: xxxxxx # S3 access key
 #      secretKey: xxxxxx # S3 secret key
 #      region: auto # S3 region
+#      pathStyle: path # S3 path style [path, virtualHosted]
 #      bucket: xxx # S3 bucket
 #      prefix: # S3 storage path prefix
 
