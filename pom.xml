@@ -25,7 +25,7 @@
         <bcprov.version>1.81</bcprov.version>
         <maven-surefire-plugin.version>3.5.3</maven-surefire-plugin.version>
         <maven-failsafe-plugin.version>3.5.3</maven-failsafe-plugin.version>
-        <dokka-maven-plugin.version>2.0.0</dokka-maven-plugin.version>
+        <dokka-maven-plugin.version>2.2.0</dokka-maven-plugin.version>
         <checksum-maven-plugin.version>1.4</checksum-maven-plugin.version>
         <mybatis-plus.version>3.5.12</mybatis-plus.version>
         <aws-sdk.version>2.44.4</aws-sdk.version>
