@@ -1,4 +1,4 @@
-FROM eclipse-temurin:25-jre
+FROM bellsoft/liberica-openjre-alpine:25
 LABEL authors="FatttSnake"
 
 VOLUME /data
