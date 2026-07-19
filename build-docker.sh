@@ -8,8 +8,11 @@ BUILD_TIME=$(date "+%Y%m%d%H%M%S")
 
 echo ${BUILD_TIME} > .build_time
 
-mkdir target/extracted
-java -Djarmode=layertools -jar target/${JAR_NAME} extract --destination target/extracted
+EXTRACTED=target/extracted
+mkdir -p ${EXTRACTED}
+
+java -Djarmode=tools -jar target/${JAR_NAME} extract --layers --launcher --destination ${EXTRACTED}
+java tools/StripNative.java "${EXTRACTED}/dependencies/BOOT-INF/lib"
 
 if [[ "${JAR_VERSION}" =~ ^.*SNAPSHOT$ ]]
 then
