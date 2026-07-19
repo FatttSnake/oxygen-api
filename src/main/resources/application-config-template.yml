@@ -28,7 +28,7 @@ app:
 #      prefix: # S3 storage path prefix
 
 #server:
-#  port: 8080 # Server port
+#  port: 8080 # Server port (Will be replaced by environment variables in Docker)
 #  compression:
 #    enabled: false
 
