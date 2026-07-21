@@ -57,7 +57,7 @@ class ToolBaseServiceImpl(
     override fun getOne(id: Long, version: Long): ToolBaseWithSourceVo =
         queryOrThrowException {
             baseMapper.selectOne(id = id, version = version)?.let {
-                if (it.sources !== null) {
+                if (!it.sources.isNullOrEmpty()) {
                     return@let it
                 }
                 if (version != 0L) {
