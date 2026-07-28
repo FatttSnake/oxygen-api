@@ -255,7 +255,7 @@ class AuthenticationController(
      * @param request Request information
      * @param response Response information
      * @param cookieRefreshToken Refresh token in cookie
-     * @param queryRefreshToken Refresh token in query
+     * @param bodyRefreshToken Refresh token in body
      * @param csrfToken CSRF Token
      * @return Response object includes new token
      * @author FatttSnake, fatttsnake@gmail.com
@@ -271,7 +271,7 @@ class AuthenticationController(
         request: HttpServletRequest,
         response: HttpServletResponse,
         @CookieValue("refresh_token") cookieRefreshToken: String?,
-        @RequestParam("refreshToken") queryRefreshToken: String?,
+        @RequestBody bodyRefreshToken: String?,
         @RequestHeader("X-CSRF-TOKEN", required = false) csrfToken: String?
     ): ResponseResult<TokenVo> = ResponseResult.success(
         code = ResponseCode.PERMISSION_TOKEN_REFRESH_SUCCESS,
@@ -279,7 +279,7 @@ class AuthenticationController(
         data = authenticationService.refreshToken(
             request = request,
             response = response,
-            refreshToken = cookieRefreshToken ?: queryRefreshToken,
+            refreshToken = cookieRefreshToken ?: bodyRefreshToken,
             csrfToken = csrfToken
         )
     )
