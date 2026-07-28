@@ -255,7 +255,7 @@ class AuthenticationServiceImpl(
             )
         }
 
-        offlineUser(serverProperties = serverProperties, redisProvider =  redisProvider, user.id!!)
+        offlineUser(serverProperties = serverProperties, redisProvider = redisProvider, user.id!!)
 
         sendPasswordChangedMail(user.username!!, getRequestIp(request), userInfo.email!!)
     }
@@ -367,15 +367,7 @@ class AuthenticationServiceImpl(
         }
         redisProvider.delObject(redisKeys)
 
-        val userIdKey = redisKeys.first().let { key ->
-            Regex("${serverProperties.security.tokenIssuer}_token_(\\d+):.*").find(key)?.groupValues?.getOrNull(1)
-        }
-        userIdKey?.let {
-            try {
-                csrfTokenManager.removeToken(it.toLong())
-            } catch (_: Exception) {
-            }
-        }
+        csrfTokenManager.removeToken(getLoginUserId()!!, refreshToken!!)
 
         val cookie = Cookie("refresh_token", null).apply {
             isHttpOnly = true
@@ -409,7 +401,7 @@ class AuthenticationServiceImpl(
         val loginUser = redisProvider.getObject<LoginUser>(redisKeys.first()) ?: throw TokenHasExpiredException()
         val userId = loginUser.user.id!!
 
-        if (csrfToken.isNullOrBlank() || !csrfTokenManager.validateToken(userId, csrfToken)) {
+        if (csrfToken.isNullOrBlank() || !csrfTokenManager.validateToken(userId, refreshToken, csrfToken)) {
             throw InvalidCsrfTokenException(
                 DefaultCsrfToken("X-CSRF-TOKEN", "_csrf", csrfToken ?: ""),
                 "CSRF token validation failed"
@@ -440,7 +432,8 @@ class AuthenticationServiceImpl(
             secure = true
             domain = request.serverName
             path = "/token"
-            maxAge = serverProperties.security.refreshTokenTtlUnit.toSeconds(serverProperties.security.refreshTokenTtl).toInt()
+            maxAge = serverProperties.security.refreshTokenTtlUnit.toSeconds(serverProperties.security.refreshTokenTtl)
+                .toInt()
             setAttribute("SameSite", "None")
         }
         response.addCookie(cookie)
@@ -450,7 +443,8 @@ class AuthenticationServiceImpl(
         redisKeys = redisProvider.keys(redisKeyPattern)
         redisProvider.delObject(redisKeys)
 
-        val newCsrfToken = csrfTokenManager.generateToken(userId)
+        csrfTokenManager.removeToken(userId, refreshToken)
+        val newCsrfToken = csrfTokenManager.generateToken(userId, newRefreshToken)
 
         return TokenVo(
             refreshToken = newRefreshToken,
@@ -585,12 +579,13 @@ class AuthenticationServiceImpl(
             secure = true
             domain = request.serverName
             path = "/token"
-            maxAge = serverProperties.security.refreshTokenTtlUnit.toSeconds(serverProperties.security.refreshTokenTtl).toInt()
+            maxAge = serverProperties.security.refreshTokenTtlUnit.toSeconds(serverProperties.security.refreshTokenTtl)
+                .toInt()
             setAttribute("SameSite", "None")
         }
         response.addCookie(cookie)
 
-        val csrfToken = csrfTokenManager.generateToken(loginUser.user.id!!)
+        val csrfToken = csrfTokenManager.generateToken(loginUser.user.id!!, refreshToken)
 
         return LoginVo(
             refreshToken = refreshToken,
@@ -604,7 +599,8 @@ class AuthenticationServiceImpl(
 
     private fun verifyCaptcha(captchaCode: String) {
         try {
-            val siteverifyResponse = runBlocking { turnstileApi.siteverify(captchaCode, serverProperties.turnstileSecretKey) }
+            val siteverifyResponse =
+                runBlocking { turnstileApi.siteverify(captchaCode, serverProperties.turnstileSecretKey) }
             if (!siteverifyResponse.success) {
                 throw InvalidCaptchaCodeException()
             }
