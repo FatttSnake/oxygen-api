@@ -105,7 +105,15 @@ class ToolTemplateServiceImpl(
             parentId = toolCommonUpdateSourceAddParam.parentNode!!,
             fileName = toolCommonUpdateSourceAddParam.fileName!!,
             dirNode = toolCommonUpdateSourceAddParam.dirNode!!
-        ).toString()
+        ).toString().apply {
+            updateOrThrowException {
+                this@ToolTemplateServiceImpl.update(
+                    KtUpdateWrapper(ToolTemplate())
+                        .eq(ToolTemplate::id, id)
+                        .set(ToolTemplate::updateTime, LocalDateTime.now(ZoneOffset.UTC))
+                )
+            }
+        }
     }
 
     @Transactional
@@ -118,6 +126,13 @@ class ToolTemplateServiceImpl(
             nodeId = nodeId,
             fileName = fileName
         )
+        updateOrThrowException {
+            this@ToolTemplateServiceImpl.update(
+                KtUpdateWrapper(ToolTemplate())
+                    .eq(ToolTemplate::id, id)
+                    .set(ToolTemplate::updateTime, LocalDateTime.now(ZoneOffset.UTC))
+            )
+        }
     }
 
     @Transactional
@@ -130,6 +145,13 @@ class ToolTemplateServiceImpl(
             nodeId = nodeId,
             newParentId = newParentId,
         )
+        updateOrThrowException {
+            this@ToolTemplateServiceImpl.update(
+                KtUpdateWrapper(ToolTemplate())
+                    .eq(ToolTemplate::id, id)
+                    .set(ToolTemplate::updateTime, LocalDateTime.now(ZoneOffset.UTC))
+            )
+        }
     }
 
     @Transactional
@@ -142,6 +164,13 @@ class ToolTemplateServiceImpl(
             nodeId = nodeId,
             content = content.toByteArray()
         )
+        updateOrThrowException {
+            this@ToolTemplateServiceImpl.update(
+                KtUpdateWrapper(ToolTemplate())
+                    .eq(ToolTemplate::id, id)
+                    .set(ToolTemplate::updateTime, LocalDateTime.now(ZoneOffset.UTC))
+            )
+        }
     }
 
     @Transactional
@@ -153,6 +182,13 @@ class ToolTemplateServiceImpl(
             rootId = toolTemplate.sourceId!!,
             nodeId = nodeId,
         )
+        updateOrThrowException {
+            this@ToolTemplateServiceImpl.update(
+                KtUpdateWrapper(ToolTemplate())
+                    .eq(ToolTemplate::id, id)
+                    .set(ToolTemplate::updateTime, LocalDateTime.now(ZoneOffset.UTC))
+            )
+        }
     }
 
     @Transactional
