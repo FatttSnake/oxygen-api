@@ -19,14 +19,6 @@ import java.time.ZonedDateTime
 @ConfigurationProperties("app")
 data class ServerProperties(
     /**
-     * App name
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     */
-    val appName: String,
-
-    /**
      * Version
      *
      * @author FatttSnake, fatttsnake@gmail.com
@@ -50,14 +42,6 @@ data class ServerProperties(
      * @see LocalDateTime
      */
     val startupTime: LocalDateTime = LocalDateTime.now(ZoneOffset.UTC),
-
-    /**
-     * Turnstile secret key
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     */
-    @field:NotBlank val turnstileSecretKey: String = "",
 
     /**
      * Admin properties

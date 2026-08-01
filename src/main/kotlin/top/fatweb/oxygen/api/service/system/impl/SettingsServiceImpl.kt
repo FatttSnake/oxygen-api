@@ -8,6 +8,7 @@ import top.fatweb.oxygen.api.param.system.TwoFactorSettingsParam
 import top.fatweb.oxygen.api.properties.ServerProperties
 import top.fatweb.oxygen.api.service.system.ISettingsService
 import top.fatweb.oxygen.api.settings.BaseSettings
+import top.fatweb.oxygen.api.settings.MailSecurityType
 import top.fatweb.oxygen.api.settings.MailSettings
 import top.fatweb.oxygen.api.settings.SettingsOperator
 import top.fatweb.oxygen.api.settings.TwoFactorSettings
@@ -26,50 +27,52 @@ import top.fatweb.oxygen.api.vo.system.TwoFactorSettingsVo
  * @see ISettingsService
  */
 @Service
-class SettingsServiceImpl(
-    private val serverProperties: ServerProperties
-) : ISettingsService {
+class SettingsServiceImpl : ISettingsService {
     override fun getBase() = BaseSettingsVo(
-        appName = SettingsOperator.getAppValue(BaseSettings::appName, "氧工具"),
-        appUrl = SettingsOperator.getAppValue(BaseSettings::appUrl, "http://localhost"),
-        verifyUrl = SettingsOperator.getAppValue(
-            BaseSettings::verifyUrl,
-            $$"http://localhost/verify?code=${verifyCode}"
-        ),
-        retrieveUrl = SettingsOperator.getAppValue(
-            BaseSettings::retrieveUrl,
-            $$"http://localhost/forget?code=${retrieveCode}"
-        )
+        systemName = SettingsOperator.getValue(BaseSettings::systemName, "Oxygen"),
+        desktopProtocol = SettingsOperator.getValue(BaseSettings::desktopProtocol, "oxygen-desktop"),
+        applicationProtocol = SettingsOperator.getValue(BaseSettings::applicationProtocol, "oxygen-app"),
+        tokenExpiryBufferMs = SettingsOperator.getValue(BaseSettings::tokenExpiryBufferMs, 1800000),
+        tokenExpiryCheckIntervalMs = SettingsOperator.getValue(BaseSettings::tokenExpiryCheckIntervalMs, 600000),
+        turnstileSiteKey = SettingsOperator.getValue(BaseSettings::turnstileSiteKey),
+        turnstileSecretKey = SettingsOperator.getValue(BaseSettings::turnstileSecretKey)?.let(::md5),
+        homeUrl = SettingsOperator.getValue(BaseSettings::homeUrl, "http://localhost"),
+        getAndroidAppUrl = SettingsOperator.getValue(BaseSettings::getAndroidAppUrl),
     )
 
     override fun updateBase(baseSettingsParam: BaseSettingsParam) {
         baseSettingsParam.run {
-            SettingsOperator.setAppValue(BaseSettings::appName, appName)
-            SettingsOperator.setAppValue(BaseSettings::appUrl, appUrl)
-            SettingsOperator.setAppValue(BaseSettings::verifyUrl, verifyUrl)
-            SettingsOperator.setAppValue(BaseSettings::retrieveUrl, retrieveUrl)
+            SettingsOperator.setValue(BaseSettings::systemName, systemName)
+            SettingsOperator.setValue(BaseSettings::desktopProtocol, desktopProtocol)
+            SettingsOperator.setValue(BaseSettings::applicationProtocol, applicationProtocol)
+            SettingsOperator.setValue(BaseSettings::tokenExpiryBufferMs, tokenExpiryBufferMs)
+            SettingsOperator.setValue(BaseSettings::tokenExpiryCheckIntervalMs, tokenExpiryCheckIntervalMs)
+            SettingsOperator.setValue(BaseSettings::turnstileSiteKey, turnstileSiteKey)
+            SettingsOperator.setValue(BaseSettings::turnstileSecretKey, turnstileSecretKey)
+            SettingsOperator.setValue(BaseSettings::homeUrl, homeUrl)
+            SettingsOperator.setValue(BaseSettings::getAndroidAppUrl, getAndroidAppUrl)
         }
     }
 
     override fun getMail() = MailSettingsVo(
-        host = SettingsOperator.getMailValue(MailSettings::host),
-        port = SettingsOperator.getMailValue(MailSettings::port),
-        securityType = SettingsOperator.getMailValue(MailSettings::securityType),
-        username = SettingsOperator.getMailValue(MailSettings::username),
-        password = SettingsOperator.getMailValue(MailSettings::password)?.let(::md5),
-        from = SettingsOperator.getMailValue(MailSettings::from),
-        fromName = SettingsOperator.getMailValue(MailSettings::fromName)
+        host = SettingsOperator.getValue(MailSettings::host, "smtp.example.com"),
+        port = SettingsOperator.getValue(MailSettings::port, 25),
+        securityType = SettingsOperator.getValue(MailSettings::securityType, MailSecurityType.NONE),
+        username = SettingsOperator.getValue(MailSettings::username),
+        password = SettingsOperator.getValue(MailSettings::password)?.let(::md5),
+        from = SettingsOperator.getValue(MailSettings::from),
+        fromName = SettingsOperator.getValue(MailSettings::fromName)
     )
 
     override fun updateMail(mailSettingsParam: MailSettingsParam) {
         mailSettingsParam.run {
-            SettingsOperator.setMailValue(MailSettings::host, host)
-            SettingsOperator.setMailValue(MailSettings::port, port)
-            SettingsOperator.setMailValue(MailSettings::securityType, securityType)
-            SettingsOperator.setMailValue(MailSettings::username, username)
-            SettingsOperator.setMailValue(MailSettings::password, password)
-            SettingsOperator.setMailValue(MailSettings::from, from)
-            SettingsOperator.setMailValue(MailSettings::fromName, fromName)
+            SettingsOperator.setValue(MailSettings::host, host)
+            SettingsOperator.setValue(MailSettings::port, port)
+            SettingsOperator.setValue(MailSettings::securityType, securityType)
+            SettingsOperator.setValue(MailSettings::username, username)
+            SettingsOperator.setValue(MailSettings::password, password)
+            SettingsOperator.setValue(MailSettings::from, from)
+            SettingsOperator.setValue(MailSettings::fromName, fromName)
         }
 
         MailUtil.init()
@@ -78,7 +81,7 @@ class SettingsServiceImpl(
     override fun sendMail(mailSendParam: MailSendParam) {
         mailSendParam.to?.let {
             MailUtil.sendSimpleMail(
-                "${serverProperties.appName} Test Message",
+                "${SettingsOperator.getValue(BaseSettings::systemName)} Test Message",
                 "This is a test email sent when testing the system email sending service.",
                 false,
                 it
@@ -87,14 +90,14 @@ class SettingsServiceImpl(
     }
 
     override fun getTwoFactor() = TwoFactorSettingsVo(
-        issuer = SettingsOperator.getTwoFactorValue(TwoFactorSettings::issuer, "OxygenToolbox"),
-        secretKeyLength = SettingsOperator.getTwoFactorValue(TwoFactorSettings::secretKeyLength, 16)
+        issuer = SettingsOperator.getValue(TwoFactorSettings::issuer, "Oxygen"),
+        secretKeyLength = SettingsOperator.getValue(TwoFactorSettings::secretKeyLength, 16)
     )
 
     override fun updateTwoFactor(twoFactorSettingsParam: TwoFactorSettingsParam) {
         twoFactorSettingsParam.run {
-            SettingsOperator.setTwoFactorValue(TwoFactorSettings::issuer, issuer)
-            SettingsOperator.setTwoFactorValue(TwoFactorSettings::secretKeyLength, secretKeyLength)
+            SettingsOperator.setValue(TwoFactorSettings::issuer, issuer)
+            SettingsOperator.setValue(TwoFactorSettings::secretKeyLength, secretKeyLength)
         }
     }
 }

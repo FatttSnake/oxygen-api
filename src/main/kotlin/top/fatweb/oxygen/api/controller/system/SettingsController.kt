@@ -41,7 +41,7 @@ class SettingsController(
     @Operation(summary = "获取基础设置")
     @GetMapping("/base")
     @PreAuthorize("hasAnyAuthority('system:settings:query:base')")
-    fun getApp(): ResponseResult<BaseSettingsVo> =
+    fun getBase(): ResponseResult<BaseSettingsVo> =
         ResponseResult.success(data = settingsService.getBase())
 
     /**
@@ -57,7 +57,7 @@ class SettingsController(
     @Operation(summary = "更新基础设置")
     @PutMapping("/base")
     @PreAuthorize("hasAnyAuthority('system:settings:modify:base')")
-    fun updateApp(@ProcessParam @RequestBody baseSettingsParam: BaseSettingsParam): ResponseResult<Unit> {
+    fun updateBase(@ProcessParam @RequestBody baseSettingsParam: BaseSettingsParam): ResponseResult<Unit> {
         settingsService.updateBase(baseSettingsParam)
 
         return ResponseResult.success()

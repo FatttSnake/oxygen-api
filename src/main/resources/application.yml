@@ -1,5 +1,4 @@
 app:
-  app-name: Oxygen Toolbox
   version: @project.version@
   build-time: @build.timestamp@
 

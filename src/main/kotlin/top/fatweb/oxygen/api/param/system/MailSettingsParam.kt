@@ -1,6 +1,7 @@
 package top.fatweb.oxygen.api.param.system
 
 import io.swagger.v3.oas.annotations.media.Schema
+import jakarta.validation.constraints.NotBlank
 import top.fatweb.oxygen.api.annotation.ParamProcessor
 import top.fatweb.oxygen.api.settings.MailSecurityType
 
@@ -20,6 +21,7 @@ data class MailSettingsParam(
      * @since 1.0.0
      */
     @field:Schema(description = "SMTP 服务器")
+    @field:NotBlank(message = "Host can not be blank")
     var host: String?,
 
     /**
@@ -29,6 +31,7 @@ data class MailSettingsParam(
      * @since 1.0.0
      */
     @field:Schema(description = "端口号")
+    @field:NotBlank(message = "Port can not be null")
     var port: Int?,
 
     /**
@@ -47,6 +50,7 @@ data class MailSettingsParam(
      * @since 1.0.0
      */
     @field:Schema(description = "用户名")
+    @field:NotBlank(message = "Username can not be blank")
     var username: String?,
 
     /**
@@ -56,6 +60,7 @@ data class MailSettingsParam(
      * @since 1.0.0
      */
     @field:Schema(description = "密码")
+    @field:NotBlank(message = "Password can not be blank")
     val password: String?,
 
     /**
@@ -65,6 +70,7 @@ data class MailSettingsParam(
      * @since 1.0.0
      */
     @field:Schema(description = "发送者")
+    @field:NotBlank(message = "Sender can not be blank")
     var from: String?,
 
     /**
@@ -74,5 +80,6 @@ data class MailSettingsParam(
      * @since 1.0.0
      */
     @field:Schema(description = "发送者名称")
+    @field:NotBlank(message = "Sender name can not be blank")
     var fromName: String?
 )

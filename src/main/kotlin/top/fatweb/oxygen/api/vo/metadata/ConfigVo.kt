@@ -1,19 +1,16 @@
-package top.fatweb.oxygen.api.param.system
+package top.fatweb.oxygen.api.vo.metadata
 
 import io.swagger.v3.oas.annotations.media.Schema
-import jakarta.validation.constraints.NotBlank
-import jakarta.validation.constraints.NotNull
-import top.fatweb.oxygen.api.annotation.ParamProcessor
+import top.fatweb.oxygen.api.vo.system.BaseSettingsVo
 
 /**
- * Base settings parameters
+ * Config information value object
  *
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.0.0
+ * @since 1.3.0
  */
-@ParamProcessor
-@Schema(description = "基础设置请求参数")
-data class BaseSettingsParam(
+@Schema(defaultValue = "配置信息返回参数")
+data class ConfigVo(
     /**
      * System name
      *
@@ -21,8 +18,7 @@ data class BaseSettingsParam(
      * @since 1.3.0
      */
     @field:Schema(description = "系统名称")
-    @field:NotBlank(message = "System name can not be blank")
-    var systemName: String?,
+    val systemName: String?,
 
     /**
      * Desktop protocol
@@ -31,8 +27,7 @@ data class BaseSettingsParam(
      * @since 1.3.0
      */
     @field:Schema(description = "桌面端协议")
-    @field:NotBlank(message = "Desktop protocol can not be blank")
-    var desktopProtocol: String?,
+    val desktopProtocol: String?,
 
     /**
      * Application protocol
@@ -41,8 +36,7 @@ data class BaseSettingsParam(
      * @since 1.3.0
      */
     @field:Schema(description = "移动端协议")
-    @field:NotBlank(message = "Application protocol can not be blank")
-    var applicationProtocol: String?,
+    val applicationProtocol: String?,
 
     /**
      * Token expiry buffer time(ms)
@@ -51,8 +45,7 @@ data class BaseSettingsParam(
      * @since 1.3.0
      */
     @field:Schema(description = "Token 失效缓冲时间（毫秒）")
-    @field:NotNull(message = "Token expiry buffer (ms) can not be null")
-    var tokenExpiryBufferMs: Long?,
+    val tokenExpiryBufferMs: Long?,
 
     /**
      * Token expiry check interval time(ms)
@@ -61,8 +54,7 @@ data class BaseSettingsParam(
      * @since 1.3.0
      */
     @field:Schema(description = "Token 失效检查周期（毫秒）")
-    @field:NotNull(message = "Token expiry check interval (ms) can not be null")
-    var tokenExpiryCheckIntervalMs: Long?,
+    val tokenExpiryCheckIntervalMs: Long?,
 
     /**
      * Turnstile site key
@@ -71,16 +63,7 @@ data class BaseSettingsParam(
      * @since 1.3.0
      */
     @field:Schema(description = "Turnstile 站点标识")
-    var turnstileSiteKey: String?,
-
-    /**
-     * Turnstile secret key
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.3.0
-     */
-    @field:Schema(description = "Turnstile 密钥")
-    var turnstileSecretKey: String?,
+    val turnstileSiteKey: String?,
 
     /**
      * Home URL
@@ -89,8 +72,7 @@ data class BaseSettingsParam(
      * @since 1.3.0
      */
     @field:Schema(description = "主页 URL")
-    @field:NotBlank(message = "Home URL can not be blank")
-    var homeUrl: String?,
+    val homeUrl: String?,
 
     /**
      * Get Android app URL
@@ -99,6 +81,26 @@ data class BaseSettingsParam(
      * @since 1.3.0
      */
     @field:Schema(description = "获取安卓端 URL")
-    @field:NotBlank(message = "Get Android app URL can not be blank")
-    var getAndroidAppUrl: String?
-)
+    val getAndroidAppUrl: String?
+) {
+    companion object {
+        /**
+         * Convert [BaseSettingsVo] to [ConfigVo]
+         *
+         * @author FatttSnake, fatttsnake@gmail.com
+         * @since 1.3.0
+         * @see BaseSettingsVo
+         */
+        fun fromBaseSettingsVo(baseSettingsVo: BaseSettingsVo) =
+            ConfigVo(
+                systemName = baseSettingsVo.systemName ?: "",
+                desktopProtocol = baseSettingsVo.desktopProtocol ?: "",
+                applicationProtocol = baseSettingsVo.applicationProtocol ?: "",
+                tokenExpiryBufferMs = baseSettingsVo.tokenExpiryBufferMs ?: 0,
+                tokenExpiryCheckIntervalMs = baseSettingsVo.tokenExpiryCheckIntervalMs ?: 0,
+                turnstileSiteKey = baseSettingsVo.turnstileSiteKey ?: "",
+                homeUrl = baseSettingsVo.homeUrl ?: "",
+                getAndroidAppUrl = baseSettingsVo.getAndroidAppUrl ?: ""
+            )
+    }
+}

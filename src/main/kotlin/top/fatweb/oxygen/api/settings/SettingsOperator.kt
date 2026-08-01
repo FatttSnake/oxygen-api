@@ -74,18 +74,25 @@ object SettingsOperator {
     /**
      * Set base settings value
      *
-     * @param field Field to set value. e.g. BaseSettings::appName
+     * @param field Field to set value. e.g. BaseSettings::systemName
      * @param value Value to set
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see KMutableProperty1
      * @see BaseSettings
      */
-    fun <V> setAppValue(field: KMutableProperty1<BaseSettings, V?>, value: V?) {
-        systemSettings.base?.let {
+    @JvmName("setBaseValue")
+    fun <V> setValue(field: KMutableProperty1<BaseSettings, V?>, value: V?) {
+        systemSettings.base.let {
+            if (field == BaseSettings::turnstileSecretKey) {
+                this.getValue(BaseSettings::turnstileSecretKey)?.let {turnstileSecretKey ->
+                    if (md5(turnstileSecretKey) == value) {
+                        return
+                    }
+                }
+            }
+
             field.set(it, value)
-        } ?: let {
-            systemSettings.base = BaseSettings().also { field.set(it, value) }
         }
 
         saveSettingsToFile()
@@ -94,20 +101,21 @@ object SettingsOperator {
     /**
      * Get base settings value
      *
-     * @param field Field to get value from. e.g. BaseSettings::appName
+     * @param field Field to get value from. e.g. BaseSettings::systemName
      * @return Value
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see KMutableProperty1
      * @see BaseSettings
      */
-    fun <V> getAppValue(field: KMutableProperty1<BaseSettings, V?>): V? =
-        this.getAppValue(field, null)
+    @JvmName("getBaseValue")
+    fun <V> getValue(field: KMutableProperty1<BaseSettings, V?>): V? =
+        this.getValue(field, null)
 
     /**
      * Get base settings value with default value
      *
-     * @param field Field to get value from. e.g. BaseSettings::appName
+     * @param field Field to get value from. e.g. BaseSettings::systemName
      * @param default Return default value when setting not found
      * @return Value
      * @author FatttSnake, fatttsnake@gmail.com
@@ -115,8 +123,9 @@ object SettingsOperator {
      * @see KMutableProperty1
      * @see BaseSettings
      */
-    fun <V> getAppValue(field: KMutableProperty1<BaseSettings, V?>, default: V): V =
-        systemSettings.base?.let(field) ?: default
+    @JvmName("getBaseValue")
+    fun <V> getValue(field: KMutableProperty1<BaseSettings, V?>, default: V): V =
+        systemSettings.base.let(field) ?: default
 
     /**
      * Set mail settings value
@@ -128,18 +137,17 @@ object SettingsOperator {
      * @see KMutableProperty1
      * @see MailSettings
      */
-    fun <V> setMailValue(field: KMutableProperty1<MailSettings, V?>, value: V?) {
-        systemSettings.mail?.let {
+    @JvmName("setMailValue")
+    fun <V> setValue(field: KMutableProperty1<MailSettings, V?>, value: V?) {
+        systemSettings.mail.let {
             if (field == MailSettings::password) {
-                getMailValue(MailSettings::password)?.let { password ->
+                this.getValue(MailSettings::password)?.let { password ->
                     if (md5(password) == value) {
                         return
                     }
                 }
             }
             field.set(it, value)
-        } ?: let {
-            systemSettings.mail = MailSettings().also { field.set(it, value) }
         }
 
         saveSettingsToFile()
@@ -155,8 +163,9 @@ object SettingsOperator {
      * @see KMutableProperty1
      * @see MailSettings
      */
-    fun <V> getMailValue(field: KMutableProperty1<MailSettings, V?>): V? =
-        this.getMailValue(field, null)
+    @JvmName("getMailValue")
+    fun <V> getValue(field: KMutableProperty1<MailSettings, V?>): V? =
+        this.getValue(field, null)
 
     /**
      * Get value from mail settings with default value
@@ -169,8 +178,9 @@ object SettingsOperator {
      * @see KMutableProperty1
      * @see MailSettings
      */
-    fun <V> getMailValue(field: KMutableProperty1<MailSettings, V?>, default: V): V =
-        systemSettings.mail?.let(field) ?: default
+    @JvmName("getMailValue")
+    fun <V> getValue(field: KMutableProperty1<MailSettings, V?>, default: V): V =
+        systemSettings.mail.let(field) ?: default
 
     /**
      * Set two-factor settings value
@@ -182,11 +192,10 @@ object SettingsOperator {
      * @see KMutableProperty1
      * @see TwoFactorSettings
      */
-    fun <V> setTwoFactorValue(field: KMutableProperty1<TwoFactorSettings, V?>, value: V?) {
-        systemSettings.twoFactor?.let {
+    @JvmName("setTwoFactorValue")
+    fun <V> setValue(field: KMutableProperty1<TwoFactorSettings, V?>, value: V?) {
+        systemSettings.twoFactor.let {
             field.set(it, value)
-        } ?: let {
-            systemSettings.twoFactor = TwoFactorSettings().also { field.set(it, value) }
         }
 
         saveSettingsToFile()
@@ -202,8 +211,9 @@ object SettingsOperator {
      * @see KMutableProperty1
      * @see TwoFactorSettings
      */
-    fun <V> getTwoFactorValue(field: KMutableProperty1<TwoFactorSettings, V?>): V? =
-        this.getTwoFactorValue(field, null)
+    @JvmName("getTwoFactorValue")
+    fun <V> getValue(field: KMutableProperty1<TwoFactorSettings, V?>): V? =
+        this.getValue(field, null)
 
     /**
      * Get value from two-factor settings with default value
@@ -216,6 +226,7 @@ object SettingsOperator {
      * @see KMutableProperty1
      * @see TwoFactorSettings
      */
-    fun <V> getTwoFactorValue(field: KMutableProperty1<TwoFactorSettings, V?>, default: V): V =
-        systemSettings.twoFactor?.let(field) ?: default
+    @JvmName("getTwoFactorValue")
+    fun <V> getValue(field: KMutableProperty1<TwoFactorSettings, V?>, default: V): V =
+        systemSettings.twoFactor.let(field) ?: default
 }

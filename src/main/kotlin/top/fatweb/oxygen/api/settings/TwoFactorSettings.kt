@@ -1,5 +1,6 @@
 package top.fatweb.oxygen.api.settings
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
 
 /**
@@ -8,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class TwoFactorSettings(
     /**
@@ -24,5 +26,5 @@ data class TwoFactorSettings(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    var secretKeyLength: Int? = 16
+    var secretKeyLength: Int? = null
 )
