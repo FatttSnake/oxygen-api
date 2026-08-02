@@ -92,7 +92,7 @@ class AuthenticationServiceImpl(
         response: HttpServletResponse,
         registerParam: RegisterParam
     ): RegisterVo {
-        this.verifyCaptcha(registerParam.captchaCode!!)
+        this.verifyCaptcha(registerParam.captchaCode, "register")
         sensitiveWordService.checkSensitiveWord(registerParam.username!!)
 
         val user = User().apply {
@@ -191,7 +191,7 @@ class AuthenticationServiceImpl(
 
     @Transactional
     override fun forget(request: HttpServletRequest, forgetParam: ForgetParam) {
-        verifyCaptcha(forgetParam.captchaCode!!)
+        this.verifyCaptcha(forgetParam.captchaCode, "forget")
 
         val user = queryOrThrowException(UserNotFoundException()) {
             userService.getUserWithPowerByAccount(forgetParam.email!!)
@@ -221,7 +221,7 @@ class AuthenticationServiceImpl(
 
     @Transactional
     override fun retrieve(request: HttpServletRequest, retrieveParam: RetrieveParam) {
-        verifyCaptcha(retrieveParam.captchaCode!!)
+        this.verifyCaptcha(retrieveParam.captchaCode, "retrieve")
 
         val codeStrings = retrieveParam.code!!.split("-")
         if (codeStrings.size != 16) {
@@ -264,7 +264,7 @@ class AuthenticationServiceImpl(
     @EventLogRecord(EventLog.Event.LOGIN)
     override fun login(request: HttpServletRequest, response: HttpServletResponse, loginParam: LoginParam): LoginVo {
         if (loginParam.twoFactorCode.isNullOrBlank()) {
-            verifyCaptcha(loginParam.captchaCode!!)
+            this.verifyCaptcha(loginParam.captchaCode, "login")
         }
 
         return this.login(
@@ -598,11 +598,19 @@ class AuthenticationServiceImpl(
         )
     }
 
-    private fun verifyCaptcha(captchaCode: String) {
+    private fun verifyCaptcha(captchaCode: String?, action: String? = null) {
+        if (SettingsOperator.getValue(BaseSettings::turnstileSecretKey).isNullOrBlank()) {
+            return
+        }
+
+        if (captchaCode.isNullOrBlank()) {
+            throw InvalidCaptchaCodeException()
+        }
+
         try {
             val siteverifyResponse =
                 runBlocking { turnstileApi.siteverify(captchaCode, SettingsOperator.getValue(BaseSettings::turnstileSecretKey) ?: "") }
-            if (!siteverifyResponse.success) {
+            if (!siteverifyResponse.success || siteverifyResponse.action != action) {
                 throw InvalidCaptchaCodeException()
             }
         } catch (e: Exception) {

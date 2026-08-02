@@ -44,5 +44,32 @@ data class SiteverifyResponse(
      * @since 1.0.0
      */
     @field:JsonProperty("error-codes")
-    val errorCodes: List<String>?
+    val errorCodes: List<String>?,
+
+    /**
+     * Action
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.3.0
+     */
+    @field:JsonProperty("action")
+    val action: String?,
+
+    /**
+     * Cdata
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.3.0
+     */
+    @field:JsonProperty("cdata")
+    val cdata: String?,
+
+    /**
+     * Metadata
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.3.0
+     */
+    @field:JsonProperty("metadata")
+    val metadata: Map<String, String>?
 )

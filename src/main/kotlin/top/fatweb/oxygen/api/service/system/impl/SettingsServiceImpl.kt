@@ -35,7 +35,7 @@ class SettingsServiceImpl : ISettingsService {
         tokenExpiryBufferMs = SettingsOperator.getValue(BaseSettings::tokenExpiryBufferMs, 1800000),
         tokenExpiryCheckIntervalMs = SettingsOperator.getValue(BaseSettings::tokenExpiryCheckIntervalMs, 600000),
         turnstileSiteKey = SettingsOperator.getValue(BaseSettings::turnstileSiteKey),
-        turnstileSecretKey = SettingsOperator.getValue(BaseSettings::turnstileSecretKey)?.let(::md5),
+        turnstileSecretKey = SettingsOperator.getValue(BaseSettings::turnstileSecretKey)?.takeIf { it.isNotEmpty() }?.let(::md5),
         homeUrl = SettingsOperator.getValue(BaseSettings::homeUrl, "http://localhost"),
         getAndroidAppUrl = SettingsOperator.getValue(BaseSettings::getAndroidAppUrl),
     )
@@ -59,7 +59,7 @@ class SettingsServiceImpl : ISettingsService {
         port = SettingsOperator.getValue(MailSettings::port, 25),
         securityType = SettingsOperator.getValue(MailSettings::securityType, MailSecurityType.NONE),
         username = SettingsOperator.getValue(MailSettings::username),
-        password = SettingsOperator.getValue(MailSettings::password)?.let(::md5),
+        password = SettingsOperator.getValue(MailSettings::password)?.takeIf { it.isNotEmpty() }?.let(::md5),
         from = SettingsOperator.getValue(MailSettings::from),
         fromName = SettingsOperator.getValue(MailSettings::fromName)
     )

@@ -85,8 +85,8 @@ object SettingsOperator {
     fun <V> setValue(field: KMutableProperty1<BaseSettings, V?>, value: V?) {
         systemSettings.base.let {
             if (field == BaseSettings::turnstileSecretKey) {
-                this.getValue(BaseSettings::turnstileSecretKey)?.let {turnstileSecretKey ->
-                    if (md5(turnstileSecretKey) == value) {
+                this.getValue(BaseSettings::turnstileSecretKey)?.let { turnstileSecretKey ->
+                    if ((turnstileSecretKey.isEmpty() && value == null) || md5(turnstileSecretKey) == value) {
                         return
                     }
                 }
@@ -142,7 +142,7 @@ object SettingsOperator {
         systemSettings.mail.let {
             if (field == MailSettings::password) {
                 this.getValue(MailSettings::password)?.let { password ->
-                    if (md5(password) == value) {
+                    if ((password.isEmpty() && value == null) || md5(password) == value) {
                         return
                     }
                 }
