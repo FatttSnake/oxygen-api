@@ -1,5 +1,6 @@
 package top.fatweb.oxygen.api.settings
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
 
 /**
@@ -8,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class SystemSettings(
     /**
@@ -16,7 +18,7 @@ data class SystemSettings(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    var base: BaseSettings? = null,
+    var base: BaseSettings = BaseSettings(),
 
     /**
      * Mail setting
@@ -24,7 +26,7 @@ data class SystemSettings(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    var mail: MailSettings? = null,
+    var mail: MailSettings = MailSettings(),
 
     /**
      * Two-factor setting
@@ -32,5 +34,5 @@ data class SystemSettings(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    var twoFactor: TwoFactorSettings? = null
+    var twoFactor: TwoFactorSettings = TwoFactorSettings()
 )

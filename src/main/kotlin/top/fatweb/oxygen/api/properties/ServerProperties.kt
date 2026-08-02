@@ -1,7 +1,6 @@
 package top.fatweb.oxygen.api.properties
 
 import jakarta.validation.Valid
-import jakarta.validation.constraints.NotBlank
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.validation.annotation.Validated
 import java.time.LocalDateTime
@@ -18,14 +17,6 @@ import java.time.ZonedDateTime
 @Validated
 @ConfigurationProperties("app")
 data class ServerProperties(
-    /**
-     * App name
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     */
-    val appName: String,
-
     /**
      * Version
      *
@@ -50,14 +41,6 @@ data class ServerProperties(
      * @see LocalDateTime
      */
     val startupTime: LocalDateTime = LocalDateTime.now(ZoneOffset.UTC),
-
-    /**
-     * Turnstile secret key
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     */
-    @field:NotBlank val turnstileSecretKey: String = "",
 
     /**
      * Admin properties

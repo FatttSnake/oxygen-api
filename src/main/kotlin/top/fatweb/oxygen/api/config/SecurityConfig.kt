@@ -77,7 +77,8 @@ class SecurityConfig(
                     "/register",
                     "/forget",
                     "/retrieve",
-                    "/health"
+                    "/health",
+                    "/config"
                 ).anonymous()
                 .requestMatchers(
                     "/token",

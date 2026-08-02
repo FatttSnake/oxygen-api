@@ -1,5 +1,6 @@
 package top.fatweb.oxygen.api.settings
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude
 
 /**
@@ -8,37 +9,78 @@ import com.fasterxml.jackson.annotation.JsonInclude
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 data class BaseSettings(
     /**
-     * Application name
+     * System name
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.3.0
      */
-    var appName: String? = null,
+    var systemName: String? = null,
 
     /**
-     * Application URL
+     * Desktop protocol
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.3.0
      */
-    var appUrl: String? = null,
+    var desktopProtocol: String? = null,
 
     /**
-     * Verify URL
+     * Application protocol
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.3.0
      */
-    var verifyUrl: String? = null,
+    var applicationProtocol: String? = null,
 
     /**
-     * Retrieve URL
+     * Token expiry buffer time(ms)
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.3.0
      */
-    var retrieveUrl: String? = null
+    var tokenExpiryBufferMs: Long? = null,
+
+    /**
+     * Token expiry check interval time(ms)
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.3.0
+     */
+    var tokenExpiryCheckIntervalMs: Long? = null,
+
+    /**
+     * Turnstile site key
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.3.0
+     */
+    var turnstileSiteKey: String? = null,
+
+    /**
+     * Turnstile secret key
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.3.0
+     */
+    var turnstileSecretKey: String? = null,
+
+    /**
+     * Home URL
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.3.0
+     */
+    var homeUrl: String? = null,
+
+    /**
+     * Get Android app URL
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.3.0
+     */
+    var getAndroidAppUrl: String? = null
 )

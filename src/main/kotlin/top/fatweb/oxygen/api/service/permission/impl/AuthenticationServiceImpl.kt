@@ -16,6 +16,7 @@ import org.springframework.security.web.csrf.DefaultCsrfToken
 import org.springframework.security.web.csrf.InvalidCsrfTokenException
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.util.UriComponentsBuilder
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.context.Context
 import top.fatweb.oxygen.api.annotation.EventLogRecord
@@ -91,7 +92,7 @@ class AuthenticationServiceImpl(
         response: HttpServletResponse,
         registerParam: RegisterParam
     ): RegisterVo {
-        this.verifyCaptcha(registerParam.captchaCode!!)
+        this.verifyCaptcha(registerParam.captchaCode, "register")
         sensitiveWordService.checkSensitiveWord(registerParam.username!!)
 
         val user = User().apply {
@@ -190,7 +191,7 @@ class AuthenticationServiceImpl(
 
     @Transactional
     override fun forget(request: HttpServletRequest, forgetParam: ForgetParam) {
-        verifyCaptcha(forgetParam.captchaCode!!)
+        this.verifyCaptcha(forgetParam.captchaCode, "forget")
 
         val user = queryOrThrowException(UserNotFoundException()) {
             userService.getUserWithPowerByAccount(forgetParam.email!!)
@@ -220,7 +221,7 @@ class AuthenticationServiceImpl(
 
     @Transactional
     override fun retrieve(request: HttpServletRequest, retrieveParam: RetrieveParam) {
-        verifyCaptcha(retrieveParam.captchaCode!!)
+        this.verifyCaptcha(retrieveParam.captchaCode, "retrieve")
 
         val codeStrings = retrieveParam.code!!.split("-")
         if (codeStrings.size != 16) {
@@ -263,7 +264,7 @@ class AuthenticationServiceImpl(
     @EventLogRecord(EventLog.Event.LOGIN)
     override fun login(request: HttpServletRequest, response: HttpServletResponse, loginParam: LoginParam): LoginVo {
         if (loginParam.twoFactorCode.isNullOrBlank()) {
-            verifyCaptcha(loginParam.captchaCode!!)
+            this.verifyCaptcha(loginParam.captchaCode, "login")
         }
 
         return this.login(
@@ -283,9 +284,9 @@ class AuthenticationServiceImpl(
         }
 
         val secretKey =
-            TOTPUtil.generateSecretKey(SettingsOperator.getTwoFactorValue(TwoFactorSettings::secretKeyLength, 16))
+            TOTPUtil.generateSecretKey(SettingsOperator.getValue(TwoFactorSettings::secretKeyLength, 16))
         val qrCodeSVGBase64 = TOTPUtil.generateQRCodeSVGBase64(
-            SettingsOperator.getTwoFactorValue(TwoFactorSettings::issuer, "OxygenToolbox"),
+            SettingsOperator.getValue(TwoFactorSettings::issuer, "Oxygen"),
             user.username!!,
             secretKey
         )
@@ -454,19 +455,19 @@ class AuthenticationServiceImpl(
     }
 
     private fun sendVerifyMail(username: String, code: String, email: String) {
+        val verifyUrl = UriComponentsBuilder
+            .fromUriString(SettingsOperator.getValue(BaseSettings::homeUrl, "http://localhost"))
+            .path("/verify")
+            .queryParam("code", code)
+            .build()
+            .toUriString()
         val context = Context(
             Locale.getDefault(),
             mapOf(
-                "appName" to SettingsOperator.getAppValue(BaseSettings::appName, "氧工具"),
-                "appUrl" to SettingsOperator.getAppValue(BaseSettings::appUrl, "http://localhost"),
+                "systemName" to SettingsOperator.getValue(BaseSettings::systemName, "Oxygen"),
+                "homeUrl" to SettingsOperator.getValue(BaseSettings::homeUrl, "http://localhost"),
                 "username" to username,
-                "verifyUrl" to SettingsOperator.getAppValue(
-                    BaseSettings::verifyUrl,
-                    $$"http://localhost/verify?code=${verifyCode}"
-                )
-                    .replace(
-                        Regex("(?<=([^\\\\]))\\$\\{verifyCode}"), code
-                    )
+                "verifyUrl" to verifyUrl
             )
         )
         val emailContent = templateEngine.process("email-verify-account-cn", context)
@@ -477,20 +478,20 @@ class AuthenticationServiceImpl(
     }
 
     private fun sendRetrieveMail(username: String, ip: String, code: String, email: String) {
+        val retrieveUrl = UriComponentsBuilder
+            .fromUriString(SettingsOperator.getValue(BaseSettings::homeUrl, "http://localhost"))
+            .path("/forget")
+            .queryParam("code", code)
+            .build()
+            .toUriString()
         val context = Context(
             Locale.getDefault(),
             mapOf(
-                "appName" to SettingsOperator.getAppValue(BaseSettings::appName, "氧工具"),
-                "appUrl" to SettingsOperator.getAppValue(BaseSettings::appUrl, "http://localhost"),
+                "systemName" to SettingsOperator.getValue(BaseSettings::systemName, "Oxygen"),
+                "homeUrl" to SettingsOperator.getValue(BaseSettings::homeUrl, "http://localhost"),
                 "username" to username,
                 "ipAddress" to ip,
-                "retrieveUrl" to SettingsOperator.getAppValue(
-                    BaseSettings::retrieveUrl,
-                    $$"http://localhost/retrieve?code=${retrieveCode}"
-                )
-                    .replace(
-                        Regex("(?<=([^\\\\]))\\$\\{retrieveCode}"), code
-                    )
+                "retrieveUrl" to retrieveUrl
             )
         )
         val emailContent = templateEngine.process("email-retrieve-password-cn", context)
@@ -504,8 +505,8 @@ class AuthenticationServiceImpl(
         val context = Context(
             Locale.getDefault(),
             mapOf(
-                "appName" to SettingsOperator.getAppValue(BaseSettings::appName, "氧工具"),
-                "appUrl" to SettingsOperator.getAppValue(BaseSettings::appUrl, "http://localhost"),
+                "systemName" to SettingsOperator.getValue(BaseSettings::systemName, "Oxygen"),
+                "homeUrl" to SettingsOperator.getValue(BaseSettings::homeUrl, "http://localhost"),
                 "username" to username,
                 "ipAddress" to ip
             )
@@ -597,11 +598,19 @@ class AuthenticationServiceImpl(
         )
     }
 
-    private fun verifyCaptcha(captchaCode: String) {
+    private fun verifyCaptcha(captchaCode: String?, action: String? = null) {
+        if (SettingsOperator.getValue(BaseSettings::turnstileSecretKey).isNullOrBlank()) {
+            return
+        }
+
+        if (captchaCode.isNullOrBlank()) {
+            throw InvalidCaptchaCodeException()
+        }
+
         try {
             val siteverifyResponse =
-                runBlocking { turnstileApi.siteverify(captchaCode, serverProperties.turnstileSecretKey) }
-            if (!siteverifyResponse.success) {
+                runBlocking { turnstileApi.siteverify(captchaCode, SettingsOperator.getValue(BaseSettings::turnstileSecretKey) ?: "") }
+            if (!siteverifyResponse.success || siteverifyResponse.action != action) {
                 throw InvalidCaptchaCodeException()
             }
         } catch (e: Exception) {
