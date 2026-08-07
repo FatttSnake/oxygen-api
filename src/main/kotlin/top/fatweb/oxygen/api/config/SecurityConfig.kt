@@ -45,7 +45,7 @@ class SecurityConfig(
             registerCorsConfiguration("/**", CorsConfiguration().apply {
                 allowedOriginPatterns = listOf("*")
                 allowedMethods = listOf("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
-                allowedHeaders = listOf("Authorization", "Content-Type", "X-CSRF-TOKEN", "X-Requested-With")
+                allowedHeaders = listOf("Authorization", "Content-Type", "X-CSRF-TOKEN", "X-Requested-With", "Cache-Control")
                 allowCredentials = true
                 maxAge = 3600L
                 exposedHeaders = listOf("X-CSRF-TOKEN")
