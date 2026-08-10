@@ -50,6 +50,7 @@ class RoleController(
      * @since 1.0.0
      * @see RoleGetParam
      * @see ResponseResult
+     * @see PageVo
      * @see RoleWithPowerVo
      */
     @Operation(summary = "获取角色")
@@ -101,12 +102,11 @@ class RoleController(
      * Update role
      *
      * @param roleUpdateParam Update role parameters
-     * @return Response object includes role information
+     * @return Response object
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      * @see RoleUpdateParam
      * @see ResponseResult
-     * @see RoleVo
      */
     @Operation(summary = "修改角色")
     @PutMapping

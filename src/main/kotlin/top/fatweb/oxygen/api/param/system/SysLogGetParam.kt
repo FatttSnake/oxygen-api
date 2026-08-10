@@ -30,6 +30,18 @@ data class SysLogGetParam(
     val logType: String?,
 
     /**
+     * Trace ID to search for
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.3.0
+     */
+    @field:Schema(
+        description = "查询 Trace ID",
+        example = "2c5898e1d67d47768aa1942afada1823"
+    )
+    val searchTraceId: String?,
+
+    /**
      * Request method to filter
      *
      * @author FatttSnake, fatttsnake@gmail.com
@@ -50,17 +62,6 @@ data class SysLogGetParam(
      */
     @field:Schema(description = "查询请求 Url")
     var searchRequestUrl: String?,
-
-    /**
-     * Use regex
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     */
-    /*
-        @Schema(description = "查询使用正则表达式", allowableValues = ["true", "false"], defaultValue = "false")
-        val searchRegex: Boolean = false,
-    */
 
     /**
      * Start time to search for

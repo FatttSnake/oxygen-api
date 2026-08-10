@@ -24,13 +24,13 @@ object MailUtil {
     fun init() {
         mailSender.defaultEncoding = Charsets.UTF_8.name()
         mailSender.protocol = "smtp"
-        mailSender.host = SettingsOperator.getMailValue(MailSettings::host)
-        SettingsOperator.getMailValue(MailSettings::port)?.let { mailSender.port = it }
-        mailSender.username = SettingsOperator.getMailValue(MailSettings::username)
-        mailSender.password = SettingsOperator.getMailValue(MailSettings::password)
+        mailSender.host = SettingsOperator.getValue(MailSettings::host)
+        SettingsOperator.getValue(MailSettings::port)?.let { mailSender.port = it }
+        mailSender.username = SettingsOperator.getValue(MailSettings::username)
+        mailSender.password = SettingsOperator.getValue(MailSettings::password)
 
         val properties = Properties()
-        when (SettingsOperator.getMailValue(MailSettings::securityType)) {
+        when (SettingsOperator.getValue(MailSettings::securityType)) {
             MailSecurityType.SSL_TLS -> properties.setProperty("mail.smtp.ssl.enable", "true")
             MailSecurityType.START_TLS -> properties.setProperty("mail.smtp.starttls.enable", "true")
             else -> {}
@@ -40,8 +40,8 @@ object MailUtil {
     }
 
     fun sendSimpleMail(subject: String, text: String, html: Boolean = false, vararg to: String) {
-        val fromName = SettingsOperator.getMailValue(MailSettings::fromName) ?: throw NoEmailConfigException("fromName")
-        val from = SettingsOperator.getMailValue(MailSettings::from) ?: throw NoEmailConfigException("from")
+        val fromName = SettingsOperator.getValue(MailSettings::fromName) ?: throw NoEmailConfigException("fromName")
+        val from = SettingsOperator.getValue(MailSettings::from) ?: throw NoEmailConfigException("from")
 
         val mimeMessage = mailSender.createMimeMessage()
         val messageHelper = MimeMessageHelper(mimeMessage, true)

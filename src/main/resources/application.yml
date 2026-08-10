@@ -1,5 +1,4 @@
 app:
-  app-name: Oxygen Toolbox
   version: @project.version@
   build-time: @build.timestamp@
 
@@ -35,10 +34,12 @@ mybatis-plus:
       id-type: assign_id
 
 logging:
+  pattern:
+    level: "%5p [%X{traceId:-}]"
   level:
     root: info
   file:
-    name: data/log/fat-api.log
+    name: data/log/oxygen-api.log
 
 knife4j:
   enable: true

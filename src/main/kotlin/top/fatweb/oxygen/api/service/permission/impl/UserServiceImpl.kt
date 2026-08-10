@@ -12,6 +12,7 @@ import org.springframework.security.core.token.Sha512DigestUtils
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import top.fatweb.oxygen.api.component.storage.RedisProvider
 import top.fatweb.oxygen.api.converter.permission.toEntity
 import top.fatweb.oxygen.api.converter.permission.toVoWithInfo
 import top.fatweb.oxygen.api.converter.permission.toVoWithPowerInfo
@@ -23,6 +24,7 @@ import top.fatweb.oxygen.api.entity.permission.UserInfo
 import top.fatweb.oxygen.api.exception.UserNotFoundException
 import top.fatweb.oxygen.api.mapper.permission.UserMapper
 import top.fatweb.oxygen.api.param.permission.user.*
+import top.fatweb.oxygen.api.properties.ServerProperties
 import top.fatweb.oxygen.api.service.permission.*
 import top.fatweb.oxygen.api.util.*
 import top.fatweb.oxygen.api.vo.PageVo
@@ -38,8 +40,9 @@ import java.util.*
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see ServerProperties
  * @see PasswordEncoder
- * @see RedisUtil
+ * @see RedisProvider
  * @see IUserInfoService
  * @see IModuleService
  * @see IMenuService
@@ -55,8 +58,9 @@ import java.util.*
 @DS("master")
 @Service
 class UserServiceImpl(
+    private val serverProperties: ServerProperties,
     private val passwordEncoder: PasswordEncoder,
-    private val redisUtil: RedisUtil,
+    private val redisProvider: RedisProvider,
     private val userInfoService: IUserInfoService,
     private val moduleService: IModuleService,
     private val menuService: IMenuService,
@@ -124,7 +128,7 @@ class UserServiceImpl(
             )
         }
 
-        offlineUser(redisUtil, user.id!!)
+        offlineUser(serverProperties = serverProperties, redisProvider = redisProvider, user.id!!)
     }
 
     override fun getOne(id: Long): UserWithRoleInfoVo =
@@ -205,7 +209,7 @@ class UserServiceImpl(
             KtQueryWrapper(RUserRole())
                 .select(RUserRole::roleId)
                 .eq(RUserRole::userId, userUpdateParam.id)
-        ).map { it.roleId }
+        ).map(RUserRole::roleId)
         val addRoleIds = HashSet<Long>()
         val removeRoleIds = HashSet<Long>()
         userUpdateParam.roleIds?.forEach(addRoleIds::add)
@@ -219,7 +223,7 @@ class UserServiceImpl(
             KtQueryWrapper(RUserGroup())
                 .select(RUserGroup::groupId)
                 .eq(RUserGroup::userId, userUpdateParam.id)
-        ).map { it.groupId }
+        ).map(RUserGroup::groupId)
         val addGroupIds = HashSet<Long>()
         val removeGroupIds = HashSet<Long>()
         userUpdateParam.groupIds?.forEach(addGroupIds::add)
@@ -294,7 +298,7 @@ class UserServiceImpl(
             }
         }
 
-        userUpdateParam.id?.let { offlineUser(redisUtil, it) }
+        userUpdateParam.id?.let { offlineUser(serverProperties = serverProperties, redisProvider = redisProvider, it) }
     }
 
     override fun password(userUpdatePasswordParam: UserUpdatePasswordParam) {
@@ -316,7 +320,7 @@ class UserServiceImpl(
             )
         }
 
-        userUpdatePasswordParam.id?.let { offlineUser(redisUtil, it) }
+        userUpdatePasswordParam.id?.let { offlineUser(serverProperties = serverProperties, redisProvider = redisProvider, it) }
     }
 
     @Transactional
@@ -340,7 +344,7 @@ class UserServiceImpl(
         rUserRoleService.remove(KtQueryWrapper(RUserRole()).`in`(RUserRole::userId, ids))
         rUserGroupService.remove(KtQueryWrapper(RUserGroup()).`in`(RUserGroup::userId, ids))
 
-        offlineUser(redisUtil, *ids.toLongArray())
+        offlineUser(serverProperties = serverProperties, redisProvider = redisProvider, *ids.toLongArray())
     }
 
     override fun getIdsByRoleIds(roleIds: List<Long>) = baseMapper.selectIdsWithRoleIds(roleIds)

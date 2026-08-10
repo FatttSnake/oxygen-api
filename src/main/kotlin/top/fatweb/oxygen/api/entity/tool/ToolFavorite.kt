@@ -1,6 +1,9 @@
 package top.fatweb.oxygen.api.entity.tool
 
-import com.baomidou.mybatisplus.annotation.*
+import com.baomidou.mybatisplus.annotation.TableField
+import com.baomidou.mybatisplus.annotation.TableId
+import com.baomidou.mybatisplus.annotation.TableName
+import com.baomidou.mybatisplus.annotation.Version
 import java.io.Serializable
 
 @TableName("t_b_tool_favorite")
@@ -42,16 +45,6 @@ class ToolFavorite : Serializable {
     var toolId: String? = null
 
     /**
-     * Deleted
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     */
-    @TableField("deleted")
-    @TableLogic
-    var deleted: Long? = null
-
-    /**
      * Version
      *
      * @author FatttSnake, fatttsnake@gmail.com
@@ -62,6 +55,6 @@ class ToolFavorite : Serializable {
     var version: Int? = null
 
     override fun toString(): String {
-        return "ToolFavorite(id=$id, userId=$userId, authorId=$authorId, toolId=$toolId, deleted=$deleted, version=$version)"
+        return "ToolFavorite(id=$id, userId=$userId, authorId=$authorId, toolId=$toolId, version=$version)"
     }
 }

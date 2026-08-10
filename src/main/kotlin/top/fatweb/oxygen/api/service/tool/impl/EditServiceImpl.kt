@@ -12,10 +12,12 @@ import top.fatweb.oxygen.api.converter.tool.toVo
 import top.fatweb.oxygen.api.converter.tool.toVoWithDist
 import top.fatweb.oxygen.api.converter.tool.toVoWithSource
 import top.fatweb.oxygen.api.entity.tool.*
+import top.fatweb.oxygen.api.entity.tool.ToolSource.Companion.copy
 import top.fatweb.oxygen.api.exception.*
 import top.fatweb.oxygen.api.mapper.tool.EditMapper
 import top.fatweb.oxygen.api.param.PageSortParam
 import top.fatweb.oxygen.api.param.tool.*
+import top.fatweb.oxygen.api.service.system.IStorageBlobService
 import top.fatweb.oxygen.api.service.tool.*
 import top.fatweb.oxygen.api.util.*
 import top.fatweb.oxygen.api.vo.PageVo
@@ -28,6 +30,14 @@ import java.time.ZoneOffset
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see IStorageBlobService
+ * @see IToolFileVersionService
+ * @see IToolSourceService
+ * @see IToolDistService
+ * @see IToolBaseService
+ * @see IToolTemplateService
+ * @see IToolCategoryService
+ * @see IRToolCategoryService
  * @see ServiceImpl
  * @see EditMapper
  * @see Tool
@@ -35,11 +45,14 @@ import java.time.ZoneOffset
  */
 @Service
 class EditServiceImpl(
+    private val storageBlobService: IStorageBlobService,
+    private val toolFileVersionService: IToolFileVersionService,
+    private val toolSourceService: IToolSourceService,
+    private val toolDistService: IToolDistService,
+    private val toolBaseService: IToolBaseService,
     private val toolTemplateService: IToolTemplateService,
     private val toolCategoryService: IToolCategoryService,
-    private val toolDataService: IToolDataService,
-    private val rToolCategoryService: IRToolCategoryService,
-    private val toolBaseService: IToolBaseService
+    private val rToolCategoryService: IRToolCategoryService
 ) : ServiceImpl<EditMapper, Tool>(), IEditService {
     override fun getTemplate(platform: Platform): List<ToolTemplateVo> =
         toolTemplateService.list(
@@ -69,14 +82,20 @@ class EditServiceImpl(
                 id = id,
                 userId = getLoginUserId()!!
             )
+        }.apply {
+            sources?.forEach { source ->
+                source.latestFileVersion?.apply {
+                    fileContent = storageBlobService.loadFile(fileHash!!)?.toString(Charsets.UTF_8)
+                }
+            }
         }.let(Tool::toVoWithSource)
 
-    override fun source(
+    override fun originalSource(
         username: String,
         toolId: String,
         ver: String,
         platform: Platform
-    ): ToolWithSourceVo {
+    ): Tool {
         if (username == "!" && getLoginUserId() == null) {
             throw NoRecordFoundException()
         }
@@ -89,8 +108,27 @@ class EditServiceImpl(
                 platform = platform,
                 operator = getLoginUsername()
             )
-        }.let(Tool::toVoWithSource)
+        }.apply {
+            sources?.forEach { source ->
+                source.latestFileVersion?.apply {
+                    fileContent = storageBlobService.loadFile(fileHash!!)?.toString(Charsets.UTF_8)
+                }
+            }
+        }
     }
+
+    override fun source(
+        username: String,
+        toolId: String,
+        ver: String,
+        platform: Platform
+    ): ToolWithSourceVo =
+        this.originalSource(
+            username = username,
+            toolId = toolId,
+            ver = ver,
+            platform = platform
+        ).let(Tool::toVoWithSource)
 
     override fun dist(
         username: String,
@@ -110,6 +148,10 @@ class EditServiceImpl(
                 platform = platform,
                 operator = getLoginUsername()
             )
+        }.apply {
+            dist?.apply {
+                fileContent = storageBlobService.loadFile(fileHash!!)?.toString(Charsets.UTF_8)
+            }
         }.let(Tool::toVoWithDist)
     }
 
@@ -129,7 +171,7 @@ class EditServiceImpl(
 
     @Transactional
     override fun create(toolCreateParam: ToolCreateParam): ToolWithSourceVo {
-        val template = this.getTemplate(toolCreateParam.templateId!!)
+        val template = toolTemplateService.getOriginalOne(toolCreateParam.templateId!!)
         baseMapper.selectOne(
             KtQueryWrapper(Tool())
                 .eq(Tool::toolId, toolCreateParam.toolId!!)
@@ -138,9 +180,10 @@ class EditServiceImpl(
         )?.let {
             throw DuplicateKeyException("The tool already exists")
         }
-        val newSource = ToolData().apply { data = template.source!!.data }
-        val newDist = ToolData().apply { data = "" }
-        saveOrThrowException { toolDataService.saveBatch(listOf(newSource, newDist)) }
+        val (newRootId, newSources, newFileVersions) = template.sources!!.copy()
+        saveOrThrowException { toolFileVersionService.saveBatch(newFileVersions) }
+        saveOrThrowException { toolSourceService.saveBatch(newSources) }
+        val newDistId = toolDistService.generateNewDist("")
 
         val tool = Tool().apply {
             name = toolCreateParam.name
@@ -148,13 +191,13 @@ class EditServiceImpl(
             icon = toolCreateParam.icon
             platform = template.platform
             description = toolCreateParam.description
-            baseId = template.base!!.id
-            baseVersion = template.base.version
+            baseId = template.baseId
+            baseVersion = template.baseVersion
             authorId = getLoginUserId()!!
             ver = toolCreateParam.ver!!.split(".").map(String::toLong).joinToString(".")
             keywords = toolCreateParam.keywords
-            sourceId = newSource.id
-            distId = newDist.id
+            sourceId = newRootId
+            distId = newDistId
             entryPoint = template.entryPoint
         }
 
@@ -222,21 +265,64 @@ class EditServiceImpl(
     }
 
     @Transactional
-    override fun updateSource(toolUpdateSourceParam: ToolUpdateSourceParam) {
-        val tool = queryOrThrowException { this.getOne(toolUpdateSourceParam.id!!) }
-
-        updateOrThrowException {
-            toolDataService.update(
-                KtUpdateWrapper(ToolData())
-                    .eq(ToolData::id, tool.source!!.id)
-                    .set(ToolData::data, toolUpdateSourceParam.source)
-            )
+    override fun updateSourceAdd(id: Long, toolCommonUpdateSourceAddParam: ToolCommonUpdateSourceAddParam): String {
+        val tool = queryOrThrowException {
+            this.getById(id)
         }
+        return toolSourceService.addNode(
+            rootId = tool.sourceId!!,
+            parentId = toolCommonUpdateSourceAddParam.parentNode!!,
+            fileName = toolCommonUpdateSourceAddParam.fileName!!,
+            dirNode = toolCommonUpdateSourceAddParam.dirNode!!,
+        ).toString()
+    }
+
+    override fun updateSourceRename(id: Long, nodeId: Long, fileName: String) {
+        val tool = queryOrThrowException {
+            this.getById(id)
+        }
+        toolSourceService.renameNode(
+            rootId = tool.sourceId!!,
+            nodeId = nodeId,
+            fileName = fileName,
+        )
+    }
+
+    override fun updateSourceMove(id: Long, nodeId: Long, newParentId: Long) {
+        val tool = queryOrThrowException {
+            this.getById(id)
+        }
+        toolSourceService.moveNode(
+            rootId = tool.sourceId!!,
+            nodeId = nodeId,
+            newParentId = newParentId,
+        )
+    }
+
+    override fun updateSourceContent(id: Long, nodeId: Long, content: String) {
+        val tool = queryOrThrowException {
+            this.getById(id)
+        }
+        toolSourceService.updateNode(
+            rootId = tool.sourceId!!,
+            nodeId = nodeId,
+            content = content.toByteArray()
+        )
+    }
+
+    override fun updateSourceRemove(id: Long, nodeId: Long) {
+        val tool = queryOrThrowException {
+            this.getById(id)
+        }
+        toolSourceService.removeNode(
+            rootId = tool.sourceId!!,
+            nodeId = nodeId,
+        )
     }
 
     @Transactional
     override fun upgrade(toolUpgradeParam: ToolUpgradeParam): ToolWithSourceVo {
-        val originalTool = this.source(
+        val originalTool = this.originalSource(
             username = "!",
             toolId = toolUpgradeParam.toolId!!,
             ver = "latest",
@@ -261,9 +347,10 @@ class EditServiceImpl(
             throw IllegalVersionException()
         }
 
-        val newSource = ToolData().apply { data = originalTool.source!!.data }
-        val newDist = ToolData().apply { data = "" }
-        saveOrThrowException { toolDataService.saveBatch(listOf(newSource, newDist)) }
+        val (newRootId, newSources, newFileVersions) = originalTool.sources!!.copy()
+        saveOrThrowException { toolFileVersionService.saveBatch(newFileVersions) }
+        saveOrThrowException { toolSourceService.saveBatch(newSources) }
+        val newDistId = toolDistService.generateNewDist("")
 
         val tool = Tool().apply {
             name = originalTool.name!!
@@ -271,13 +358,13 @@ class EditServiceImpl(
             icon = originalTool.icon
             platform = originalTool.platform
             description = originalTool.description
-            baseId = originalTool.base!!.id
-            baseVersion = originalTool.base.version
+            baseId = originalTool.baseId
+            baseVersion = originalTool.baseVersion
             authorId = getLoginUserId()!!
             ver = newVersionNumberList.joinToString(".")
             keywords = originalTool.keywords
-            sourceId = newSource.id
-            distId = newDist.id
+            sourceId = newRootId
+            distId = newDistId
             entryPoint = originalTool.entryPoint
         }
 
@@ -348,15 +435,19 @@ class EditServiceImpl(
 
     @Transactional
     override fun delete(id: Long): Boolean {
-        val tool = queryOrThrowException {
-            baseMapper.selectOne(
-                KtQueryWrapper(Tool()).eq(Tool::id, id)
+        existsOrThrowException {
+            baseMapper.exists(
+                KtQueryWrapper(Tool())
+                    .eq(Tool::id, id)
                     .eq(Tool::authorId, getLoginUserId()!!)
             )
         }
+        rToolCategoryService.remove(
+            KtQueryWrapper(RToolCategory())
+                .eq(RToolCategory::toolId, id)
+        )
 
-        toolDataService.removeBatchByIds(listOf(tool.sourceId, tool.distId))
-        rToolCategoryService.remove(KtQueryWrapper(RToolCategory()).eq(RToolCategory::toolId, tool.id))
+        // TODO: keep source & dist, add manual cleanup method later
 
         return this.removeById(id)
     }

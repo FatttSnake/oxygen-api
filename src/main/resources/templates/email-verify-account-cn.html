@@ -76,7 +76,7 @@
     <div class="card">
         <div class="title">账&nbsp;号&nbsp;激&nbsp;活</div>
         <div><strong th:text="${username}">用户</strong>，您好：</div>
-        <div style="text-indent: 2em">感谢注册 <a target="_blank" th:href="@{${appUrl}}" th:text="|${appName}(${appUrl})|">应用名称(URL)</a>，在继续使用之前，我们需要确定您的电子邮箱地址的有效性，请在
+        <div style="text-indent: 2em">感谢注册 <a target="_blank" th:href="@{${homeUrl}}" th:text="|${systemName}(${homeUrl})|">应用名称(URL)</a>，在继续使用之前，我们需要确定您的电子邮箱地址的有效性，请在
             <u><i>两小时内</i></u> 点击下面的按钮帮助我们验证：
         </div>
         <div class="verify-button"><a target="_blank" th:href="@{${verifyUrl}}">验证邮箱</a></div>

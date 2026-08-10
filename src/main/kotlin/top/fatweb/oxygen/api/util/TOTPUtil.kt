@@ -12,7 +12,6 @@ import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 import kotlin.experimental.and
 import kotlin.io.encoding.Base64
-import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.math.pow
 import kotlin.random.Random
 import kotlin.time.Duration.Companion.seconds
@@ -192,7 +191,6 @@ object TOTPUtil {
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @OptIn(ExperimentalEncodingApi::class)
     fun generateQRCodeSVGBase64(issuer: String, username: String, secretKey: String) =
         Base64.encode(generateQRCodeSVG(issuer, username, secretKey).toByteArray(Charsets.UTF_8))
 }

@@ -6,6 +6,12 @@ import retrofit2.Retrofit
 import retrofit2.converter.jackson.JacksonConverterFactory
 import top.fatweb.oxygen.api.http.TurnstileApi
 
+/**
+ * Retrofit configuration
+ *
+ * @author FatttSnake, fatttsnake@gmail.com
+ * @since 1.1.0
+ */
 @Configuration
 class RetrofitConfig {
     @Bean

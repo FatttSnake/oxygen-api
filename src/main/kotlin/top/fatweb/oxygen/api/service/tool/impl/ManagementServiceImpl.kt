@@ -10,16 +10,16 @@ import top.fatweb.oxygen.api.converter.tool.toVo
 import top.fatweb.oxygen.api.converter.tool.toVoWithSource
 import top.fatweb.oxygen.api.entity.tool.RToolCategory
 import top.fatweb.oxygen.api.entity.tool.Tool
-import top.fatweb.oxygen.api.entity.tool.ToolData
 import top.fatweb.oxygen.api.exception.ToolHasNotBeenDelisted
 import top.fatweb.oxygen.api.exception.ToolHasNotBeenPublishedException
 import top.fatweb.oxygen.api.exception.ToolNotUnderReviewException
 import top.fatweb.oxygen.api.mapper.tool.ManagementMapper
 import top.fatweb.oxygen.api.param.tool.ToolManagementGetParam
-import top.fatweb.oxygen.api.param.tool.ToolManagementPassParam
+import top.fatweb.oxygen.api.service.system.IStorageBlobService
 import top.fatweb.oxygen.api.service.tool.IManagementService
 import top.fatweb.oxygen.api.service.tool.IRToolCategoryService
-import top.fatweb.oxygen.api.service.tool.IToolDataService
+import top.fatweb.oxygen.api.service.tool.IToolDistService
+import top.fatweb.oxygen.api.util.existsOrThrowException
 import top.fatweb.oxygen.api.util.queryOrThrowException
 import top.fatweb.oxygen.api.util.setPageSort
 import top.fatweb.oxygen.api.util.updateOrThrowException
@@ -34,7 +34,8 @@ import java.time.ZoneOffset
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
- * @see IToolDataService
+ * @see IStorageBlobService
+ * @see IToolDistService
  * @see IRToolCategoryService
  * @see ServiceImpl
  * @see ManagementMapper
@@ -43,11 +44,20 @@ import java.time.ZoneOffset
  */
 @Service
 class ManagementServiceImpl(
-    private val toolDataService: IToolDataService,
+    private val storageBlobService: IStorageBlobService,
+    private val toolDistService: IToolDistService,
     private val rToolCategoryService: IRToolCategoryService
 ) : ServiceImpl<ManagementMapper, Tool>(), IManagementService {
     override fun getOne(id: Long): ToolWithSourceVo =
-        queryOrThrowException { baseMapper.selectOne(id) }.let(Tool::toVoWithSource)
+        queryOrThrowException {
+            baseMapper.selectOne(id)
+        }.apply {
+            sources?.forEach { source ->
+                source.latestFileVersion?.apply {
+                    fileContent = storageBlobService.loadFile(fileHash!!)?.toString(Charsets.UTF_8)
+                }
+            }
+        }.let(Tool::toVoWithSource)
 
     override fun getPage(toolManagementGetParam: ToolManagementGetParam?): PageVo<ToolVo> {
         val toolIdsPage = Page<Long>(toolManagementGetParam?.currentPage ?: 1, toolManagementGetParam?.pageSize ?: 20)
@@ -72,19 +82,13 @@ class ManagementServiceImpl(
     }
 
     @Transactional
-    override fun pass(id: Long, toolManagementPassParam: ToolManagementPassParam) {
+    override fun pass(id: Long, dist: String) {
         val tool = queryOrThrowException { this.getById(id) }
         if (tool.review !== Tool.ReviewType.PROCESSING) {
             throw ToolNotUnderReviewException()
         }
 
-        updateOrThrowException {
-            toolDataService.update(
-                KtUpdateWrapper(ToolData())
-                    .eq(ToolData::id, tool.distId)
-                    .set(ToolData::data, toolManagementPassParam.dist)
-            )
-        }
+        toolDistService.updateContent(tool.distId!!, dist)
         updateOrThrowException {
             this.update(
                 KtUpdateWrapper(Tool())
@@ -160,10 +164,18 @@ class ManagementServiceImpl(
 
     @Transactional
     override fun delete(id: Long): Boolean {
-        val tool = queryOrThrowException { this.getById(id) }
+        existsOrThrowException {
+            baseMapper.exists(
+                KtQueryWrapper(Tool())
+                    .eq(Tool::id, id)
+            )
+        }
+        rToolCategoryService.remove(
+            KtQueryWrapper(RToolCategory())
+                .eq(RToolCategory::toolId, id)
+        )
 
-        toolDataService.removeBatchByIds(listOf(tool.sourceId, tool.distId))
-        rToolCategoryService.remove(KtQueryWrapper(RToolCategory()).eq(RToolCategory::toolId, id))
+        // TODO: keep source & dist, add manual cleanup method later
 
         return this.removeById(id)
     }

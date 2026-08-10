@@ -3,7 +3,9 @@ package top.fatweb.oxygen.api.config
 import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.core.Ordered
 import top.fatweb.oxygen.api.filter.ExceptionFilter
+import top.fatweb.oxygen.api.filter.TraceIdFilter
 
 /**
  * Filter configuration
@@ -18,5 +20,12 @@ class FilterConfig {
         FilterRegistrationBean(exceptionFilter).apply {
             setBeanName("exceptionFilter")
             order = -100
+        }
+
+    @Bean
+    fun traceIdFilterRegistrationBean(traceIdFilter: TraceIdFilter): FilterRegistrationBean<TraceIdFilter> =
+        FilterRegistrationBean(traceIdFilter).apply {
+            setBeanName("traceIdFilter")
+            order = Ordered.HIGHEST_PRECEDENCE + 50
         }
 }

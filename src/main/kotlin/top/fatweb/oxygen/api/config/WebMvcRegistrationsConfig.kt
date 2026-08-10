@@ -3,7 +3,7 @@ package top.fatweb.oxygen.api.config
 import org.springframework.boot.autoconfigure.web.servlet.WebMvcRegistrations
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping
-import top.fatweb.oxygen.api.util.ApiResponseMappingHandlerMapping
+import top.fatweb.oxygen.api.component.api.ApiResponseMappingHandlerMapping
 
 /**
  * Web MVC registrations configuration

@@ -4,14 +4,13 @@ import com.baomidou.mybatisplus.extension.kotlin.KtQueryWrapper
 import jakarta.annotation.PostConstruct
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import org.springframework.context.annotation.DependsOn
 import org.springframework.security.core.token.Sha512DigestUtils
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Component
 import top.fatweb.avatargenerator.GitHubAvatar
 import top.fatweb.oxygen.api.entity.permission.User
 import top.fatweb.oxygen.api.entity.permission.UserInfo
-import top.fatweb.oxygen.api.properties.AdminProperties
+import top.fatweb.oxygen.api.properties.ServerProperties
 import top.fatweb.oxygen.api.service.permission.IUserInfoService
 import top.fatweb.oxygen.api.service.permission.IUserService
 import top.fatweb.oxygen.api.util.generateRandomPassword
@@ -21,16 +20,17 @@ import top.fatweb.oxygen.api.util.generateRandomPassword
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see ServerProperties
+ * @see PasswordEncoder
  * @see IUserService
  * @see IUserInfoService
- * @see PasswordEncoder
  */
-@DependsOn("adminProperties")
 @Component
 class InitConfig(
+    private val serverProperties: ServerProperties,
+    private val passwordEncoder: PasswordEncoder,
     private val userService: IUserService,
-    private val userInfoService: IUserInfoService,
-    private val passwordEncoder: PasswordEncoder
+    private val userInfoService: IUserInfoService
 ) {
     private val logger: Logger = LoggerFactory.getLogger(this::class.java)
 
@@ -39,7 +39,7 @@ class InitConfig(
         if (!userService.exists(KtQueryWrapper(User()).eq(User::id, 0))) {
             userInfoService.remove(KtQueryWrapper(UserInfo()).eq(UserInfo::userId, 0))
 
-            val rawPassword = AdminProperties.password ?: let {
+            val rawPassword = serverProperties.admin.password ?: let {
                 logger.warn("No default administrator password is set, a randomly generated password will be used")
                 generateRandomPassword(10)
             }
@@ -47,17 +47,17 @@ class InitConfig(
 
             val user = User().apply {
                 id = 0
-                username = AdminProperties.username
+                username = serverProperties.admin.username
                 password = encodedPassword
                 locking = 0
                 enable = 1
             }
             val userInfo = UserInfo().apply {
                 userId = 0
-                nickname = AdminProperties.nickname
+                nickname = serverProperties.admin.nickname
                 avatar =
                     GitHubAvatar.newAvatarBuilder().build().createAsBase64((Long.MIN_VALUE..Long.MAX_VALUE).random())
-                email = AdminProperties.email
+                email = serverProperties.admin.email
             }
 
             if (userService.save(user) && userInfoService.save(userInfo)) {

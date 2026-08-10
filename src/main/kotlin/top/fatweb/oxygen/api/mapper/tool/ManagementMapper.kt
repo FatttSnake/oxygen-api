@@ -32,6 +32,7 @@ interface ManagementMapper : BaseMapper<Tool> {
      *
      * @param page Pagination
      * @param review Review
+     * @param platform Platform list string
      * @param searchType Type of search
      * @param searchValue Value to search for
      * @param searchRegex Use regex

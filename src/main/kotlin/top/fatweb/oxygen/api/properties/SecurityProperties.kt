@@ -1,79 +1,80 @@
 package top.fatweb.oxygen.api.properties
 
-import org.springframework.boot.context.properties.ConfigurationProperties
-import org.springframework.stereotype.Component
+import jakarta.validation.constraints.NotBlank
+import org.springframework.validation.annotation.Validated
 import java.util.concurrent.TimeUnit
 
 /**
  * Security properties
  *
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.0.0
+ * @since 1.3.0
  */
-@Component
-@ConfigurationProperties("app.security")
-object SecurityProperties {
+@Validated
+data class SecurityProperties(
     /**
      * Key to get authentication from header
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.3.0
      */
-    var headerKey = "Authorization"
+    @field:NotBlank val headerKey: String = "Authorization",
 
     /**
      * Prefix of token
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.3.0
      */
-    var tokenPrefix = "Bearer "
+    @field:NotBlank val tokenPrefix: String = "Bearer ",
 
     /**
      * Secret to generate token
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.1.0
+     * @since 1.3.0
      */
-    var tokenSecret = "Oxygen"
+    @field:NotBlank val tokenSecret: String = "Oxygen",
 
     /**
      * Issuer of token
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.1.0
+     * @since 1.3.0
      */
-    var tokenIssuer = "Oxygen"
+    @field:NotBlank val tokenIssuer: String = "Oxygen",
 
     /**
      * Life of access token
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.1.0
+     * @since 1.3.0
      */
-    var accessTokenTtl = 2L
+    val accessTokenTtl: Long = 2L,
 
     /**
      * Life util of access token
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.1.0
+     * @since 1.3.0
+     * @see TimeUnit
      */
-    var accessTokenTtlUnit = TimeUnit.HOURS
+    val accessTokenTtlUnit: TimeUnit = TimeUnit.HOURS,
 
     /**
      * Life of refresh token
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.1.0
+     * @since 1.3.0
      */
-    var refreshTokenTtl = 128L
+    val refreshTokenTtl: Long = 128L,
 
     /**
      * Life util of refresh token
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.1.0
+     * @since 1.3.0
+     * @see TimeUnit
      */
-    var refreshTokenTtlUnit = TimeUnit.DAYS
-}
+    val refreshTokenTtlUnit: TimeUnit = TimeUnit.DAYS
+)

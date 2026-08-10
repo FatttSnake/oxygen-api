@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import top.fatweb.oxygen.api.component.storage.RedisProvider
 import top.fatweb.oxygen.api.converter.permission.toEntity
 import top.fatweb.oxygen.api.converter.permission.toVo
 import top.fatweb.oxygen.api.converter.permission.toVoWithPower
@@ -12,6 +13,7 @@ import top.fatweb.oxygen.api.entity.permission.RPowerRole
 import top.fatweb.oxygen.api.entity.permission.Role
 import top.fatweb.oxygen.api.mapper.permission.RoleMapper
 import top.fatweb.oxygen.api.param.permission.role.*
+import top.fatweb.oxygen.api.properties.ServerProperties
 import top.fatweb.oxygen.api.service.permission.*
 import top.fatweb.oxygen.api.util.*
 import top.fatweb.oxygen.api.vo.PageVo
@@ -23,7 +25,8 @@ import top.fatweb.oxygen.api.vo.permission.base.RoleVo
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
- * @see RedisUtil
+ * @see ServerProperties
+ * @see RedisProvider
  * @see IRPowerRoleService
  * @see IFuncService
  * @see IMenuService
@@ -35,7 +38,8 @@ import top.fatweb.oxygen.api.vo.permission.base.RoleVo
  */
 @Service
 class RoleServiceImpl(
-    private val redisUtil: RedisUtil,
+    private val serverProperties: ServerProperties,
+    private val redisProvider: RedisProvider,
     private val rPowerRoleService: IRPowerRoleService,
     private val funcService: IFuncService,
     private val menuService: IMenuService,
@@ -95,7 +99,7 @@ class RoleServiceImpl(
 
         val oldPowerList = rPowerRoleService.list(
             KtQueryWrapper(RPowerRole()).select(RPowerRole::powerId).eq(RPowerRole::roleId, roleUpdateParam.id)
-        ).map { it.powerId }
+        ).map(RPowerRole::powerId)
         val addPowerIds = HashSet<Long>()
         val removePowerIds = HashSet<Long>()
         fullPowerIds?.forEach(addPowerIds::add)
@@ -175,6 +179,6 @@ class RoleServiceImpl(
 
     private fun offlineUser(vararg roleIds: Long) {
         val userIds = userService.getIdsByRoleIds(roleIds.toList())
-        offlineUser(redisUtil, *userIds.toLongArray())
+        offlineUser(serverProperties = serverProperties, redisProvider = redisProvider, *userIds.toLongArray())
     }
 }

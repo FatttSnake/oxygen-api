@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import top.fatweb.oxygen.api.component.storage.RedisProvider
 import top.fatweb.oxygen.api.converter.permission.toEntity
 import top.fatweb.oxygen.api.converter.permission.toVo
 import top.fatweb.oxygen.api.converter.permission.toVoWithRole
@@ -12,6 +13,7 @@ import top.fatweb.oxygen.api.entity.permission.Group
 import top.fatweb.oxygen.api.entity.permission.RRoleGroup
 import top.fatweb.oxygen.api.mapper.permission.GroupMapper
 import top.fatweb.oxygen.api.param.permission.group.*
+import top.fatweb.oxygen.api.properties.ServerProperties
 import top.fatweb.oxygen.api.service.permission.IGroupService
 import top.fatweb.oxygen.api.service.permission.IRRoleGroupService
 import top.fatweb.oxygen.api.service.permission.IUserService
@@ -25,7 +27,8 @@ import top.fatweb.oxygen.api.vo.permission.base.GroupVo
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
- * @see RedisUtil
+ * @see ServerProperties
+ * @see RedisProvider
  * @see IRRoleGroupService
  * @see IUserService
  * @see ServiceImpl
@@ -35,7 +38,8 @@ import top.fatweb.oxygen.api.vo.permission.base.GroupVo
  */
 @Service
 class GroupServiceImpl(
-    private val redisUtil: RedisUtil,
+    private val serverProperties: ServerProperties,
+    private val redisProvider: RedisProvider,
     private val rRoleGroupService: IRRoleGroupService,
     private val userService: IUserService
 ) : ServiceImpl<GroupMapper, Group>(), IGroupService {
@@ -88,7 +92,7 @@ class GroupServiceImpl(
 
         val oldRoleList = rRoleGroupService.list(
             KtQueryWrapper(RRoleGroup()).select(RRoleGroup::roleId).eq(RRoleGroup::groupId, groupUpdateParam.id)
-        ).map { it.roleId }
+        ).map(RRoleGroup::roleId)
         val addRoleIds = HashSet<Long>()
         val removeRoleIds = HashSet<Long>()
         groupUpdateParam.roleIds?.forEach(addRoleIds::add)
@@ -142,6 +146,6 @@ class GroupServiceImpl(
 
     private fun offlineUser(vararg groupIds: Long) {
         val userIds = userService.getIdsByGroupIds(groupIds.toList())
-        offlineUser(redisUtil, *userIds.toLongArray())
+        offlineUser(serverProperties = serverProperties, redisProvider = redisProvider, *userIds.toLongArray())
     }
 }

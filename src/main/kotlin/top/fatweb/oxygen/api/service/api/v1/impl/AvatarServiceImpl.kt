@@ -13,7 +13,6 @@ import top.fatweb.oxygen.api.util.getRandomLong
 import top.fatweb.oxygen.api.vo.api.v1.avatar.AvatarBase64Vo
 import java.awt.Color
 import kotlin.io.encoding.Base64
-import kotlin.io.encoding.ExperimentalEncodingApi
 
 /**
  * Avatar service implement
@@ -22,7 +21,6 @@ import kotlin.io.encoding.ExperimentalEncodingApi
  * @since 1.0.0
  * @see IAvatarService
  */
-@OptIn(ExperimentalEncodingApi::class)
 @Service
 class AvatarServiceImpl : IAvatarService {
     override fun random(avatarBaseParam: AvatarBaseParam?): ByteArray =

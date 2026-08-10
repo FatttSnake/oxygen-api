@@ -24,6 +24,7 @@ fun IPage<SysLog>.toVo() = PageVo(
         SysLogVo(
             id = sysLog.id,
             logType = sysLog.logType,
+            traceId = sysLog.traceId,
             operateUserId = sysLog.operateUserId,
             operateTime = sysLog.operateTime,
             requestUri = sysLog.requestUri,

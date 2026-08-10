@@ -23,7 +23,7 @@ interface ISettingsService {
      * @since 1.0.0
      * @see BaseSettingsVo
      */
-    fun getBase(): BaseSettingsVo?
+    fun getBase(): BaseSettingsVo
 
     /**
      * Update base settings
@@ -43,7 +43,7 @@ interface ISettingsService {
      * @since 1.0.0
      * @see MailSettingsVo
      */
-    fun getMail(): MailSettingsVo?
+    fun getMail(): MailSettingsVo
 
     /**
      * Update mail settings
@@ -61,7 +61,7 @@ interface ISettingsService {
      * @param mailSendParam Send mail parameters
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
-     * @see MailSettingsParam
+     * @see MailSendParam
      */
     fun sendMail(mailSendParam: MailSendParam)
 
@@ -73,7 +73,7 @@ interface ISettingsService {
      * @since 1.0.0
      * @see TwoFactorSettingsVo
      */
-    fun getTwoFactor(): TwoFactorSettingsVo?
+    fun getTwoFactor(): TwoFactorSettingsVo
 
     /**
      * Update two-factor settings

@@ -32,7 +32,7 @@ data class MailSettings(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    var securityType: MailSecurityType? = MailSecurityType.NONE,
+    var securityType: MailSecurityType? = null,
 
     /**
      * Username

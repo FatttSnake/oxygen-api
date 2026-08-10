@@ -3,10 +3,7 @@ package top.fatweb.oxygen.api.converter.tool
 import com.baomidou.mybatisplus.core.metadata.IPage
 import top.fatweb.oxygen.api.converter.permission.toVoWithInfo
 import top.fatweb.oxygen.api.entity.permission.User
-import top.fatweb.oxygen.api.entity.tool.Tool
-import top.fatweb.oxygen.api.entity.tool.ToolBase
-import top.fatweb.oxygen.api.entity.tool.ToolCategory
-import top.fatweb.oxygen.api.entity.tool.ToolData
+import top.fatweb.oxygen.api.entity.tool.*
 import top.fatweb.oxygen.api.param.tool.ToolUpdateParam
 import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.tool.ToolVo
@@ -81,7 +78,7 @@ fun Tool.toVoWithSource() = ToolWithSourceVo(
     ver = this.ver,
     keywords = this.keywords,
     categories = this.categories?.map(ToolCategory::toVo),
-    source = this.source?.let(ToolData::toVo),
+    sources = this.sources?.map(ToolSource::toVo),
     entryPoint = this.entryPoint,
     publish = this.publish,
     review = this.review,
@@ -111,7 +108,7 @@ fun Tool.toVoWithDist() = ToolWithDistVo(
     ver = this.ver,
     keywords = this.keywords,
     categories = this.categories?.map(ToolCategory::toVo),
-    dist = this.dist?.let(ToolData::toVo),
+    dist = this.dist?.let(ToolDist::toVo),
     entryPoint = this.entryPoint,
     publish = this.publish,
     review = this.review,

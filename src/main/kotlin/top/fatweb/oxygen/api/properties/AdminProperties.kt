@@ -1,46 +1,45 @@
 package top.fatweb.oxygen.api.properties
 
-import org.springframework.boot.context.properties.ConfigurationProperties
-import org.springframework.stereotype.Component
+import jakarta.validation.constraints.NotBlank
+import org.springframework.validation.annotation.Validated
 
 /**
  * Admin properties
  *
  * @author FatttSnake, fatttsnake@gmail.com
- * @since 1.0.0
+ * @since 1.3.0
  */
-@Component
-@ConfigurationProperties("app.admin")
-object AdminProperties {
+@Validated
+data class AdminProperties(
     /**
      * Username
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.3.0
      */
-    var username = "admin"
+    @field:NotBlank val username: String = "admin",
 
     /**
      * Password
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.3.0
      */
-    var password: String? = null
+    val password: String? = null,
 
     /**
      * Nickname
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.3.0
      */
-    var nickname = "Administrator"
+    @field:NotBlank val nickname: String = "Administrator",
 
     /**
      * Email
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.3.0
      */
-    var email = "admin@mail.com"
-}
+    @field:NotBlank val email: String = "admin@mail.com"
+)

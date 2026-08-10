@@ -1,36 +1,29 @@
 package top.fatweb.oxygen.api.properties
 
+import jakarta.validation.Valid
 import org.springframework.boot.context.properties.ConfigurationProperties
-import org.springframework.stereotype.Component
+import org.springframework.validation.annotation.Validated
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZoneOffset
 import java.time.ZonedDateTime
 
 /**
- * Application properties
+ * Server properties
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-@Component
+@Validated
 @ConfigurationProperties("app")
-object ServerProperties {
-    /**
-     * App name
-     *
-     * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
-     */
-    lateinit var appName: String
-
+data class ServerProperties(
     /**
      * Version
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    lateinit var version: String
+    val version: String,
 
     /**
      * Build time
@@ -38,23 +31,44 @@ object ServerProperties {
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    lateinit var buildTime: String
+    val buildTime: String,
 
     /**
      * Startup time
      *
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
+     * @see LocalDateTime
      */
-    val startupTime: LocalDateTime = LocalDateTime.now(ZoneOffset.UTC)
+    val startupTime: LocalDateTime = LocalDateTime.now(ZoneOffset.UTC),
 
     /**
-     * Turnstile secret key
+     * Admin properties
      *
      * @author FatttSnake, fatttsnake@gmail.com
-     * @since 1.0.0
+     * @since 1.3.0
+     * @see AdminProperties
      */
-    lateinit var turnstileSecretKey: String
+    @field:Valid val admin: AdminProperties = AdminProperties(),
+
+    /**
+     * Security properties
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.3.0
+     * @see SecurityProperties
+     */
+    @field:Valid val security: SecurityProperties = SecurityProperties(),
+
+    /**
+     * Storage properties
+     *
+     * @author FatttSnake, fatttsnake@gmail.com
+     * @since 1.3.0
+     * @see StorageProperties
+     */
+    @field:Valid val storage: StorageProperties = StorageProperties()
+) {
 
     fun buildZoneDateTime(zoneId: ZoneId = ZoneId.systemDefault()): ZonedDateTime =
         LocalDateTime.parse(buildTime).atZone(ZoneId.of("UTC")).withZoneSameInstant(zoneId)

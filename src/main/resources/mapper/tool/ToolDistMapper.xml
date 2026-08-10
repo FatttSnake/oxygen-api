@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.fatweb.oxygen.api.mapper.tool.ToolDistMapper">
+    <resultMap id="toolDistMap" type="top.fatweb.oxygen.api.entity.tool.ToolDist">
+        <id property="id" column="tool_dist_id"/>
+        <id property="fileHash" column="tool_dist_file_hash"/>
+        <id property="fileSize" column="tool_dist_file_size"/>
+        <id property="createTime" column="tool_dist_create_time"/>
+        <id property="updateTime" column="tool_dist_update_time"/>
+        <id property="version" column="tool_dist_version"/>
+    </resultMap>
+</mapper>

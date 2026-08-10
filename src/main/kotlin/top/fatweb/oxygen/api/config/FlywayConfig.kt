@@ -3,8 +3,9 @@ package top.fatweb.oxygen.api.config
 import com.baomidou.dynamic.datasource.DynamicRoutingDataSource
 import jakarta.annotation.PostConstruct
 import org.flywaydb.core.Flyway
+import org.flywaydb.core.api.migration.JavaMigration
 import org.springframework.context.annotation.Configuration
-import org.springframework.context.annotation.DependsOn
+import top.fatweb.oxygen.api.migration.TargetDataSource
 import top.fatweb.oxygen.api.properties.FlywayProperties
 import javax.sql.DataSource
 
@@ -13,31 +14,40 @@ import javax.sql.DataSource
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see FlywayProperties
+ * @see DataSource
+ * @see JavaMigration
  */
-@DependsOn("flywayProperties")
 @Configuration
 class FlywayConfig(
-    private val dataSource: DataSource
+    private val flywayProperties: FlywayProperties,
+    private val dataSource: DataSource,
+    private val migrations: List<JavaMigration>
 ) {
     @PostConstruct
     fun migrateOrder() {
         val ds = dataSource as DynamicRoutingDataSource
         ds.dataSources.forEach { (k: String, v: DataSource?) ->
+            val javaMigrations = migrations.filter {
+                val annotation = it::class.java.getAnnotation(TargetDataSource::class.java)
+                annotation?.value == k
+            }
+
             val flyway = Flyway.configure()
                 .dataSource(v)
-                .locations(*FlywayProperties.locations.map { "$it/$k" }.toTypedArray())
-                .baselineOnMigrate(FlywayProperties.baselineOnMigrate)
-                .table(FlywayProperties.table)
-                .outOfOrder(FlywayProperties.outOfOrder)
-                .validateOnMigrate(FlywayProperties.validateOnMigrate)
-                .encoding(FlywayProperties.encoding)
-                .sqlMigrationPrefix(FlywayProperties.sqlMigrationPrefix)
-                .sqlMigrationSeparator(FlywayProperties.sqlMigrationSeparator)
-                .sqlMigrationSuffixes(*FlywayProperties.sqlMigrationSuffixes.toTypedArray())
-                .baselineVersion(FlywayProperties.baselineVersion)
+                .locations(*flywayProperties.locations.map { "$it/$k" }.toTypedArray())
+                .javaMigrations(*javaMigrations.toTypedArray())
+                .baselineOnMigrate(flywayProperties.baselineOnMigrate)
+                .table(flywayProperties.table)
+                .outOfOrder(flywayProperties.outOfOrder)
+                .validateOnMigrate(flywayProperties.validateOnMigrate)
+                .encoding(flywayProperties.encoding)
+                .sqlMigrationPrefix(flywayProperties.sqlMigrationPrefix)
+                .sqlMigrationSeparator(flywayProperties.sqlMigrationSeparator)
+                .sqlMigrationSuffixes(*flywayProperties.sqlMigrationSuffixes.toTypedArray())
+                .baselineVersion(flywayProperties.baselineVersion)
                 .load()
             flyway.migrate()
         }
-
     }
 }

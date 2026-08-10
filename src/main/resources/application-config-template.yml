@@ -1,7 +1,5 @@
 app:
-  app-name: Oxygen Toolbox # Application name
-  turnstile-secret-key: 1x0000000000000000000000000000000AA # Turnstile secret key
-  admin:
+#  admin:
 #    username: admin # Username of administrator
 #    password: admin # Default password of administrator
 #    nickname: Administrator # Nickname of administrator
@@ -15,9 +13,23 @@ app:
 #    access-token-ttl-unit: hours # Life util of access token [nanoseconds, microseconds, milliseconds, seconds, minutes, hours, days]
 #    refresh-token-ttl: 128 # Life of refresh token
 #    refresh-token-ttl-unit: days # Life util of refresh token [nanoseconds, microseconds, milliseconds, seconds, minutes, hours, days]
+  storage:
+    mode: local # File storage mode [local, s3]
+#    local:
+#      root: data/objects # File storage root path
+#    s3:
+#      endpoint: http://localhost:9000 # S3 endpoint
+#      accessKey: xxxxxx # S3 access key
+#      secretKey: xxxxxx # S3 secret key
+#      region: auto # S3 region
+#      pathStyle: path # S3 path style [path, virtualHosted]
+#      bucket: xxx # S3 bucket
+#      prefix: # S3 storage path prefix
 
-server:
-#  port: 8080 # Server port
+#server:
+#  port: 8080 # Server port (Will be replaced by environment variables in Docker)
+#  compression:
+#    enabled: false
 
 spring:
   datasource:
@@ -27,7 +39,7 @@ spring:
           url: jdbc:mysql://localhost # MySQL url
           username: root # MySQL username
           password: root # MySQL password
-    hikari:
+#    hikari:
 #      pool-name: HikariCP # Connection pool name
 #      minimum-idle: 5 # Minimum number of connection in pool
 #      idle-timeout: 600000 # The lifetime of connection when idle
@@ -38,8 +50,8 @@ spring:
 #      connection-test-query: select 1 # Test query then connect
 
 
-  data:
-    redis:
+#  data:
+#    redis:
 #      database: 0 # Redis database (default: 0)
 #      host: localhost # Redis host (default: localhost)
 #      port: 6379 # Redis port (default: 6379)
@@ -56,9 +68,9 @@ logging:
   level:
     root: info # Logging level
   file:
-    name: data/log/fat-api.log # Logging path and name
-  logback:
-    rollingpolicy:
+    name: data/log/oxygen-api.log # Logging path and name
+#  logback:
+#    rollingpolicy:
 #      max-file-size: 10MB # Maximum log file size
 #      max-history: 7 # Maximum number of archive log files to keep
 

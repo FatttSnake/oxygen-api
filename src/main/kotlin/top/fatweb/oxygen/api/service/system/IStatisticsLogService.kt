@@ -8,5 +8,7 @@ import top.fatweb.oxygen.api.entity.system.StatisticsLog
  *
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
+ * @see IService
+ * @see StatisticsLog
  */
 interface IStatisticsLogService : IService<StatisticsLog>

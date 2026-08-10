@@ -1,7 +1,7 @@
 package top.fatweb.oxygen.api.properties
 
 import org.springframework.boot.context.properties.ConfigurationProperties
-import org.springframework.stereotype.Component
+import java.nio.charset.Charset
 
 /**
  * Flyway properties
@@ -9,9 +9,8 @@ import org.springframework.stereotype.Component
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-@Component
 @ConfigurationProperties("spring.flyway")
-object FlywayProperties {
+data class FlywayProperties(
     /**
      * Locations of migrations scripts. Can contain the special "{vendor}" placeholder to
      * use vendor-specific locations.
@@ -19,7 +18,7 @@ object FlywayProperties {
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    var locations = listOf("classpath:db/migration")
+    val locations: List<String> = listOf("classpath:db/migration"),
 
     /**
      * Name of the schema history table that will be used by Flyway.
@@ -27,7 +26,7 @@ object FlywayProperties {
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    var table = "flyway_schema_history"
+    val table: String = "flyway_schema_history",
 
     /**
      * Whether to allow migrations to be run out of order.
@@ -35,7 +34,7 @@ object FlywayProperties {
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    var outOfOrder = false
+    val outOfOrder: Boolean = false,
 
     /**
      * Whether to automatically call validate when performing a migration.
@@ -43,7 +42,7 @@ object FlywayProperties {
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    var validateOnMigrate = true
+    val validateOnMigrate: Boolean = true,
 
     /**
      * Encoding of SQL migrations.
@@ -51,7 +50,7 @@ object FlywayProperties {
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    var encoding = Charsets.UTF_8
+    val encoding: Charset = Charsets.UTF_8,
 
     /**
      * File name prefix for SQL migrations.
@@ -59,7 +58,7 @@ object FlywayProperties {
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    var sqlMigrationPrefix = "V"
+    val sqlMigrationPrefix: String = "V",
 
     /**
      * File name separator for SQL migrations.
@@ -67,7 +66,7 @@ object FlywayProperties {
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    var sqlMigrationSeparator = "__"
+    val sqlMigrationSeparator: String = "__",
 
     /**
      * File name suffix for SQL migrations.
@@ -75,7 +74,7 @@ object FlywayProperties {
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    var sqlMigrationSuffixes = listOf(".sql")
+    val sqlMigrationSuffixes: List<String> = listOf(".sql"),
 
     /**
      * Whether to automatically call baseline when migrating a non-empty schema.
@@ -83,7 +82,7 @@ object FlywayProperties {
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    var baselineOnMigrate = true
+    val baselineOnMigrate: Boolean = true,
 
     /**
      * Version to tag an existing schema with when executing baseline.
@@ -91,5 +90,5 @@ object FlywayProperties {
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    var baselineVersion = "0"
-}
+    val baselineVersion: String = "0"
+)
