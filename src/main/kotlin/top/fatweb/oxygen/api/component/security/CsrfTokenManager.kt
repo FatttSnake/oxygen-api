@@ -4,7 +4,7 @@ import org.springframework.stereotype.Component
 import top.fatweb.oxygen.api.component.storage.RedisProvider
 import top.fatweb.oxygen.api.properties.ServerProperties
 import java.security.SecureRandom
-import java.util.UUID
+import java.util.*
 
 /**
  * CSRF token manager

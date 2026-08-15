@@ -47,25 +47,26 @@
 
     <select id="selectAuthorToolIdentifierPageByUsername" resultMap="toolIdentifierMap">
         select temp2.author_id as tool_author_id,
-               temp2.tool_id as tool_tool_id
-        from (select temp1.tool_id, temp1.author_id, row_number() over (partition by temp1.tool_id, temp1.author_id) as rn2
-            from (select temp0.*
-                from (select *, row_number() over (partition by t_b_tool_main.tool_id, t_b_tool_main.author_id order by t_b_tool_main.id desc) as rn1
-                    from t_b_tool_main
-                    where t_b_tool_main.deleted = 0
-                        and t_b_tool_main.publish != 0
-                        and t_b_tool_main.review = 'PASS'
-                    ) as temp0
-                where temp0.rn1 = 1
-                ) as temp1
-            left join t_s_user as tsu on tsu.deleted = 0 and tsu.id = temp1.author_id
-            where tsu.username = #{username}
-            order by temp1.publish desc
-        ) as temp2
+               temp2.tool_id   as tool_tool_id
+        from (select temp1.tool_id,
+                     temp1.author_id,
+                     row_number() over (partition by temp1.tool_id, temp1.author_id) as rn2
+              from (select temp0.*
+                    from (select *,
+                                 row_number() over (partition by t_b_tool_main.tool_id, t_b_tool_main.author_id order by t_b_tool_main.id desc) as rn1
+                          from t_b_tool_main
+                          where t_b_tool_main.deleted = 0
+                            and t_b_tool_main.publish != 0
+                            and t_b_tool_main.review = 'PASS') as temp0
+                    where temp0.rn1 = 1) as temp1
+                       left join t_s_user as tsu on tsu.deleted = 0 and tsu.id = temp1.author_id
+              where tsu.username = #{username}
+              order by temp1.publish desc) as temp2
         where temp2.rn2 = 1
     </select>
 
-    <select id="selectListByAuthorToolIds" resultMap="top.fatweb.oxygen.api.mapper.tool.ManagementMapper.toolWithAuthorMap">
+    <select id="selectListByAuthorToolIds"
+            resultMap="top.fatweb.oxygen.api.mapper.tool.ManagementMapper.toolWithAuthorMap">
         select tbtm.id as tool_id,
         tbtm.name as tool_name,
         tbtm.tool_id as tool_tool_id,

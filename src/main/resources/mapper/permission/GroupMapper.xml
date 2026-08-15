@@ -58,13 +58,13 @@
                t_s_group.update_time as group_update_time,
                t_s_group.deleted     as group_deleted,
                t_s_group.version     as group_version,
-               tsr.id               as role_id,
-               tsr.name             as role_name,
-               tsr.enable           as role_enable,
-               tsr.create_time      as role_create_time,
-               tsr.update_time      as role_update_time,
-               tsr.deleted          as role_deleted,
-               tsr.version          as role_version
+               tsr.id                as role_id,
+               tsr.name              as role_name,
+               tsr.enable            as role_enable,
+               tsr.create_time       as role_create_time,
+               tsr.update_time       as role_update_time,
+               tsr.deleted           as role_deleted,
+               tsr.version           as role_version
         from (select * from t_s_group where deleted = 0) as t_s_group
                  left join (select * from t_r_role_group where deleted = 0) as trrg on t_s_group.id = trrg.group_id
                  left join (select * from t_s_role where deleted = 0) as tsr on tsr.id = trrg.role_id

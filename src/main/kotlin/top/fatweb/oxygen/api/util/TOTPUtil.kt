@@ -167,7 +167,8 @@ object TOTPUtil {
      */
     fun generateQRCodeSVG(issuer: String, username: String, secretKey: String): String {
         val qrCode = generateQRCode(issuer, username, secretKey)
-        val stringBuilder = StringBuilder("<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" viewBox=\"0 0 ${qrCode.width} ${qrCode.height}\">")
+        val stringBuilder =
+            StringBuilder("<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" viewBox=\"0 0 ${qrCode.width} ${qrCode.height}\">")
 
         for (y in 0 until qrCode.height) {
             for (x in 0 until qrCode.width) {

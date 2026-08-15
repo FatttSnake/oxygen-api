@@ -5,8 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.interfaces.DecodedJWT
 import org.springframework.stereotype.Component
 import top.fatweb.oxygen.api.properties.ServerProperties
-import java.util.Date
-import java.util.UUID
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 /**

@@ -4,7 +4,6 @@ import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
 import top.fatweb.oxygen.api.http.entity.turnstile.SiteverifyResponse
-import top.fatweb.oxygen.api.properties.ServerProperties
 
 /**
  * Turnstile http request api

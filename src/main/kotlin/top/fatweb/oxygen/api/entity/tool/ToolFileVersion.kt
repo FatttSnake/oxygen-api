@@ -1,10 +1,6 @@
 package top.fatweb.oxygen.api.entity.tool
 
-import com.baomidou.mybatisplus.annotation.FieldFill
-import com.baomidou.mybatisplus.annotation.TableField
-import com.baomidou.mybatisplus.annotation.TableId
-import com.baomidou.mybatisplus.annotation.TableName
-import com.baomidou.mybatisplus.annotation.Version
+import com.baomidou.mybatisplus.annotation.*
 import java.io.Serializable
 import java.time.LocalDateTime
 

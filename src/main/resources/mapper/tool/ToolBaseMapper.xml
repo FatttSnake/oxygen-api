@@ -52,7 +52,7 @@
                tbts.id           as tool_source_id,
                tool_source_root_id,
                tbts.parent_id    as tool_source_parent_id,
-               tbts.file_name     as tool_source_file_name,
+               tbts.file_name    as tool_source_file_name,
                tbts.root_node    as tool_source_root_node,
                tbts.dir_node     as tool_source_dir_node,
                tbts.create_time  as tool_source_create_time,

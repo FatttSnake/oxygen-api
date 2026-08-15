@@ -7,11 +7,7 @@ import top.fatweb.oxygen.api.param.system.MailSettingsParam
 import top.fatweb.oxygen.api.param.system.TwoFactorSettingsParam
 import top.fatweb.oxygen.api.properties.ServerProperties
 import top.fatweb.oxygen.api.service.system.ISettingsService
-import top.fatweb.oxygen.api.settings.BaseSettings
-import top.fatweb.oxygen.api.settings.MailSecurityType
-import top.fatweb.oxygen.api.settings.MailSettings
-import top.fatweb.oxygen.api.settings.SettingsOperator
-import top.fatweb.oxygen.api.settings.TwoFactorSettings
+import top.fatweb.oxygen.api.settings.*
 import top.fatweb.oxygen.api.util.MailUtil
 import top.fatweb.oxygen.api.util.md5
 import top.fatweb.oxygen.api.vo.system.BaseSettingsVo
@@ -35,7 +31,8 @@ class SettingsServiceImpl : ISettingsService {
         tokenExpiryBufferMs = SettingsOperator.getValue(BaseSettings::tokenExpiryBufferMs, 1800000),
         tokenExpiryCheckIntervalMs = SettingsOperator.getValue(BaseSettings::tokenExpiryCheckIntervalMs, 600000),
         turnstileSiteKey = SettingsOperator.getValue(BaseSettings::turnstileSiteKey),
-        turnstileSecretKey = SettingsOperator.getValue(BaseSettings::turnstileSecretKey)?.takeIf { it.isNotEmpty() }?.let(::md5),
+        turnstileSecretKey = SettingsOperator.getValue(BaseSettings::turnstileSecretKey)?.takeIf { it.isNotEmpty() }
+            ?.let(::md5),
         homeUrl = SettingsOperator.getValue(BaseSettings::homeUrl, "http://localhost"),
         getAndroidAppUrl = SettingsOperator.getValue(BaseSettings::getAndroidAppUrl),
     )

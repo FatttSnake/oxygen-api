@@ -42,7 +42,12 @@ data class UserUpdateParam(
      * @author FatttSnake, fatttsnake@gmail.com
      * @since 1.0.0
      */
-    @field:Schema(description = "是否已验证", allowableValues = ["true", "false"], defaultValue = "false", example = "false")
+    @field:Schema(
+        description = "是否已验证",
+        allowableValues = ["true", "false"],
+        defaultValue = "false",
+        example = "false"
+    )
     val verified: Boolean = false,
 
     /**

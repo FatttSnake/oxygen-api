@@ -7,4 +7,4 @@ package top.fatweb.oxygen.api.exception
  * @since 1.0.0
  * @see RuntimeException
  */
-class RequestTooFrequentException: RuntimeException("Request too frequent")
+class RequestTooFrequentException : RuntimeException("Request too frequent")

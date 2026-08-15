@@ -8,4 +8,4 @@ package top.fatweb.oxygen.api.exception
  * @since 1.0.0
  * @see RuntimeException
  */
-class DatabaseInsertException(message: String = "Database insert failed"): RuntimeException(message)
+class DatabaseInsertException(message: String = "Database insert failed") : RuntimeException(message)
