@@ -2,7 +2,10 @@ package top.fatweb.oxygen.api.service.tool
 
 import com.baomidou.mybatisplus.extension.service.IService
 import top.fatweb.oxygen.api.entity.tool.ToolBase
-import top.fatweb.oxygen.api.param.tool.*
+import top.fatweb.oxygen.api.param.tool.ToolBaseAddParam
+import top.fatweb.oxygen.api.param.tool.ToolBaseGetParam
+import top.fatweb.oxygen.api.param.tool.ToolBaseUpdateParam
+import top.fatweb.oxygen.api.param.tool.ToolCommonUpdateSourceAddParam
 import top.fatweb.oxygen.api.vo.PageVo
 import top.fatweb.oxygen.api.vo.tool.ToolBaseVo
 import top.fatweb.oxygen.api.vo.tool.ToolBaseWithDistVo

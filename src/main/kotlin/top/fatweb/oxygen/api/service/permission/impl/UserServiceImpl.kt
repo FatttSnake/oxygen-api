@@ -320,7 +320,13 @@ class UserServiceImpl(
             )
         }
 
-        userUpdatePasswordParam.id?.let { offlineUser(serverProperties = serverProperties, redisProvider = redisProvider, it) }
+        userUpdatePasswordParam.id?.let {
+            offlineUser(
+                serverProperties = serverProperties,
+                redisProvider = redisProvider,
+                it
+            )
+        }
     }
 
     @Transactional

@@ -8,4 +8,4 @@ package top.fatweb.oxygen.api.exception
  * @since 1.0.0
  * @see RuntimeException
  */
-class DatabaseUpdateException(message: String = "Database update failed"): RuntimeException(message)
+class DatabaseUpdateException(message: String = "Database update failed") : RuntimeException(message)

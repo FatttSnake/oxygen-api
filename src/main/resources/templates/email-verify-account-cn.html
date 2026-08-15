@@ -2,9 +2,9 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
     <title>验证您的账号</title>
     <style>
         * {
@@ -76,11 +76,13 @@
     <div class="card">
         <div class="title">账&nbsp;号&nbsp;激&nbsp;活</div>
         <div><strong th:text="${username}">用户</strong>，您好：</div>
-        <div style="text-indent: 2em">感谢注册 <a target="_blank" th:href="@{${homeUrl}}" th:text="|${systemName}(${homeUrl})|">应用名称(URL)</a>，在继续使用之前，我们需要确定您的电子邮箱地址的有效性，请在
+        <div style="text-indent: 2em">感谢注册 <a target="_blank" th:href="@{${homeUrl}}"
+                                                  th:text="|${systemName}(${homeUrl})|">应用名称(URL)</a>，在继续使用之前，我们需要确定您的电子邮箱地址的有效性，请在
             <u><i>两小时内</i></u> 点击下面的按钮帮助我们验证：
         </div>
         <div class="verify-button"><a target="_blank" th:href="@{${verifyUrl}}">验证邮箱</a></div>
-        <div>如果以上按钮无法点击，请复制此链接到浏览器地址栏中访问：<a target="_blank" th:href="@{${verifyUrl}}" th:text="${verifyUrl}">URL</a>
+        <div>如果以上按钮无法点击，请复制此链接到浏览器地址栏中访问：<a target="_blank" th:href="@{${verifyUrl}}"
+                                                                      th:text="${verifyUrl}">URL</a>
         </div>
         <div class="not-reply">此邮件由系统自动发送，请勿回复！</div>
     </div>

@@ -1,7 +1,7 @@
 package top.fatweb.oxygen.api.util
 
 import org.slf4j.MDC
-import java.util.UUID
+import java.util.*
 
 /**
  * Trace ID utility
