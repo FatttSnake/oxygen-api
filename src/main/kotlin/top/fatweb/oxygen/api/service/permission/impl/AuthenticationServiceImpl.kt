@@ -609,7 +609,12 @@ class AuthenticationServiceImpl(
 
         try {
             val siteverifyResponse =
-                runBlocking { turnstileApi.siteverify(captchaCode, SettingsOperator.getValue(BaseSettings::turnstileSecretKey) ?: "") }
+                runBlocking {
+                    turnstileApi.siteverify(
+                        captchaCode,
+                        SettingsOperator.getValue(BaseSettings::turnstileSecretKey) ?: ""
+                    )
+                }
             if (!siteverifyResponse.success || siteverifyResponse.action != action) {
                 throw InvalidCaptchaCodeException()
             }
