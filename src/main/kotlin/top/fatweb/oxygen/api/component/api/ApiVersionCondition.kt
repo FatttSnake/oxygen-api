@@ -18,7 +18,7 @@ class ApiVersionCondition(private val apiVersion: Int) : RequestCondition<ApiVer
 
     override fun getMatchingCondition(request: HttpServletRequest): ApiVersionCondition? {
         versionPrefixRegex.matchAt(request.requestURI, 0)?.let {
-            if (it.groupValues[1].toInt() >= this.apiVersion) {
+            if (it.groupValues[1].toInt() >= apiVersion) {
                 return this
             }
         }
@@ -27,5 +27,5 @@ class ApiVersionCondition(private val apiVersion: Int) : RequestCondition<ApiVer
     }
 
     override fun compareTo(other: ApiVersionCondition, request: HttpServletRequest): Int =
-        other.apiVersion - this.apiVersion
+        other.apiVersion - apiVersion
 }

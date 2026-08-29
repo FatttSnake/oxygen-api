@@ -83,14 +83,14 @@ class ManagementServiceImpl(
 
     @Transactional
     override fun pass(id: Long, dist: String) {
-        val tool = queryOrThrowException { this.getById(id) }
+        val tool = queryOrThrowException { getById(id) }
         if (tool.review !== Tool.ReviewType.PROCESSING) {
             throw ToolNotUnderReviewException()
         }
 
         toolDistService.updateContent(tool.distId!!, dist)
         updateOrThrowException {
-            this.update(
+            update(
                 KtUpdateWrapper(Tool())
                     .eq(Tool::id, id)
                     .set(Tool::review, Tool.ReviewType.PASS)
@@ -101,13 +101,13 @@ class ManagementServiceImpl(
 
     @Transactional
     override fun reject(id: Long) {
-        val tool = queryOrThrowException { this.getById(id) }
+        val tool = queryOrThrowException { getById(id) }
         if (tool.review !== Tool.ReviewType.PROCESSING) {
             throw ToolNotUnderReviewException()
         }
 
         updateOrThrowException {
-            this.update(
+            update(
                 KtUpdateWrapper(Tool())
                     .eq(Tool::id, id)
                     .set(Tool::review, Tool.ReviewType.NONE)
@@ -117,13 +117,13 @@ class ManagementServiceImpl(
 
     @Transactional
     override fun delist(id: Long) {
-        val tool = queryOrThrowException { this.getById(id) }
+        val tool = queryOrThrowException { getById(id) }
         if (tool.review !== Tool.ReviewType.PASS) {
             throw ToolHasNotBeenPublishedException()
         }
 
         updateOrThrowException {
-            this.update(
+            update(
                 KtUpdateWrapper(Tool())
                     .eq(Tool::id, id)
                     .set(Tool::review, Tool.ReviewType.REJECT)
@@ -133,10 +133,10 @@ class ManagementServiceImpl(
 
     @Transactional
     override fun delistAllVersion(id: Long) {
-        val tool = queryOrThrowException { this.getById(id) }
+        val tool = queryOrThrowException { getById(id) }
 
         updateOrThrowException {
-            this.update(
+            update(
                 KtUpdateWrapper(Tool())
                     .eq(Tool::toolId, tool.toolId!!)
                     .eq(Tool::authorId, tool.authorId!!)
@@ -148,13 +148,13 @@ class ManagementServiceImpl(
 
     @Transactional
     override fun relist(id: Long) {
-        val tool = queryOrThrowException { this.getById(id) }
+        val tool = queryOrThrowException { getById(id) }
         if (tool.review !== Tool.ReviewType.REJECT) {
             throw ToolHasNotBeenDelisted()
         }
 
         updateOrThrowException {
-            this.update(
+            update(
                 KtUpdateWrapper(Tool())
                     .eq(Tool::id, id)
                     .set(Tool::review, Tool.ReviewType.PASS)
@@ -177,6 +177,6 @@ class ManagementServiceImpl(
 
         // TODO: keep source & dist, add manual cleanup method later
 
-        return this.removeById(id)
+        return removeById(id)
     }
 }

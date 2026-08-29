@@ -27,15 +27,15 @@ import top.fatweb.oxygen.api.vo.tool.ToolCategoryVo
 @Service
 class ToolCategoryServiceImpl : ServiceImpl<ToolCategoryMapper, ToolCategory>(), IToolCategoryService {
     override fun getOne(id: Long): ToolCategoryVo =
-        queryOrThrowException { this.getById(id) }.let(ToolCategory::toVo)
+        queryOrThrowException { getById(id) }.let(ToolCategory::toVo)
 
     override fun get(): List<ToolCategoryVo> =
-        this.list().map(ToolCategory::toVo)
+        list().map(ToolCategory::toVo)
 
     override fun add(toolCategoryAddParam: ToolCategoryAddParam): ToolCategoryVo {
         val toolCategory = toolCategoryAddParam.toEntity()
 
-        saveOrThrowException { this.save(toolCategory) }
+        saveOrThrowException { save(toolCategory) }
 
         return toolCategory.toVo()
     }
@@ -43,10 +43,10 @@ class ToolCategoryServiceImpl : ServiceImpl<ToolCategoryMapper, ToolCategory>(),
     override fun update(toolCategoryUpdateParam: ToolCategoryUpdateParam): ToolCategoryVo {
         val toolCategory = toolCategoryUpdateParam.toEntity()
 
-        updateOrThrowException { this.updateById(toolCategory) }
+        updateOrThrowException { updateById(toolCategory) }
 
         return toolCategory.toVo()
     }
 
-    override fun delete(id: Long): Boolean = this.removeById(id)
+    override fun delete(id: Long): Boolean = removeById(id)
 }

@@ -33,7 +33,7 @@ class ToolDistServiceImpl(
             fileHash = hash
             fileSize = dist.utf8Size()
         }
-        updateOrThrowException { this.save(newDist) }
+        updateOrThrowException { save(newDist) }
 
         return newDist.id!!
     }
@@ -41,13 +41,13 @@ class ToolDistServiceImpl(
     @Transactional
     override fun updateContent(id: Long, dist: String) {
         val toolDist = queryOrThrowException {
-            this.getById(id)
+            getById(id)
         }
 
         storageBlobService.removeFile(toolDist.fileHash!!)
         val hash = storageBlobService.saveFile(dist)
         updateOrThrowException {
-            this.update(
+            update(
                 KtUpdateWrapper(ToolDist())
                     .eq(ToolDist::id, id)
                     .set(ToolDist::fileHash, hash)

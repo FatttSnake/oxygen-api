@@ -57,7 +57,7 @@ class ToolTemplateServiceImpl(
         }
 
     override fun getOne(id: Long): ToolTemplateWithSourceVo =
-        this.getOriginalOne(id).let(ToolTemplate::toVoWithSource)
+        getOriginalOne(id).let(ToolTemplate::toVoWithSource)
 
     override fun get(toolTemplateGetParam: ToolTemplateGetParam?): PageVo<ToolTemplateVo> {
         val templatePage =
@@ -83,22 +83,22 @@ class ToolTemplateServiceImpl(
             platform = toolBase.platform
         }
 
-        saveOrThrowException { this.save(toolTemplate) }
+        saveOrThrowException { save(toolTemplate) }
 
-        return this.getOne(toolTemplate.id!!)
+        return getOne(toolTemplate.id!!)
     }
 
     @Transactional
     override fun update(toolTemplateUpdateParam: ToolTemplateUpdateParam) {
         val toolTemplate = toolTemplateUpdateParam.toEntity()
 
-        updateOrThrowException { this.updateById(toolTemplate) }
+        updateOrThrowException { updateById(toolTemplate) }
     }
 
     @Transactional
     override fun updateSourceAdd(id: Long, toolCommonUpdateSourceAddParam: ToolCommonUpdateSourceAddParam): String {
         val toolTemplate = queryOrThrowException {
-            this.getById(id)
+            getById(id)
         }
         return toolSourceService.addNode(
             rootId = toolTemplate.sourceId!!,
@@ -119,7 +119,7 @@ class ToolTemplateServiceImpl(
     @Transactional
     override fun updateSourceRename(id: Long, nodeId: Long, fileName: String) {
         val toolTemplate = queryOrThrowException {
-            this.getById(id)
+            getById(id)
         }
         toolSourceService.renameNode(
             rootId = toolTemplate.sourceId!!,
@@ -138,7 +138,7 @@ class ToolTemplateServiceImpl(
     @Transactional
     override fun updateSourceMove(id: Long, nodeId: Long, newParentId: Long) {
         val toolTemplate = queryOrThrowException {
-            this.getById(id)
+            getById(id)
         }
         toolSourceService.moveNode(
             rootId = toolTemplate.sourceId!!,
@@ -157,7 +157,7 @@ class ToolTemplateServiceImpl(
     @Transactional
     override fun updateSourceContent(id: Long, nodeId: Long, content: String) {
         val toolTemplate = queryOrThrowException {
-            this.getById(id)
+            getById(id)
         }
         toolSourceService.updateNode(
             rootId = toolTemplate.sourceId!!,
@@ -176,7 +176,7 @@ class ToolTemplateServiceImpl(
     @Transactional
     override fun updateSourceRemove(id: Long, nodeId: Long) {
         val toolTemplate = queryOrThrowException {
-            this.getById(id)
+            getById(id)
         }
         toolSourceService.removeNode(
             rootId = toolTemplate.sourceId!!,
@@ -193,14 +193,14 @@ class ToolTemplateServiceImpl(
 
     @Transactional
     override fun upgradeBase(toolOrTemplateUpgradeBaseParam: ToolOrTemplateUpgradeBaseParam) {
-        val toolTemplate = queryOrThrowException { this.getOne(toolOrTemplateUpgradeBaseParam.id!!) }
+        val toolTemplate = queryOrThrowException { getOne(toolOrTemplateUpgradeBaseParam.id!!) }
         if (toolTemplate.base!!.version!! >= toolOrTemplateUpgradeBaseParam.baseVersion!!) {
             throw DatabaseUpdateException()
         }
         toolBaseService.getOne(id = toolTemplate.base.id!!, version = toolOrTemplateUpgradeBaseParam.baseVersion)
 
         updateOrThrowException {
-            this.update(
+            update(
                 KtUpdateWrapper(ToolTemplate())
                     .eq(ToolTemplate::id, toolOrTemplateUpgradeBaseParam.id)
                     .set(ToolTemplate::baseVersion, toolOrTemplateUpgradeBaseParam.baseVersion)
@@ -211,5 +211,5 @@ class ToolTemplateServiceImpl(
 
     @Transactional
     override fun delete(id: Long): Boolean =
-        this.removeById(id)
+        removeById(id)
 }

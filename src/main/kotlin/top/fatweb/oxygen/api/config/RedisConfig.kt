@@ -32,7 +32,7 @@ class RedisConfig {
             .apply {
                 setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY)
                 activateDefaultTyping(
-                    this.polymorphicTypeValidator, ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY
+                    polymorphicTypeValidator, ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY
                 )
             }
         val anyJackson2JsonRedisSerializer = Jackson2JsonRedisSerializer(objectMapper, Any::class.java)

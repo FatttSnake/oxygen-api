@@ -106,7 +106,7 @@ class ToolBaseServiceImpl(
 
         setPageSort(toolBaseGetParam, basePage)
 
-        basePage = this.page(
+        basePage = page(
             basePage,
             KtQueryWrapper(ToolBase())
                 .select(ToolBase::id)
@@ -133,7 +133,7 @@ class ToolBaseServiceImpl(
             name = toolBaseAddParam.name
             platform = toolBaseAddParam.platform
         }
-        saveOrThrowException { this.save(toolBase) }
+        saveOrThrowException { save(toolBase) }
 
         val newNodeId = toolSourceService.generateEmptySource()
         val rToolBaseSource = RToolBaseData().apply {
@@ -150,7 +150,7 @@ class ToolBaseServiceImpl(
     override fun update(toolBaseUpdateParam: ToolBaseUpdateParam) {
         val toolBase = toolBaseUpdateParam.toEntity()
 
-        updateOrThrowException { this.updateById(toolBase) }
+        updateOrThrowException { updateById(toolBase) }
     }
 
     @Transactional
@@ -205,7 +205,7 @@ class ToolBaseServiceImpl(
 
     @Transactional
     override fun updateDist(id: Long, dist: String): Long {
-        queryOrThrowException { this.getById(id) }
+        queryOrThrowException { getById(id) }
         val rToolBaseSource = queryOrThrowException(ToolBaseHasBeenCompiledException()) {
             rToolBaseDataService.getOne(
                 KtQueryWrapper(RToolBaseData())
@@ -233,7 +233,7 @@ class ToolBaseServiceImpl(
         }
 
         updateOrThrowException {
-            this.update(
+            update(
                 KtUpdateWrapper(ToolBase())
                     .eq(ToolBase::id, id)
                     .set(ToolBase::updateTime, LocalDateTime.now(ZoneOffset.UTC))
@@ -252,12 +252,12 @@ class ToolBaseServiceImpl(
 
         // TODO: keep source & dist, add manual cleanup method later
 
-        return this.removeById(id)
+        return removeById(id)
     }
 
     private fun checkAndGetRToolBaseSource(toolBaseId: Long): RToolBaseData {
         existsOrThrowException {
-            this.exists(
+            exists(
                 KtQueryWrapper(ToolBase())
                     .eq(ToolBase::id, toolBaseId)
             )

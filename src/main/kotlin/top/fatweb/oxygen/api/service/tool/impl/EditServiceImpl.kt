@@ -123,7 +123,7 @@ class EditServiceImpl(
         ver: String,
         platform: Platform
     ): ToolWithSourceVo =
-        this.originalSource(
+        originalSource(
             username = username,
             toolId = toolId,
             ver = ver,
@@ -201,7 +201,7 @@ class EditServiceImpl(
             entryPoint = template.entryPoint
         }
 
-        saveOrThrowException { this.save(tool) }
+        saveOrThrowException { save(tool) }
 
         toolCreateParam.categories!!.forEach {
             queryOrThrowException {
@@ -215,12 +215,12 @@ class EditServiceImpl(
             }
         }
 
-        return this.getOne(tool.id!!)
+        return getOne(tool.id!!)
     }
 
     @Transactional
     override fun update(toolUpdateParam: ToolUpdateParam) {
-        val tool = queryOrThrowException { this.getOne(toolUpdateParam.id!!) }
+        val tool = queryOrThrowException { getOne(toolUpdateParam.id!!) }
         if (tool.review == Tool.ReviewType.PROCESSING) {
             throw ToolUnderReviewException()
         }
@@ -228,7 +228,7 @@ class EditServiceImpl(
             throw ToolHasBeenPublishedException()
         }
 
-        updateOrThrowException { this.updateById(toolUpdateParam.toEntity()) }
+        updateOrThrowException { updateById(toolUpdateParam.toEntity()) }
 
         if (!toolUpdateParam.categories.isNullOrEmpty()) {
             val oldCategories = rToolCategoryService.list(
@@ -267,7 +267,7 @@ class EditServiceImpl(
     @Transactional
     override fun updateSourceAdd(id: Long, toolCommonUpdateSourceAddParam: ToolCommonUpdateSourceAddParam): String {
         val tool = queryOrThrowException {
-            this.getById(id)
+            getById(id)
         }
         return toolSourceService.addNode(
             rootId = tool.sourceId!!,
@@ -279,7 +279,7 @@ class EditServiceImpl(
 
     override fun updateSourceRename(id: Long, nodeId: Long, fileName: String) {
         val tool = queryOrThrowException {
-            this.getById(id)
+            getById(id)
         }
         toolSourceService.renameNode(
             rootId = tool.sourceId!!,
@@ -290,7 +290,7 @@ class EditServiceImpl(
 
     override fun updateSourceMove(id: Long, nodeId: Long, newParentId: Long) {
         val tool = queryOrThrowException {
-            this.getById(id)
+            getById(id)
         }
         toolSourceService.moveNode(
             rootId = tool.sourceId!!,
@@ -301,7 +301,7 @@ class EditServiceImpl(
 
     override fun updateSourceContent(id: Long, nodeId: Long, content: String) {
         val tool = queryOrThrowException {
-            this.getById(id)
+            getById(id)
         }
         toolSourceService.updateNode(
             rootId = tool.sourceId!!,
@@ -312,7 +312,7 @@ class EditServiceImpl(
 
     override fun updateSourceRemove(id: Long, nodeId: Long) {
         val tool = queryOrThrowException {
-            this.getById(id)
+            getById(id)
         }
         toolSourceService.removeNode(
             rootId = tool.sourceId!!,
@@ -322,7 +322,7 @@ class EditServiceImpl(
 
     @Transactional
     override fun upgrade(toolUpgradeParam: ToolUpgradeParam): ToolWithSourceVo {
-        val originalTool = this.originalSource(
+        val originalTool = originalSource(
             username = "!",
             toolId = toolUpgradeParam.toolId!!,
             ver = "latest",
@@ -368,7 +368,7 @@ class EditServiceImpl(
             entryPoint = originalTool.entryPoint
         }
 
-        saveOrThrowException { this.save(tool) }
+        saveOrThrowException { save(tool) }
 
         originalTool.categories!!.forEach {
             queryOrThrowException { toolCategoryService.getById(it.id) }
@@ -380,19 +380,19 @@ class EditServiceImpl(
             }
         }
 
-        return this.getOne(tool.id!!)
+        return getOne(tool.id!!)
     }
 
     @Transactional
     override fun upgradeBase(toolOrTemplateUpgradeBaseParam: ToolOrTemplateUpgradeBaseParam) {
-        val tool = queryOrThrowException { this.getOne(toolOrTemplateUpgradeBaseParam.id!!) }
+        val tool = queryOrThrowException { getOne(toolOrTemplateUpgradeBaseParam.id!!) }
         if (tool.base!!.version!! >= toolOrTemplateUpgradeBaseParam.baseVersion!!) {
             throw DatabaseUpdateException()
         }
         toolBaseService.getOne(id = tool.base.id!!, version = toolOrTemplateUpgradeBaseParam.baseVersion)
 
         updateOrThrowException {
-            this.update(
+            update(
                 KtUpdateWrapper(Tool())
                     .eq(Tool::id, toolOrTemplateUpgradeBaseParam.id)
                     .set(Tool::baseVersion, toolOrTemplateUpgradeBaseParam.baseVersion)
@@ -402,7 +402,7 @@ class EditServiceImpl(
     }
 
     override fun submit(id: Long): Boolean {
-        val tool = queryOrThrowException { this.getById(id) }
+        val tool = queryOrThrowException { getById(id) }
         if (tool.review == Tool.ReviewType.PROCESSING) {
             throw ToolUnderReviewException()
         }
@@ -418,7 +418,7 @@ class EditServiceImpl(
     }
 
     override fun cancel(id: Long): Boolean {
-        val tool = queryOrThrowException { this.getById(id) }
+        val tool = queryOrThrowException { getById(id) }
         if (tool.review == Tool.ReviewType.PASS) {
             throw ToolHasBeenPublishedException()
         }
@@ -449,6 +449,6 @@ class EditServiceImpl(
 
         // TODO: keep source & dist, add manual cleanup method later
 
-        return this.removeById(id)
+        return removeById(id)
     }
 }
