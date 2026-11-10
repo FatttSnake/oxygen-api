@@ -109,7 +109,7 @@ class V1_2_0_260518__Migrate_tool_data_to_file_storage_system(
             return ""
         }
 
-        val binary = this.decode(base64String).toString(Charsets.ISO_8859_1)
+        val binary = decode(base64String).toString(Charsets.ISO_8859_1)
 
         // zlib header (x78), level 9 (xDA)
         if (binary.startsWith("\u0078\u00DA")) {

@@ -9,7 +9,7 @@ import java.time.LocalDateTime
  * @author FatttSnake, fatttsnake@gmail.com
  * @since 1.0.0
  */
-@Schema(description = "软甲信息返回参数")
+@Schema(description = "软件信息返回参数")
 data class SoftwareInfoVo(
     /**
      * Service version

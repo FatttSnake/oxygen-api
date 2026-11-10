@@ -140,12 +140,12 @@ class ToolSource : Serializable {
          * @see ToolFileVersion
          */
         fun List<ToolSource>.copy(): Triple<Long, List<ToolSource>, List<ToolFileVersion>> {
-            if (this.isEmpty()) {
+            if (isEmpty()) {
                 throw CorruptedSourceCodeException()
             }
 
-            val childrenMap = this.groupBy { it.parentId }
-            val originalRoot = this.filter { it.rootNode == 1 }.run {
+            val childrenMap = groupBy { it.parentId }
+            val originalRoot = filter { it.rootNode == 1 }.run {
                 if (size != 1) {
                     throw CorruptedSourceCodeException()
                 }

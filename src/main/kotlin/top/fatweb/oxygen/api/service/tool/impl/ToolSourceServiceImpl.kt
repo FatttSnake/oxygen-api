@@ -39,7 +39,7 @@ class ToolSourceServiceImpl(
             rootNode = 1
             dirNode = 1
         }
-        saveOrThrowException { this.save(rootNode) }
+        saveOrThrowException { save(rootNode) }
 
         return newNodeId
     }
@@ -51,7 +51,7 @@ class ToolSourceServiceImpl(
         fileName: String,
         dirNode: Boolean
     ): Long {
-        val exists = this.getOne(
+        val exists = getOne(
             KtQueryWrapper(ToolSource())
                 .eq(ToolSource::rootId, rootId)
                 .eq(ToolSource::parentId, parentId)
@@ -63,7 +63,7 @@ class ToolSourceServiceImpl(
         }
 
         queryOrThrowException {
-            this.getOne(
+            getOne(
                 KtQueryWrapper(ToolSource())
                     .eq(ToolSource::id, parentId)
                     .eq(ToolSource::rootId, rootId)
@@ -82,13 +82,13 @@ class ToolSourceServiceImpl(
                 }
             )
         }
-        this.save(
+        save(
             ToolSource().apply {
-                id = newNodeId
+                this.id = newNodeId
                 this.rootId = rootId
                 this.parentId = parentId
                 this.fileName = fileName
-                rootNode = 0
+                this.rootNode = 0
                 this.dirNode = if (dirNode) 1 else 0
             }
         )
@@ -99,7 +99,7 @@ class ToolSourceServiceImpl(
     @Transactional
     override fun renameNode(rootId: Long, nodeId: Long, fileName: String) {
         updateOrThrowException {
-            this.update(
+            update(
                 KtUpdateWrapper(ToolSource())
                     .eq(ToolSource::id, nodeId)
                     .eq(ToolSource::rootId, rootId)
@@ -112,7 +112,7 @@ class ToolSourceServiceImpl(
     @Transactional
     override fun moveNode(rootId: Long, nodeId: Long, newParentId: Long) {
         existsOrThrowException {
-            this.exists(
+            exists(
                 KtQueryWrapper(ToolSource())
                     .eq(ToolSource::id, newParentId)
                     .eq(ToolSource::rootId, rootId)
@@ -120,7 +120,7 @@ class ToolSourceServiceImpl(
             )
         }
         updateOrThrowException {
-            this.update(
+            update(
                 KtUpdateWrapper(ToolSource())
                     .eq(ToolSource::id, nodeId)
                     .eq(ToolSource::rootId, rootId)
@@ -133,7 +133,7 @@ class ToolSourceServiceImpl(
     @Transactional
     override fun updateNode(rootId: Long, nodeId: Long, content: ByteArray) {
         existsOrThrowException {
-            this.exists(
+            exists(
                 KtQueryWrapper(ToolSource())
                     .eq(ToolSource::id, nodeId)
                     .eq(ToolSource::rootId, rootId)
@@ -157,9 +157,9 @@ class ToolSourceServiceImpl(
             toolFileVersionService.save(
                 ToolFileVersion().apply {
                     this.nodeId = nodeId
-                    ver = latestVersion.ver!! + 1
-                    fileHash = hash
-                    fileSize = content.size.toLong()
+                    this.ver = latestVersion.ver!! + 1
+                    this.fileHash = hash
+                    this.fileSize = content.size.toLong()
                 }
             )
         }
@@ -167,7 +167,7 @@ class ToolSourceServiceImpl(
 
     @Transactional
     override fun removeNode(rootId: Long, nodeId: Long) {
-        val node = this.getOne(
+        val node = getOne(
             KtQueryWrapper(ToolSource())
                 .eq(ToolSource::id, nodeId)
                 .eq(ToolSource::rootId, rootId)
@@ -175,7 +175,7 @@ class ToolSourceServiceImpl(
         ) ?: return
 
         if (node.dirNode == 0) {
-            this.removeById(nodeId)
+            removeById(nodeId)
             toolFileVersionService.remove(
                 KtQueryWrapper(ToolFileVersion())
                     .eq(ToolFileVersion::nodeId, nodeId)
@@ -184,14 +184,14 @@ class ToolSourceServiceImpl(
             return
         }
 
-        val nodeIds = this.getDescendantNodeIds(rootId = rootId, nodeId = nodeId)
+        val nodeIds = getDescendantNodeIds(rootId = rootId, nodeId = nodeId)
         if (nodeIds.isNotEmpty()) {
             toolFileVersionService.remove(
                 KtQueryWrapper(ToolFileVersion())
                     .`in`(ToolFileVersion::nodeId, nodeIds)
             )
         }
-        this.removeBatchByIds(nodeIds)
+        removeBatchByIds(nodeIds)
     }
 
     override fun getDescendantNodeIds(rootId: Long, nodeId: Long): List<Long> =
